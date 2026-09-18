@@ -94,7 +94,7 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 3. Restrict candidates to the eight product categories. Treat `Keyword` as source discovery metadata, not the canonical category taxonomy.
 4. Exclude source stock `No`, unverifiable prices, third-party fulfilment and unresolved mandatory charges.
 5. Propose matches, then manually verify exact identity. Quarantine contradictions and record corrections with evidence.
-6. Verify selected promotion terms and one delivery scenario per retailer. Do not infer unsupported rules.
+6. Verify selected promotion terms and one delivery scenario per retailer. Multibuys are optional; if verification effort is disproportionate, publish verified ordinary/unconditional sale prices with omission notices instead. Do not infer unsupported rules. Approve dated promotions only with evidence that they belong in the recorded scenario, preserving the captured validity terms internally.
 7. Publish clean, schema-validated seed data with version, coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
 
 Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. A second reviewer should check a sample of final mappings. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
@@ -108,7 +108,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, verified direct-fulfilment status and evidence reference. |
 | Dataset | ID/schema version, seed revision/checksum, activation state and import metadata. Import time is not a collection date. |
 | Offer | Dataset/listing IDs, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
-| Supported promotion | Listing/dataset, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule and raw terms/evidence. |
+| Supported promotion | Listing/dataset, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed for that seed version. |
 | Delivery scenario/rule | Dataset/retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. |
 | Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
@@ -131,6 +131,10 @@ One deterministic module calculates product-line costs and retailer-order totals
 - Return an itemised explanation and excluded-promotion notices, not just a scalar total.
 
 Unknown necessary delivery rules prevent a valid complete-total calculation for that retailer. Do not substitute zero. An unsupported promotion can be ignored only when a verified usable price remains and the omission is disclosed.
+
+Promotion eligibility comes from the approved seed version, not the runtime clock. Advancing the current date must not expire or activate a promotion during calculation. Keep captured validity terms as internal provenance, not website collection dates or live-validity claims. A correction to approved rules produces a new seed version. Reject a promotion from the curated rules when its applicability to the recorded scenario cannot be established; retain a verified ordinary-price fallback only with the required disclosure.
+
+The initial pricing kernel may omit multibuy execution entirely if B3 approves only ordinary/unconditional prices. Keep unsupported rules out of the active seed; bundle-specific implementation and acceptance cases apply only when that promotion type is adopted.
 
 ### Search procedure
 
@@ -262,8 +266,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B3 — Verify delivery scenarios and supported promotion rules
 - **Blocked by:** A2, B1.
-- **Work:** Capture one delivery scenario per retailer and verify selected ordinary/sale prices, multibuy terms and deposit treatment. Record sources and excluded promotions.
-- **Acceptance:** Standard non-member eligibility, minimum orders, fees and threshold bases are explicit; unresolved charges cannot become zero; multibuys without sufficient terms stay unsupported; price inclusion prevents double-counted deposits.
+- **Work:** Capture one delivery scenario per retailer and verify selected ordinary/sale prices, optional multibuy terms and deposit treatment. Record sources, dated-promotion scenario evidence and excluded promotions. Decide whether multibuy support is justified by the evidence and effort required.
+- **Acceptance:** Standard non-member eligibility, minimum orders, fees and threshold bases are explicit; unresolved charges cannot become zero; price inclusion prevents double-counted deposits. Multibuys without sufficient terms stay unsupported, and omitting multibuy support does not block completion. Approved dated promotions have recorded scenario evidence and are fixed to a seed version; unresolved promotions use a disclosed reliable-price fallback or the offer is excluded.
 
 #### B4 — Implement database migrations and atomic seed import
 - **Blocked by:** A1, A2.
@@ -280,7 +284,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C1 — Implement the shared pricing kernel
 - **Blocked by:** A2.
 - **Work:** Implement product, promotion, mandatory-charge and retailer-order pricing against explicit fixtures. Return itemised explanations and excluded-promotion notices.
-- **Acceptance:** Independent reference tests cover cents, supported bundle terms/remainders, minimum orders, threshold boundaries and charge inclusion; document and test rounding boundaries if any supported rule requires rounding. Product and basket paths use the same module. Real rules are validated later in C5.
+- **Acceptance:** Independent reference tests cover cents, supported bundle terms/remainders where adopted, minimum orders, threshold boundaries and charge inclusion; document and test rounding boundaries if any supported rule requires rounding. A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed, including dated promotions if adopted. Product and basket paths use the same module. Real rules are validated later in C5.
 
 #### C2 — Implement baselines and assignment validation
 - **Blocked by:** C1.

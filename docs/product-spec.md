@@ -8,6 +8,8 @@ This document and the [technical implementation specification](technical-impleme
 
 CartOptix helps Singapore grocery shoppers compare the estimated cost of an entire basket across RedMart, FairPrice and Cold Storage, including supported promotions and delivery charges. Shoppers can compare buying from one supermarket with splitting different products across supermarkets.
 
+The MVP is free for shoppers. No subscription or shopper payment is required to use CartOptix; shoppers pay for their groceries on retailer websites.
+
 The MVP must deliver a usable comparison service on AWS, demonstrate its performance and scaling behaviour under an explicit first-year traffic scenario, and gather shopper feedback. It does not need to prove that every recommendation is mathematically optimal.
 
 The promise is **the best valid plan found under the supported pricing rules, recorded dataset and shopper's retailer limit**. When a complete single-retailer option exists, the recommendation must cost no more than the cheapest such option under the same rules. Some baskets will have no benefit from splitting; that is a valid result.
@@ -115,9 +117,13 @@ Manually verify product mappings, direct fulfilment and ambiguous fields. Quaran
 
 Start with ordinary prices and clearly unconditional sale prices. Support same-product multibuys only for selected listings whose terms can be verified and encoded, including eligible quantity, repetition limits and the price of remaining packs.
 
+Multibuy support is optional for the initial MVP, not a release blocker. If reliable terms cannot be recovered within the project's effort budget, proceed with verified ordinary and unconditional sale prices and disclose the excluded promotions.
+
 Raw promotion descriptions are evidence, not executable rules. Do not automatically subtract a `Savings` amount from a price that may already include the discount. Do not infer unrestricted repetition or same-product eligibility from “Any N” wording.
 
 When promotion conditions are unresolved, use a verified ordinary price if available and disclose that an additional promotion is excluded. If no reliable applicable price exists, exclude the offer. Cross-product promotions, memberships, vouchers, payment-method discounts and gifts are outside the calculation scope.
+
+Approved promotion rules are fixed within each seed version. Calculations do not re-evaluate them against the current date, so the same basket and seed retain the same pricing rules as the calendar advances. Curate dated promotions only when evidence establishes that they belong in the recorded scenario; otherwise exclude the promotion and apply the reliable-price fallback above. Preserve captured validity terms internally without inventing a collection date. Changes to approved rules require a new seed version. The fixed-dataset disclaimer applies to these promotions as well as prices and availability.
 
 ### PR-04 — Delivery and mandatory charges
 
@@ -186,6 +192,8 @@ The first-year planning scenario is 1,000 daily active shoppers, two sessions pe
 Live price/availability checks, scheduled refresh, partner APIs, stock reservations, substitutions, alternative pack-size fulfilment, cross-product promotions, splitting one line across retailers, extra purchases to qualify for discounts, accounts, cross-device saved baskets and integrated checkout are outside scope.
 
 Pay-per-click partnerships, affiliate conversion tracking and cashback remain commercial hypotheses or future work. Lightweight click recording is included; commercial billing, attribution and fraud controls are not. Database failover and a demonstrated long-term BAU SLO are not claims of the Single-AZ prototype.
+
+The intended commercial progression is to explore retailer-funded pay-per-click partnerships first, then purchase-based affiliate commissions, and potentially return part of those commissions to shoppers as cashback. This is a proposed business model, not evidence of partner agreements or an MVP implementation commitment. It does not change recommendation independence.
 
 ## 8. Evidence still required
 
