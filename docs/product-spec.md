@@ -49,6 +49,8 @@ Only **direct supermarket fulfilment** is in scope. Third-party sellers and sepa
 
 ## 3. High-level user journeys
 
+These journeys define required steps, on-screen content, states and a small set of binding UX rules. They deliberately leave screen and page structure, navigation model, visual design, component-level interaction and detailed accessibility treatment (beyond keyboard operability) as implementation decisions. Implementers must satisfy the stated content and rules; the shopper study (SC-08) evaluates whether the resulting design is clear and usable, rather than checking it against an upfront visual specification.
+
 ### J1 — Find and compare a product
 
 1. Browse categories or search the curated catalogue.
