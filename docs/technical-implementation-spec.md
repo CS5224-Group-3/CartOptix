@@ -48,7 +48,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
 | `pg` | 8.23.0 | Direct driver for the readiness query; Drizzle arrives with the data work |
 | Vitest | 5.0.1 | Playwright is deferred until there are journeys to exercise |
-| PostgreSQL | 18 locally, matching RDS 18.6 in `ap-southeast-1` | PostgreSQL 18 expects a single mount at `/var/lib/postgresql` |
+| PostgreSQL | `18-alpine` locally (18.6), matching RDS 18.6 in `ap-southeast-1` | Alpine keeps the local image lean (~264 MB vs ~458 MB for the Debian-based tag); PostgreSQL 18 expects a single mount at `/var/lib/postgresql` |
 
 **Rejected: ESLint with `typescript-eslint`.** `typescript-eslint@8.70.0` declares `typescript >=4.8.4 <6.1.0` and therefore cannot lint a TypeScript 7 codebase. Biome carries its own parser, so it imposes no such constraint. Type-aware lint rules are the cost; `tsc --noEmit` still provides type checking. Revisit only if a needed rule cannot be expressed in Biome.
 
