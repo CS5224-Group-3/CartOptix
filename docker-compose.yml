@@ -1,0 +1,25 @@
+# Local development database only. These credentials are intentionally weak and
+# must never be reused for any deployed environment.
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: cartoptix-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cartoptix
+      POSTGRES_PASSWORD: local_dev_password
+      POSTGRES_DB: cartoptix
+    ports:
+      - "5433:5432"
+    volumes:
+      # PostgreSQL 18 expects a single mount at /var/lib/postgresql; it stores
+      # data in a version-specific subdirectory to support pg_upgrade --link.
+      - cartoptix-postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cartoptix -d cartoptix"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  cartoptix-postgres-data:

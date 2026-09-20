@@ -1,0 +1,19 @@
+# Files the API image never needs. Keeps the build context small and prevents
+# local secrets or build output from entering an image layer.
+node_modules
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.git
+.github
+coverage
+data
+docs
+# pnpm --frozen-lockfile validates every workspace manifest, so the web
+# package.json must be present even though the API image excludes its source.
+apps/web/**
+!apps/web/package.json
+*.md

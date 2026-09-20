@@ -1,0 +1,19 @@
+{
+  "name": "@cartoptix/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Request and response types shared by apps/api and apps/web",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  }
+}

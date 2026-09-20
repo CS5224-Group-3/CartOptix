@@ -34,6 +34,26 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 
 Specific package versions, frontend styling, instance sizes for the ASG, origin networking, scaling thresholds, worker limits and search time budgets are engineering choices to validate in the tasks below. They must satisfy the product contract; the old three-second solver limit and five-second watchdog are not retained.
 
+### Adopted and validated in the workspace foundation
+
+These versions were installed, built, tested and run on `arm64` during the workspace foundation task. Later tasks may upgrade them; record the reason when they do.
+
+| Tool | Adopted | Note |
+| --- | --- | --- |
+| Node.js | 24 (major pinned in `.nvmrc`) | Latest LTS line; minor and patch float during pre-production |
+| pnpm | 12.5.1 via Corepack | Pinned in `packageManager`, so only Node must be installed |
+| TypeScript | 7.0.2 | Builds all three packages through project references |
+| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted |
+| Fastify | 5.12.5 | API |
+| React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
+| `pg` | 8.23.0 | Direct driver for the readiness query; Drizzle arrives with the data work |
+| Vitest | 5.0.1 | Playwright is deferred until there are journeys to exercise |
+| PostgreSQL | `18-alpine` locally (18.6), matching RDS 18.6 in `ap-southeast-1` | Alpine keeps the local image lean (~264 MB vs ~458 MB for the Debian-based tag); PostgreSQL 18 expects a single mount at `/var/lib/postgresql` |
+
+**Rejected: ESLint with `typescript-eslint`.** `typescript-eslint@8.70.0` declares `typescript >=4.8.4 <6.1.0` and therefore cannot lint a TypeScript 7 codebase. Biome carries its own parser, so it imposes no such constraint. Type-aware lint rules are the cost; `tsc --noEmit` still provides type checking. Revisit only if a needed rule cannot be expressed in Biome.
+
+**Deferred:** React Router, TanStack Query, TypeBox, generated OpenAPI, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
+
 ## 2. Application architecture
 
 ### Runtime boundaries
