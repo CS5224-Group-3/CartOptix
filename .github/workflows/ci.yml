@@ -1,0 +1,61 @@
+# Pull request checks only.
+#
+# Deployment, image publishing, OIDC, migrations and rollback are owned by the
+# CI/CD issue (#7) and deliberately excluded here.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        # Must match the major version in docker-compose.yml and RDS.
+        image: postgres:18
+        env:
+          POSTGRES_USER: cartoptix
+          POSTGRES_PASSWORD: local_dev_password
+          POSTGRES_DB: cartoptix
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U cartoptix -d cartoptix"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      DATABASE_URL: postgresql://cartoptix:local_dev_password@localhost:5433/cartoptix
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Enable Corepack
+        # Activates the pnpm version pinned in package.json before setup-node
+        # restores its cache.
+        run: corepack enable
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting, lint, types and tests
+        run: pnpm run check
+
+      - name: Build
+        run: pnpm run build

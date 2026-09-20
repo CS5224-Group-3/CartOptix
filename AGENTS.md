@@ -21,6 +21,20 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 ## Working conventions
 
 - Map work to the technical spec's task IDs and acceptance criteria. Keep changes scoped and run relevant checks.
-- Consult actual package scripts and infrastructure configuration as they are added; do not assume proposed tools are already installed or implemented.
+- Consult actual package scripts and infrastructure configuration as they are added; do not assume proposed tools are already implemented.
 - Record unresolved evidence and measured results accurately. Do not present catalogue coverage, performance or AWS affordability as verified before checking them.
 - AWS deployments are budget-constrained. Consult the spec before provisioning or changing resources; never commit credentials.
+
+## Local development
+
+See [README.md](README.md) for prerequisites, setup and commands. Docker must be installed and running, because it provides the local PostgreSQL database.
+
+Run `pnpm check` before proposing changes; it runs the same format, lint, type and test checks as CI.
+
+## Shared API contracts
+
+This repository is a monorepo so that the web client and backend evolve together.
+
+**Types exchanged between `apps/web` and `apps/api` are declared once in `packages/contracts`.** Define the request and response types there first, then import them on both sides. Neither side redefines a shape the other owns, and no endpoint is consumed by the client through a locally declared type.
+
+Keep a contract change and both sides of its usage in the same pull request, so type checking catches a mismatch before review.

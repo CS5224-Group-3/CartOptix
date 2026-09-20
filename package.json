@@ -1,0 +1,24 @@
+{
+  "name": "cartoptix",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Intelligent multi-retailer grocery basket optimisation",
+  "type": "module",
+  "packageManager": "pnpm@12.5.1",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "pnpm -r --filter=./apps/* build",
+    "test": "vitest run",
+    "check": "biome ci . && tsc --build && vitest run",
+    "fix": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@types/node": "24.10.1",
+    "typescript": "7.0.2",
+    "vitest": "5.0.1"
+  }
+}
