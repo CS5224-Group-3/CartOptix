@@ -17,7 +17,14 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "complexity": {
+        "noVoid": "error"
+      },
+      "nursery": {
+        "noFloatingPromises": "error",
+        "noMisusedPromises": "warn"
+      }
     }
   },
   "assist": {

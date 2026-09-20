@@ -33,7 +33,11 @@ export function App(): React.JSX.Element {
       }
     }
 
-    void load();
+    load().catch((error: unknown) => {
+      // load() already turns fetch/parse failures into UI state; reaching
+      // here means an unexpected bug escaped that handling.
+      console.error("Unexpected error while checking API readiness:", error);
+    });
     return () => {
       controller.abort();
     };

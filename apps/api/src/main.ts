@@ -18,7 +18,10 @@ async function shutdown(signal: string): Promise<void> {
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
   process.on(signal, () => {
-    void shutdown(signal);
+    shutdown(signal).catch((error: unknown) => {
+      console.error(`Error during shutdown after ${signal}:`, error);
+      process.exit(1);
+    });
   });
 }
 
