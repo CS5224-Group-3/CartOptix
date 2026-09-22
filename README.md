@@ -6,6 +6,7 @@ Intelligent Multi-Retailer Grocery Basket Optimisation
 
 - [Product specification](docs/product-spec.md): user journeys, scope, constraints and success criteria.
 - [Technical implementation specification](docs/technical-implementation-spec.md): architecture, data design, evaluation plan and issue-ready workstreams.
+- [API and pricing contracts](docs/api-contracts.md): shared schemas, endpoint semantics, synthetic fixtures and the data-interface checkpoint for #5, #8 and #9.
 
 ## Repository layout
 

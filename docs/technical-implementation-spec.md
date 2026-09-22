@@ -52,7 +52,9 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Rejected: ESLint with `typescript-eslint`.** `typescript-eslint@8.70.0` declares `typescript >=4.8.4 <6.1.0` and therefore cannot lint a TypeScript 7 codebase. Biome carries its own parser, so it imposes no such constraint. Type-aware lint rules are the cost; `tsc --noEmit` still provides type checking. Revisit only if a needed rule cannot be expressed in Biome.
 
-**Deferred:** React Router, TanStack Query, TypeBox, generated OpenAPI, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
+**Contracts (A2 / #5):** TypeBox `0.34.52` now defines shared runtime schemas and inferred types. OpenAPI 3.1 is generated from the route schemas. Executable synthetic fixtures are checked with TypeBox and AJV; Fastify tests exercise response serialisation. See [API contracts](api-contracts.md) for decisions and the outstanding #4 data-interface checkpoint.
+
+**Deferred:** React Router, TanStack Query, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
 ## 2. Application architecture
 
@@ -185,7 +187,7 @@ Missing single-retailer baseline means nullable savings, not zero or a fabricate
 
 ## 5. API and interface contracts
 
-Proposed endpoints, preserving the agreed load-test inventory:
+The [API and pricing contracts](api-contracts.md) and `packages/contracts` define the endpoints below, preserving the agreed load-test inventory. Duplicate lines are rejected, data-dependent requests require the active dataset ID, and version conflicts return 409. The pricing contract initially supports ordinary and unconditional sale prices; multibuy execution remains deferred until curation adopts verified terms. Shopper handlers remain downstream work.
 
 | Endpoint | Responsibility |
 | --- | --- |
