@@ -1,0 +1,304 @@
+{
+  "_comment": [
+    "Line-pricing scenarios for the shared pricing module (issue #8).",
+    "Expected amounts are hand-calculated from the offers below, in integer",
+    "SGD cents, so a change in the module's arithmetic fails a test rather",
+    "than quietly rewriting the expectation. Data here is invented for testing",
+    "and is not a curated retailer record.",
+    "No bundle promotion is approved for the MVP seed (PR-03); the bundle",
+    "scenarios exercise rules that stay inert until curation adopts one."
+  ],
+  "datasetId": "pricing-fixture-v1",
+
+  "offers": {
+    "milk": {
+      "listingId": "alpha-milk",
+      "productId": "milk-1l",
+      "retailerId": "alpha",
+      "unitPrice": 320,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "soda": {
+      "listingId": "alpha-soda",
+      "productId": "soda-330ml-6pack",
+      "retailerId": "alpha",
+      "unitPrice": 180,
+      "eligible": true,
+      "charges": [
+        { "label": "Beverage container deposit", "amount": 20, "includedInPrice": false }
+      ],
+      "excludedPromotions": []
+    },
+    "water": {
+      "listingId": "alpha-water",
+      "productId": "water-1-5l",
+      "retailerId": "alpha",
+      "unitPrice": 150,
+      "eligible": true,
+      "charges": [{ "label": "Beverage container deposit", "amount": 10, "includedInPrice": true }],
+      "excludedPromotions": []
+    },
+    "mystery": {
+      "listingId": "alpha-mystery",
+      "productId": "cordial-1l",
+      "retailerId": "alpha",
+      "unitPrice": 200,
+      "eligible": true,
+      "charges": [{ "label": "Container deposit", "amount": null, "includedInPrice": false }],
+      "excludedPromotions": []
+    },
+    "rice": {
+      "listingId": "alpha-rice",
+      "productId": "rice-5kg",
+      "retailerId": "alpha",
+      "unitPrice": 1250,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": [
+        {
+          "detail": "A multibuy is advertised for this product but its terms could not be verified, so it is not applied."
+        }
+      ]
+    },
+    "withdrawn": {
+      "listingId": "alpha-withdrawn",
+      "productId": "flour-1kg",
+      "retailerId": "alpha",
+      "unitPrice": 500,
+      "eligible": false,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "zeroPriced": {
+      "listingId": "alpha-zero-priced",
+      "productId": "sample-pack",
+      "retailerId": "alpha",
+      "unitPrice": 0,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    }
+  },
+
+  "bundles": {
+    "riceThreeForThirty": {
+      "listingId": "alpha-rice",
+      "packsPerBundle": 3,
+      "bundlePrice": 3000,
+      "maxBundles": null,
+      "datasetId": "pricing-fixture-v1",
+      "capturedValidityTerms": "Recorded as running until the end of the month; never parsed or compared against a date."
+    },
+    "riceThreeForThirtyCappedAtOne": {
+      "listingId": "alpha-rice",
+      "packsPerBundle": 3,
+      "bundlePrice": 3000,
+      "maxBundles": 1,
+      "datasetId": "pricing-fixture-v1"
+    },
+    "riceWorseThanPerPack": {
+      "listingId": "alpha-rice",
+      "packsPerBundle": 3,
+      "bundlePrice": 4000,
+      "maxBundles": null,
+      "datasetId": "pricing-fixture-v1"
+    },
+    "riceFromAnotherSeed": {
+      "listingId": "alpha-rice",
+      "packsPerBundle": 3,
+      "bundlePrice": 3000,
+      "maxBundles": null,
+      "datasetId": "some-other-seed"
+    }
+  },
+
+  "scenarios": [
+    {
+      "name": "prices whole packs at the verified per-pack price",
+      "offer": "milk",
+      "packs": 3,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 960,
+        "undiscountedPacksSubtotal": 960,
+        "total": 960,
+        "packsBreakdown": [{ "kind": "unit", "packs": 3, "unitPrice": 320, "amount": 960 }],
+        "appliedCharges": [],
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "adds a deposit the price excludes, once for every pack",
+      "offer": "soda",
+      "packs": 4,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 720,
+        "undiscountedPacksSubtotal": 720,
+        "total": 800,
+        "packsBreakdown": [{ "kind": "unit", "packs": 4, "unitPrice": 180, "amount": 720 }],
+        "appliedCharges": [{ "label": "Beverage container deposit", "perPack": 20, "amount": 80 }],
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "discloses a deposit already inside the price without adding it again",
+      "offer": "water",
+      "packs": 4,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 600,
+        "undiscountedPacksSubtotal": 600,
+        "total": 600,
+        "packsBreakdown": [{ "kind": "unit", "packs": 4, "unitPrice": 150, "amount": 600 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["charge-included-in-price"]
+      }
+    },
+    {
+      "name": "refuses to price a line whose mandatory charge is unresolved",
+      "offer": "mystery",
+      "packs": 1,
+      "expect": { "status": "unavailable", "code": "charge-unresolved" }
+    },
+    {
+      "name": "discloses an advertised promotion that curation did not verify",
+      "offer": "rice",
+      "packs": 1,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 1250,
+        "undiscountedPacksSubtotal": 1250,
+        "total": 1250,
+        "packsBreakdown": [{ "kind": "unit", "packs": 1, "unitPrice": 1250, "amount": 1250 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    },
+    {
+      "name": "refuses an offer curation excluded",
+      "offer": "withdrawn",
+      "packs": 1,
+      "expect": { "status": "unavailable", "code": "offer-ineligible" }
+    },
+    {
+      "name": "refuses an offer with no positive price",
+      "offer": "zeroPriced",
+      "packs": 1,
+      "expect": { "status": "unavailable", "code": "offer-ineligible" }
+    },
+    {
+      "name": "rejects a line that requests no packs",
+      "offer": "milk",
+      "packs": 0,
+      "expect": { "status": "unavailable", "code": "invalid-request" }
+    },
+    {
+      "name": "rejects a line beyond the twenty-pack limit",
+      "offer": "milk",
+      "packs": 21,
+      "expect": { "status": "unavailable", "code": "invalid-request" }
+    },
+    {
+      "name": "rejects a fractional pack count",
+      "offer": "milk",
+      "packs": 1.5,
+      "expect": { "status": "unavailable", "code": "invalid-request" }
+    },
+    {
+      "name": "charges whole bundles and prices the remainder per pack",
+      "offer": "rice",
+      "packs": 7,
+      "bundle": "riceThreeForThirty",
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 7250,
+        "undiscountedPacksSubtotal": 8750,
+        "total": 7250,
+        "packsBreakdown": [
+          {
+            "kind": "bundle",
+            "bundles": 2,
+            "packsPerBundle": 3,
+            "bundlePrice": 3000,
+            "amount": 6000
+          },
+          { "kind": "unit", "packs": 1, "unitPrice": 1250, "amount": 1250 }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    },
+    {
+      "name": "stops at the verified repetition limit and prices the rest per pack",
+      "offer": "rice",
+      "packs": 7,
+      "bundle": "riceThreeForThirtyCappedAtOne",
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 8000,
+        "undiscountedPacksSubtotal": 8750,
+        "total": 8000,
+        "packsBreakdown": [
+          {
+            "kind": "bundle",
+            "bundles": 1,
+            "packsPerBundle": 3,
+            "bundlePrice": 3000,
+            "amount": 3000
+          },
+          { "kind": "unit", "packs": 4, "unitPrice": 1250, "amount": 5000 }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    },
+    {
+      "name": "keeps the per-pack price when the bundle would cost more",
+      "offer": "rice",
+      "packs": 3,
+      "bundle": "riceWorseThanPerPack",
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 3750,
+        "undiscountedPacksSubtotal": 3750,
+        "total": 3750,
+        "packsBreakdown": [{ "kind": "unit", "packs": 3, "unitPrice": 1250, "amount": 3750 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    },
+    {
+      "name": "ignores a bundle approved for a different seed version",
+      "offer": "rice",
+      "packs": 3,
+      "bundle": "riceFromAnotherSeed",
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 3750,
+        "undiscountedPacksSubtotal": 3750,
+        "total": 3750,
+        "packsBreakdown": [{ "kind": "unit", "packs": 3, "unitPrice": 1250, "amount": 3750 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    },
+    {
+      "name": "ignores a bundle when too few packs qualify",
+      "offer": "rice",
+      "packs": 2,
+      "bundle": "riceThreeForThirty",
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 2500,
+        "undiscountedPacksSubtotal": 2500,
+        "total": 2500,
+        "packsBreakdown": [{ "kind": "unit", "packs": 2, "unitPrice": 1250, "amount": 2500 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    }
+  ]
+}
