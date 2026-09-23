@@ -1,5 +1,5 @@
 // Defines the shared tRPC router and procedure builders for the API.
-import { NOT_ADMIN_ERR_MSG, UNAUTHED_ERR_MSG } from '@cartoptix/contracts/domain/const';
+import { NOT_ADMIN_ERR_MSG, UNAUTHED_ERR_MSG } from "@cartoptix/contracts/domain/const";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import type { TrpcContext } from "./context";
@@ -11,7 +11,7 @@ const t = initTRPC.context<TrpcContext>().create({
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-const requireUser = t.middleware(async opts => {
+const requireUser = t.middleware(async (opts) => {
   const { ctx, next } = opts;
 
   if (!ctx.user) {
@@ -29,10 +29,10 @@ const requireUser = t.middleware(async opts => {
 export const protectedProcedure = t.procedure.use(requireUser) as typeof publicProcedure;
 
 export const adminProcedure = t.procedure.use(
-  t.middleware(async opts => {
+  t.middleware(async (opts) => {
     const { ctx, next } = opts;
 
-    if (!ctx.user || ctx.user.role !== 'admin') {
+    if (!ctx.user || ctx.user.role !== "admin") {
       throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
     }
 

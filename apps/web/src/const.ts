@@ -1,5 +1,5 @@
 // Defines web-client constants and login navigation helpers.
-import { OAUTH_STATE_COOKIE, encodeOAuthState } from "@cartoptix/contracts/domain/const";
+import { encodeOAuthState, OAUTH_STATE_COOKIE } from "@cartoptix/contracts/domain/const";
 
 export { COOKIE_NAME, ONE_YEAR_MS } from "@cartoptix/contracts/domain/const";
 

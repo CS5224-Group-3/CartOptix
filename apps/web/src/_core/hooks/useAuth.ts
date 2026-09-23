@@ -1,8 +1,9 @@
 // Provides the web client hook for reading the current authenticated user.
-import { startLogin } from "@/const";
-import { trpc } from "@/lib/trpc";
+
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo } from "react";
+import { startLogin } from "@/const";
+import { trpc } from "@/lib/trpc";
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -32,10 +33,7 @@ export function useAuth(options?: UseAuthOptions) {
     try {
       await logoutMutation.mutateAsync();
     } catch (error: unknown) {
-      if (
-        error instanceof TRPCClientError &&
-        error.data?.code === "UNAUTHORIZED"
-      ) {
+      if (error instanceof TRPCClientError && error.data?.code === "UNAUTHORIZED") {
         return;
       }
       throw error;
@@ -52,10 +50,7 @@ export function useAuth(options?: UseAuthOptions) {
   }, [logoutMutation, utils]);
 
   const state = useMemo(() => {
-    localStorage.setItem(
-      "manus-runtime-user-info",
-      JSON.stringify(meQuery.data)
-    );
+    localStorage.setItem("manus-runtime-user-info", JSON.stringify(meQuery.data));
     return {
       user: meQuery.data ?? null,
       loading: meQuery.isLoading || logoutMutation.isPending,

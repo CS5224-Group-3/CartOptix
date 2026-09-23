@@ -1,10 +1,18 @@
 // Defines the public tRPC procedures for authentication, catalogue access, comparison, and demos.
+
+import {
+  compareBasket,
+  DEMO_BASKET,
+  DEMO_SCENARIOS,
+  getOffersForQuantity,
+  getProduct,
+  PRODUCTS,
+} from "@cartoptix/contracts/domain/cartoptix";
 import { COOKIE_NAME } from "@cartoptix/contracts/domain/const";
-import { DEMO_BASKET, DEMO_SCENARIOS, PRODUCTS, compareBasket, getOffersForQuantity, getProduct } from "@cartoptix/contracts/domain/cartoptix";
+import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { z } from "zod";
 
 const basketLineSchema = z.object({
   productId: z.string().min(1),
@@ -14,7 +22,7 @@ const basketLineSchema = z.object({
 export const appRouter = router({
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
@@ -26,20 +34,34 @@ export const appRouter = router({
     .query(({ input }) => {
       const search = input?.search?.trim().toLowerCase() ?? "";
       return PRODUCTS.filter((product) => {
-        const matchesSearch = !search || `${product.name} ${product.brand} ${product.variant}`.toLowerCase().includes(search);
-        const matchesCategory = !input?.category || input.category === "All" || product.category === input.category;
+        const matchesSearch =
+          !search ||
+          `${product.name} ${product.brand} ${product.variant}`.toLowerCase().includes(search);
+        const matchesCategory =
+          !input?.category || input.category === "All" || product.category === input.category;
         return matchesSearch && matchesCategory;
       });
     }),
   product: publicProcedure
-    .input(z.object({ productId: z.string().min(1), quantity: z.number().int().min(1).max(20).default(1) }))
+    .input(
+      z.object({
+        productId: z.string().min(1),
+        quantity: z.number().int().min(1).max(20).default(1),
+      }),
+    )
     .query(({ input }) => {
       const product = getProduct(input.productId);
       if (!product) return null;
       return { product, offers: getOffersForQuantity(input.productId, input.quantity) };
     }),
   compare: publicProcedure
-    .input(z.object({ lines: z.array(basketLineSchema).min(1).max(50), retailerLimit: z.union([z.literal(1), z.literal(2), z.literal(3)]), datasetVersion: z.literal("prototype-2026-09") }))
+    .input(
+      z.object({
+        lines: z.array(basketLineSchema).min(1).max(50),
+        retailerLimit: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+        datasetVersion: z.literal("prototype-2026-09"),
+      }),
+    )
     .mutation(({ input }) => compareBasket(input.lines, input.retailerLimit)),
   demo: publicProcedure.query(() => ({ basket: DEMO_BASKET, scenarios: DEMO_SCENARIOS })),
   outboundClick: publicProcedure

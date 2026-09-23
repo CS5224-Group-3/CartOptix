@@ -1,11 +1,12 @@
 // Renders the optional AI assistant conversation box in the web client.
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { Loader2, Send, User, Sparkles } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+
+import { Loader2, Send, Sparkles, User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Streamdown } from "streamdown";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 /**
  * Message type matching server-side LLM Message interface
@@ -153,14 +154,14 @@ export function AIChatBox({
   // Scroll to bottom helper function with smooth animation
   const scrollToBottom = () => {
     const viewport = scrollAreaRef.current?.querySelector(
-      '[data-radix-scroll-area-viewport]'
+      "[data-radix-scroll-area-viewport]",
     ) as HTMLDivElement;
 
     if (viewport) {
       requestAnimationFrame(() => {
         viewport.scrollTo({
           top: viewport.scrollHeight,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       });
     }
@@ -193,7 +194,7 @@ export function AIChatBox({
       ref={containerRef}
       className={cn(
         "flex flex-col bg-card text-card-foreground rounded-lg border shadow-sm",
-        className
+        className,
       )}
       style={{ height }}
     >
@@ -239,7 +240,7 @@ export function AIChatBox({
                       "flex gap-3",
                       message.role === "user"
                         ? "justify-end items-start"
-                        : "justify-start items-start"
+                        : "justify-start items-start",
                     )}
                     style={
                       shouldApplyMinHeight
@@ -258,7 +259,7 @@ export function AIChatBox({
                         "max-w-[80%] rounded-lg px-4 py-2.5",
                         message.role === "user"
                           ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-foreground"
+                          : "bg-muted text-foreground",
                       )}
                     >
                       {message.role === "assistant" ? (
@@ -266,9 +267,7 @@ export function AIChatBox({
                           <Streamdown>{message.content}</Streamdown>
                         </div>
                       ) : (
-                        <p className="whitespace-pre-wrap text-sm">
-                          {message.content}
-                        </p>
+                        <p className="whitespace-pre-wrap text-sm">{message.content}</p>
                       )}
                     </div>
 
@@ -324,11 +323,7 @@ export function AIChatBox({
           disabled={!input.trim() || isLoading}
           className="shrink-0 h-[38px] w-[38px]"
         >
-          {isLoading ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <Send className="size-4" />
-          )}
+          {isLoading ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
         </Button>
       </form>
     </div>

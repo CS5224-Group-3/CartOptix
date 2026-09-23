@@ -1,6 +1,12 @@
 // Tests the API comparison procedure against representative basket scenarios.
+
+import {
+  compareBasket,
+  DEMO_SCENARIOS,
+  getOffers,
+  getOffersForQuantity,
+} from "@cartoptix/contracts/domain/cartoptix";
 import { describe, expect, it } from "vitest";
-import { DEMO_SCENARIOS, compareBasket, getOffers, getOffersForQuantity } from "@cartoptix/contracts/domain/cartoptix";
 
 describe("CartOptix comparison integrity", () => {
   it("returns the intended outcome for every required demo scenario", () => {

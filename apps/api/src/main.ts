@@ -1,13 +1,13 @@
 // Starts the Express API server, registers health and tRPC routes, and handles graceful shutdown.
 import "dotenv/config";
-import express from "express";
 import { createServer } from "node:http";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import express from "express";
 import { loadConfig } from "./config.ts";
 import { createDatabase } from "./database.ts";
+import { createContext } from "./product/_core/context.ts";
 import { registerOAuthRoutes } from "./product/_core/oauth.ts";
 import { registerStorageProxy } from "./product/_core/storageProxy.ts";
-import { createContext } from "./product/_core/context.ts";
 import { appRouter } from "./product/routers.ts";
 
 const config = loadConfig();
@@ -29,12 +29,20 @@ app.use((request, response, next) => {
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.get("/", (_request, response) => {
-  response.json({ service: "CartOptix API", status: "ok", health: "/health/ready", productApi: "/api/trpc" });
+  response.json({
+    service: "CartOptix API",
+    status: "ok",
+    health: "/health/ready",
+    productApi: "/api/trpc",
+  });
 });
 app.get("/health/live", (_request, response) => response.json({ status: "ok" }));
 app.get("/health/ready", async (_request, response) => {
   const databaseCheck = await database.checkConnection();
-  const body = { status: databaseCheck.status === "ok" ? "ok" : "unavailable", checks: { database: databaseCheck } } as const;
+  const body = {
+    status: databaseCheck.status === "ok" ? "ok" : "unavailable",
+    checks: { database: databaseCheck },
+  } as const;
   response.status(body.status === "ok" ? 200 : 503).json(body);
 });
 registerStorageProxy(app);

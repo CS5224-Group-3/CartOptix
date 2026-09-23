@@ -1,5 +1,6 @@
 // Provides theme state and theme-switching context to web components.
-import React, { createContext, useContext, useEffect, useState } from "react";
+import type React from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "light" | "dark";
 
@@ -45,7 +46,7 @@ export function ThemeProvider({
 
   const toggleTheme = switchable
     ? () => {
-        setTheme(prev => (prev === "light" ? "dark" : "light"));
+        setTheme((prev) => (prev === "light" ? "dark" : "light"));
       }
     : undefined;
 
