@@ -214,7 +214,14 @@ Contract decisions (#5):
   - An unresolved charge or ineligible offer should be stopped by the importer (#4), so one reaching the pricing module returns `service_error`.
 - **Limits.** `MAX_BASKET_LINES` and the per-line pack and retailer-limit ranges are exported constants, so the web client enforces the same bounds as the API.
 - **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer is the exported `SNAPSHOT_DISCLAIMER` constant, not a response field.
-- **Open with #4.** Product, listing and category IDs are opaque strings of 1–128 characters. Their stable values and the category mapping still need agreement with the seed owner.
+- **Data the seed must supply (#4).** These contracts define what the API needs, and the seed and import supply it, as the A2-before-B2–B4 ordering in section 8 intends. Each published dataset provides:
+  - A dataset ID and whether the data is curated or synthetic.
+  - The three retailers with display names, and the eight categories with stable IDs and names.
+  - The declared delivery scenario and, per retailer, either the verified delivery fee, free-delivery threshold and minimum order (each may be absent) with a short note, or an explicit "unverified".
+  - Per product: category, name, brand, variant, pack-size display text and an optional image URL.
+  - Per eligible offer, meaning verified, in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), unit price in integer cents, mandatory item charges with a label, per-pack amount and whether the price already includes them, and notes on excluded promotions.
+  - Fixed order-level charges per retailer, and whatever rule inputs the pricing module (#8) needs to compute totals.
+  - Product, listing and category IDs as opaque strings of 1–128 characters. Product and listing IDs stay the same across dataset versions, because browser baskets keep product IDs through a correction.
 
 The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, retailer order count and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
 
