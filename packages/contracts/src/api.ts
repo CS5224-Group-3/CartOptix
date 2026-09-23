@@ -1,5 +1,6 @@
 import Type, { type Static } from "typebox";
 import {
+  API_BASE_PATH,
   CentsSchema,
   IdSchema,
   MAX_BASKET_LINES,
@@ -133,7 +134,7 @@ export type Plan = Static<typeof PlanSchema>;
 const bestFound = { status: Type.Literal("best_found"), searchLimitReached: Type.Boolean() };
 
 export const BasketCompareResponseSchema = Type.Union([
-  /** Only one retailer can serve the basket, or no split was found. */
+  /** No split was permitted or found, so the baseline is the only plan. */
   closedObject({
     ...bestFound,
     baseline: PlanSchema,
@@ -202,17 +203,17 @@ export type ErrorResponse = Static<typeof ErrorResponseSchema>;
 export const routes = {
   catalogue: {
     method: "GET",
-    url: "/api/v1/catalogue",
+    url: `${API_BASE_PATH}/catalogue`,
     schema: { response: { 200: CatalogueResponseSchema } },
   },
   products: {
     method: "GET",
-    url: "/api/v1/products",
+    url: `${API_BASE_PATH}/products`,
     schema: { querystring: ProductsQuerySchema, response: { 200: ProductsResponseSchema } },
   },
   offers: {
     method: "GET",
-    url: "/api/v1/products/:id/offers",
+    url: `${API_BASE_PATH}/products/:id/offers`,
     schema: {
       params: OffersParamsSchema,
       querystring: OffersQuerySchema,
@@ -221,7 +222,7 @@ export const routes = {
   },
   compare: {
     method: "POST",
-    url: "/api/v1/basket/compare",
+    url: `${API_BASE_PATH}/basket/compare`,
     schema: { body: BasketCompareRequestSchema, response: { 200: BasketCompareResponseSchema } },
   },
 } as const;

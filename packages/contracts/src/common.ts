@@ -1,6 +1,9 @@
 import Type, { type Static } from "typebox";
 import { closedObject, nullable } from "./schema.ts";
 
+/** Base path for the versioned HTTP API. */
+export const API_BASE_PATH = "/api/v1";
+
 /**
  * Opaque, case-sensitive ID. Never infer dates or product identity from it.
  * Limited to URL-safe characters because product IDs appear in request paths.

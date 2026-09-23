@@ -8,9 +8,6 @@
  * API can validate with the same definitions the client compiles against.
  */
 
-/** Base path for the versioned HTTP API. */
-export const API_BASE_PATH = "/api/v1";
-
 /** Whether the API process is running. */
 export interface LivenessResponse {
   status: "ok";

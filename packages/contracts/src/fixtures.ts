@@ -183,6 +183,17 @@ export const singleRetailerWinsExample = {
   savingsCents: 0,
 } satisfies BasketCompareResponse;
 
+/** The split costs exactly what the baseline does, so the baseline wins because it
+ * needs fewer orders (J3). */
+export const tieExample = {
+  status: "best_found",
+  searchLimitReached: false,
+  baseline: redmartBaseline,
+  bestSplit: plan(order("fairprice", [riceAtFairprice], 200), order("redmart", [drinkAtRedmart])),
+  recommended: "baseline",
+  savingsCents: 0,
+} satisfies BasketCompareResponse;
+
 /** With a one-retailer limit no split is permitted, so the baseline is the only plan. */
 export const baselineOnlyExample = {
   status: "best_found",

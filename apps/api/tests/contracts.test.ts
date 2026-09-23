@@ -14,6 +14,7 @@ import {
   provenInfeasibleExample,
   singleRetailerWinsExample,
   splitWinsExample,
+  tieExample,
 } from "@cartoptix/contracts/fixtures";
 import Fastify, { type FastifyError } from "fastify";
 import { afterEach, describe, expect, it } from "vitest";
@@ -48,6 +49,7 @@ describe("basket comparison contract in Fastify", () => {
   it.each([
     ["split wins", splitWinsExample],
     ["single retailer wins", singleRetailerWinsExample],
+    ["tie", tieExample],
     ["baseline only", baselineOnlyExample],
     ["missing baseline", missingBaselineExample],
     ["no plan found", noPlanFoundExample],

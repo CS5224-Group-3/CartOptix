@@ -21,6 +21,7 @@ type BestFound = Extract<BasketCompareResponse, { status: "best_found" }>;
 const comparisons: [string, BestFound][] = [
   ["split wins", fixtures.splitWinsExample],
   ["single retailer wins", fixtures.singleRetailerWinsExample],
+  ["tie", fixtures.tieExample],
   ["baseline only", fixtures.baselineOnlyExample],
   ["missing baseline", fixtures.missingBaselineExample],
 ];
@@ -34,6 +35,7 @@ describe("fixtures match their schemas", () => {
     ["basket request", BasketCompareRequestSchema, fixtures.basketRequestExample],
     ["split wins", BasketCompareResponseSchema, fixtures.splitWinsExample],
     ["single retailer wins", BasketCompareResponseSchema, fixtures.singleRetailerWinsExample],
+    ["tie", BasketCompareResponseSchema, fixtures.tieExample],
     ["baseline only", BasketCompareResponseSchema, fixtures.baselineOnlyExample],
     ["missing baseline", BasketCompareResponseSchema, fixtures.missingBaselineExample],
     ["no plan found", BasketCompareResponseSchema, fixtures.noPlanFoundExample],
@@ -111,6 +113,9 @@ describe("contract rules", () => {
 
     if (result.baseline) expect(result.baseline.orders).toHaveLength(1);
     if (result.bestSplit) expect(result.bestSplit.orders.length).toBeGreaterThanOrEqual(2);
+    if (result.baseline && result.bestSplit?.totalCents === result.baseline.totalCents) {
+      expect(result.recommended).toBe("baseline");
+    }
     if (result.baseline && recommended) {
       expect(recommended.totalCents).toBeLessThanOrEqual(result.baseline.totalCents);
       expect(result.savingsCents).toBe(result.baseline.totalCents - recommended.totalCents);
@@ -185,5 +190,14 @@ describe("rejected values", () => {
 
   it.each(["rice/1kg", "rice?x", "..", "rice 1kg", ""])("ID %j, unsafe in a URL path", (id) => {
     expect(Value.Check(OffersParamsSchema, { id })).toBe(false);
+  });
+});
+
+describe("tie-break", () => {
+  it("the tie fixture really ties, so the fewer-orders rule is exercised", () => {
+    const { baseline, bestSplit, recommended } = fixtures.tieExample;
+    expect(bestSplit.totalCents).toBe(baseline.totalCents);
+    expect(bestSplit.orders.length).toBeGreaterThan(baseline.orders.length);
+    expect(recommended).toBe("baseline");
   });
 });

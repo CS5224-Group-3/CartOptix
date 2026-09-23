@@ -52,7 +52,8 @@ describe.skipIf(connectionString === undefined)(
         );
         expect(terminated.rowCount).toBe(1);
 
-        await vi.waitFor(() => expect(logged).toHaveBeenCalled());
+        // Generous: the dropped socket can take a while to surface on a busy CI runner.
+        await vi.waitFor(() => expect(logged).toHaveBeenCalled(), { timeout: 5000 });
         expect(await target.checkConnection()).toEqual({ status: "ok" });
       } finally {
         logged.mockRestore();

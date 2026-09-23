@@ -25,7 +25,7 @@ export function createDatabase(connectionString: string): Database {
   // The pool has already discarded that client, so log and carry on; readiness
   // reports any lasting outage on its next query.
   pool.on("error", (error) => {
-    console.error("PostgreSQL closed an idle connection:", error.message);
+    console.error("Idle PostgreSQL connection failed:", error.message);
   });
 
   return {
