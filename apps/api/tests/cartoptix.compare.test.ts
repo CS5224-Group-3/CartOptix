@@ -32,7 +32,7 @@ describe("CartOptix comparison integrity", () => {
     const result = compareBasket(DEMO_SCENARIOS["split-saves"].lines, 2);
     expect(result.baseline).not.toBeNull();
     expect(result.bestSplit).not.toBeNull();
-    expect(result.bestSplit!.totalCents).toBeLessThan(result.baseline!.totalCents);
+    expect(result.bestSplit?.totalCents).toBeLessThan(result.baseline?.totalCents);
   });
 
   it("keeps quantities as integer cents and applies a verified multibuy", () => {

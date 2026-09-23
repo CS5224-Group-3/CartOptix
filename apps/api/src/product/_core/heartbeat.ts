@@ -122,7 +122,7 @@ const stringifyPayload = (payload: unknown): string => {
 };
 
 const validateCallbackPath = (path: string): void => {
-  if (!path || !path.startsWith("/api/scheduled/")) {
+  if (!path?.startsWith("/api/scheduled/")) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "callback path must start with /api/scheduled/",

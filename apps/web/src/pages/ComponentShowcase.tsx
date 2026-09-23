@@ -147,7 +147,7 @@ export default function ComponentsShowcase() {
   const { theme, toggleTheme } = useTheme();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [datePickerDate, setDatePickerDate] = useState<Date>();
-  const [selectedFruits, setSelectedFruits] = useState<string[]>([]);
+  const [_selectedFruits, _setSelectedFruits] = useState<string[]>([]);
   const [progress, setProgress] = useState(33);
   const [currentPage, setCurrentPage] = useState(2);
   const [openCombobox, setOpenCombobox] = useState(false);
@@ -430,8 +430,8 @@ export default function ComponentsShowcase() {
                                 const newDate = datePickerDate
                                   ? new Date(datePickerDate)
                                   : new Date();
-                                newDate.setHours(parseInt(hours));
-                                newDate.setMinutes(parseInt(minutes));
+                                newDate.setHours(parseInt(hours, 10));
+                                newDate.setMinutes(parseInt(minutes, 10));
                                 setDatePickerDate(newDate);
                               }}
                             />
@@ -1065,12 +1065,12 @@ export default function ComponentsShowcase() {
               <CardContent className="pt-6">
                 <Carousel className="w-full max-w-xs mx-auto">
                   <CarouselContent>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <CarouselItem key={index}>
+                    {Array.from({ length: 5 }, (_, index) => index + 1).map((item) => (
+                      <CarouselItem key={`carousel-${item}`}>
                         <div className="p-1">
                           <Card>
                             <CardContent className="flex aspect-square items-center justify-center p-6">
-                              <span className="text-4xl font-semibold">{index + 1}</span>
+                              <span className="text-4xl font-semibold">{item}</span>
                             </CardContent>
                           </Card>
                         </div>
@@ -1141,9 +1141,9 @@ export default function ComponentsShowcase() {
                   <ScrollArea className="h-[200px] w-full rounded-md border overflow-hidden">
                     <div className="p-4">
                       <div className="space-y-4">
-                        {Array.from({ length: 20 }).map((_, i) => (
-                          <div key={i} className="text-sm">
-                            Item {i + 1}: This is a scrollable content area
+                        {Array.from({ length: 20 }, (_, index) => index + 1).map((item) => (
+                          <div key={`scroll-item-${item}`} className="text-sm">
+                            Item {item}: This is a scrollable content area
                           </div>
                         ))}
                       </div>

@@ -174,6 +174,7 @@ export default function Home() {
             </p>
           </div>
           <button
+            type="button"
             className="button button--dark button--large"
             onClick={() => {
               loadScenario(DEMO_BASKET, 2);

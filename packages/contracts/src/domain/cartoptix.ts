@@ -528,9 +528,9 @@ function combinations<T>(values: T[], size: number): T[][] {
   if (size === 1) return values.map((value) => [value]);
   const result: T[][] = [];
   values.forEach((value, index) => {
-    combinations(values.slice(index + 1), size - 1).forEach((tail) =>
-      result.push([value, ...tail]),
-    );
+    combinations(values.slice(index + 1), size - 1).forEach((tail) => {
+      result.push([value, ...tail]);
+    });
   });
   return result;
 }
@@ -584,7 +584,7 @@ function orderForAssignments(
   return orders.sort((a, b) => RETAILERS.indexOf(a.retailer) - RETAILERS.indexOf(b.retailer));
 }
 
-function chooseAssignment(
+function _chooseAssignment(
   lines: BasketLine[],
   subset: Retailer[],
 ): Record<string, Retailer> | null {
@@ -647,7 +647,7 @@ function findBestSplitAssignment(
   return best;
 }
 
-function rebalanceForMinimum(
+function _rebalanceForMinimum(
   lines: BasketLine[],
   subset: Retailer[],
   initial: Record<string, Retailer>,
@@ -658,9 +658,9 @@ function rebalanceForMinimum(
       .filter((retailer) => retailer !== initial[line.productId])
       .map((retailer) => ({ productId: line.productId, retailer })),
   );
-  movable.forEach(({ productId, retailer }) =>
-    candidates.push({ ...initial, [productId]: retailer }),
-  );
+  movable.forEach(({ productId, retailer }) => {
+    candidates.push({ ...initial, [productId]: retailer });
+  });
   for (const assignment of candidates) {
     const excluded = new Set<string>();
     if (orderForAssignments(lines, assignment, excluded)) return assignment;
@@ -715,14 +715,15 @@ export function compareBasket(lines: BasketLine[], retailerLimit: 1 | 2 | 3): Co
     for (const subset of combinations([...RETAILERS], size)) {
       const candidate = findBestSplitAssignment(validLines, subset);
       if (!candidate) continue;
-      candidate.orders.forEach((order) =>
+      candidate.orders.forEach((order) => {
         order.lines.forEach((line) => {
-          if (line.offer.promotionExcluded)
+          if (line.offer.promotionExcluded) {
             excludedPromotions.add(
               `${order.retailer}: ${line.product.name} — ${line.offer.promotionExcluded}`,
             );
-        }),
-      );
+          }
+        });
+      });
       if (!bestSplit || candidate.totalCents < bestSplit.totalCents)
         bestSplit = {
           orders: candidate.orders,

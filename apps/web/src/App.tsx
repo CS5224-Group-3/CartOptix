@@ -4,16 +4,11 @@ import {
   type BasketLine,
   CATEGORIES,
   type ComparisonResult,
-  compareBasket,
   DEMO_SCENARIOS,
   formatSgd,
-  getOffers,
   getProduct,
   type Offer,
-  PRODUCTS,
   type Product,
-  RETAILERS,
-  type Retailer,
 } from "@cartoptix/contracts/domain/cartoptix";
 import {
   AlertCircle,
@@ -27,7 +22,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Link, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
@@ -62,10 +57,10 @@ function BasketProvider({ children }: { children: ReactNode }) {
   const [basketRevision, setBasketRevision] = useState(0);
   const [comparedRevision, setComparedRevision] = useState(-1);
 
-  const changed = (next: BasketLine[]) => {
+  const changed = useCallback((next: BasketLine[]) => {
     setBasket(next);
     setBasketRevision((revision) => revision + 1);
-  };
+  }, []);
 
   const value = useMemo<BasketContextValue>(
     () => ({
@@ -118,7 +113,7 @@ function BasketProvider({ children }: { children: ReactNode }) {
         setComparedRevision(-1);
       },
     }),
-    [basket, retailerLimit, comparison, basketRevision, comparedRevision],
+    [basket, retailerLimit, comparison, basketRevision, comparedRevision, changed],
   );
 
   return <BasketContext.Provider value={value}>{children}</BasketContext.Provider>;
@@ -153,6 +148,7 @@ function AppShell({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <button
+            type="button"
             className="mobile-menu-button"
             aria-label="Toggle navigation"
             aria-expanded={menuOpen}
@@ -243,6 +239,7 @@ function ProductImage({ product, className = "" }: { product: Product; className
     <div
       className={`product-image product-image--fallback ${className}`}
       style={{ background: product.accent }}
+      role="img"
       aria-label={`${product.name} placeholder`}
     >
       <span>{product.emoji}</span>
@@ -284,6 +281,7 @@ function ProductCard({ product }: { product: Product }) {
       </Link>
       <div className="product-card__actions">
         <button
+          type="button"
           className="button button--small button--outline"
           onClick={() => {
             addToBasket(product.id, 1);
@@ -358,6 +356,7 @@ export function CataloguePage() {
             <h2>No matching products</h2>
             <p>Try a different product name or category.</p>
             <button
+              type="button"
               className="button button--outline"
               onClick={() => {
                 setSearch("");
@@ -379,7 +378,7 @@ export function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const { data, isLoading } = trpc.product.useQuery({ productId, quantity });
   const { addToBasket } = useBasket();
-  const [location, navigate] = useLocation();
+  const [_location, navigate] = useLocation();
   const clickMutation = trpc.outboundClick.useMutation();
   if (isLoading)
     return (
@@ -451,6 +450,7 @@ export function ProductDetail() {
           <div className="quantity-control">
             <span>Quantity</span>
             <button
+              type="button"
               aria-label="Decrease quantity"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
             >
@@ -458,6 +458,7 @@ export function ProductDetail() {
             </button>
             <strong>{quantity}</strong>
             <button
+              type="button"
               aria-label="Increase quantity"
               onClick={() => setQuantity(Math.min(20, quantity + 1))}
             >
@@ -481,6 +482,7 @@ export function ProductDetail() {
           </div>
           <div className="detail-actions">
             <button
+              type="button"
               className="button button--primary"
               onClick={() => {
                 addToBasket(product.id, quantity);
@@ -555,6 +557,7 @@ function OfferRow({
         ) : null}
       </div>
       <button
+        type="button"
         className="icon-button"
         disabled={offer.stockState === "unavailable"}
         onClick={onOpen}
@@ -578,7 +581,7 @@ export function BasketPage() {
     setComparison,
     loadScenario,
   } = useBasket();
-  const [location, navigate] = useLocation();
+  const [_location, navigate] = useLocation();
   const compareMutation = trpc.compare.useMutation();
   const demoQuery = trpc.demo.useQuery();
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
@@ -664,6 +667,7 @@ export function BasketPage() {
               {Object.entries(demoQuery.data?.scenarios ?? DEMO_SCENARIOS).map(
                 ([key, scenario]) => (
                   <button
+                    type="button"
                     key={key}
                     className="demo-button"
                     onClick={() => {
@@ -689,12 +693,13 @@ export function BasketPage() {
             <div className="limit-options">
               {([1, 2, 3] as const).map((limit) => (
                 <button
+                  type="button"
                   key={limit}
                   className={retailerLimit === limit ? "is-selected" : ""}
                   onClick={() => setRetailerLimit(limit)}
                 >
                   <strong>{limit}</strong>
-                  <span>{limit === 1 ? "One order" : "Up to " + limit + " orders"}</span>
+                  <span>{limit === 1 ? "One order" : `Up to ${limit} orders`}</span>
                 </button>
               ))}
             </div>
@@ -715,6 +720,7 @@ export function BasketPage() {
               <strong>{basket.length} / 50</strong>
             </div>
             <button
+              type="button"
               className="button button--primary button--full"
               disabled={!basket.length || compareMutation.isPending}
               onClick={runComparison}
@@ -763,6 +769,7 @@ function BasketRow({
       </div>
       <div className="quantity-control quantity-control--compact">
         <button
+          type="button"
           aria-label={`Decrease ${product.name}`}
           onClick={() => onChange(Math.max(1, line.quantity - 1))}
         >
@@ -770,6 +777,7 @@ function BasketRow({
         </button>
         <strong>{line.quantity}</strong>
         <button
+          type="button"
           aria-label={`Increase ${product.name}`}
           onClick={() => onChange(Math.min(20, line.quantity + 1))}
         >
@@ -777,6 +785,7 @@ function BasketRow({
         </button>
       </div>
       <button
+        type="button"
         className="icon-button icon-button--subtle"
         aria-label={`Remove ${product.name}`}
         onClick={onRemove}
@@ -1098,6 +1107,7 @@ function OrderCard({ order }: { order: any }) {
             </div>
             <strong>{formatSgd(line.lineTotalCents)}</strong>
             <button
+              type="button"
               className="icon-button icon-button--subtle"
               onClick={() => {
                 clickMutation.mutate(
@@ -1136,6 +1146,7 @@ function OrderCard({ order }: { order: any }) {
         </div>
       </div>
       <button
+        type="button"
         className="button button--outline button--small"
         onClick={() =>
           toast("Outbound links ready", {
