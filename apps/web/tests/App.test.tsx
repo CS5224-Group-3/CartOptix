@@ -1,7 +1,7 @@
 import type { ReadinessResponse } from "@cartoptix/contracts";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { App } from "../src/App.tsx";
+import App from "../src/App.tsx";
 
 afterEach(() => {
   cleanup();

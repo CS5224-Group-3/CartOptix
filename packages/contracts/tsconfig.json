@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "lib": ["es2024", "dom"],
+    "noUncheckedIndexedAccess": false
   },
   "include": ["src/**/*.ts"]
 }

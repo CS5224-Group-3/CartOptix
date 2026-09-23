@@ -11,6 +11,12 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const pnpmCommand = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
+const childProcessOptions = {
+  cwd: repoRoot,
+  stdio: "inherit",
+  shell: process.platform === "win32",
+};
 
 function fail(message) {
   process.stderr.write(`\n${message}\n\n`);
@@ -44,8 +50,11 @@ process.stdout.write("Starting the API and web app. Stop with Ctrl+C.\n");
 process.stdout.write("The database keeps running; stop it with: docker compose down\n\n");
 
 const children = [
-  spawn("pnpm", ["--filter", "@cartoptix/api", "dev"], { cwd: repoRoot, stdio: "inherit" }),
-  spawn("pnpm", ["--filter", "@cartoptix/web", "dev"], { cwd: repoRoot, stdio: "inherit" }),
+  spawn(pnpmCommand, ["--filter", "@cartoptix/api", "dev"], childProcessOptions),
+  spawn(pnpmCommand, ["--filter", "@cartoptix/web", "dev"], {
+    ...childProcessOptions,
+    env: { ...process.env, NODE_ENV: "development" },
+  }),
 ];
 
 let shuttingDown = false;

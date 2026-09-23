@@ -44,9 +44,10 @@ cp .env.example .env    # local placeholder values; never commit .env
 pnpm dev
 ```
 
-`pnpm dev` starts PostgreSQL, then the API and web app. Open
-<http://localhost:5173>. The page reports API and database readiness; both
-showing `ok` means the whole chain works.
+`pnpm dev` starts PostgreSQL, the CartOptix API, and the web app. Open
+<http://localhost:5173>. The catalogue, product offers, basket comparison and
+demo scenarios are served by the API at <http://localhost:3001/api/trpc>.
+The API health check is available at <http://localhost:3001/health/ready>.
 
 Never commit real credentials. `.env` is ignored by Git; only `.env.example` is
 tracked, and it holds local placeholders.
@@ -57,7 +58,7 @@ Run these from the repository root.
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm dev` | Start PostgreSQL, the API and the web app |
+| `pnpm dev` | Start PostgreSQL, the API and web app |
 | `pnpm check` | Format check, lint, type check and tests — the same checks CI runs |
 | `pnpm fix` | Apply formatting and safe lint fixes |
 | `pnpm build` | Production build of the API and web app |
