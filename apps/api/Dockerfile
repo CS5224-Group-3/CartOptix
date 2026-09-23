@@ -14,6 +14,9 @@ RUN corepack enable
 
 # Copy manifests first so dependency layers cache independently of source edits.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json tsconfig.json ./
+# pnpm reads every patch listed in pnpm-workspace.yaml, even for packages the
+# filtered install below skips.
+COPY patches ./patches
 COPY packages/contracts/package.json ./packages/contracts/
 COPY apps/api/package.json ./apps/api/
 COPY apps/web/package.json ./apps/web/

@@ -162,13 +162,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@biomejs/biome@2.5.14': b9a43cc5c99eb515b02d91ba4bacf81a274fc2fa70451ca2ed9094adf801bab1
+
 importers:
 
   .:
     devDependencies:
       '@biomejs/biome':
         specifier: 2.5.14
-        version: 2.5.14
+        version: 2.5.14(patch_hash=b9a43cc5c99eb515b02d91ba4bacf81a274fc2fa70451ca2ed9094adf801bab1)
       '@types/node':
         specifier: 24.10.1
         version: 24.10.1
@@ -1357,7 +1360,7 @@ snapshots:
 
   '@babel/runtime@7.29.7': {}
 
-  '@biomejs/biome@2.5.14':
+  '@biomejs/biome@2.5.14(patch_hash=b9a43cc5c99eb515b02d91ba4bacf81a274fc2fa70451ca2ed9094adf801bab1)':
     optionalDependencies:
       '@biomejs/cli-darwin-arm64': 2.5.14
       '@biomejs/cli-darwin-x64': 2.5.14

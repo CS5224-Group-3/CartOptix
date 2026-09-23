@@ -43,7 +43,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | Node.js | 24 (major pinned in `.nvmrc`) | Latest LTS line; minor and patch float during pre-production |
 | pnpm | 12.5.1 via Corepack | Pinned in `packageManager`, so only Node must be installed |
 | TypeScript | 7.0.2 | Builds all three packages through project references |
-| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted |
+| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted. `nursery/noMisusedPromises` is off because its type inference overflows the stack on TypeBox types (biomejs/biome#10277). The npm wrapper is patched (`patches/`) so a crash fails the run; unpatched, it exits 0 and a partial check passes. When upgrading Biome, redo the patch or drop it if the wrapper is fixed. |
 | Fastify | 5.12.5 | API |
 | React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
 | `pg` | 8.23.0 | Direct driver for the readiness query; Drizzle arrives with the data work |
