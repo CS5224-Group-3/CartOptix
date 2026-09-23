@@ -1,0 +1,37 @@
+target_category,retailer_pair,review_recommendation,candidate_pair_count
+Canned & Packaged Food,fairprice__coldstorage,LOW_SIMILARITY_REVIEW,333
+Canned & Packaged Food,fairprice__coldstorage,POSSIBLE_MATCH_REVIEW,70
+Canned & Packaged Food,fairprice__coldstorage,EXACT_NAME_REVIEW,22
+Canned & Packaged Food,fairprice__coldstorage,STRONG_VARIANT_REVIEW,6
+Canned & Packaged Food,redmart__coldstorage,LOW_SIMILARITY_REVIEW,256
+Canned & Packaged Food,redmart__coldstorage,POSSIBLE_MATCH_REVIEW,71
+Canned & Packaged Food,redmart__coldstorage,EXACT_NAME_REVIEW,46
+Canned & Packaged Food,redmart__coldstorage,STRONG_VARIANT_REVIEW,3
+Canned & Packaged Food,redmart__fairprice,LOW_SIMILARITY_REVIEW,547
+Canned & Packaged Food,redmart__fairprice,EXACT_NAME_REVIEW,96
+Canned & Packaged Food,redmart__fairprice,POSSIBLE_MATCH_REVIEW,85
+Canned & Packaged Food,redmart__fairprice,STRONG_VARIANT_REVIEW,19
+Drinks,fairprice__coldstorage,LOW_SIMILARITY_REVIEW,733
+Drinks,fairprice__coldstorage,POSSIBLE_MATCH_REVIEW,95
+Drinks,fairprice__coldstorage,STRONG_VARIANT_REVIEW,8
+Drinks,fairprice__coldstorage,EXACT_NAME_REVIEW,3
+Drinks,redmart__coldstorage,LOW_SIMILARITY_REVIEW,1020
+Drinks,redmart__coldstorage,POSSIBLE_MATCH_REVIEW,102
+Drinks,redmart__coldstorage,EXACT_NAME_REVIEW,33
+Drinks,redmart__coldstorage,STRONG_VARIANT_REVIEW,15
+Drinks,redmart__fairprice,LOW_SIMILARITY_REVIEW,1385
+Drinks,redmart__fairprice,POSSIBLE_MATCH_REVIEW,211
+Drinks,redmart__fairprice,EXACT_NAME_REVIEW,98
+Drinks,redmart__fairprice,STRONG_VARIANT_REVIEW,45
+Snacks,fairprice__coldstorage,LOW_SIMILARITY_REVIEW,744
+Snacks,fairprice__coldstorage,POSSIBLE_MATCH_REVIEW,115
+Snacks,fairprice__coldstorage,EXACT_NAME_REVIEW,10
+Snacks,fairprice__coldstorage,STRONG_VARIANT_REVIEW,1
+Snacks,redmart__coldstorage,LOW_SIMILARITY_REVIEW,1003
+Snacks,redmart__coldstorage,POSSIBLE_MATCH_REVIEW,131
+Snacks,redmart__coldstorage,STRONG_VARIANT_REVIEW,42
+Snacks,redmart__coldstorage,EXACT_NAME_REVIEW,24
+Snacks,redmart__fairprice,LOW_SIMILARITY_REVIEW,2403
+Snacks,redmart__fairprice,POSSIBLE_MATCH_REVIEW,488
+Snacks,redmart__fairprice,EXACT_NAME_REVIEW,315
+Snacks,redmart__fairprice,STRONG_VARIANT_REVIEW,72
