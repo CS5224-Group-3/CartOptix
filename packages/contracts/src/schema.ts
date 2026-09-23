@@ -1,12 +1,12 @@
 /**
  * TypeBox helpers used to build the shared schemas.
  *
- * Internal to this package: `index.ts` deliberately does not re-export them, so
+ * Internal to this package: `index.ts` does not re-export them, so
  * `@cartoptix/contracts` exposes contracts rather than schema-building tools.
  */
-import { type TProperties, type TSchema, Type } from "@sinclair/typebox";
+import Type, { type TProperties, type TSchema } from "typebox";
 
-/** Rejects unknown fields, so a client cannot smuggle prices past validation. */
+/** Rejects unknown fields, so a response cannot grow undeclared data such as dates. */
 export const closedObject = <T extends TProperties>(properties: T) =>
   Type.Object(properties, { additionalProperties: false });
 

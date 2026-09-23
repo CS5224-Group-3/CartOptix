@@ -1,65 +1,66 @@
-import { type Static, Type } from "@sinclair/typebox";
+import Type, { type Static } from "typebox";
 import {
-  BasketLineSchema,
   CentsSchema,
-  DatasetReferenceSchema,
   IdSchema,
+  OfferSchema,
+  OrderChargeSchema,
+  PlanLineSchema,
   ProductSchema,
   QuantitySchema,
   RetailerIdSchema,
-  SNAPSHOT_DISCLAIMER,
 } from "./common.ts";
-import { DeliveryRuleAvailabilitySchema, PricedLineSchema, PricedOrderSchema } from "./pricing.ts";
 import { closedObject, nullable } from "./schema.ts";
 
-export const CatalogueResponseSchema = closedObject({
-  dataset: DatasetReferenceSchema,
-  currency: Type.Literal("SGD"),
-  disclaimer: Type.Literal(SNAPSHOT_DISCLAIMER),
-  retailers: Type.Array(
-    closedObject({ retailerId: RetailerIdSchema, name: Type.String({ minLength: 1 }) }),
-    { minItems: 3, maxItems: 3 },
-  ),
-  categories: Type.Array(
-    closedObject({ categoryId: IdSchema, name: Type.String({ minLength: 1 }) }),
-    {
-      minItems: 8,
-      maxItems: 8,
-    },
-  ),
-  deliveryScenario: closedObject({
-    scenarioId: IdSchema,
-    location: Type.String({ minLength: 1 }),
-    service: Type.String({ minLength: 1 }),
-    membership: Type.Literal("non_member"),
-    rules: Type.Array(DeliveryRuleAvailabilitySchema, { minItems: 3, maxItems: 3 }),
+// Catalogue
+
+export const DeliveryRuleSchema = Type.Union([
+  closedObject({
+    retailerId: RetailerIdSchema,
+    status: Type.Literal("verified"),
+    deliveryFeeCents: CentsSchema,
+    /** Null means no free-delivery threshold, not an unknown one. */
+    freeDeliveryFromCents: nullable(CentsSchema),
+    /** Null means no minimum order, not an unknown one. */
+    minimumOrderCents: nullable(CentsSchema),
+    note: Type.String({ minLength: 1 }),
   }),
-  pricing: closedObject({
-    supported: Type.Array(
-      Type.Union([Type.Literal("ordinary"), Type.Literal("unconditional_sale")]),
-      { minItems: 2, maxItems: 2, uniqueItems: true },
-    ),
-    excluded: Type.Array(Type.String({ minLength: 1 })),
+  /** Unknown rules are never presented as a zero fee. */
+  closedObject({ retailerId: RetailerIdSchema, status: Type.Literal("unavailable") }),
+]);
+export type DeliveryRule = Static<typeof DeliveryRuleSchema>;
+
+export const CatalogueResponseSchema = closedObject({
+  dataset: closedObject({
+    datasetId: IdSchema,
+    /** Synthetic fixtures must be distinguishable from the curated seed (PR-02). */
+    dataKind: Type.Union([Type.Literal("curated"), Type.Literal("synthetic")]),
+  }),
+  retailers: Type.Array(closedObject({ retailerId: RetailerIdSchema, name: Type.String() })),
+  categories: Type.Array(closedObject({ categoryId: IdSchema, name: Type.String() })),
+  delivery: closedObject({
+    /** The single declared scenario, e.g. location, standard service, non-member. */
+    scenario: Type.String({ minLength: 1 }),
+    rules: Type.Array(DeliveryRuleSchema),
   }),
 });
 export type CatalogueResponse = Static<typeof CatalogueResponseSchema>;
 
+// Products and offers
+
 export const ProductsQuerySchema = closedObject({
   datasetId: IdSchema,
-  q: Type.Optional(Type.String({ minLength: 1, maxLength: 100, pattern: "\\S" })),
+  q: Type.Optional(Type.String({ minLength: 1, maxLength: 100 })),
   categoryId: Type.Optional(IdSchema),
-  page: Type.Optional(Type.Integer({ minimum: 1, maximum: 1000000, default: 1 })),
+  page: Type.Optional(Type.Integer({ minimum: 1, default: 1 })),
   pageSize: Type.Optional(Type.Integer({ minimum: 1, maximum: 100, default: 20 })),
 });
 export type ProductsQuery = Static<typeof ProductsQuerySchema>;
+
 export const ProductsResponseSchema = closedObject({
-  dataset: DatasetReferenceSchema,
-  products: Type.Array(ProductSchema, { maxItems: 100 }),
-  pagination: closedObject({
-    page: Type.Integer({ minimum: 1, maximum: 1000000 }),
-    pageSize: Type.Integer({ minimum: 1, maximum: 100 }),
-    total: Type.Integer({ minimum: 0, maximum: Number.MAX_SAFE_INTEGER }),
-  }),
+  datasetId: IdSchema,
+  products: Type.Array(ProductSchema),
+  /** Matches before pagination. */
+  total: Type.Integer({ minimum: 0 }),
 });
 export type ProductsResponse = Static<typeof ProductsResponseSchema>;
 
@@ -67,162 +68,138 @@ export const OffersParamsSchema = closedObject({ id: IdSchema });
 export const OffersQuerySchema = closedObject({ datasetId: IdSchema, quantity: QuantitySchema });
 export type OffersParams = Static<typeof OffersParamsSchema>;
 export type OffersQuery = Static<typeof OffersQuerySchema>;
+
 export const OffersResponseSchema = closedObject({
-  dataset: DatasetReferenceSchema,
+  datasetId: IdSchema,
   product: ProductSchema,
   quantity: QuantitySchema,
-  currency: Type.Literal("SGD"),
-  disclaimer: Type.Literal(SNAPSHOT_DISCLAIMER),
-  offers: Type.Array(
-    closedObject({
-      listingId: IdSchema,
-      retailerId: RetailerIdSchema,
-      productUrl: Type.String({ pattern: "^https://", maxLength: 2048 }),
-      pricing: PricedLineSchema,
-    }),
-  ),
+  /** Eligible offers only, cheapest first. Empty when the product has none. */
+  offers: Type.Array(OfferSchema),
 });
 export type OffersResponse = Static<typeof OffersResponseSchema>;
 
+// Basket comparison
+
 export const BasketCompareRequestSchema = closedObject({
   datasetId: IdSchema,
-  lines: Type.Array(BasketLineSchema, { minItems: 1, maxItems: 50 }),
+  lines: Type.Array(closedObject({ productId: IdSchema, quantity: QuantitySchema }), {
+    minItems: 1,
+    maxItems: 50,
+  }),
   maxRetailers: Type.Integer({ minimum: 1, maximum: 3 }),
 });
 export type BasketCompareRequest = Static<typeof BasketCompareRequestSchema>;
 
-/** Run after structural validation. JSON Schema uniqueItems cannot reject the
- * same product appearing twice with different quantities. */
+/** Product IDs listed more than once. The API rejects such baskets rather than
+ * merging them; JSON Schema cannot express this rule. */
 export function duplicateProductIds(request: BasketCompareRequest): string[] {
   const seen = new Set<string>();
   const duplicates = new Set<string>();
-  for (const line of request.lines) {
-    if (seen.has(line.productId)) duplicates.add(line.productId);
-    seen.add(line.productId);
+  for (const { productId } of request.lines) {
+    if (seen.has(productId)) duplicates.add(productId);
+    seen.add(productId);
   }
   return [...duplicates];
 }
 
+export const OrderSchema = closedObject({
+  retailerId: RetailerIdSchema,
+  lines: Type.Array(PlanLineSchema, { minItems: 1 }),
+  orderCharges: Type.Array(OrderChargeSchema),
+  deliveryCents: CentsSchema,
+  totalCents: CentsSchema,
+});
+export type Order = Static<typeof OrderSchema>;
+
 export const PlanSchema = closedObject({
-  orders: Type.Array(PricedOrderSchema, { minItems: 1, maxItems: 3 }),
-  retailerCount: Type.Integer({ minimum: 1, maximum: 3 }),
+  orders: Type.Array(OrderSchema, { minItems: 1, maxItems: 3 }),
   totalCents: CentsSchema,
 });
 export type Plan = Static<typeof PlanSchema>;
-const resultContext = {
-  dataset: DatasetReferenceSchema,
-  request: BasketCompareRequestSchema,
-  currency: Type.Literal("SGD"),
-  disclaimer: Type.Literal(SNAPSHOT_DISCLAIMER),
-};
-const baselineAvailable = closedObject({
-  status: Type.Literal("available"),
-  plan: PlanSchema,
-  savingsCents: CentsSchema,
-});
-const baselineUnavailable = closedObject({
-  status: Type.Literal("unavailable"),
-  plan: Type.Null(),
-  savingsCents: Type.Null(),
-  reason: Type.Literal("no_feasible_single_retailer"),
-});
+
 export const BasketCompareResponseSchema = Type.Union([
   closedObject({
-    ...resultContext,
+    datasetId: IdSchema,
+    /** A validated plan; optimality is not claimed. */
     status: Type.Literal("best_found"),
     searchLimitReached: Type.Boolean(),
-    recommendation: PlanSchema,
+    /** Cheapest complete single-retailer plan, or null if none exists. */
+    baseline: nullable(PlanSchema),
+    /** Best permitted plan using two or more retailers, or null if none was found. */
     bestSplit: nullable(PlanSchema),
-    baseline: Type.Union([baselineAvailable, baselineUnavailable]),
+    /** Which plan to highlight; it is never null and never costs more than the baseline. */
+    recommended: Type.Union([Type.Literal("baseline"), Type.Literal("split")]),
+    /** Baseline minus recommended total; null when there is no baseline. */
+    savingsCents: nullable(CentsSchema),
   }),
   closedObject({
-    ...resultContext,
+    datasetId: IdSchema,
+    /** Impossibility is established, not merely unfound. */
     status: Type.Literal("proven_infeasible"),
-    recommendation: Type.Null(),
-    bestSplit: Type.Null(),
-    baseline: baselineUnavailable,
     blocker: closedObject({
-      code: Type.Union([
-        Type.Literal("no_eligible_offer"),
-        Type.Literal("retailer_limit"),
-        Type.Literal("exhaustive_check"),
-      ]),
-      productIds: Type.Array(IdSchema, { uniqueItems: true }),
-      explanation: Type.String({ minLength: 1 }),
+      code: Type.Literal("no_eligible_offer"),
+      productIds: Type.Array(IdSchema, { minItems: 1 }),
     }),
   }),
   closedObject({
-    ...resultContext,
+    datasetId: IdSchema,
+    /** Search found no valid plan but did not prove that none exists. */
     status: Type.Literal("no_plan_found"),
-    recommendation: Type.Null(),
-    bestSplit: Type.Null(),
-    baseline: baselineUnavailable,
     searchLimitReached: Type.Boolean(),
-    explanation: Type.String({ minLength: 1 }),
   }),
 ]);
 export type BasketCompareResponse = Static<typeof BasketCompareResponseSchema>;
 
-export const ValidationErrorSchema = closedObject({
-  error: closedObject({
-    code: Type.Literal("invalid_request"),
-    message: Type.String({ minLength: 1 }),
-    retryable: Type.Literal(false),
-    issues: Type.Array(
-      closedObject({ path: Type.String(), message: Type.String({ minLength: 1 }) }),
-    ),
-  }),
-});
-export const NotFoundErrorSchema = closedObject({
-  error: closedObject({
-    code: Type.Literal("not_found"),
-    message: Type.String({ minLength: 1 }),
-    retryable: Type.Literal(false),
-  }),
-});
-export const DatasetConflictSchema = closedObject({
-  error: closedObject({
-    code: Type.Literal("dataset_conflict"),
-    message: Type.String({ minLength: 1 }),
-    retryable: Type.Literal(false),
-    requestedDatasetId: IdSchema,
-    activeDatasetId: IdSchema,
-  }),
-});
-export const ServiceUnavailableErrorSchema = closedObject({
+// Errors
+
+/**
+ * Every non-2xx response. Codes exist only where the client behaves differently:
+ * fix the input, show "not found", refresh a stale dataset, or offer a retry.
+ */
+export const ErrorResponseSchema = closedObject({
   error: closedObject({
     code: Type.Union([
-      Type.Literal("dependency_unavailable"),
-      Type.Literal("dataset_unavailable"),
-      Type.Literal("capacity_exceeded"),
+      Type.Literal("invalid_request"),
+      Type.Literal("not_found"),
+      Type.Literal("dataset_conflict"),
+      Type.Literal("service_error"),
     ]),
     message: Type.String({ minLength: 1 }),
-    retryable: Type.Literal(true),
   }),
 });
-export const InternalErrorSchema = closedObject({
-  error: closedObject({
-    code: Type.Union([Type.Literal("calculation_failed"), Type.Literal("internal_error")]),
-    message: Type.String({ minLength: 1 }),
-    retryable: Type.Literal(true),
-  }),
-});
-export const OperationalErrorSchema = Type.Union([
-  ServiceUnavailableErrorSchema,
-  InternalErrorSchema,
-]);
-export const ApiErrorSchema = Type.Union([
-  ValidationErrorSchema,
-  NotFoundErrorSchema,
-  DatasetConflictSchema,
-  OperationalErrorSchema,
-]);
-export type ApiError = Static<typeof ApiErrorSchema>;
+export type ErrorResponse = Static<typeof ErrorResponseSchema>;
 
-export const OutboundClickRequestSchema = closedObject({
-  datasetId: IdSchema,
-  retailerId: RetailerIdSchema,
-  productId: IdSchema,
-  listingId: IdSchema,
-});
-export type OutboundClickRequest = Static<typeof OutboundClickRequestSchema>;
+// Routes
+
+/**
+ * Method, path and success schemas for each shopper endpoint, for Fastify route
+ * registration. Error bodies use ErrorResponseSchema via the API's error handler;
+ * they are not listed here because Fastify would also serialise its own
+ * validation errors with them.
+ */
+export const routes = {
+  catalogue: {
+    method: "GET",
+    url: "/api/v1/catalogue",
+    schema: { response: { 200: CatalogueResponseSchema } },
+  },
+  products: {
+    method: "GET",
+    url: "/api/v1/products",
+    schema: { querystring: ProductsQuerySchema, response: { 200: ProductsResponseSchema } },
+  },
+  offers: {
+    method: "GET",
+    url: "/api/v1/products/:id/offers",
+    schema: {
+      params: OffersParamsSchema,
+      querystring: OffersQuerySchema,
+      response: { 200: OffersResponseSchema },
+    },
+  },
+  compare: {
+    method: "POST",
+    url: "/api/v1/basket/compare",
+    schema: { body: BasketCompareRequestSchema, response: { 200: BasketCompareResponseSchema } },
+  },
+} as const;

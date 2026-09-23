@@ -1,4 +1,4 @@
-import { type LivenessResponse, type ReadinessResponse, routes } from "@cartoptix/contracts";
+import type { LivenessResponse, ReadinessResponse } from "@cartoptix/contracts";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Database } from "./database.ts";
 
@@ -21,29 +21,21 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
     });
   }
 
-  server.get(
-    "/health/live",
-    { schema: routes.live.schema },
-    async (): Promise<LivenessResponse> => {
-      return { status: "ok" };
-    },
-  );
+  server.get("/health/live", async (): Promise<LivenessResponse> => {
+    return { status: "ok" };
+  });
 
-  server.get(
-    "/health/ready",
-    { schema: routes.ready.schema },
-    async (_request, reply): Promise<ReadinessResponse> => {
-      const database_ = await database.checkConnection();
-      const body: ReadinessResponse = {
-        status: database_.status === "ok" ? "ok" : "unavailable",
-        checks: { database: database_ },
-      };
+  server.get("/health/ready", async (_request, reply): Promise<ReadinessResponse> => {
+    const database_ = await database.checkConnection();
+    const body: ReadinessResponse = {
+      status: database_.status === "ok" ? "ok" : "unavailable",
+      checks: { database: database_ },
+    };
 
-      // Readiness failure must be observable by a load balancer, not just in the body.
-      reply.code(body.status === "ok" ? 200 : 503);
-      return body;
-    },
-  );
+    // Readiness failure must be observable by a load balancer, not just in the body.
+    reply.code(body.status === "ok" ? 200 : 503);
+    return body;
+  });
 
   return server;
 }

@@ -52,9 +52,9 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Rejected: ESLint with `typescript-eslint`.** `typescript-eslint@8.70.0` declares `typescript >=4.8.4 <6.1.0` and therefore cannot lint a TypeScript 7 codebase. Biome carries its own parser, so it imposes no such constraint. Type-aware lint rules are the cost; `tsc --noEmit` still provides type checking. Revisit only if a needed rule cannot be expressed in Biome.
 
-**Contracts (A2 / #5):** TypeBox `0.34.52` now defines shared runtime schemas and inferred types. OpenAPI 3.1 is generated from the route schemas. Executable synthetic fixtures are checked with TypeBox and AJV; Fastify tests exercise response serialisation. See [API contracts](api-contracts.md) for decisions and the outstanding #4 data-interface checkpoint.
+**Contracts (A2 / #5):** `typebox` 1.3.34 defines the shared schemas, with types inferred from them. It is the 1.x line that `@fastify/type-provider-typebox` 6 requires; the older `@sinclair/typebox` 0.34 line was dropped. Tests check that Fastify 5's default validator and serialiser accept the schemas. Generated OpenAPI was evaluated and deferred: both sides share TypeScript types directly, so nothing reads it. Add `@fastify/swagger` if an external consumer appears.
 
-**Deferred:** React Router, TanStack Query, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
+**Deferred:** React Router, TanStack Query, generated OpenAPI, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
 ## 2. Application architecture
 
@@ -187,11 +187,11 @@ Missing single-retailer baseline means nullable savings, not zero or a fabricate
 
 ## 5. API and interface contracts
 
-The [API and pricing contracts](api-contracts.md) and `packages/contracts` define the endpoints below, preserving the agreed load-test inventory. Duplicate lines are rejected, data-dependent requests require the active dataset ID, and version conflicts return 409. The pricing contract initially supports ordinary and unconditional sale prices; multibuy execution remains deferred until curation adopts verified terms. Shopper handlers remain downstream work.
+`packages/contracts` defines the first four endpoints below as schemas with inferred types and `routes` for Fastify registration. Synthetic fixtures for each outcome are exported from `@cartoptix/contracts/fixtures`. Handlers belong to their implementation issues. The outbound-click contract belongs to #19, and health responses stay as they are until #13.
 
 | Endpoint | Responsibility |
 | --- | --- |
-| `GET /api/v1/catalogue` | Dataset ID, retailers, categories, delivery assumptions and supported-pricing disclosures. No collection-date display field. |
+| `GET /api/v1/catalogue` | Dataset ID and kind, retailers, categories and delivery assumptions. No collection-date display field. |
 | `GET /api/v1/products` | Paginated search/category browse of published products. |
 | `GET /api/v1/products/:id/offers?quantity=...` | Quantity-aware eligible offers and shared pricing explanations. |
 | `POST /api/v1/basket/compare` | Dataset ID, lines and retailer limit; complete baselines, best-found/split candidates, statuses and breakdowns. |
@@ -199,6 +199,17 @@ The [API and pricing contracts](api-contracts.md) and `packages/contracts` defin
 | `GET /health/live`, `GET /health/ready` | Process health; database and active-dataset readiness. Not substitutes for measured shopper API success. |
 
 Schemas must validate IDs, integer quantities, retailer limits and dataset versions. Client-submitted prices are never trusted. Product links come from approved listing records; avoid an arbitrary redirect service.
+
+Contract decisions (#5):
+
+- **Money and limits.** Integer SGD cents; 1–50 lines, 1–20 whole packs per line, 1–3 retailers.
+- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. Data-dependent requests send `datasetId` so the stateless API can tell whether the browser's basket was built from the data it now serves; the API serves only the active dataset. An unknown or stale ID returns 409 `dataset_conflict`. The client then refreshes the catalogue and asks the shopper to compare again, rather than silently resubmitting. A delivery-rule change produces a new dataset ID.
+- **Duplicate lines.** A product listed twice returns 400 rather than being merged.
+- **Comparison results.** `best_found` carries `baseline` and `bestSplit` (either may be null, but not both), `recommended`, `savingsCents` and `searchLimitReached`. The recommended plan never costs more than the baseline. `savingsCents` is the baseline total minus the recommended total, and is null exactly when there is no baseline. `proven_infeasible` currently covers only `no_eligible_offer`. Other impossibility proofs return `no_plan_found` until #12 defines them, because that status never claims impossibility.
+- **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found`, `dataset_conflict` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
+- **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised, with `includedInPrice` marking those already in the price, so nothing is counted twice. An unknown delivery rule is `unavailable`, never a zero fee. The pricing module's internal inputs belong to #8; an earlier draft is in commit `0aec742`.
+- **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer is the exported `SNAPSHOT_DISCLAIMER` constant, not a response field.
+- **Open with #4.** Product, listing and category IDs are opaque strings of 1–128 characters. Their stable values and the category mapping still need agreement with the seed owner.
 
 The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, retailer order count and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
 
