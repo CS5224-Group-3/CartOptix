@@ -4,8 +4,18 @@ import { closedObject, nullable } from "./schema.ts";
 /** Opaque, case-sensitive ID. Never infer dates or product identity from it. */
 export const IdSchema = Type.String({ minLength: 1, maxLength: 128 });
 export const CentsSchema = Type.Integer({ minimum: 0, maximum: Number.MAX_SAFE_INTEGER });
+/** Basket limits (J2), shared so the web client enforces the same bounds as the API. */
+export const MAX_BASKET_LINES = 50;
+export const MIN_PACKS_PER_LINE = 1;
+export const MAX_PACKS_PER_LINE = 20;
+export const MIN_RETAILER_LIMIT = 1;
+export const MAX_RETAILER_LIMIT = 3;
+
 /** Whole packs of one product. */
-export const QuantitySchema = Type.Integer({ minimum: 1, maximum: 20 });
+export const QuantitySchema = Type.Integer({
+  minimum: MIN_PACKS_PER_LINE,
+  maximum: MAX_PACKS_PER_LINE,
+});
 export const RetailerIdSchema = Type.Union([
   Type.Literal("redmart"),
   Type.Literal("fairprice"),
@@ -51,7 +61,6 @@ const lineCost = {
   unitPriceCents: CentsSchema,
   itemCharges: Type.Array(ItemChargeSchema),
   lineTotalCents: CentsSchema,
-  explanation: Type.String({ minLength: 1 }),
   /** Promotions seen but not applied, e.g. unverified multibuys. */
   excludedPromotions: Type.Array(Type.String({ minLength: 1 })),
 };

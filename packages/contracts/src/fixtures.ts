@@ -93,7 +93,6 @@ const line = (productId: string, retailerId: RetailerId, cents: number): PlanLin
   unitPriceCents: cents,
   itemCharges: [],
   lineTotalCents: cents,
-  explanation: "One pack at the synthetic ordinary price.",
   excludedPromotions: [],
 });
 
@@ -128,7 +127,6 @@ export const offersExample = {
       unitPriceCents: 410,
       itemCharges: [{ label: "Synthetic deposit", amountCents: 20, includedInPrice: true }],
       lineTotalCents: 820,
-      explanation: "Two packs at 410 cents, each including a 10-cent deposit.",
       excludedPromotions: ["Unverified multibuy offer"],
     },
     {
@@ -139,7 +137,6 @@ export const offersExample = {
       unitPriceCents: 600,
       itemCharges: [],
       lineTotalCents: 1200,
-      explanation: "Two packs at the 600-cent sale price.",
       excludedPromotions: [],
     },
   ],

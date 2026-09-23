@@ -2,6 +2,9 @@ import Type, { type Static } from "typebox";
 import {
   CentsSchema,
   IdSchema,
+  MAX_BASKET_LINES,
+  MAX_RETAILER_LIMIT,
+  MIN_RETAILER_LIMIT,
   OfferSchema,
   OrderChargeSchema,
   PlanLineSchema,
@@ -82,9 +85,9 @@ export type OffersResponse = Static<typeof OffersResponseSchema>;
 export const BasketCompareRequestSchema = closedObject({
   lines: Type.Array(closedObject({ productId: IdSchema, quantity: QuantitySchema }), {
     minItems: 1,
-    maxItems: 50,
+    maxItems: MAX_BASKET_LINES,
   }),
-  maxRetailers: Type.Integer({ minimum: 1, maximum: 3 }),
+  maxRetailers: Type.Integer({ minimum: MIN_RETAILER_LIMIT, maximum: MAX_RETAILER_LIMIT }),
 });
 export type BasketCompareRequest = Static<typeof BasketCompareRequestSchema>;
 
@@ -110,7 +113,7 @@ export const OrderSchema = closedObject({
 export type Order = Static<typeof OrderSchema>;
 
 export const PlanSchema = closedObject({
-  orders: Type.Array(OrderSchema, { minItems: 1, maxItems: 3 }),
+  orders: Type.Array(OrderSchema, { minItems: 1, maxItems: MAX_RETAILER_LIMIT }),
   totalCents: CentsSchema,
 });
 export type Plan = Static<typeof PlanSchema>;
