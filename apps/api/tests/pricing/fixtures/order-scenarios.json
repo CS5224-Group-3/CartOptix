@@ -5,10 +5,12 @@
     "alpha's free-delivery threshold is 5999 so the boundary can be probed at",
     "5998, 5999 and 6000 using whole packs of real-looking prices.",
     "Retailer rules here are invented for testing; the verified Singapore",
-    "delivery scenarios belong to curation (issue #4, PR-04)."
+    "delivery scenarios belong to curation (issue #4, PR-04).",
+    "Orders assembled wrongly by a caller (no lines, or a line from another",
+    "retailer) throw rather than returning a status, and are tested in",
+    "order.test.ts instead."
   ],
   "datasetId": "pricing-fixture-v1",
-
   "retailers": {
     "alpha": {
       "retailerId": "alpha",
@@ -17,7 +19,9 @@
       "fee": 599,
       "freeDeliveryThreshold": 5999,
       "minimumOrder": 2000,
-      "thresholdBasis": { "amount": "paid", "includesMandatoryCharges": false },
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
       "orderCharges": []
     },
     "beta": {
@@ -27,8 +31,16 @@
       "fee": 350,
       "freeDeliveryThreshold": null,
       "minimumOrder": null,
-      "thresholdBasis": { "amount": "paid", "includesMandatoryCharges": true },
-      "orderCharges": [{ "label": "Packaging fee", "amount": 50, "includedInPrice": false }]
+      "thresholdBasis": {
+        "includesMandatoryCharges": true
+      },
+      "orderCharges": [
+        {
+          "label": "Packaging fee",
+          "amount": 50,
+          "includedInPrice": false
+        }
+      ]
     },
     "gamma": {
       "retailerId": "gamma",
@@ -37,7 +49,9 @@
       "fee": 400,
       "freeDeliveryThreshold": 5000,
       "minimumOrder": null,
-      "thresholdBasis": { "amount": "paid", "includesMandatoryCharges": false },
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
       "orderCharges": []
     },
     "delta": {
@@ -47,7 +61,9 @@
       "fee": null,
       "freeDeliveryThreshold": null,
       "minimumOrder": null,
-      "thresholdBasis": { "amount": "paid", "includesMandatoryCharges": false },
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
       "orderCharges": []
     },
     "epsilon": {
@@ -57,11 +73,18 @@
       "fee": 500,
       "freeDeliveryThreshold": null,
       "minimumOrder": null,
-      "thresholdBasis": { "amount": "paid", "includesMandatoryCharges": false },
-      "orderCharges": [{ "label": "Bag levy", "amount": null, "includedInPrice": false }]
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
+      "orderCharges": [
+        {
+          "label": "Bag levy",
+          "amount": null,
+          "includedInPrice": false
+        }
+      ]
     }
   },
-
   "offers": {
     "bread": {
       "listingId": "alpha-bread",
@@ -106,7 +129,11 @@
       "unitPrice": 180,
       "eligible": true,
       "charges": [
-        { "label": "Beverage container deposit", "amount": 20, "includedInPrice": false }
+        {
+          "label": "Beverage container deposit",
+          "amount": 20,
+          "includedInPrice": false
+        }
       ],
       "excludedPromotions": []
     },
@@ -116,7 +143,13 @@
       "retailerId": "alpha",
       "unitPrice": 150,
       "eligible": true,
-      "charges": [{ "label": "Beverage container deposit", "amount": 10, "includedInPrice": true }],
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 10,
+          "includedInPrice": true
+        }
+      ],
       "excludedPromotions": []
     },
     "sparkling": {
@@ -125,7 +158,13 @@
       "retailerId": "alpha",
       "unitPrice": 160,
       "eligible": true,
-      "charges": [{ "label": "Beverage container deposit", "amount": 10, "includedInPrice": true }],
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 10,
+          "includedInPrice": true
+        }
+      ],
       "excludedPromotions": []
     },
     "betaMilk": {
@@ -165,17 +204,24 @@
       "excludedPromotions": []
     }
   },
-
   "scenarios": [
     {
       "name": "pays the delivery fee below the free-delivery threshold",
       "retailer": "alpha",
-      "lines": [{ "offer": "milk", "packs": 10 }],
+      "lines": [
+        {
+          "offer": "milk",
+          "packs": 10
+        }
+      ],
       "expect": {
         "status": "priced",
         "itemsTotal": 3200,
         "measuredAmount": 3200,
-        "delivery": { "amount": 599, "free": false },
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
         "appliedCharges": [],
         "total": 3799,
         "disclosureCodes": []
@@ -184,18 +230,39 @@
     {
       "name": "refuses an order below the retailer's minimum and reports the shortfall",
       "retailer": "alpha",
-      "lines": [{ "offer": "milk", "packs": 5 }],
-      "expect": { "status": "infeasible", "code": "minimum-order-not-met", "shortfall": 400 }
+      "lines": [
+        {
+          "offer": "milk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "infeasible",
+        "code": "minimum-order-not-met",
+        "shortfall": 400
+      }
     },
     {
       "name": "still pays delivery one cent below the free-delivery threshold",
       "retailer": "alpha",
-      "lines": [{ "offer": "bread", "packs": 11 }, { "offer": "butter", "packs": 1 }],
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 11
+        },
+        {
+          "offer": "butter",
+          "packs": 1
+        }
+      ],
       "expect": {
         "status": "priced",
         "itemsTotal": 5998,
         "measuredAmount": 5998,
-        "delivery": { "amount": 599, "free": false },
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
         "appliedCharges": [],
         "total": 6597,
         "disclosureCodes": []
@@ -204,12 +271,24 @@
     {
       "name": "gives free delivery exactly at the free-delivery threshold",
       "retailer": "alpha",
-      "lines": [{ "offer": "bread", "packs": 11 }, { "offer": "egg", "packs": 1 }],
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 11
+        },
+        {
+          "offer": "egg",
+          "packs": 1
+        }
+      ],
       "expect": {
         "status": "priced",
         "itemsTotal": 5999,
         "measuredAmount": 5999,
-        "delivery": { "amount": 0, "free": true },
+        "delivery": {
+          "amount": 0,
+          "free": true
+        },
         "appliedCharges": [],
         "total": 5999,
         "disclosureCodes": []
@@ -218,12 +297,20 @@
     {
       "name": "gives free delivery above the free-delivery threshold",
       "retailer": "alpha",
-      "lines": [{ "offer": "bread", "packs": 12 }],
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 12
+        }
+      ],
       "expect": {
         "status": "priced",
         "itemsTotal": 6000,
         "measuredAmount": 6000,
-        "delivery": { "amount": 0, "free": true },
+        "delivery": {
+          "amount": 0,
+          "free": true
+        },
         "appliedCharges": [],
         "total": 6000,
         "disclosureCodes": []
@@ -232,12 +319,24 @@
     {
       "name": "leaves charges out of the threshold when the retailer excludes them",
       "retailer": "alpha",
-      "lines": [{ "offer": "soda", "packs": 3 }, { "offer": "milk", "packs": 10 }],
+      "lines": [
+        {
+          "offer": "soda",
+          "packs": 3
+        },
+        {
+          "offer": "milk",
+          "packs": 10
+        }
+      ],
       "expect": {
         "status": "priced",
         "itemsTotal": 3800,
         "measuredAmount": 3740,
-        "delivery": { "amount": 599, "free": false },
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
         "appliedCharges": [],
         "total": 4399,
         "disclosureCodes": []
@@ -246,13 +345,27 @@
     {
       "name": "counts charges toward the threshold when the retailer includes them",
       "retailer": "beta",
-      "lines": [{ "offer": "betaMilk", "packs": 5 }],
+      "lines": [
+        {
+          "offer": "betaMilk",
+          "packs": 5
+        }
+      ],
       "expect": {
         "status": "priced",
         "itemsTotal": 1500,
         "measuredAmount": 1500,
-        "delivery": { "amount": 350, "free": false },
-        "appliedCharges": [{ "label": "Packaging fee", "perPack": null, "amount": 50 }],
+        "delivery": {
+          "amount": 350,
+          "free": false
+        },
+        "appliedCharges": [
+          {
+            "label": "Packaging fee",
+            "perPack": null,
+            "amount": 50
+          }
+        ],
         "total": 1900,
         "disclosureCodes": []
       }
@@ -261,15 +374,27 @@
       "name": "reports one disclosure when several lines raise the same notice",
       "retailer": "alpha",
       "lines": [
-        { "offer": "water", "packs": 2 },
-        { "offer": "sparkling", "packs": 2 },
-        { "offer": "milk", "packs": 10 }
+        {
+          "offer": "water",
+          "packs": 2
+        },
+        {
+          "offer": "sparkling",
+          "packs": 2
+        },
+        {
+          "offer": "milk",
+          "packs": 10
+        }
       ],
       "expect": {
         "status": "priced",
         "itemsTotal": 3820,
         "measuredAmount": 3820,
-        "delivery": { "amount": 599, "free": false },
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
         "appliedCharges": [],
         "total": 4419,
         "disclosureCodes": ["charge-included-in-price"]
@@ -278,32 +403,44 @@
     {
       "name": "blocks the total when the delivery rule is unverified",
       "retailer": "gamma",
-      "lines": [{ "offer": "gammaMilk", "packs": 5 }],
-      "expect": { "status": "unavailable", "code": "delivery-rule-unverified" }
+      "lines": [
+        {
+          "offer": "gammaMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "delivery-rule-unverified"
+      }
     },
     {
       "name": "blocks the total when the delivery fee is unresolved",
       "retailer": "delta",
-      "lines": [{ "offer": "deltaMilk", "packs": 5 }],
-      "expect": { "status": "unavailable", "code": "delivery-rule-unverified" }
+      "lines": [
+        {
+          "offer": "deltaMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "delivery-rule-unverified"
+      }
     },
     {
       "name": "blocks the total when an order-level charge is unresolved",
       "retailer": "epsilon",
-      "lines": [{ "offer": "epsilonMilk", "packs": 5 }],
-      "expect": { "status": "unavailable", "code": "charge-unresolved" }
-    },
-    {
-      "name": "rejects a line belonging to a different retailer",
-      "retailer": "alpha",
-      "lines": [{ "offer": "betaMilk", "packs": 5 }],
-      "expect": { "status": "unavailable", "code": "invalid-request" }
-    },
-    {
-      "name": "rejects an order with no lines",
-      "retailer": "alpha",
-      "lines": [],
-      "expect": { "status": "unavailable", "code": "invalid-request" }
+      "lines": [
+        {
+          "offer": "epsilonMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "charge-unresolved"
+      }
     }
   ]
 }

@@ -1,8 +1,7 @@
-import type { PricedLine } from "@cartoptix/contracts";
 import { describe, expect, it } from "vitest";
 import { priceLine } from "../../src/pricing/line.ts";
 import { priceRetailerOrder } from "../../src/pricing/order.ts";
-import type { DeliveryRule } from "../../src/pricing/rules.ts";
+import { type PricedLine, PricingContractError } from "../../src/pricing/results.ts";
 import { loadOrderFixture, lookup } from "./fixtures.ts";
 
 /** Drives every order scenario in `fixtures/order-scenarios.json`. */
@@ -11,11 +10,7 @@ const fixture = loadOrderFixture();
 
 function priceLines(scenario: { lines: { offer: string; packs: number }[] }): PricedLine[] {
   return scenario.lines.map(({ offer, packs }) => {
-    const result = priceLine({
-      offer: lookup(fixture.offers, offer, "offer"),
-      packs,
-      datasetId: fixture.datasetId,
-    });
+    const result = priceLine({ offer: lookup(fixture.offers, offer, "offer"), packs });
     if (result.status !== "priced") {
       throw new Error(`Fixture line "${offer}" should price cleanly: ${result.reason.detail}`);
     }
@@ -77,74 +72,6 @@ describe("priceRetailerOrder", () => {
     });
   }
 
-  it("measures the threshold on the undiscounted amount when the retailer does", () => {
-    // The only case where the basis changes the answer is a discounted line:
-    // the shopper pays 7250, but the packs list at 8750. A retailer measuring
-    // the undiscounted amount gives free delivery here and one measuring the
-    // paid amount does not, so the basis cannot be assumed shared (PR-04).
-    const offer = {
-      listingId: "zeta-rice",
-      productId: "rice-5kg",
-      retailerId: "zeta",
-      unitPrice: 1250,
-      eligible: true,
-      charges: [],
-      excludedPromotions: [],
-    };
-    const bundle = {
-      listingId: "zeta-rice",
-      packsPerBundle: 3,
-      bundlePrice: 3000,
-      maxBundles: null,
-      datasetId: fixture.datasetId,
-    };
-    const priced = priceLine({ offer, packs: 7, datasetId: fixture.datasetId, bundle });
-    if (priced.status !== "priced") {
-      throw new Error("Expected the discounted line to price");
-    }
-    expect(priced.line.packsSubtotal).toBe(7250);
-    expect(priced.line.undiscountedPacksSubtotal).toBe(8750);
-
-    const base: DeliveryRule = {
-      retailerId: "zeta",
-      datasetId: fixture.datasetId,
-      verified: true,
-      fee: 500,
-      freeDeliveryThreshold: 8000,
-      minimumOrder: null,
-      thresholdBasis: { amount: "paid", includesMandatoryCharges: false },
-      orderCharges: [],
-    };
-
-    const onPaid = priceRetailerOrder({
-      retailerId: "zeta",
-      lines: [priced.line],
-      delivery: base,
-      datasetId: fixture.datasetId,
-    });
-    const onUndiscounted = priceRetailerOrder({
-      retailerId: "zeta",
-      lines: [priced.line],
-      delivery: {
-        ...base,
-        thresholdBasis: { amount: "undiscounted", includesMandatoryCharges: false },
-      },
-      datasetId: fixture.datasetId,
-    });
-
-    if (onPaid.status !== "priced" || onUndiscounted.status !== "priced") {
-      throw new Error("Expected both orders to price");
-    }
-    expect(onPaid.order.delivery).toMatchObject({ measuredAmount: 7250, free: false, amount: 500 });
-    expect(onUndiscounted.order.delivery).toMatchObject({
-      measuredAmount: 8750,
-      free: true,
-      amount: 0,
-    });
-    expect(onPaid.order.total).toBe(7750);
-    expect(onUndiscounted.order.total).toBe(7250);
-  });
-
   it("refuses a rule belonging to another dataset rather than applying it", () => {
     const delivery = lookup(fixture.retailers, "alpha", "retailer");
     const result = priceRetailerOrder({
@@ -159,5 +86,83 @@ describe("priceRetailerOrder", () => {
       return;
     }
     expect(result.reason.code).toBe("delivery-rule-unverified");
+  });
+
+  describe("caller mistakes", () => {
+    // An order with no lines, or one holding another retailer's line, cannot
+    // come from a shopper request. It is a bug in whatever assembled the
+    // candidate, so it throws rather than returning a renderable status.
+    const delivery = lookup(fixture.retailers, "alpha", "retailer");
+
+    it("throws on an order with no lines", () => {
+      expect(() =>
+        priceRetailerOrder({
+          retailerId: "alpha",
+          lines: [],
+          delivery,
+          datasetId: fixture.datasetId,
+        }),
+      ).toThrow(PricingContractError);
+    });
+
+    it("throws on a line belonging to another retailer", () => {
+      expect(() =>
+        priceRetailerOrder({
+          retailerId: "alpha",
+          lines: priceLines({ lines: [{ offer: "betaMilk", packs: 5 }] }),
+          delivery,
+          datasetId: fixture.datasetId,
+        }),
+      ).toThrow(PricingContractError);
+    });
+  });
+
+  it("counts mandatory charges toward the threshold only when the basis says so", () => {
+    // The soda deposit is the only thing separating the two amounts: 3600 paid
+    // for packs, plus 400 of deposits. A retailer counting deposits reaches
+    // 4000 and earns free delivery; one that does not stops at 3600 and pays.
+    // Retailers do not share a convention here, so neither can be assumed.
+    const lines = priceLines({ lines: [{ offer: "soda", packs: 20 }] });
+    expect(lines[0]?.packsSubtotal).toBe(3600);
+    expect(lines[0]?.total).toBe(4000);
+
+    const base = {
+      retailerId: "alpha",
+      datasetId: fixture.datasetId,
+      verified: true,
+      fee: 599,
+      freeDeliveryThreshold: 4000,
+      minimumOrder: null,
+      orderCharges: [],
+    };
+
+    const excludingCharges = priceRetailerOrder({
+      retailerId: "alpha",
+      lines,
+      delivery: { ...base, thresholdBasis: { includesMandatoryCharges: false } },
+      datasetId: fixture.datasetId,
+    });
+    const includingCharges = priceRetailerOrder({
+      retailerId: "alpha",
+      lines,
+      delivery: { ...base, thresholdBasis: { includesMandatoryCharges: true } },
+      datasetId: fixture.datasetId,
+    });
+
+    if (excludingCharges.status !== "priced" || includingCharges.status !== "priced") {
+      throw new Error("Expected both orders to price");
+    }
+    expect(excludingCharges.order.delivery).toMatchObject({
+      measuredAmount: 3600,
+      free: false,
+      amount: 599,
+    });
+    expect(includingCharges.order.delivery).toMatchObject({
+      measuredAmount: 4000,
+      free: true,
+      amount: 0,
+    });
+    expect(excludingCharges.order.total).toBe(4599);
+    expect(includingCharges.order.total).toBe(4000);
   });
 });

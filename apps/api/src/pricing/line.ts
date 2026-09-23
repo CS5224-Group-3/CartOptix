@@ -1,14 +1,14 @@
+import { isCents, multiplyCents, sumCents } from "./money.ts";
 import {
   type AppliedCharge,
-  type Cents,
   type LinePricingResult,
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
   type PackPricing,
+  PricingContractError,
   type PricingDisclosure,
-} from "@cartoptix/contracts";
-import { isCents, multiplyCents, sumCents } from "./money.ts";
-import type { BundlePromotionRule, OfferRule } from "./rules.ts";
+} from "./results.ts";
+import type { OfferRule } from "./rules.ts";
 
 /**
  * Cost of one product line at one retailer.
@@ -17,34 +17,25 @@ import type { BundlePromotionRule, OfferRule } from "./rules.ts";
  * nothing here reads the clock, the database or the environment. Both product
  * offer comparison and basket comparison call this, so a price shown next to
  * an offer is the same price the basket total is built from.
+ *
+ * Scope is the verified ordinary or unconditional sale price. Section 4 allows
+ * the initial kernel to omit multibuy execution, and PR-03 makes multibuys
+ * optional, so no bundle is priced until #4 verifies one.
  */
 
 export interface PriceLineInput {
   offer: OfferRule;
-  /** Whole packs requested. */
+  /** Whole packs requested, within the supported range. */
   packs: number;
-  /** The active dataset, used to reject a promotion approved for another seed. */
-  datasetId: string;
-  /**
-   * An approved bundle promotion for this listing, when curation adopted one.
-   *
-   * No multibuy is approved for the MVP seed yet (PR-03), so this is normally
-   * absent and every line is priced at the verified per-pack price.
-   */
-  bundle?: BundlePromotionRule;
 }
 
-export function priceLine(input: PriceLineInput): LinePricingResult {
-  const { offer, packs, datasetId } = input;
-
+export function priceLine({ offer, packs }: PriceLineInput): LinePricingResult {
+  // A quantity outside the supported range is a caller mistake, not a pricing
+  // outcome: the API validates it against the request schema first.
   if (!Number.isInteger(packs) || packs < MIN_PACKS_PER_LINE || packs > MAX_PACKS_PER_LINE) {
-    return {
-      status: "unavailable",
-      reason: {
-        code: "invalid-request",
-        detail: `A line must request ${MIN_PACKS_PER_LINE}–${MAX_PACKS_PER_LINE} whole packs, not ${packs}`,
-      },
-    };
+    throw new PricingContractError(
+      `A line must request ${MIN_PACKS_PER_LINE}–${MAX_PACKS_PER_LINE} whole packs, not ${packs}`,
+    );
   }
 
   if (!offer.eligible) {
@@ -74,7 +65,14 @@ export function priceLine(input: PriceLineInput): LinePricingResult {
     return charges;
   }
 
-  const packsBreakdown = choosePackPricing(offer, packs, datasetId, input.bundle);
+  const packsBreakdown: PackPricing[] = [
+    {
+      kind: "unit",
+      packs,
+      unitPrice: offer.unitPrice,
+      amount: multiplyCents(offer.unitPrice, packs),
+    },
+  ];
   const packsSubtotal = sumCents(packsBreakdown.map((segment) => segment.amount));
 
   const disclosures: PricingDisclosure[] = [
@@ -93,7 +91,6 @@ export function priceLine(input: PriceLineInput): LinePricingResult {
       packs,
       packsSubtotal,
       packsBreakdown,
-      undiscountedPacksSubtotal: multiplyCents(offer.unitPrice, packs),
       appliedCharges: charges.applied,
       total: packsSubtotal + sumCents(charges.applied.map((charge) => charge.amount)),
       disclosures,
@@ -145,93 +142,4 @@ function applyCharges(offer: OfferRule, packs: number): ChargeResult {
   }
 
   return { status: "ok", applied, disclosures };
-}
-
-/**
- * Prices the packs themselves, using a bundle only when it genuinely costs
- * less.
- *
- * The technical spec asks for eligible bundles to be *compared*, not assumed
- * beneficial, and PR-05 forbids returning a more expensive plan than one that
- * exists. So both routes are costed and the cheaper wins; an exact tie keeps
- * the per-pack route, whose explanation is simpler. Bundles are charged whole,
- * with remaining packs at the per-pack price, so nothing is ever divided into
- * a fraction of a cent.
- */
-function choosePackPricing(
-  offer: OfferRule,
-  packs: number,
-  datasetId: string,
-  bundle: BundlePromotionRule | undefined,
-): PackPricing[] {
-  const unitOnly: PackPricing[] = [
-    {
-      kind: "unit",
-      packs,
-      unitPrice: offer.unitPrice,
-      amount: multiplyCents(offer.unitPrice, packs),
-    },
-  ];
-
-  if (bundle === undefined || !bundleApplies(bundle, offer, datasetId, packs)) {
-    return unitOnly;
-  }
-
-  const affordableBundles = Math.floor(packs / bundle.packsPerBundle);
-  const bundles =
-    bundle.maxBundles === null ? affordableBundles : Math.min(affordableBundles, bundle.maxBundles);
-  if (bundles < 1) {
-    return unitOnly;
-  }
-
-  const remainder = packs - bundles * bundle.packsPerBundle;
-  const withBundle: PackPricing[] = [
-    {
-      kind: "bundle",
-      bundles,
-      packsPerBundle: bundle.packsPerBundle,
-      bundlePrice: bundle.bundlePrice,
-      amount: multiplyCents(bundle.bundlePrice, bundles),
-    },
-  ];
-  if (remainder > 0) {
-    withBundle.push({
-      kind: "unit",
-      packs: remainder,
-      unitPrice: offer.unitPrice,
-      amount: multiplyCents(offer.unitPrice, remainder),
-    });
-  }
-
-  return total(withBundle) < total(unitOnly) ? withBundle : unitOnly;
-}
-
-/**
- * Whether an approved bundle rule may be applied to this line.
- *
- * Eligibility is decided entirely by the approved seed: the rule must belong
- * to this listing and this dataset. The rule's captured validity wording is
- * never consulted, and neither is the current date, so advancing the clock
- * cannot activate or expire a promotion (PR-03).
- */
-function bundleApplies(
-  bundle: BundlePromotionRule,
-  offer: OfferRule,
-  datasetId: string,
-  packs: number,
-): boolean {
-  return (
-    bundle.listingId === offer.listingId &&
-    bundle.datasetId === datasetId &&
-    Number.isInteger(bundle.packsPerBundle) &&
-    bundle.packsPerBundle > 0 &&
-    bundle.packsPerBundle <= packs &&
-    isCents(bundle.bundlePrice) &&
-    bundle.bundlePrice > 0 &&
-    (bundle.maxBundles === null || (Number.isInteger(bundle.maxBundles) && bundle.maxBundles > 0))
-  );
-}
-
-function total(segments: readonly PackPricing[]): Cents {
-  return sumCents(segments.map((segment) => segment.amount));
 }

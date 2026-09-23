@@ -6,8 +6,8 @@ import type {
   PackPricing,
   PricingDisclosureCode,
   PricingUnavailableCode,
-} from "@cartoptix/contracts";
-import type { BundlePromotionRule, DeliveryRule, OfferRule } from "../../src/pricing/rules.ts";
+} from "../../src/pricing/results.ts";
+import type { DeliveryRule, OfferRule } from "../../src/pricing/rules.ts";
 
 /**
  * Loads the JSON pricing fixtures.
@@ -27,7 +27,6 @@ export interface UnavailableExpectation {
 export interface PricedLineExpectation {
   status: "priced";
   packsSubtotal: Cents;
-  undiscountedPacksSubtotal: Cents;
   total: Cents;
   packsBreakdown: PackPricing[];
   appliedCharges: AppliedCharge[];
@@ -38,14 +37,12 @@ export interface LineScenario {
   name: string;
   offer: string;
   packs: number;
-  bundle?: string;
   expect: PricedLineExpectation | UnavailableExpectation;
 }
 
 export interface LineFixture {
   datasetId: string;
   offers: Record<string, OfferRule>;
-  bundles: Record<string, BundlePromotionRule>;
   scenarios: LineScenario[];
 }
 

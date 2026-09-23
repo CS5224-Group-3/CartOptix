@@ -5,9 +5,14 @@
  * basket comparison can never disagree about what something costs. Everything
  * here is pure: no clock, no database, no environment.
  *
- * Current scope is verified ordinary and unconditional sale prices, mandatory
- * charges and one documented delivery scenario per retailer. Bundle multibuys
- * are modelled and tested but inert until curation approves one (PR-03).
+ * Scope is verified ordinary and unconditional sale prices, mandatory charges
+ * and one documented delivery scenario per retailer. Multibuys are out of
+ * scope until #4 verifies one; section 4 allows the initial kernel to omit
+ * them entirely.
+ *
+ * Results describe pricing outcomes. A caller mistake throws
+ * `PricingContractError` instead, because the API validates requests against
+ * the contract schemas before pricing runs.
  */
 
 export { type PriceLineInput, priceLine } from "./line.ts";
@@ -20,7 +25,26 @@ export {
 } from "./money.ts";
 export { type PriceRetailerOrderInput, priceRetailerOrder } from "./order.ts";
 export type {
-  BundlePromotionRule,
+  AppliedCharge,
+  Cents,
+  DeliveryCharge,
+  LinePricingResult,
+  OrderInfeasibility,
+  PackPricing,
+  PricedLine,
+  PricedRetailerOrder,
+  PricingDisclosure,
+  PricingDisclosureCode,
+  PricingUnavailable,
+  PricingUnavailableCode,
+  RetailerOrderPricingResult,
+} from "./results.ts";
+export {
+  MAX_PACKS_PER_LINE,
+  MIN_PACKS_PER_LINE,
+  PricingContractError,
+} from "./results.ts";
+export type {
   DeliveryRule,
   ExcludedPromotionRule,
   MandatoryChargeRule,

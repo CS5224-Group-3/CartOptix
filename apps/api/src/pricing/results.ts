@@ -1,0 +1,182 @@
+/**
+ * What the pricing module returns.
+ *
+ * These live beside the module rather than in `@cartoptix/contracts` because
+ * only the optimiser and the endpoints consume them: #10 and #13 map a result
+ * onto the wire shapes that #5 owns (`Offer`, `PlanLine`, `Order`). Keeping
+ * them here means the module can explain itself in as much detail as the
+ * optimiser needs without that detail becoming a public payload.
+ *
+ * Every status here is a *business outcome*. A caller mistake — a quantity
+ * outside the supported range, an order with no lines, a line belonging to
+ * another retailer — throws instead, because the API validates requests
+ * against the contract schemas before pricing runs, so reaching the module
+ * with one is a bug rather than an answer.
+ */
+
+/**
+ * A monetary amount in whole Singapore cents.
+ *
+ * Every calculation uses integers (PR-05). Dollars and floating point never
+ * appear, because repeated float arithmetic cannot represent cents exactly and
+ * a basket sums many lines.
+ */
+export type Cents = number;
+
+/**
+ * Inclusive range of whole packs a single line may request.
+ *
+ * Defined here only until #28 lands; `@cartoptix/contracts` exports the same
+ * two constants, and this module should import them once it can, so the limit
+ * has one source of truth. The API enforces the range through its request
+ * schema; the check here is a guard against a caller that bypassed it.
+ */
+export const MIN_PACKS_PER_LINE = 1;
+export const MAX_PACKS_PER_LINE = 20;
+
+/**
+ * Something true of a price that the shopper must be told.
+ *
+ * Disclosures are how the product rules stay honest: a promotion we could not
+ * verify is disclosed rather than silently applied or silently dropped
+ * (PR-03).
+ */
+export interface PricingDisclosure {
+  code: PricingDisclosureCode;
+  /** Shopper-facing sentence, supplied by curation rather than composed here. */
+  detail: string;
+}
+
+export type PricingDisclosureCode =
+  /** The source data described a promotion whose terms were not verified. */
+  | "promotion-excluded"
+  /** A verified mandatory charge is already inside the recorded price. */
+  | "charge-included-in-price";
+
+/**
+ * How the cost of one line's packs was reached.
+ *
+ * Only ordinary and unconditional sale prices are supported, so this is always
+ * one per-pack segment today. It stays a list because a promotion type that
+ * charges some packs differently — a multibuy, if #4 ever verifies one — adds
+ * a variant here rather than reshaping the line (PR-03, section 4).
+ */
+export interface PackPricing {
+  kind: "unit";
+  packs: number;
+  unitPrice: Cents;
+  amount: Cents;
+}
+
+/** A verified mandatory charge added on top of the recorded price. */
+export interface AppliedCharge {
+  /** Curation's description, for example "Beverage container deposit". */
+  label: string;
+  /** Amount for one pack, or null for a charge levied once per order. */
+  perPack: Cents | null;
+  amount: Cents;
+}
+
+/** The cost of one product line at one retailer, with its explanation. */
+export interface PricedLine {
+  productId: string;
+  retailerId: string;
+  listingId: string;
+  packs: number;
+  /** Cost of the packs themselves, before charges the price excludes. */
+  packsSubtotal: Cents;
+  /** Every segment of `packsSubtotal`, in the order it was applied. */
+  packsBreakdown: PackPricing[];
+  /** Charges added because the recorded price does not already include them. */
+  appliedCharges: AppliedCharge[];
+  /** `packsSubtotal` plus every applied charge. */
+  total: Cents;
+  disclosures: PricingDisclosure[];
+}
+
+/** What the shopper pays to have one retailer's order delivered. */
+export interface DeliveryCharge {
+  amount: Cents;
+  /** True when the order reached the retailer's free-delivery threshold. */
+  free: boolean;
+  /** Null when the retailer offers no free-delivery threshold. */
+  freeThreshold: Cents | null;
+  /** The amount measured against the threshold, which may exclude charges. */
+  measuredAmount: Cents;
+}
+
+/** One retailer's complete order: its lines, its charges and its total. */
+export interface PricedRetailerOrder {
+  retailerId: string;
+  lines: PricedLine[];
+  /** Sum of every line total. */
+  itemsTotal: Cents;
+  delivery: DeliveryCharge;
+  /** Verified order-level charges that are not delivery, if any. */
+  appliedCharges: AppliedCharge[];
+  /** `itemsTotal` plus delivery plus order-level charges. */
+  total: Cents;
+  /** Line disclosures merged with any raised by the order's own rules. */
+  disclosures: PricingDisclosure[];
+}
+
+/**
+ * Why a retailer cannot fulfil this order as requested.
+ *
+ * This is a property of the basket, not of the data: the same retailer priced
+ * a different basket successfully. It rules out one candidate plan rather than
+ * the basket, so the optimiser drops the candidate and keeps searching.
+ */
+export interface OrderInfeasibility {
+  code: "minimum-order-not-met";
+  detail: string;
+  /** Extra spend that would satisfy the retailer's minimum order. */
+  shortfall: Cents;
+}
+
+/**
+ * Why no total could be calculated at all.
+ *
+ * An unverified delivery rule or an unresolved mandatory charge must never
+ * become zero, because a zero would understate a total and could support a
+ * fabricated savings claim (PR-04).
+ */
+export interface PricingUnavailable {
+  code: PricingUnavailableCode;
+  detail: string;
+}
+
+export type PricingUnavailableCode =
+  /** The retailer's delivery rule for the recorded scenario is unverified. */
+  | "delivery-rule-unverified"
+  /** A mandatory charge applies but its amount is unresolved. */
+  | "charge-unresolved"
+  /** The offer is not eligible for use, so it has no usable price. */
+  | "offer-ineligible";
+
+/** The result of pricing one line: a price, or an explained absence of one. */
+export type LinePricingResult =
+  | { status: "priced"; line: PricedLine }
+  | { status: "unavailable"; reason: PricingUnavailable };
+
+/**
+ * The result of pricing one retailer's order.
+ *
+ * `infeasible` and `unavailable` stay distinct so a blocker the basket caused
+ * can be told apart from missing data (section 4, result semantics).
+ */
+export type RetailerOrderPricingResult =
+  | { status: "priced"; order: PricedRetailerOrder }
+  | { status: "infeasible"; reason: OrderInfeasibility }
+  | { status: "unavailable"; reason: PricingUnavailable };
+
+/**
+ * A caller broke the module's contract.
+ *
+ * Distinct from every result status above, which describe real pricing
+ * outcomes. The API validates requests against the contract schemas before
+ * pricing, so this reaching production is a bug to fix, not a state to render.
+ */
+export class PricingContractError extends Error {
+  override readonly name = "PricingContractError";
+}

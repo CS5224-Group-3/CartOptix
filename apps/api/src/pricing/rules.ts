@@ -1,4 +1,4 @@
-import type { Cents } from "@cartoptix/contracts";
+import type { Cents } from "./results.ts";
 
 /**
  * The seed-shaped inputs the pricing module calculates from.
@@ -61,45 +61,6 @@ export interface ExcludedPromotionRule {
 }
 
 /**
- * An approved same-product multibuy: N qualifying packs for a fixed price.
- *
- * Multibuys are optional for the MVP (PR-03) and none is approved yet, so in
- * practice no offer carries one. The rule is modelled and tested now so that
- * adopting one later is a data change rather than a code change.
- *
- * The bundle price is charged whole. Nothing divides it by `packsPerBundle`,
- * so no rounding rule is needed and none is invented (section 4).
- */
-export interface BundlePromotionRule {
-  listingId: string;
-  /** Packs that must be bought together to trigger `bundlePrice`. */
-  packsPerBundle: number;
-  /** Price for one whole bundle. */
-  bundlePrice: Cents;
-  /**
-   * How many bundles one order may claim. Null means no verified cap.
-   *
-   * Unlimited repetition is never inferred from "Any N" wording; a null here
-   * means curation verified that no cap applies (PR-03).
-   */
-  maxBundles: number | null;
-  /**
-   * Dataset this rule was approved for.
-   *
-   * Eligibility comes from the approved seed, never the runtime clock, so the
-   * same basket and seed price identically as the calendar advances (PR-03).
-   */
-  datasetId: string;
-  /**
-   * Validity wording captured from the source, kept as internal provenance.
-   *
-   * It is never parsed, compared against a date, or shown to a shopper: doing
-   * so would turn captured text into a live-validity claim (PR-03, PR-06).
-   */
-  capturedValidityTerms?: string;
-}
-
-/**
  * One retailer's delivery rule for the single documented Singapore scenario:
  * a declared serviceable location, standard delivery, non-member pricing
  * (PR-04).
@@ -134,14 +95,8 @@ export interface DeliveryRule {
  */
 export interface ThresholdBasis {
   /**
-   * `paid` counts what the shopper pays for items.
-   *
-   * `undiscounted` counts the packs at their per-pack price before any bundle
-   * promotion this module applied. It does not mean the source "original
-   * price" column, which is descriptive evidence and is never used to compute
-   * anything (PR-03).
+   * Whether mandatory item charges, such as a deposit the price excludes,
+   * count toward the free-delivery threshold and the minimum order.
    */
-  amount: "paid" | "undiscounted";
-  /** Whether mandatory item charges count toward the thresholds. */
   includesMandatoryCharges: boolean;
 }

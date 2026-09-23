@@ -1,4 +1,4 @@
-import type { Cents } from "@cartoptix/contracts";
+import type { Cents } from "./results.ts";
 
 /**
  * Integer-cent money handling for the pricing module.

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { priceLine } from "../../src/pricing/line.ts";
+import { PricingContractError } from "../../src/pricing/results.ts";
 import { loadLineFixture, lookup } from "./fixtures.ts";
 
 /**
@@ -15,33 +16,25 @@ describe("priceLine", () => {
   for (const scenario of fixture.scenarios) {
     it(scenario.name, () => {
       const offer = lookup(fixture.offers, scenario.offer, "offer");
-      const bundle =
-        scenario.bundle === undefined
-          ? undefined
-          : lookup(fixture.bundles, scenario.bundle, "bundle");
-
-      const result = priceLine({
-        offer,
-        packs: scenario.packs,
-        datasetId: fixture.datasetId,
-        bundle,
-      });
-
+      const result = priceLine({ offer, packs: scenario.packs });
       const expected = scenario.expect;
+
       expect(result.status).toBe(expected.status);
 
-      if (expected.status === "unavailable" || result.status === "unavailable") {
-        if (result.status !== "unavailable" || expected.status !== "unavailable") {
-          throw new Error("Expected both the scenario and the result to be unavailable");
+      if (expected.status === "unavailable") {
+        if (result.status !== "unavailable") {
+          throw new Error("Expected the line to be unavailable");
         }
         expect(result.reason.code).toBe(expected.code);
         expect(result.reason.detail).not.toBe("");
         return;
       }
 
+      if (result.status !== "priced") {
+        throw new Error("Expected the line to be priced");
+      }
       const { line } = result;
       expect(line.packsSubtotal).toBe(expected.packsSubtotal);
-      expect(line.undiscountedPacksSubtotal).toBe(expected.undiscountedPacksSubtotal);
       expect(line.total).toBe(expected.total);
       expect(line.packsBreakdown).toEqual(expected.packsBreakdown);
       expect(line.appliedCharges).toEqual(expected.appliedCharges);
@@ -59,36 +52,29 @@ describe("priceLine", () => {
     });
   }
 
-  it("never prices a bundle above the per-pack route for any supported quantity", () => {
-    // PR-05 forbids returning a more expensive result than one that exists, so
-    // this holds across the whole 1-20 pack range, not just the fixture cases.
-    const offer = lookup(fixture.offers, "rice", "offer");
-    const bundle = lookup(fixture.bundles, "riceThreeForThirty", "bundle");
+  it("prices every supported quantity without drift", () => {
+    const offer = lookup(fixture.offers, "milk", "offer");
 
     for (let packs = 1; packs <= 20; packs += 1) {
-      const withBundle = priceLine({ offer, packs, datasetId: fixture.datasetId, bundle });
-      const withoutBundle = priceLine({ offer, packs, datasetId: fixture.datasetId });
-
-      if (withBundle.status !== "priced" || withoutBundle.status !== "priced") {
-        throw new Error(`Expected both routes to price ${packs} packs`);
+      const result = priceLine({ offer, packs });
+      if (result.status !== "priced") {
+        throw new Error(`Expected ${packs} packs to price`);
       }
-      expect(withBundle.line.total).toBeLessThanOrEqual(withoutBundle.line.total);
+      expect(result.line.total).toBe(offer.unitPrice * packs);
+      expect(Number.isSafeInteger(result.line.total)).toBe(true);
     }
   });
 
-  it("never divides a bundle price into a fraction of a cent", () => {
-    // Seven packs against a three-pack bundle is the case a per-pack average
-    // would fail: 3000 / 3 is exact, but 3000 / 7 is not.
-    const offer = lookup(fixture.offers, "rice", "offer");
-    const bundle = lookup(fixture.bundles, "riceThreeForThirty", "bundle");
+  describe("caller mistakes", () => {
+    // These are not pricing outcomes. The API validates a request against the
+    // contract schema before pricing runs, so reaching the module with one is
+    // a bug, and a thrown error keeps the result union to real outcomes.
+    const offer = lookup(fixture.offers, "milk", "offer");
 
-    const result = priceLine({ offer, packs: 7, datasetId: fixture.datasetId, bundle });
-    if (result.status !== "priced") {
-      throw new Error("Expected the line to be priced");
-    }
-
-    for (const segment of result.line.packsBreakdown) {
-      expect(Number.isSafeInteger(segment.amount)).toBe(true);
+    for (const packs of [0, -1, 21, 1.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      it(`throws rather than pricing ${packs} packs`, () => {
+        expect(() => priceLine({ offer, packs })).toThrow(PricingContractError);
+      });
     }
   });
 });

@@ -21,22 +21,13 @@ function priceEverything(): unknown {
     priceLine({
       offer: lookup(lineFixture.offers, scenario.offer, "offer"),
       packs: scenario.packs,
-      datasetId: lineFixture.datasetId,
-      bundle:
-        scenario.bundle === undefined
-          ? undefined
-          : lookup(lineFixture.bundles, scenario.bundle, "bundle"),
     }),
   );
 
   const orders = orderFixture.scenarios.map((scenario) => {
     const delivery = lookup(orderFixture.retailers, scenario.retailer, "retailer");
     const priced = scenario.lines.flatMap(({ offer, packs }) => {
-      const result = priceLine({
-        offer: lookup(orderFixture.offers, offer, "offer"),
-        packs,
-        datasetId: orderFixture.datasetId,
-      });
+      const result = priceLine({ offer: lookup(orderFixture.offers, offer, "offer"), packs });
       return result.status === "priced" ? [result.line] : [];
     });
 
@@ -68,19 +59,17 @@ describe("pricing determinism", () => {
     expect(late).toEqual(early);
   });
 
-  it("prices a promotion identically after its captured validity wording would have lapsed", () => {
+  it("prices an offer carrying an excluded promotion identically decades apart", () => {
     vi.useFakeTimers();
     const offer = lookup(lineFixture.offers, "rice", "offer");
-    const bundle = lookup(lineFixture.bundles, "riceThreeForThirty", "bundle");
-    expect(bundle.capturedValidityTerms).toBeDefined();
 
     vi.setSystemTime(new Date("2026-01-01T00:00:00Z"));
-    const duringTerms = priceLine({ offer, packs: 7, datasetId: lineFixture.datasetId, bundle });
+    const now = priceLine({ offer, packs: 7 });
 
     vi.setSystemTime(new Date("2099-12-31T23:59:59Z"));
-    const longAfterTerms = priceLine({ offer, packs: 7, datasetId: lineFixture.datasetId, bundle });
+    const muchLater = priceLine({ offer, packs: 7 });
 
-    expect(longAfterTerms).toEqual(duringTerms);
+    expect(muchLater).toEqual(now);
   });
 
   it("repeats itself exactly when called many times", () => {

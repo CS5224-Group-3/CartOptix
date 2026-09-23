@@ -1,12 +1,13 @@
-import type {
-  AppliedCharge,
-  Cents,
-  DeliveryCharge,
-  PricedLine,
-  PricingDisclosure,
-  RetailerOrderPricingResult,
-} from "@cartoptix/contracts";
 import { isCents, sumCents } from "./money.ts";
+import {
+  type AppliedCharge,
+  type Cents,
+  type DeliveryCharge,
+  type PricedLine,
+  PricingContractError,
+  type PricingDisclosure,
+  type RetailerOrderPricingResult,
+} from "./results.ts";
 import type { DeliveryRule, MandatoryChargeRule, ThresholdBasis } from "./rules.ts";
 
 /**
@@ -42,22 +43,18 @@ const FREE_DELIVERY_BOUNDARY_IS_INCLUSIVE = true;
 export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrderPricingResult {
   const { retailerId, lines, delivery, datasetId } = input;
 
+  // Both checks below catch a caller assembling an order wrongly, which no
+  // shopper request can produce on its own, so they throw rather than
+  // returning a status the interface would have to render.
   if (lines.length === 0) {
-    return {
-      status: "unavailable",
-      reason: { code: "invalid-request", detail: "An order must contain at least one line" },
-    };
+    throw new PricingContractError("An order must contain at least one line");
   }
 
   const foreign = lines.find((line) => line.retailerId !== retailerId);
   if (foreign !== undefined) {
-    return {
-      status: "unavailable",
-      reason: {
-        code: "invalid-request",
-        detail: `Line for listing ${foreign.listingId} belongs to retailer ${foreign.retailerId}, not ${retailerId}`,
-      },
-    };
+    throw new PricingContractError(
+      `Line for listing ${foreign.listingId} belongs to retailer ${foreign.retailerId}, not ${retailerId}`,
+    );
   }
 
   if (delivery.retailerId !== retailerId || delivery.datasetId !== datasetId) {
@@ -145,16 +142,14 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
  * minimum order.
  *
  * Retailers do not share a convention, so the basis travels with the rule
- * rather than being assumed here (PR-04). Both thresholds use the one basis;
- * if evidence later shows a retailer measures them differently, the rule gains
- * a second basis rather than this function gaining a guess.
+ * rather than being assumed here (PR-04). Today it decides one thing: whether
+ * mandatory charges count. Both the free-delivery threshold and the minimum
+ * order use the one basis; if evidence later shows a retailer measures them
+ * differently, the rule gains a second basis rather than this function gaining
+ * a guess.
  */
 function measureAgainstThresholds(lines: readonly PricedLine[], basis: ThresholdBasis): Cents {
-  const items = sumCents(
-    lines.map((line) =>
-      basis.amount === "paid" ? line.packsSubtotal : line.undiscountedPacksSubtotal,
-    ),
-  );
+  const items = sumCents(lines.map((line) => line.packsSubtotal));
 
   if (!basis.includesMandatoryCharges) {
     return items;
