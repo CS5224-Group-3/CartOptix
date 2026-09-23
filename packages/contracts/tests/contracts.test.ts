@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import * as fixtures from "../src/fixtures.ts";
 import {
   BasketCompareRequestSchema,
+  type BasketCompareResponse,
   BasketCompareResponseSchema,
   CatalogueResponseSchema,
   duplicateProductIds,
@@ -14,10 +15,12 @@ import {
   ProductsResponseSchema,
 } from "../src/index.ts";
 
-const comparisons = [
-  fixtures.splitWinsExample,
-  fixtures.singleRetailerWinsExample,
-  fixtures.missingBaselineExample,
+type BestFound = Extract<BasketCompareResponse, { status: "best_found" }>;
+
+const comparisons: [string, BestFound][] = [
+  ["split wins", fixtures.splitWinsExample],
+  ["single retailer wins", fixtures.singleRetailerWinsExample],
+  ["missing baseline", fixtures.missingBaselineExample],
 ];
 
 describe("fixtures match their schemas", () => {
@@ -32,7 +35,6 @@ describe("fixtures match their schemas", () => {
     ["missing baseline", BasketCompareResponseSchema, fixtures.missingBaselineExample],
     ["no plan found", BasketCompareResponseSchema, fixtures.noPlanFoundExample],
     ["proven infeasible", BasketCompareResponseSchema, fixtures.provenInfeasibleExample],
-    ["dataset conflict", ErrorResponseSchema, fixtures.datasetConflictExample],
     ["duplicate lines", ErrorResponseSchema, fixtures.duplicateLinesExample],
     ["service error", ErrorResponseSchema, fixtures.serviceErrorExample],
   ];
@@ -45,7 +47,6 @@ describe("fixtures match their schemas", () => {
 describe("request limits", () => {
   it("accepts 50 lines of 20 packs with 3 retailers", () => {
     const request = {
-      datasetId: "fixture-v1",
       lines: Array.from({ length: 50 }, (_, i) => ({ productId: `product-${i}`, quantity: 20 })),
       maxRetailers: 3,
     };
@@ -61,13 +62,12 @@ describe("request limits", () => {
     expect(duplicateProductIds(fixtures.basketRequestExample)).toEqual([]);
   });
 
-  it("requires a dataset and a 1–20 offer quantity", () => {
-    expect(Value.Check(OffersQuerySchema, { datasetId: "fixture-v1", quantity: 20 })).toBe(true);
-    expect(Value.Check(OffersQuerySchema, { datasetId: "fixture-v1", quantity: 21 })).toBe(false);
-    expect(Value.Check(OffersQuerySchema, { quantity: 1 })).toBe(false);
-    expect(Value.Check(ProductsQuerySchema, { datasetId: "fixture-v1", pageSize: 101 })).toBe(
-      false,
-    );
+  it("requires a 1–20 offer quantity and caps page size", () => {
+    expect(Value.Check(OffersQuerySchema, { quantity: 20 })).toBe(true);
+    expect(Value.Check(OffersQuerySchema, { quantity: 21 })).toBe(false);
+    expect(Value.Check(OffersQuerySchema, {})).toBe(false);
+    expect(Value.Check(ProductsQuerySchema, {})).toBe(true);
+    expect(Value.Check(ProductsQuerySchema, { pageSize: 101 })).toBe(false);
   });
 
   it("rejects fractional and negative cents", () => {
@@ -90,7 +90,7 @@ describe("contract rules", () => {
     expect(Value.Check(ProductsResponseSchema, fixtures.serviceErrorExample)).toBe(false);
   });
 
-  it.each(comparisons)("$datasetId totals, savings and recommendation agree", (result) => {
+  it.each(comparisons)("%s: totals, savings and recommendation agree", (_name, result) => {
     const recommended = result.recommended === "split" ? result.bestSplit : result.baseline;
     expect(recommended).not.toBeNull();
 

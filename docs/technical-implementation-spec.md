@@ -60,7 +60,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 ### Runtime boundaries
 
-Use one backend application with catalogue, pricing, optimisation, import and click-event modules. Keep API instances stateless: basket requests contain product IDs, quantities, retailer limit and dataset ID. Do not rely on instance memory or local files for persistent user state.
+Use one backend application with catalogue, pricing, optimisation, import and click-event modules. Keep API instances stateless: basket requests contain product IDs, quantities and the retailer limit, and the server prices them from the active dataset. Do not rely on instance memory or local files for persistent user state.
 
 ```text
 Development POC
@@ -82,7 +82,7 @@ Serve browser traffic over HTTPS. Keep S3 private, restrict application ingress 
 
 Retailer websites are not runtime dependencies. Import validated seed data through an internal CLI or deployment task, not a public upload endpoint. A live retailer outage does not affect snapshot calculations; relevant serving failures are missing eligible records, invalid imports, database unavailability and application failures.
 
-Imports must be atomic and idempotent. Activate a dataset only after validation and loading succeed. Pin each comparison to one dataset and delivery-rule version. Proposed behaviour for a request using a dataset no longer served: return an explicit version-conflict response and prompt the browser to refresh; never silently mix old basket data with new prices.
+Imports must be atomic and idempotent. Activate a dataset only after validation and loading succeed. Each request reads the active dataset, including its delivery rules, from one consistent database snapshot, so an activation during a request cannot mix versions. Clients do not send a dataset version. The browser basket holds only product IDs and quantities, and the server prices every line itself, so there is no stale client pricing to detect. A product removed by a correction is rejected as unknown. Shoppers see one dataset at a time; evaluation data stays frozen on a best-effort basis (section 3).
 
 ## 3. Data design and curation
 
@@ -134,7 +134,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Delivery scenario/rule | Dataset/retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. |
 | Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
-| Click event | Event ID, retailer/listing/product, server timestamp and dataset ID; no user identity. |
+| Click event | Event ID, retailer/listing/product, and the server-recorded timestamp and active dataset ID; no user identity. |
 
 Retain a clean JSON seed and its validation schema in Git. Protect referential integrity, positive usable prices, valid quantities, unique stable IDs and consistent pack information. Different listings with similar names are not automatically duplicates. Do not deploy all 177,638 raw rows merely because they were scraped.
 
@@ -194,19 +194,19 @@ Missing single-retailer baseline means nullable savings, not zero or a fabricate
 | `GET /api/v1/catalogue` | Dataset ID and kind, retailers, categories and delivery assumptions. No collection-date display field. |
 | `GET /api/v1/products` | Paginated search/category browse of published products. |
 | `GET /api/v1/products/:id/offers?quantity=...` | Quantity-aware eligible offers and shared pricing explanations. |
-| `POST /api/v1/basket/compare` | Dataset ID, lines and retailer limit; complete baselines, best-found/split candidates, statuses and breakdowns. |
+| `POST /api/v1/basket/compare` | Lines and retailer limit; complete baselines, best-found/split candidates, statuses and breakdowns. |
 | `POST /api/v1/events/outbound-click` | Best-effort usage event for a known listing and dataset. |
 | `GET /health/live`, `GET /health/ready` | Process health; database and active-dataset readiness. Not substitutes for measured shopper API success. |
 
-Schemas must validate IDs, integer quantities, retailer limits and dataset versions. Client-submitted prices are never trusted. Product links come from approved listing records; avoid an arbitrary redirect service.
+Schemas must validate IDs, integer quantities and retailer limits. Client-submitted prices are never trusted. Product links come from approved listing records; avoid an arbitrary redirect service.
 
 Contract decisions (#5):
 
 - **Money and limits.** Integer SGD cents; 1–50 lines, 1–20 whole packs per line, 1–3 retailers.
-- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. Data-dependent requests send `datasetId` so the stateless API can tell whether the browser's basket was built from the data it now serves; the API serves only the active dataset. An unknown or stale ID returns 409 `dataset_conflict`. The client then refreshes the catalogue and asks the shopper to compare again, rather than silently resubmitting. A delivery-rule change produces a new dataset ID.
+- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. The server uses it to activate imports (#4), stamp click events (#19) and record which seed produced evaluation results. Only the catalogue response exposes it, with its `dataKind`; requests do not carry it and there is no dataset-conflict response. A delivery-rule change produces a new dataset ID.
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
 - **Comparison results.** `best_found` carries `baseline` and `bestSplit` (either may be null, but not both), `recommended`, `savingsCents` and `searchLimitReached`. The recommended plan never costs more than the baseline. `savingsCents` is the baseline total minus the recommended total, and is null exactly when there is no baseline. `proven_infeasible` currently covers only `no_eligible_offer`. Other impossibility proofs return `no_plan_found` until #12 defines them, because that status never claims impossibility.
-- **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found`, `dataset_conflict` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
+- **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
 - **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised, with `includedInPrice` marking those already in the price, so nothing is counted twice. An unknown delivery rule is `unavailable`, never a zero fee. The pricing module's internal inputs belong to #8; an earlier draft is in commit `0aec742`.
 - **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer is the exported `SNAPSHOT_DISCLAIMER` constant, not a response field.
 - **Open with #4.** Product, listing and category IDs are opaque strings of 1–128 characters. Their stable values and the category mapping still need agreement with the seed owner.
@@ -263,7 +263,7 @@ Choose run durations and sample sizes before execution. Low-RPS endpoints need s
 
 ### Correctness, quality and user evidence
 
-Reference tests cover exact quantities, multibuy remainders/limits where supported, delivery threshold boundaries, minimum orders, mandatory charges, ties, missing baseline, unavailable offers, heuristic exhaustion, stale datasets and infrastructure errors. Include naive allocations that violate minimum orders, testing bounded repair and honest unresolved-search outcomes. Verify result arithmetic independently and compare small baskets with exhaustive enumeration. Report optimality gaps, missed feasible plans and savings found; do not require mathematical optimality for all production requests.
+Reference tests cover exact quantities, multibuy remainders/limits where supported, delivery threshold boundaries, minimum orders, mandatory charges, ties, missing baseline, unavailable offers, heuristic exhaustion and infrastructure errors. Include naive allocations that violate minimum orders, testing bounded repair and honest unresolved-search outcomes. Verify result arithmetic independently and compare small baskets with exhaustive enumeration. Report optimality gaps, missed feasible plans and savings found; do not require mathematical optimality for all production requests.
 
 Recruit 10–15 regular online grocery shoppers for the formative study described in the product specification. Evaluate understanding and perceived value, including cart reconstruction effort. Record negative findings and small fixes; use broader feedback for the report's future-work section. Representative baskets must not be selected solely for savings. Report catalogue overlap and zero-saving outcomes.
 
@@ -282,7 +282,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### A2 — Define the seed schema and public API contracts
 - **Blocked by:** A1.
-- **Work:** Define versioned seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling and version conflicts.
+- **Work:** Define versioned seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling and dataset-version handling.
 - **Acceptance:** Valid and invalid examples are executable contract fixtures; money uses integer cents; missing baseline and heuristic failure are distinct; no collection-date UI contract is introduced.
 
 ### WS-B — Data curation and persistence
@@ -354,11 +354,11 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### D3 — Deliver basket comparison and outcome presentation
 - **Blocked by:** D2, C4.
 - **Work:** Integrate the comparison API with baseline/split views, itemised retailer receipts, nullable savings and all business/error states.
-- **Acceptance:** Complete plans appear side by side where available; ties favour fewer orders; missing baseline, proven blockers, no-plan and operational failures are distinct; stale dataset responses prompt refresh.
+- **Acceptance:** Complete plans appear side by side where available; ties favour fewer orders; missing baseline, proven blockers, no-plan and operational failures are distinct.
 
 #### D4 — Add purchase links and non-blocking click recording
 - **Blocked by:** D1, B4.
-- **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, timestamp and dataset reference. Collect no user identity for this feature.
+- **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, plus a server-recorded timestamp and dataset ID. Collect no user identity for this feature.
 - **Acceptance:** Known-listing validation prevents arbitrary redirects/events; navigation works when tracking fails; stored events are labelled usage rather than conversions or billable clicks.
 
 #### D5 — Verify complete shopper journeys

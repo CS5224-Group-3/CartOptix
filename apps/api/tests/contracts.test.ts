@@ -45,12 +45,12 @@ afterEach(async () => {
 
 describe("basket comparison contract in Fastify", () => {
   it.each([
-    splitWinsExample,
-    singleRetailerWinsExample,
-    missingBaselineExample,
-    noPlanFoundExample,
-    provenInfeasibleExample,
-  ])("serialises $status for $datasetId unchanged", async (example) => {
+    ["split wins", splitWinsExample],
+    ["single retailer wins", singleRetailerWinsExample],
+    ["missing baseline", missingBaselineExample],
+    ["no plan found", noPlanFoundExample],
+    ["proven infeasible", provenInfeasibleExample],
+  ] as const)("serialises %s unchanged", async (_name, example) => {
     server = compareServer(example);
     const response = await server.inject({
       method: "POST",

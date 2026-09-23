@@ -1,6 +1,8 @@
 /**
  * Synthetic examples for building and testing against the contracts before real
  * endpoints and the curated seed exist. No value is a verified retailer price or rule.
+ * Each comparison example is a separate scenario, not an alternative result for
+ * the same data.
  */
 import type {
   BasketCompareRequest,
@@ -72,14 +74,12 @@ export const catalogueExample = {
 } satisfies CatalogueResponse;
 
 export const productsExample = {
-  datasetId: fixtureDatasetId,
   products: [drinkProduct, riceProduct],
   total: 2,
 } satisfies ProductsResponse;
 
 /** No match is a successful empty result, not an error. */
 export const emptyProductsExample = {
-  datasetId: fixtureDatasetId,
   products: [],
   total: 0,
 } satisfies ProductsResponse;
@@ -117,7 +117,6 @@ const drinkAtRedmart = line("fixture-drink", "redmart", 200);
 /** Two packs of rice: one offer has a deposit already in its price and an
  * excluded promotion. Offers are cheapest first. */
 export const offersExample = {
-  datasetId: fixtureDatasetId,
   product: riceProduct,
   quantity: 2,
   offers: [
@@ -147,7 +146,6 @@ export const offersExample = {
 } satisfies OffersResponse;
 
 export const basketRequestExample = {
-  datasetId: fixtureDatasetId,
   lines: [
     { productId: "fixture-drink", quantity: 1 },
     { productId: "fixture-rice", quantity: 1 },
@@ -159,7 +157,6 @@ const redmartBaseline = plan(order("redmart", [drinkAtRedmart, riceAtRedmart]));
 
 /** Splitting saves 200 cents against the single-retailer baseline. */
 export const splitWinsExample = {
-  datasetId: fixtureDatasetId,
   status: "best_found",
   searchLimitReached: false,
   baseline: redmartBaseline,
@@ -170,7 +167,6 @@ export const splitWinsExample = {
 
 /** A split exists but a 500-cent delivery fee makes it dearer, so one retailer wins. */
 export const singleRetailerWinsExample = {
-  datasetId: "fixture-fairprice-delivery-fee",
   status: "best_found",
   searchLimitReached: false,
   baseline: redmartBaseline,
@@ -181,7 +177,6 @@ export const singleRetailerWinsExample = {
 
 /** No retailer stocks both products, so savings are unavailable, not zero. */
 export const missingBaselineExample = {
-  datasetId: "fixture-no-single-retailer",
   status: "best_found",
   searchLimitReached: false,
   baseline: null,
@@ -191,24 +186,14 @@ export const missingBaselineExample = {
 } satisfies BasketCompareResponse;
 
 export const noPlanFoundExample = {
-  datasetId: "fixture-search-exhausted",
   status: "no_plan_found",
   searchLimitReached: true,
 } satisfies BasketCompareResponse;
 
 export const provenInfeasibleExample = {
-  datasetId: "fixture-rice-unavailable",
   status: "proven_infeasible",
   blocker: { code: "no_eligible_offer", productIds: ["fixture-rice"] },
 } satisfies BasketCompareResponse;
-
-/** 409: the client refreshes the catalogue, then asks the shopper to recompare. */
-export const datasetConflictExample = {
-  error: {
-    code: "dataset_conflict",
-    message: "The catalogue has changed. Refresh before comparing again.",
-  },
-} satisfies ErrorResponse;
 
 /** 400: sent instead of merging a product listed twice. */
 export const duplicateLinesExample = {
@@ -238,7 +223,7 @@ export const invalidBasketRequests: { name: string; value: unknown }[] = [
     name: `maxRetailers ${maxRetailers}`,
     value: { ...basketRequestExample, maxRetailers },
   })),
-  { name: "missing datasetId", value: { lines: basketRequestExample.lines, maxRetailers: 2 } },
+  { name: "missing maxRetailers", value: { lines: basketRequestExample.lines } },
 ];
 
 export const duplicateLinesRequest = {

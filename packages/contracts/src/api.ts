@@ -30,6 +30,8 @@ export const DeliveryRuleSchema = Type.Union([
 export type DeliveryRule = Static<typeof DeliveryRuleSchema>;
 
 export const CatalogueResponseSchema = closedObject({
+  /** The active seed version, for disclosure and evaluation records. Clients do
+   * not send it back: the server prices every request from the active dataset. */
   dataset: closedObject({
     datasetId: IdSchema,
     /** Synthetic fixtures must be distinguishable from the curated seed (PR-02). */
@@ -48,7 +50,6 @@ export type CatalogueResponse = Static<typeof CatalogueResponseSchema>;
 // Products and offers
 
 export const ProductsQuerySchema = closedObject({
-  datasetId: IdSchema,
   q: Type.Optional(Type.String({ minLength: 1, maxLength: 100 })),
   categoryId: Type.Optional(IdSchema),
   page: Type.Optional(Type.Integer({ minimum: 1, default: 1 })),
@@ -57,7 +58,6 @@ export const ProductsQuerySchema = closedObject({
 export type ProductsQuery = Static<typeof ProductsQuerySchema>;
 
 export const ProductsResponseSchema = closedObject({
-  datasetId: IdSchema,
   products: Type.Array(ProductSchema),
   /** Matches before pagination. */
   total: Type.Integer({ minimum: 0 }),
@@ -65,12 +65,11 @@ export const ProductsResponseSchema = closedObject({
 export type ProductsResponse = Static<typeof ProductsResponseSchema>;
 
 export const OffersParamsSchema = closedObject({ id: IdSchema });
-export const OffersQuerySchema = closedObject({ datasetId: IdSchema, quantity: QuantitySchema });
+export const OffersQuerySchema = closedObject({ quantity: QuantitySchema });
 export type OffersParams = Static<typeof OffersParamsSchema>;
 export type OffersQuery = Static<typeof OffersQuerySchema>;
 
 export const OffersResponseSchema = closedObject({
-  datasetId: IdSchema,
   product: ProductSchema,
   quantity: QuantitySchema,
   /** Eligible offers only, cheapest first. Empty when the product has none. */
@@ -81,7 +80,6 @@ export type OffersResponse = Static<typeof OffersResponseSchema>;
 // Basket comparison
 
 export const BasketCompareRequestSchema = closedObject({
-  datasetId: IdSchema,
   lines: Type.Array(closedObject({ productId: IdSchema, quantity: QuantitySchema }), {
     minItems: 1,
     maxItems: 50,
@@ -119,7 +117,6 @@ export type Plan = Static<typeof PlanSchema>;
 
 export const BasketCompareResponseSchema = Type.Union([
   closedObject({
-    datasetId: IdSchema,
     /** A validated plan; optimality is not claimed. */
     status: Type.Literal("best_found"),
     searchLimitReached: Type.Boolean(),
@@ -133,7 +130,6 @@ export const BasketCompareResponseSchema = Type.Union([
     savingsCents: nullable(CentsSchema),
   }),
   closedObject({
-    datasetId: IdSchema,
     /** Impossibility is established, not merely unfound. */
     status: Type.Literal("proven_infeasible"),
     blocker: closedObject({
@@ -142,7 +138,6 @@ export const BasketCompareResponseSchema = Type.Union([
     }),
   }),
   closedObject({
-    datasetId: IdSchema,
     /** Search found no valid plan but did not prove that none exists. */
     status: Type.Literal("no_plan_found"),
     searchLimitReached: Type.Boolean(),
@@ -154,14 +149,13 @@ export type BasketCompareResponse = Static<typeof BasketCompareResponseSchema>;
 
 /**
  * Every non-2xx response. Codes exist only where the client behaves differently:
- * fix the input, show "not found", refresh a stale dataset, or offer a retry.
+ * fix the input, show "not found", or offer a retry.
  */
 export const ErrorResponseSchema = closedObject({
   error: closedObject({
     code: Type.Union([
       Type.Literal("invalid_request"),
       Type.Literal("not_found"),
-      Type.Literal("dataset_conflict"),
       Type.Literal("service_error"),
     ]),
     message: Type.String({ minLength: 1 }),
