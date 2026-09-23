@@ -9,7 +9,7 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
-    "verbatimModuleSyntax": true,
+    //"verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "isolatedModules": true,
     "rewriteRelativeImportExtensions": true,
