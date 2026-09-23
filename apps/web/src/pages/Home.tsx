@@ -1,3 +1,4 @@
+// Renders the CartOptix basket comparison home page.
 import { ArrowRight, Check, ChevronRight, CircleHelp, Leaf, ShieldCheck, Sparkles, Split, Truck, WalletCards } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { DEMO_BASKET, RETAILERS } from "@cartoptix/contracts/domain/cartoptix";

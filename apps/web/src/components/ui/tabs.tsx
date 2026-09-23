@@ -1,3 +1,4 @@
+// Provides the shared tabs UI primitives.
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 

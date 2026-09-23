@@ -1,3 +1,4 @@
+// Renders the fallback page shown for unknown web routes.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, Home } from "lucide-react";

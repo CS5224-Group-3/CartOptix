@@ -1,3 +1,4 @@
+// Provides the shared command-palette UI primitives.
 "use client";
 
 import * as React from "react";

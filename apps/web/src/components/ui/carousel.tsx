@@ -1,3 +1,4 @@
+// Provides the shared carousel UI primitives.
 import * as React from "react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,

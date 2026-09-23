@@ -1,3 +1,4 @@
+// Provides the application dashboard frame, navigation, and responsive content layout.
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {

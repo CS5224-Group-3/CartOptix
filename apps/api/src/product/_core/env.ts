@@ -1,3 +1,4 @@
+// Loads and validates environment-backed server configuration values.
 export const ENV = {
   appId: process.env.VITE_APP_ID ?? "",
   cookieSecret: process.env.JWT_SECRET ?? "",

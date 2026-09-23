@@ -1,3 +1,4 @@
+// Starts the Express API server, registers health and tRPC routes, and handles graceful shutdown.
 import "dotenv/config";
 import express from "express";
 import { createServer } from "node:http";

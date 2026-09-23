@@ -1,3 +1,4 @@
+// Registers OAuth login and callback routes for the API server.
 import { COOKIE_NAME, ONE_YEAR_MS, OAUTH_STATE_COOKIE, decodeOAuthState } from "@cartoptix/contracts/domain/const";
 import { parse as parseCookieHeader } from "cookie";
 import type { Express, Request, Response } from "express";

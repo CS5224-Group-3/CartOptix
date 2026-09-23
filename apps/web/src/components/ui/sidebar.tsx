@@ -1,3 +1,4 @@
+// Provides the shared responsive sidebar UI primitives and state helpers.
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -731,4 +732,3 @@ export {
   SidebarTrigger,
   useSidebar
 };
-

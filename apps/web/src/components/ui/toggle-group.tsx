@@ -1,3 +1,4 @@
+// Provides the shared toggle-group UI primitives.
 "use client";
 
 import * as React from "react";

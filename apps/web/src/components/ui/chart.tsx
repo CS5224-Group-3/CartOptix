@@ -1,3 +1,4 @@
+// Provides the shared chart wrapper and legend UI components.
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 

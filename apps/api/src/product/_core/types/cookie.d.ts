@@ -1,3 +1,4 @@
+// Extends cookie-related TypeScript declarations used by the API.
 declare module "cookie" {
   export function parse(
     str: string,

@@ -1,3 +1,4 @@
+// Provides server SDK helpers for storage, authentication, and platform integrations.
 import { AXIOS_TIMEOUT_MS, COOKIE_NAME, ONE_YEAR_MS, decodeOAuthState } from "@cartoptix/contracts/domain/const";
 import { ForbiddenError } from "@cartoptix/contracts/domain/_core/errors";
 import axios, { type AxiosInstance } from "axios";

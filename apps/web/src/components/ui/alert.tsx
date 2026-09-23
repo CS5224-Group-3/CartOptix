@@ -1,3 +1,4 @@
+// Provides the shared alert UI primitives and variants.
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 

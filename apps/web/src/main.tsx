@@ -1,3 +1,4 @@
+// Bootstraps React, configures the tRPC/query clients, and mounts the web application.
 import { trpc } from "@/lib/trpc";
 import { COOKIE_NAME, UNAUTHED_ERR_MSG } from '@cartoptix/contracts/domain/const';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

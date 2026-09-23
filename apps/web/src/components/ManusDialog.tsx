@@ -1,3 +1,4 @@
+// Renders the integration dialog used for the Manus preview experience.
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";

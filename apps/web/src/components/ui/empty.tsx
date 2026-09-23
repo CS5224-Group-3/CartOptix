@@ -1,3 +1,4 @@
+// Provides the shared empty-state UI primitives.
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";

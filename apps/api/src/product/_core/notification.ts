@@ -1,3 +1,4 @@
+// Provides the server notification integration used by product features.
 import { TRPCError } from "@trpc/server";
 import { ENV } from "./env";
 

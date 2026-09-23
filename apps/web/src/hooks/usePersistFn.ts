@@ -1,3 +1,4 @@
+// Exposes a stable callback that always invokes the latest function implementation.
 import { useRef } from "react";
 
 type noop = (...args: any[]) => any;

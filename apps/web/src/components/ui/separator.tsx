@@ -1,3 +1,4 @@
+// Provides the shared visual separator UI primitive.
 import * as React from "react";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 

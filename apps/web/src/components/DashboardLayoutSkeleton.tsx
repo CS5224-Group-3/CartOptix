@@ -1,3 +1,4 @@
+// Renders the loading skeleton for the dashboard layout.
 import { Skeleton } from './ui/skeleton';
 
 export function DashboardLayoutSkeleton() {

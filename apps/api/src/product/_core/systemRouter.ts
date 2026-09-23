@@ -1,3 +1,4 @@
+// Defines system-level tRPC procedures such as health and platform metadata.
 import { z } from "zod";
 import { notifyOwner } from "./notification";
 import { adminProcedure, publicProcedure, router } from "./trpc";

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Starts the local API and web development processes together.
 /**
  * Starts local development: PostgreSQL, then the API and web app together.
  *

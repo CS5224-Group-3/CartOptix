@@ -1,3 +1,4 @@
+// Configures the web Vite build, aliases, development proxy, and browser test environment.
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";

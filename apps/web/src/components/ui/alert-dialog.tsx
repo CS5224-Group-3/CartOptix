@@ -1,3 +1,4 @@
+// Provides the shared alert-dialog UI primitives.
 import * as React from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 

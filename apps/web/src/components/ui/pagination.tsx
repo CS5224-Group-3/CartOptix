@@ -1,3 +1,4 @@
+// Provides the shared pagination UI primitives.
 import * as React from "react";
 import {
   ChevronLeftIcon,

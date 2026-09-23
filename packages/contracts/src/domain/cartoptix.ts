@@ -1,3 +1,4 @@
+// Defines the shared grocery catalogue, retailer offers, and basket comparison domain logic.
 export const RETAILERS = ["RedMart", "FairPrice", "Cold Storage"] as const;
 export type Retailer = (typeof RETAILERS)[number];
 

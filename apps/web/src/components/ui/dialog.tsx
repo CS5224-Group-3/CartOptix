@@ -1,3 +1,4 @@
+// Provides the shared modal dialog UI primitives.
 import { cn } from "@/lib/utils";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
@@ -206,4 +207,3 @@ export {
   DialogTitle,
   DialogTrigger
 };
-

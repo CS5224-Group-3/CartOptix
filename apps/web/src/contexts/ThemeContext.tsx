@@ -1,3 +1,4 @@
+// Provides theme state and theme-switching context to web components.
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "light" | "dark";

@@ -1,3 +1,4 @@
+// Tracks text-composition state for reliable input handling with IMEs.
 import { useRef } from "react";
 import { usePersistFn } from "./usePersistFn";
 

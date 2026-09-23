@@ -1,3 +1,4 @@
+// Provides the shared slide-over sheet UI primitives.
 "use client";
 
 import * as React from "react";

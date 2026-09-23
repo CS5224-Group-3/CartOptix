@@ -1,3 +1,4 @@
+// Provides the shared switch UI primitive.
 import * as React from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 

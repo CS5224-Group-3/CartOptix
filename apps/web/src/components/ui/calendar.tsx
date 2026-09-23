@@ -1,3 +1,4 @@
+// Provides the shared calendar UI component.
 import * as React from "react";
 import {
   ChevronDownIcon,

@@ -1,3 +1,4 @@
+// Builds the request context shared by API procedures, including the current user.
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { User } from "../../drizzle/schema";
 import { sdk } from "./sdk";

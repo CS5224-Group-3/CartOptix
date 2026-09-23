@@ -1,3 +1,4 @@
+// Provides the shared aspect-ratio UI primitive.
 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
 
 function AspectRatio({

@@ -1,3 +1,4 @@
+// Creates the API database client and exposes product-related database access.
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { users, type InsertUser } from "../drizzle/schema";

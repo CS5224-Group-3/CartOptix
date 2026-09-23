@@ -1,3 +1,4 @@
+// Defines the top-level web application shell, routing, and shared providers.
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";

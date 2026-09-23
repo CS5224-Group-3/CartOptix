@@ -1,3 +1,4 @@
+// Provides the shared loading skeleton UI primitive.
 import { cn } from "@/lib/utils";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {

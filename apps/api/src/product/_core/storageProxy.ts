@@ -1,3 +1,4 @@
+// Registers the authenticated proxy used to serve stored files through the API.
 import type { Express } from "express";
 import { ENV } from "./env";
 

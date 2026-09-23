@@ -1,3 +1,4 @@
+// Provides the shared drawer UI primitives for mobile surfaces.
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 

@@ -1,3 +1,4 @@
+// Provides the shared keyboard-shortcut UI primitive.
 import { cn } from "@/lib/utils";
 
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {

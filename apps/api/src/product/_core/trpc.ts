@@ -1,3 +1,4 @@
+// Defines the shared tRPC router and procedure builders for the API.
 import { NOT_ADMIN_ERR_MSG, UNAUTHED_ERR_MSG } from '@cartoptix/contracts/domain/const';
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";

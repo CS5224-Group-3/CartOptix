@@ -1,3 +1,4 @@
+// Provides the web client hook for reading the current authenticated user.
 import { startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";

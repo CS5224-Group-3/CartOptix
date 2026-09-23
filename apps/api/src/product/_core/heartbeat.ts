@@ -1,3 +1,4 @@
+// Implements the API heartbeat or keep-alive operation.
 import { TRPCError } from "@trpc/server";
 import { ENV } from "./env";
 

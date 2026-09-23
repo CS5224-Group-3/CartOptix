@@ -1,3 +1,4 @@
+// Declares the Drizzle database schema for API persistence.
 import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**

@@ -1,3 +1,4 @@
+// Provides the shared card and card-section UI primitives.
 import * as React from "react";
 
 import { cn } from "@/lib/utils";

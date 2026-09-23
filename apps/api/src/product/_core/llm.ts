@@ -1,3 +1,4 @@
+// Provides the server-side integration point for language-model requests.
 import { ENV } from "./env";
 
 export type Role = "system" | "user" | "assistant" | "tool" | "function";

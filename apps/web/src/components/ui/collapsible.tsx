@@ -1,3 +1,4 @@
+// Provides the shared collapsible-panel UI primitives.
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 
 function Collapsible({

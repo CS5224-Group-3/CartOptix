@@ -1,3 +1,4 @@
+// Displays the development showcase for the web component library.
 import {
   Accordion,
   AccordionContent,

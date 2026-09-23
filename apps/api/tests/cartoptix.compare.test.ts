@@ -1,3 +1,4 @@
+// Tests the API comparison procedure against representative basket scenarios.
 import { describe, expect, it } from "vitest";
 import { DEMO_SCENARIOS, compareBasket, getOffers, getOffersForQuantity } from "@cartoptix/contracts/domain/cartoptix";
 

@@ -1,3 +1,4 @@
+// Defines the public tRPC procedures for authentication, catalogue access, comparison, and demos.
 import { COOKIE_NAME } from "@cartoptix/contracts/domain/const";
 import { DEMO_BASKET, DEMO_SCENARIOS, PRODUCTS, compareBasket, getOffersForQuantity, getProduct } from "@cartoptix/contracts/domain/cartoptix";
 import { getSessionCookieOptions } from "./_core/cookies";

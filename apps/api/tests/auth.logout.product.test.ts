@@ -1,3 +1,4 @@
+// Tests that the product API logout procedure clears the authenticated session.
 import { describe, expect, it } from "vitest";
 import { appRouter } from "../src/product/routers.ts";
 import { COOKIE_NAME } from "@cartoptix/contracts/domain/const";
