@@ -1,9 +1,23 @@
 import Type, { type Static } from "typebox";
 import { closedObject, nullable } from "./schema.ts";
 
-/** Opaque, case-sensitive ID. Never infer dates or product identity from it. */
-export const IdSchema = Type.String({ minLength: 1, maxLength: 128 });
+/**
+ * Opaque, case-sensitive ID. Never infer dates or product identity from it.
+ * Limited to URL-safe characters because product IDs appear in request paths.
+ */
+export const IdSchema = Type.String({
+  minLength: 1,
+  maxLength: 128,
+  pattern: "^[A-Za-z0-9][A-Za-z0-9._~-]*$",
+});
 export const CentsSchema = Type.Integer({ minimum: 0, maximum: Number.MAX_SAFE_INTEGER });
+/** A usable price: the spec rejects zero prices as purchasable offers. */
+export const PositiveCentsSchema = Type.Integer({ minimum: 1, maximum: Number.MAX_SAFE_INTEGER });
+
+/** Rendered as an href or src, so only https links are accepted. The API does not
+ * validate most responses, so the importer (#4) must also check each product
+ * link against its retailer's allowed domains. */
+export const HttpsUrlSchema = Type.String({ pattern: "^https://", maxLength: 2048 });
 /** Basket limits (J2), shared so the web client enforces the same bounds as the API. */
 export const MAX_BASKET_LINES = 50;
 export const MIN_PACKS_PER_LINE = 1;
@@ -35,12 +49,15 @@ export const ProductSchema = closedObject({
   variant: Type.String({ minLength: 1 }),
   /** Exact pack configuration as displayed, e.g. "2 × 180 g". */
   packSize: Type.String({ minLength: 1 }),
-  imageUrl: nullable(Type.String()),
+  imageUrl: nullable(HttpsUrlSchema),
 });
 export type Product = Static<typeof ProductSchema>;
 
-/** A mandatory charge on a line, e.g. a deposit. `includedInPrice` charges are
- * already part of `lineTotalCents` and are shown for disclosure only. */
+/**
+ * A mandatory charge on a line, e.g. a deposit, as a total for the line's packs.
+ * `includedInPrice: true` means the unit price already contains it, so it is shown
+ * but not added; `false` means it is added on top of the unit price.
+ */
 export const ItemChargeSchema = closedObject({
   label: Type.String({ minLength: 1 }),
   amountCents: CentsSchema,
@@ -56,11 +73,12 @@ export const OrderChargeSchema = closedObject({
 /** Cost of the requested packs at one retailer, before delivery. */
 const lineCost = {
   listingId: IdSchema,
-  productUrl: Type.String({ minLength: 1 }),
+  productUrl: HttpsUrlSchema,
   priceKind: Type.Union([Type.Literal("ordinary"), Type.Literal("unconditional_sale")]),
-  unitPriceCents: CentsSchema,
+  unitPriceCents: PositiveCentsSchema,
   itemCharges: Type.Array(ItemChargeSchema),
-  lineTotalCents: CentsSchema,
+  /** Unit price × quantity, plus every charge with `includedInPrice: false`. */
+  lineTotalCents: PositiveCentsSchema,
   /** Promotions seen but not applied, e.g. unverified multibuys. */
   excludedPromotions: Type.Array(Type.String({ minLength: 1 })),
 };

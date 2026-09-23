@@ -40,8 +40,12 @@ export const CatalogueResponseSchema = closedObject({
     /** Synthetic fixtures must be distinguishable from the curated seed (PR-02). */
     dataKind: Type.Union([Type.Literal("curated"), Type.Literal("synthetic")]),
   }),
-  retailers: Type.Array(closedObject({ retailerId: RetailerIdSchema, name: Type.String() })),
-  categories: Type.Array(closedObject({ categoryId: IdSchema, name: Type.String() })),
+  retailers: Type.Array(
+    closedObject({ retailerId: RetailerIdSchema, name: Type.String({ minLength: 1 }) }),
+  ),
+  categories: Type.Array(
+    closedObject({ categoryId: IdSchema, name: Type.String({ minLength: 1 }) }),
+  ),
   delivery: closedObject({
     /** The single declared scenario, e.g. location, standard service, non-member. */
     scenario: Type.String({ minLength: 1 }),
@@ -118,19 +122,40 @@ export const PlanSchema = closedObject({
 });
 export type Plan = Static<typeof PlanSchema>;
 
+/**
+ * A validated plan was found; optimality is not claimed. Three shapes, so at least
+ * one plan is always present and `recommended` always names a present plan:
+ * `baseline` is the cheapest complete single-retailer plan, `bestSplit` the best
+ * permitted plan using two or more retailers, and `savingsCents` the baseline total
+ * minus the recommended total. The recommended plan never costs more than the
+ * baseline; the API checks that, since a schema cannot compare totals.
+ */
+const bestFound = { status: Type.Literal("best_found"), searchLimitReached: Type.Boolean() };
+
 export const BasketCompareResponseSchema = Type.Union([
+  /** Only one retailer can serve the basket, or no split was found. */
   closedObject({
-    /** A validated plan; optimality is not claimed. */
-    status: Type.Literal("best_found"),
-    searchLimitReached: Type.Boolean(),
-    /** Cheapest complete single-retailer plan, or null if none exists. */
-    baseline: nullable(PlanSchema),
-    /** Best permitted plan using two or more retailers, or null if none was found. */
-    bestSplit: nullable(PlanSchema),
-    /** Which plan to highlight; it is never null and never costs more than the baseline. */
+    ...bestFound,
+    baseline: PlanSchema,
+    bestSplit: Type.Null(),
+    recommended: Type.Literal("baseline"),
+    savingsCents: Type.Literal(0),
+  }),
+  /** No single retailer can serve the basket, so savings are unavailable. */
+  closedObject({
+    ...bestFound,
+    baseline: Type.Null(),
+    bestSplit: PlanSchema,
+    recommended: Type.Literal("split"),
+    savingsCents: Type.Null(),
+  }),
+  /** Both exist; either may win, and savings are zero when the baseline wins. */
+  closedObject({
+    ...bestFound,
+    baseline: PlanSchema,
+    bestSplit: PlanSchema,
     recommended: Type.Union([Type.Literal("baseline"), Type.Literal("split")]),
-    /** Baseline minus recommended total; null when there is no baseline. */
-    savingsCents: nullable(CentsSchema),
+    savingsCents: CentsSchema,
   }),
   closedObject({
     /** Impossibility is established, not merely unfound. */

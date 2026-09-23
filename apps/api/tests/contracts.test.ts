@@ -5,6 +5,7 @@ import {
   routes,
 } from "@cartoptix/contracts";
 import {
+  baselineOnlyExample,
   basketRequestExample,
   duplicateLinesExample,
   duplicateLinesRequest,
@@ -47,6 +48,7 @@ describe("basket comparison contract in Fastify", () => {
   it.each([
     ["split wins", splitWinsExample],
     ["single retailer wins", singleRetailerWinsExample],
+    ["baseline only", baselineOnlyExample],
     ["missing baseline", missingBaselineExample],
     ["no plan found", noPlanFoundExample],
     ["proven infeasible", provenInfeasibleExample],
