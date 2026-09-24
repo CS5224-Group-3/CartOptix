@@ -6,7 +6,6 @@ import express from "express";
 import { loadConfig } from "./config.ts";
 import { createDatabase } from "./database.ts";
 import { createContext } from "./product/_core/context.ts";
-import { registerStorageProxy } from "./product/_core/storageProxy.ts";
 import { appRouter } from "./product/routers.ts";
 
 const config = loadConfig();
@@ -44,7 +43,6 @@ app.get("/health/ready", async (_request, response) => {
   } as const;
   response.status(body.status === "ok" ? 200 : 503).json(body);
 });
-registerStorageProxy(app);
 app.use("/api/trpc", createExpressMiddleware({ router: appRouter, createContext }));
 
 async function shutdown(signal: string): Promise<void> {

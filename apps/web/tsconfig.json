@@ -5,7 +5,7 @@
     "outDir": "./dist/types",
     "noEmit": false,
     "lib": ["es2024", "dom", "dom.iterable"],
-    "types": ["node", "vite/client", "google.maps"],
+    "types": ["node", "vite/client"],
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "module": "preserve",
@@ -19,7 +19,6 @@
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx", "vite.config.ts"],
   "exclude": [
-    "src/pages/ComponentShowcase.tsx",
     "src/components/ui/calendar.tsx",
     "src/components/ui/chart.tsx",
     "src/components/ui/resizable.tsx"
