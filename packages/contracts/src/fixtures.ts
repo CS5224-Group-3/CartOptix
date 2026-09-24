@@ -21,9 +21,7 @@ export const fixtureDatasetId = "fixture-v1";
 export const riceProduct = {
   productId: "fixture-rice",
   categoryId: "rice-noodles",
-  name: "Fixture rice",
-  brand: "Fixture",
-  variant: "White rice",
+  name: "Fixture White Rice",
   packSize: "1 × 1 kg",
   imageUrl: null,
 } satisfies Product;
@@ -31,9 +29,7 @@ export const riceProduct = {
 export const drinkProduct = {
   productId: "fixture-drink",
   categoryId: "drinks",
-  name: "Fixture drink",
-  brand: "Fixture",
-  variant: "Plain",
+  name: "Fixture Plain Drink",
   packSize: "1 × 500 ml",
   imageUrl: null,
 } satisfies Product;

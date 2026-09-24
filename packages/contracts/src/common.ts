@@ -44,13 +44,20 @@ export type RetailerId = Static<typeof RetailerIdSchema>;
 export const SNAPSHOT_DISCLAIMER =
   "Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.";
 
+/** Shown near every comparison. BCRS container deposits are not modelled in the MVP:
+ * the same 10¢ per container applies at every retailer, so it cannot change which plan
+ * wins, but totals would otherwise understate checkout. */
+export const DEPOSIT_NOTICE =
+  "Totals exclude the refundable 10¢ container deposit charged at checkout.";
+
 export const ProductSchema = closedObject({
   productId: IdSchema,
   categoryId: IdSchema,
+  /** Display name, carrying brand and variant, e.g. "Kellogg's Rice Krispies Cereal 130g".
+   * The API derives it from the seed's representative listing name. */
   name: Type.String({ minLength: 1 }),
-  brand: Type.String({ minLength: 1 }),
-  variant: Type.String({ minLength: 1 }),
-  /** Exact pack configuration as displayed, e.g. "2 × 180 g". */
+  /** Exact pack configuration as displayed, e.g. "900 g" or "100 x 2g". The API
+   * derives it from the listing's specification text. */
   packSize: Type.String({ minLength: 1 }),
   imageUrl: nullable(HttpsUrlSchema),
 });
