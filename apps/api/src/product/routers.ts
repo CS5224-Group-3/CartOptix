@@ -6,7 +6,7 @@ import {
   DEMO_SCENARIOS,
   getOffersForQuantity,
   getProduct,
-  PRODUCTS,
+  PRODUCTS, // FAKE DATA (TODO: Must route properly)
 } from "@cartoptix/contracts/domain/cartoptix";
 import { z } from "zod";
 import { publicProcedure, router } from "./_core/trpc";

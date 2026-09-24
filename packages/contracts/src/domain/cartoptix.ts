@@ -85,6 +85,8 @@ export type ComparisonResult = {
 
 const img = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=720&q=80`;
 
+// Dummy products
+// TODO: instead of this, map from a proper database
 export const PRODUCTS: Product[] = [
   {
     id: "r1",
