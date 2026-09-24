@@ -92,3 +92,32 @@ build it locally.
 | `Missing required environment variable DATABASE_URL` | `.env` exists but is incomplete; compare it against `.env.example`. |
 | Database shows `unavailable` on the page | PostgreSQL is not healthy. Check `docker compose ps` and `docker compose logs postgres`. |
 | Port 5433, 3001 or 5173 already in use | Another process holds the port. Stop it, or change the value in `.env` and `docker-compose.yml`. |
+
+
+## Simple File Architecture
+
+The repository is a pnpm monorepo. The paths below are the main places to look
+when navigating the project.
+
+<pre>
+CartOptix/
+├── .github/            # Repository and CI configuration
+├── apps/               # Runnable web and API applications
+│   ├── api/            # Fastify/tRPC backend, PostgreSQL health checks and comparison services
+│   └── web/            # React/Vite browser client and its user interface
+├── data/               # Retailer source exports used for the curated dataset
+├── docs/               # Product and technical specifications
+├── packages/           # Shared libraries used by the applications
+│   └── contracts/      # Shared package boundary for API/domain contracts
+│       └── dist/       # Generated declarations and JavaScript for the contracts package
+│       └── src/        # Source definitions for shared contracts and domain types
+├── scripts/            # Development and repository utility scripts
+├── AGENTS.md           # Project instructions for contributors and coding agents
+├── biome.json          # Formatting and linting configuration
+├── docker-compose.yml  # Local PostgreSQL service definition
+├── package.json        # Workspace scripts and shared development dependencies
+├── pnpm-workspace.yaml # pnpm workspace package definitions
+├── tsconfig.base.json  # Shared TypeScript compiler defaults
+├── tsconfig.json       # Root TypeScript project references
+└── vitest.config.ts    # Root test configuration
+</pre>
