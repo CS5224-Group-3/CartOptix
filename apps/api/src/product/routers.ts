@@ -1,4 +1,4 @@
-// Defines the public tRPC procedures for authentication, catalogue access, comparison, and demos.
+// Defines the public tRPC procedures for catalogue access, comparison, and demos.
 
 import {
   compareBasket,
@@ -8,10 +8,7 @@ import {
   getProduct,
   PRODUCTS,
 } from "@cartoptix/contracts/domain/cartoptix";
-import { COOKIE_NAME } from "@cartoptix/contracts/domain/const";
 import { z } from "zod";
-import { getSessionCookieOptions } from "./_core/cookies";
-import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 
 const basketLineSchema = z.object({
@@ -20,15 +17,6 @@ const basketLineSchema = z.object({
 });
 
 export const appRouter = router({
-  system: systemRouter,
-  auth: router({
-    me: publicProcedure.query((opts) => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return { success: true } as const;
-    }),
-  }),
   catalogue: publicProcedure
     .input(z.object({ search: z.string().optional(), category: z.string().optional() }).optional())
     .query(({ input }) => {

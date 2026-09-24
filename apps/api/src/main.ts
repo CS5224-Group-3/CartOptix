@@ -6,7 +6,6 @@ import express from "express";
 import { loadConfig } from "./config.ts";
 import { createDatabase } from "./database.ts";
 import { createContext } from "./product/_core/context.ts";
-import { registerOAuthRoutes } from "./product/_core/oauth.ts";
 import { registerStorageProxy } from "./product/_core/storageProxy.ts";
 import { appRouter } from "./product/routers.ts";
 
@@ -19,7 +18,7 @@ const webOrigin = process.env.WEB_ORIGIN ?? "http://localhost:5173";
 app.use((request, response, next) => {
   response.header("access-control-allow-origin", webOrigin);
   response.header("access-control-allow-credentials", "true");
-  response.header("access-control-allow-headers", "content-type, authorization");
+  response.header("access-control-allow-headers", "content-type");
   if (request.method === "OPTIONS") {
     response.sendStatus(204);
     return;
@@ -46,7 +45,6 @@ app.get("/health/ready", async (_request, response) => {
   response.status(body.status === "ok" ? 200 : 503).json(body);
 });
 registerStorageProxy(app);
-registerOAuthRoutes(app);
 app.use("/api/trpc", createExpressMiddleware({ router: appRouter, createContext }));
 
 async function shutdown(signal: string): Promise<void> {

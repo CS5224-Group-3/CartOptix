@@ -1,27 +1,14 @@
-// Builds the request context shared by API procedures, including the current user.
+// Builds the request context shared by public API procedures.
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import type { User } from "../../drizzle/schema";
-import { sdk } from "./sdk";
 
 export type TrpcContext = {
   req: CreateExpressContextOptions["req"];
   res: CreateExpressContextOptions["res"];
-  user: User | null;
 };
 
-export async function createContext(opts: CreateExpressContextOptions): Promise<TrpcContext> {
-  let user: User | null = null;
-
-  try {
-    user = await sdk.authenticateRequest(opts.req);
-  } catch (_error) {
-    // Authentication is optional for public procedures.
-    user = null;
-  }
-
+export function createContext(opts: CreateExpressContextOptions): TrpcContext {
   return {
     req: opts.req,
     res: opts.res,
-    user,
   };
 }
