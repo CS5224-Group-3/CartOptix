@@ -1,3 +1,4 @@
+import type { RetailerId } from "@cartoptix/contracts";
 import { isCents, sumCents } from "./money.ts";
 import {
   type AppliedCharge,
@@ -22,7 +23,7 @@ import type { DeliveryRule, MandatoryChargeRule, ThresholdBasis } from "./rules.
  */
 
 export interface PriceRetailerOrderInput {
-  retailerId: string;
+  retailerId: RetailerId;
   /** Lines already priced by `priceLine`, all belonging to this retailer. */
   lines: readonly PricedLine[];
   delivery: DeliveryRule;
@@ -181,7 +182,7 @@ type OrderChargeResult =
  * already inside the recorded prices is disclosed but not added.
  */
 function applyOrderCharges(
-  retailerId: string,
+  retailerId: RetailerId,
   charges: readonly MandatoryChargeRule[],
 ): OrderChargeResult {
   const applied: AppliedCharge[] = [];

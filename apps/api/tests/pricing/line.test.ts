@@ -34,6 +34,8 @@ describe("priceLine", () => {
         throw new Error("Expected the line to be priced");
       }
       const { line } = result;
+      expect(line.priceKind).toBe(offer.priceKind);
+      expect(line.retailerId).toBe(offer.retailerId);
       expect(line.packsSubtotal).toBe(expected.packsSubtotal);
       expect(line.total).toBe(expected.total);
       expect(line.packsBreakdown).toEqual(expected.packsBreakdown);

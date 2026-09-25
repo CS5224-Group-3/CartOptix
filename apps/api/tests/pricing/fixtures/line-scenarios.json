@@ -9,7 +9,9 @@
     "out of scope until curation verifies one (PR-03, section 4), so no",
     "bundle appears here.",
     "Requests outside the supported range are a caller mistake rather than a",
-    "pricing outcome, so they throw and are tested in line.test.ts instead."
+    "pricing outcome, so they throw and are tested in line.test.ts instead.",
+    "Retailer IDs are the contract's real IDs; every price is still invented.",
+    "rice uses an unconditional sale price, to show priceKind passes through."
   ],
   "datasetId": "pricing-fixture-v1",
 
@@ -17,7 +19,8 @@
     "milk": {
       "listingId": "alpha-milk",
       "productId": "milk-1l",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
       "unitPrice": 320,
       "eligible": true,
       "charges": [],
@@ -26,7 +29,8 @@
     "soda": {
       "listingId": "alpha-soda",
       "productId": "soda-330ml-6pack",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
       "unitPrice": 180,
       "eligible": true,
       "charges": [
@@ -37,7 +41,8 @@
     "water": {
       "listingId": "alpha-water",
       "productId": "water-1-5l",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
       "unitPrice": 150,
       "eligible": true,
       "charges": [{ "label": "Beverage container deposit", "amount": 10, "includedInPrice": true }],
@@ -46,7 +51,8 @@
     "mystery": {
       "listingId": "alpha-mystery",
       "productId": "cordial-1l",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
       "unitPrice": 200,
       "eligible": true,
       "charges": [{ "label": "Container deposit", "amount": null, "includedInPrice": false }],
@@ -55,7 +61,8 @@
     "rice": {
       "listingId": "alpha-rice",
       "productId": "rice-5kg",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "unconditional_sale",
       "unitPrice": 1250,
       "eligible": true,
       "charges": [],
@@ -68,7 +75,8 @@
     "withdrawn": {
       "listingId": "alpha-withdrawn",
       "productId": "flour-1kg",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
       "unitPrice": 500,
       "eligible": false,
       "charges": [],
@@ -77,7 +85,8 @@
     "zeroPriced": {
       "listingId": "alpha-zero-priced",
       "productId": "sample-pack",
-      "retailerId": "alpha",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
       "unitPrice": 0,
       "eligible": true,
       "charges": [],

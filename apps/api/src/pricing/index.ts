@@ -10,6 +10,9 @@
  * scope until #4 verifies one; section 4 allows the initial kernel to omit
  * them entirely.
  *
+ * Pack limits and retailer IDs come from `@cartoptix/contracts`, so the
+ * module enforces the same bounds and names as the request schema.
+ *
  * Results describe pricing outcomes. A caller mistake throws
  * `PricingContractError` instead, because the API validates requests against
  * the contract schemas before pricing runs.
@@ -33,17 +36,14 @@ export type {
   PackPricing,
   PricedLine,
   PricedRetailerOrder,
+  PriceKind,
   PricingDisclosure,
   PricingDisclosureCode,
   PricingUnavailable,
   PricingUnavailableCode,
   RetailerOrderPricingResult,
 } from "./results.ts";
-export {
-  MAX_PACKS_PER_LINE,
-  MIN_PACKS_PER_LINE,
-  PricingContractError,
-} from "./results.ts";
+export { PricingContractError } from "./results.ts";
 export type {
   DeliveryRule,
   ExcludedPromotionRule,

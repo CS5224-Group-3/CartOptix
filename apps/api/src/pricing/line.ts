@@ -1,9 +1,8 @@
+import { MAX_PACKS_PER_LINE, MIN_PACKS_PER_LINE } from "@cartoptix/contracts";
 import { isCents, multiplyCents, sumCents } from "./money.ts";
 import {
   type AppliedCharge,
   type LinePricingResult,
-  MAX_PACKS_PER_LINE,
-  MIN_PACKS_PER_LINE,
   type PackPricing,
   PricingContractError,
   type PricingDisclosure,
@@ -88,6 +87,7 @@ export function priceLine({ offer, packs }: PriceLineInput): LinePricingResult {
       productId: offer.productId,
       retailerId: offer.retailerId,
       listingId: offer.listingId,
+      priceKind: offer.priceKind,
       packs,
       packsSubtotal,
       packsBreakdown,

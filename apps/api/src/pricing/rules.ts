@@ -1,4 +1,5 @@
-import type { Cents } from "./results.ts";
+import type { RetailerId } from "@cartoptix/contracts";
+import type { Cents, PriceKind } from "./results.ts";
 
 /**
  * The seed-shaped inputs the pricing module calculates from.
@@ -18,7 +19,9 @@ import type { Cents } from "./results.ts";
 export interface OfferRule {
   listingId: string;
   productId: string;
-  retailerId: string;
+  retailerId: RetailerId;
+  /** Which of the two permitted price types `unitPrice` is. */
+  priceKind: PriceKind;
   /**
    * Verified ordinary or unconditional sale price for one pack.
    *
@@ -66,7 +69,7 @@ export interface ExcludedPromotionRule {
  * (PR-04).
  */
 export interface DeliveryRule {
-  retailerId: string;
+  retailerId: RetailerId;
   datasetId: string;
   /**
    * False when the rule for this scenario is not verified.

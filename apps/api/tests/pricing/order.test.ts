@@ -75,7 +75,7 @@ describe("priceRetailerOrder", () => {
   it("refuses a rule belonging to another dataset rather than applying it", () => {
     const delivery = lookup(fixture.retailers, "alpha", "retailer");
     const result = priceRetailerOrder({
-      retailerId: "alpha",
+      retailerId: "redmart",
       lines: priceLines({ lines: [{ offer: "milk", packs: 10 }] }),
       delivery,
       datasetId: "a-different-seed",
@@ -97,7 +97,7 @@ describe("priceRetailerOrder", () => {
     it("throws on an order with no lines", () => {
       expect(() =>
         priceRetailerOrder({
-          retailerId: "alpha",
+          retailerId: "redmart",
           lines: [],
           delivery,
           datasetId: fixture.datasetId,
@@ -108,7 +108,7 @@ describe("priceRetailerOrder", () => {
     it("throws on a line belonging to another retailer", () => {
       expect(() =>
         priceRetailerOrder({
-          retailerId: "alpha",
+          retailerId: "redmart",
           lines: priceLines({ lines: [{ offer: "betaMilk", packs: 5 }] }),
           delivery,
           datasetId: fixture.datasetId,
@@ -127,7 +127,7 @@ describe("priceRetailerOrder", () => {
     expect(lines[0]?.total).toBe(4000);
 
     const base = {
-      retailerId: "alpha",
+      retailerId: "redmart" as const,
       datasetId: fixture.datasetId,
       verified: true,
       fee: 599,
@@ -137,13 +137,13 @@ describe("priceRetailerOrder", () => {
     };
 
     const excludingCharges = priceRetailerOrder({
-      retailerId: "alpha",
+      retailerId: "redmart",
       lines,
       delivery: { ...base, thresholdBasis: { includesMandatoryCharges: false } },
       datasetId: fixture.datasetId,
     });
     const includingCharges = priceRetailerOrder({
-      retailerId: "alpha",
+      retailerId: "redmart",
       lines,
       delivery: { ...base, thresholdBasis: { includesMandatoryCharges: true } },
       datasetId: fixture.datasetId,

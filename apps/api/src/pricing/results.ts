@@ -1,3 +1,5 @@
+import type { Offer, RetailerId } from "@cartoptix/contracts";
+
 /**
  * What the pricing module returns.
  *
@@ -24,15 +26,11 @@
 export type Cents = number;
 
 /**
- * Inclusive range of whole packs a single line may request.
- *
- * Defined here only until #28 lands; `@cartoptix/contracts` exports the same
- * two constants, and this module should import them once it can, so the limit
- * has one source of truth. The API enforces the range through its request
- * schema; the check here is a guard against a caller that bypassed it.
+ * Whether a price is the ordinary price or a clearly unconditional sale price,
+ * the only two the product rules allow (PR-03). Taken from the contract so a
+ * priced line maps onto `Offer` and `PlanLine` without translation.
  */
-export const MIN_PACKS_PER_LINE = 1;
-export const MAX_PACKS_PER_LINE = 20;
+export type PriceKind = Offer["priceKind"];
 
 /**
  * Something true of a price that the shopper must be told.
@@ -80,8 +78,10 @@ export interface AppliedCharge {
 /** The cost of one product line at one retailer, with its explanation. */
 export interface PricedLine {
   productId: string;
-  retailerId: string;
+  retailerId: RetailerId;
   listingId: string;
+  /** Carried from the offer, so callers never re-read it from the raw record. */
+  priceKind: PriceKind;
   packs: number;
   /** Cost of the packs themselves, before charges the price excludes. */
   packsSubtotal: Cents;
@@ -107,7 +107,7 @@ export interface DeliveryCharge {
 
 /** One retailer's complete order: its lines, its charges and its total. */
 export interface PricedRetailerOrder {
-  retailerId: string;
+  retailerId: RetailerId;
   lines: PricedLine[];
   /** Sum of every line total. */
   itemsTotal: Cents;
