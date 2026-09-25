@@ -106,6 +106,7 @@ Known examples requiring validation:
 - Cold Storage's strawberry almond milk title states `3 x 180ml`, while its specification says `180ml`.
 - Matching “AAA Artificial Vinegar” names appear with 5 L and 640 ml specifications.
 - Some FairPrice names contain `[BCRS]`; the files do not establish deposit inclusion. The MVP does not model BCRS deposits (PR-04), so these listings stay eligible.
+- About half of sampled RedMart listings show "Sold by" a third-party seller. These are RedMart Speciality Store sellers, delivered through RedMart's own delivery under Lazada's RSS terms, so they stay eligible (product spec, catalogue boundary). Evidence is in `data/curated/stage2f_summary.md`.
 
 Do not infer seller eligibility, collection dates or canonical identity from these files alone. Titles, URLs and category labels can supply clues but are not sufficient verification.
 

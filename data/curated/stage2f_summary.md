@@ -43,9 +43,13 @@ The 50 groups that are not HIGH-confidence matches disagree with, or do not full
 - **15 of 30 (50%; 95% interval 33–67%) are sold by a named third-party seller**, such as Shin Mart, Foodsterr, Posh Baby or Sea Boss. The other 15 show no "Sold by" line, which is how RedMart's own stock appears.
 - One listing (EcoStore Multi-Purpose Cleaner) is now out of stock. The dataset keeps the snapshot's stock flag (PR-02), so this does not change eligibility.
 
-**Implication.** The rule that listings count as directly fulfilled unless the evidence clearly shows otherwise cannot simply be applied to RedMart as a whole: a "Sold by" third-party line is clear evidence, and about half the sampled listings have one. The product spec's catalogue boundary (section 2) excludes third-party sellers "even when their products belong to the selected categories". Two options for #4:
+**Are these sellers delivered by RedMart?** Yes, on the available evidence:
 
-- **Check every RedMart listing's seller** the same way (1,132 pages, feasible in an ordinary browser) and exclude those with a third-party seller. This keeps the spec as written, and would put RedMart-inclusive coverage well below the ~97% estimated earlier.
-- **Decide that third-party sellers delivered through RedMart's own scheduled delivery count as supermarket-fulfilled**, since they share RedMart's cart, delivery fee and minimums. This needs a product-spec change, recorded before the seed relies on it.
+- Lazada's [RSS Terms and Conditions](https://pages.lazada.sg/wow/i/sg/redmart/seller-terms-update) (updated 3 October 2022) define the RedMart Speciality Store (RSS) as "a marketplace channel on the Lazada Platform". §9.1 requires RSS sellers to "use only the first and last mile delivery options offered by Lazada under the RSS Programme ('RSS Fulfilment')"; §9.2–9.3 have Lazada collect each order from the seller's pick-up address. The seller remains the legal seller (Appendix 2, C.1).
+- All 15 third-party listings in the spot-check show exactly the same delivery options as RedMart's own stock: RedMart's scheduled slots, a S$5.99 fee, and free delivery from S$60.
+
+**Decision.** RSS sellers count as supermarket-fulfilled, and RedMart listings stay eligible. The product spec's catalogue boundary (section 2) and PR-02 record the exception; sellers that deliver themselves, such as FairPrice Marketplace sellers, remain excluded.
+
+**Assumption to confirm.** The MVP assumes an RSS item joins the same RedMart order, fee and S$60 threshold as RedMart's own stock. The product pages suggest this but do not prove it. A quick manual check: in a normal RedMart session, add one RedMart-stocked item and one RSS item, go to checkout without paying, and confirm there is one delivery fee and one threshold. If they are charged separately, RSS listings must be excluded or modelled as a separate order.
 
 The BCRS deposit question from the earlier review was not checked; deposits are not modelled in the MVP.

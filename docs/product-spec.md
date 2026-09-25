@@ -47,6 +47,8 @@ Data quality takes precedence over catalogue size. At least **70% of published c
 
 Only **direct supermarket fulfilment** is in scope. Third-party sellers and separate delivery arrangements are excluded even when their products belong to the selected categories.
 
+One exception: items sold on RedMart by sellers in its RedMart Speciality Store channel count as supermarket-fulfilled. Lazada collects and delivers them through RedMart's own delivery, and their product pages show the same scheduled slots, delivery fee and free-delivery threshold as RedMart's own stock. The MVP assumes they join the same RedMart order and delivery fee. Sellers that deliver themselves, including marketplace sellers on other retailers' sites, remain excluded.
+
 ## 3. High-level user journeys
 
 These journeys define required steps, on-screen content, states and a small set of binding UX rules. They deliberately leave screen and page structure, navigation model, visual design, component-level interaction and detailed accessibility treatment (beyond keyboard operability) as implementation decisions. Implementers must satisfy the stated content and rules; the shopper study (SC-08) evaluates whether the resulting design is clear and usable, rather than checking it against an upfront visual specification.
@@ -113,7 +115,7 @@ Each line goes entirely to one retailer. Do not divide its quantity across retai
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Product mappings may be decided with AI assistance. A person reviews every case where the proposed match disagrees with the name rules, and someone who did not produce the matches checks a random sample of published mappings; report the sample size and error rate. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
+Product mappings may be decided with AI assistance. A person reviews every case where the proposed match disagrees with the name rules, and someone who did not produce the matches checks a random sample of published mappings; report the sample size and error rate. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. A RedMart Speciality Store seller is not such evidence (see the catalogue boundary in section 2). Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
 
 ### PR-03 — Supported pricing and promotions
 
