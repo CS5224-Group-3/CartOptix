@@ -586,26 +586,6 @@ function orderForAssignments(
   return orders.sort((a, b) => RETAILERS.indexOf(a.retailer) - RETAILERS.indexOf(b.retailer));
 }
 
-function _chooseAssignment(
-  lines: BasketLine[],
-  subset: Retailer[],
-): Record<string, Retailer> | null {
-  const assignment: Record<string, Retailer> = {};
-  for (const line of lines) {
-    const offers = getOffers(line.productId).filter(
-      (offer) => subset.includes(offer.retailer) && offer.stockState === "in_stock",
-    );
-    if (!offers.length) return null;
-    offers.sort(
-      (a, b) =>
-        (calculateProductCost(a, line.quantity) ?? Infinity) -
-        (calculateProductCost(b, line.quantity) ?? Infinity),
-    );
-    assignment[line.productId] = offers[0].retailer;
-  }
-  return assignment;
-}
-
 function findBestSplitAssignment(
   lines: BasketLine[],
   subset: Retailer[],
@@ -647,27 +627,6 @@ function findBestSplitAssignment(
   };
   visit(0);
   return best;
-}
-
-function _rebalanceForMinimum(
-  lines: BasketLine[],
-  subset: Retailer[],
-  initial: Record<string, Retailer>,
-): Record<string, Retailer> | null {
-  const candidates = [initial];
-  const movable = lines.flatMap((line) =>
-    subset
-      .filter((retailer) => retailer !== initial[line.productId])
-      .map((retailer) => ({ productId: line.productId, retailer })),
-  );
-  movable.forEach(({ productId, retailer }) => {
-    candidates.push({ ...initial, [productId]: retailer });
-  });
-  for (const assignment of candidates) {
-    const excluded = new Set<string>();
-    if (orderForAssignments(lines, assignment, excluded)) return assignment;
-  }
-  return null;
 }
 
 export function compareBasket(lines: BasketLine[], retailerLimit: 1 | 2 | 3): ComparisonResult {

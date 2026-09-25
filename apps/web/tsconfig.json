@@ -11,17 +11,10 @@
     "module": "preserve",
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly": true,
-    "verbatimModuleSyntax": false,
-    "noUncheckedIndexedAccess": false,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx", "vite.config.ts"],
-  "exclude": [
-    "src/components/ui/calendar.tsx",
-    "src/components/ui/chart.tsx",
-    "src/components/ui/resizable.tsx"
-  ],
   "references": [{ "path": "../../packages/contracts" }]
 }

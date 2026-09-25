@@ -6,8 +6,7 @@
     "types": ["node"],
     "moduleResolution": "bundler",
     "module": "preserve",
-    "allowImportingTsExtensions": true,
-    "noUncheckedIndexedAccess": false
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*.ts"],
   "references": [{ "path": "../../packages/contracts" }]
