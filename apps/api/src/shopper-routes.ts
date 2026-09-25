@@ -26,8 +26,13 @@ function errorBody(code: ErrorResponse["error"]["code"], message: string): Error
 
 export function registerShopperRoutes(server: FastifyInstance): void {
   server.setErrorHandler((error: FastifyError, request, reply) => {
-    if (error.validation !== undefined) {
-      return reply.code(400).send(errorBody("invalid_request", error.message));
+    // Schema failures and Fastify's own client errors, such as a malformed JSON
+    // body, are the caller's to fix; only the rest are retryable service errors.
+    const status = error.statusCode ?? 500;
+    if (error.validation !== undefined || (status >= 400 && status < 500)) {
+      return reply
+        .code(status >= 400 && status < 500 ? status : 400)
+        .send(errorBody("invalid_request", error.message));
     }
     request.log.error(error);
     return reply

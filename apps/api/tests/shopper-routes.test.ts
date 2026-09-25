@@ -101,6 +101,32 @@ describe("placeholder shopper routes", () => {
     expect(response.json().error.code).toBe("invalid_request");
   });
 
+  it.each([
+    ["malformed JSON", "{not json"],
+    ["an empty JSON body", ""],
+  ])("rejects %s as the caller's error, not a service error", async (_name, payload) => {
+    const response = await start().inject({
+      method: "POST",
+      url: routes.compare.url,
+      headers: { "content-type": "application/json" },
+      payload,
+    });
+    expect(response.statusCode).toBe(400);
+    expect(response.json().error.code).toBe("invalid_request");
+  });
+
+  it("reports an unexpected failure as a retryable service error", async () => {
+    const app = start();
+    app.get("/api/v1/test-failure", async () => {
+      throw new Error("boom");
+    });
+    const response = await app.inject({ method: "GET", url: "/api/v1/test-failure" });
+    expect(response.statusCode).toBe(500);
+    expect(response.json()).toEqual({
+      error: { code: "service_error", message: "The service is temporarily unavailable." },
+    });
+  });
+
   it("returns comparison outcomes that match the contract", async () => {
     const response = await start().inject({
       method: "POST",
