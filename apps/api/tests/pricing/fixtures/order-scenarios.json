@@ -1,0 +1,542 @@
+{
+  "_comment": [
+    "Retailer-order scenarios for the shared pricing module (issue #8).",
+    "Every expected amount is hand-calculated in integer SGD cents.",
+    "alpha's free-delivery threshold is 5999 so the boundary can be probed at",
+    "5998, 5999 and 6000 using whole packs of real-looking prices.",
+    "Retailer rules here are invented for testing; the verified Singapore",
+    "delivery scenarios belong to curation (issue #4, PR-04).",
+    "Orders assembled wrongly by a caller (no lines, or a line from another",
+    "retailer) throw rather than returning a status, and are tested in",
+    "order.test.ts instead.",
+    "The keys under \"retailers\" (alpha, beta, ...) name test rule sets, not retailers.",
+    "Each rule set carries one of the contract's real retailer IDs, and its offers share it;",
+    "several rule sets may use the same ID because no scenario mixes them.",
+    "zeta has an unresolved fee but a free-delivery threshold, to show that reaching",
+    "the threshold prices the order while falling short still blocks it."
+  ],
+  "datasetId": "pricing-fixture-v1",
+  "retailers": {
+    "alpha": {
+      "retailerId": "redmart",
+      "datasetId": "pricing-fixture-v1",
+      "verified": true,
+      "fee": 599,
+      "freeDeliveryThreshold": 5999,
+      "minimumOrder": 2000,
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
+      "orderCharges": []
+    },
+    "beta": {
+      "retailerId": "fairprice",
+      "datasetId": "pricing-fixture-v1",
+      "verified": true,
+      "fee": 350,
+      "freeDeliveryThreshold": null,
+      "minimumOrder": null,
+      "thresholdBasis": {
+        "includesMandatoryCharges": true
+      },
+      "orderCharges": [
+        {
+          "label": "Packaging fee",
+          "amount": 50,
+          "includedInPrice": false
+        }
+      ]
+    },
+    "gamma": {
+      "retailerId": "cold-storage",
+      "datasetId": "pricing-fixture-v1",
+      "verified": false,
+      "fee": 400,
+      "freeDeliveryThreshold": 5000,
+      "minimumOrder": null,
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
+      "orderCharges": []
+    },
+    "delta": {
+      "retailerId": "fairprice",
+      "datasetId": "pricing-fixture-v1",
+      "verified": true,
+      "fee": null,
+      "freeDeliveryThreshold": null,
+      "minimumOrder": null,
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
+      "orderCharges": []
+    },
+    "epsilon": {
+      "retailerId": "cold-storage",
+      "datasetId": "pricing-fixture-v1",
+      "verified": true,
+      "fee": 500,
+      "freeDeliveryThreshold": null,
+      "minimumOrder": null,
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
+      "orderCharges": [
+        {
+          "label": "Bag levy",
+          "amount": null,
+          "includedInPrice": false
+        }
+      ]
+    },
+    "zeta": {
+      "retailerId": "redmart",
+      "datasetId": "pricing-fixture-v1",
+      "verified": true,
+      "fee": null,
+      "freeDeliveryThreshold": 3000,
+      "minimumOrder": null,
+      "thresholdBasis": {
+        "includesMandatoryCharges": false
+      },
+      "orderCharges": []
+    }
+  },
+  "offers": {
+    "bread": {
+      "listingId": "alpha-bread",
+      "productId": "bread-400g",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 500,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "butter": {
+      "listingId": "alpha-butter",
+      "productId": "butter-250g",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 498,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "egg": {
+      "listingId": "alpha-egg",
+      "productId": "eggs-10pack",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 499,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "milk": {
+      "listingId": "alpha-milk",
+      "productId": "milk-1l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 320,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "soda": {
+      "listingId": "alpha-soda",
+      "productId": "soda-330ml-6pack",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 180,
+      "eligible": true,
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 20,
+          "includedInPrice": false
+        }
+      ],
+      "excludedPromotions": []
+    },
+    "water": {
+      "listingId": "alpha-water",
+      "productId": "water-1-5l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 150,
+      "eligible": true,
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 10,
+          "includedInPrice": true
+        }
+      ],
+      "excludedPromotions": []
+    },
+    "sparkling": {
+      "listingId": "alpha-sparkling",
+      "productId": "sparkling-water-1l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 160,
+      "eligible": true,
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 10,
+          "includedInPrice": true
+        }
+      ],
+      "excludedPromotions": []
+    },
+    "betaMilk": {
+      "listingId": "beta-milk",
+      "productId": "milk-1l",
+      "retailerId": "fairprice",
+      "priceKind": "ordinary",
+      "unitPrice": 300,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "gammaMilk": {
+      "listingId": "gamma-milk",
+      "productId": "milk-1l",
+      "retailerId": "cold-storage",
+      "priceKind": "ordinary",
+      "unitPrice": 300,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "deltaMilk": {
+      "listingId": "delta-milk",
+      "productId": "milk-1l",
+      "retailerId": "fairprice",
+      "priceKind": "ordinary",
+      "unitPrice": 300,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "epsilonMilk": {
+      "listingId": "epsilon-milk",
+      "productId": "milk-1l",
+      "retailerId": "cold-storage",
+      "priceKind": "ordinary",
+      "unitPrice": 300,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "zetaMilk": {
+      "listingId": "zeta-milk",
+      "productId": "milk-1l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 300,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    }
+  },
+  "scenarios": [
+    {
+      "name": "pays the delivery fee below the free-delivery threshold",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "milk",
+          "packs": 10
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 3200,
+        "measuredAmount": 3200,
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
+        "appliedCharges": [],
+        "total": 3799,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "refuses an order below the retailer's minimum and reports the shortfall",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "milk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "infeasible",
+        "code": "minimum-order-not-met",
+        "shortfall": 400
+      }
+    },
+    {
+      "name": "accepts an order exactly at the retailer's minimum",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 4
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 2000,
+        "measuredAmount": 2000,
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
+        "appliedCharges": [],
+        "total": 2599,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "still pays delivery one cent below the free-delivery threshold",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 11
+        },
+        {
+          "offer": "butter",
+          "packs": 1
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 5998,
+        "measuredAmount": 5998,
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
+        "appliedCharges": [],
+        "total": 6597,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "gives free delivery exactly at the free-delivery threshold",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 11
+        },
+        {
+          "offer": "egg",
+          "packs": 1
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 5999,
+        "measuredAmount": 5999,
+        "delivery": {
+          "amount": 0,
+          "free": true
+        },
+        "appliedCharges": [],
+        "total": 5999,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "gives free delivery above the free-delivery threshold",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "bread",
+          "packs": 12
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 6000,
+        "measuredAmount": 6000,
+        "delivery": {
+          "amount": 0,
+          "free": true
+        },
+        "appliedCharges": [],
+        "total": 6000,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "leaves charges out of the threshold when the retailer excludes them",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "soda",
+          "packs": 3
+        },
+        {
+          "offer": "milk",
+          "packs": 10
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 3800,
+        "measuredAmount": 3740,
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
+        "appliedCharges": [],
+        "total": 4399,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "counts charges toward the threshold when the retailer includes them",
+      "retailer": "beta",
+      "lines": [
+        {
+          "offer": "betaMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 1500,
+        "measuredAmount": 1500,
+        "delivery": {
+          "amount": 350,
+          "free": false
+        },
+        "appliedCharges": [
+          {
+            "label": "Packaging fee",
+            "perPack": null,
+            "amount": 50
+          }
+        ],
+        "total": 1900,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "reports one disclosure when several lines raise the same notice",
+      "retailer": "alpha",
+      "lines": [
+        {
+          "offer": "water",
+          "packs": 2
+        },
+        {
+          "offer": "sparkling",
+          "packs": 2
+        },
+        {
+          "offer": "milk",
+          "packs": 10
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 3820,
+        "measuredAmount": 3820,
+        "delivery": {
+          "amount": 599,
+          "free": false
+        },
+        "appliedCharges": [],
+        "total": 4419,
+        "disclosureCodes": ["charge-included-in-price"]
+      }
+    },
+    {
+      "name": "blocks the total when the delivery rule is unverified",
+      "retailer": "gamma",
+      "lines": [
+        {
+          "offer": "gammaMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "delivery-rule-unverified"
+      }
+    },
+    {
+      "name": "blocks the total when the delivery fee is unresolved",
+      "retailer": "delta",
+      "lines": [
+        {
+          "offer": "deltaMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "delivery-rule-unverified"
+      }
+    },
+    {
+      "name": "blocks the total when an order-level charge is unresolved",
+      "retailer": "epsilon",
+      "lines": [
+        {
+          "offer": "epsilonMilk",
+          "packs": 5
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "charge-unresolved"
+      }
+    },
+    {
+      "name": "gives free delivery at the threshold even when the fee is unresolved",
+      "retailer": "zeta",
+      "lines": [
+        {
+          "offer": "zetaMilk",
+          "packs": 10
+        }
+      ],
+      "expect": {
+        "status": "priced",
+        "itemsTotal": 3000,
+        "measuredAmount": 3000,
+        "delivery": {
+          "amount": 0,
+          "free": true
+        },
+        "appliedCharges": [],
+        "total": 3000,
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "blocks the total below the threshold when the fee is unresolved",
+      "retailer": "zeta",
+      "lines": [
+        {
+          "offer": "zetaMilk",
+          "packs": 9
+        }
+      ],
+      "expect": {
+        "status": "unavailable",
+        "code": "delivery-rule-unverified"
+      }
+    }
+  ]
+}

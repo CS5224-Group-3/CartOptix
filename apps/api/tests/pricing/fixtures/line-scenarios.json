@@ -1,0 +1,195 @@
+{
+  "_comment": [
+    "Line-pricing scenarios for the shared pricing module (issue #8).",
+    "Expected amounts are hand-calculated from the offers below, in integer",
+    "SGD cents, so a change in the module's arithmetic fails a test rather",
+    "than quietly rewriting the expectation. Data here is invented for testing",
+    "and is not a curated retailer record.",
+    "Scope is verified ordinary and unconditional sale prices. Multibuys are",
+    "out of scope until curation verifies one (PR-03, section 4), so no",
+    "bundle appears here.",
+    "Requests outside the supported range are a caller mistake rather than a",
+    "pricing outcome, so they throw and are tested in line.test.ts instead.",
+    "Retailer IDs are the contract's real IDs; every price is still invented.",
+    "rice uses an unconditional sale price, to show priceKind passes through."
+  ],
+  "datasetId": "pricing-fixture-v1",
+
+  "offers": {
+    "milk": {
+      "listingId": "alpha-milk",
+      "productId": "milk-1l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 320,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "soda": {
+      "listingId": "alpha-soda",
+      "productId": "soda-330ml-6pack",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 180,
+      "eligible": true,
+      "charges": [
+        { "label": "Beverage container deposit", "amount": 20, "includedInPrice": false }
+      ],
+      "excludedPromotions": []
+    },
+    "water": {
+      "listingId": "alpha-water",
+      "productId": "water-1-5l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 150,
+      "eligible": true,
+      "charges": [{ "label": "Beverage container deposit", "amount": 10, "includedInPrice": true }],
+      "excludedPromotions": []
+    },
+    "mystery": {
+      "listingId": "alpha-mystery",
+      "productId": "cordial-1l",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 200,
+      "eligible": true,
+      "charges": [{ "label": "Container deposit", "amount": null, "includedInPrice": false }],
+      "excludedPromotions": []
+    },
+    "rice": {
+      "listingId": "alpha-rice",
+      "productId": "rice-5kg",
+      "retailerId": "redmart",
+      "priceKind": "unconditional_sale",
+      "unitPrice": 1250,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": [
+        {
+          "detail": "A multibuy is advertised for this product but its terms could not be verified, so it is not applied."
+        }
+      ]
+    },
+    "withdrawn": {
+      "listingId": "alpha-withdrawn",
+      "productId": "flour-1kg",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 500,
+      "eligible": false,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "zeroPriced": {
+      "listingId": "alpha-zero-priced",
+      "productId": "sample-pack",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 0,
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    }
+  },
+
+  "scenarios": [
+    {
+      "name": "prices whole packs at the verified per-pack price",
+      "offer": "milk",
+      "packs": 3,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 960,
+        "total": 960,
+        "packsBreakdown": [{ "kind": "unit", "packs": 3, "unitPrice": 320, "amount": 960 }],
+        "appliedCharges": [],
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "prices a single pack",
+      "offer": "milk",
+      "packs": 1,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 320,
+        "total": 320,
+        "packsBreakdown": [{ "kind": "unit", "packs": 1, "unitPrice": 320, "amount": 320 }],
+        "appliedCharges": [],
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "prices the largest supported quantity",
+      "offer": "milk",
+      "packs": 20,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 6400,
+        "total": 6400,
+        "packsBreakdown": [{ "kind": "unit", "packs": 20, "unitPrice": 320, "amount": 6400 }],
+        "appliedCharges": [],
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "adds a deposit the price excludes, once for every pack",
+      "offer": "soda",
+      "packs": 4,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 720,
+        "total": 800,
+        "packsBreakdown": [{ "kind": "unit", "packs": 4, "unitPrice": 180, "amount": 720 }],
+        "appliedCharges": [{ "label": "Beverage container deposit", "perPack": 20, "amount": 80 }],
+        "disclosureCodes": []
+      }
+    },
+    {
+      "name": "discloses a deposit already inside the price without adding it again",
+      "offer": "water",
+      "packs": 4,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 600,
+        "total": 600,
+        "packsBreakdown": [{ "kind": "unit", "packs": 4, "unitPrice": 150, "amount": 600 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["charge-included-in-price"]
+      }
+    },
+    {
+      "name": "refuses to price a line whose mandatory charge is unresolved",
+      "offer": "mystery",
+      "packs": 1,
+      "expect": { "status": "unavailable", "code": "charge-unresolved" }
+    },
+    {
+      "name": "discloses an advertised promotion that curation did not verify",
+      "offer": "rice",
+      "packs": 2,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 2500,
+        "total": 2500,
+        "packsBreakdown": [{ "kind": "unit", "packs": 2, "unitPrice": 1250, "amount": 2500 }],
+        "appliedCharges": [],
+        "disclosureCodes": ["promotion-excluded"]
+      }
+    },
+    {
+      "name": "refuses an offer curation excluded",
+      "offer": "withdrawn",
+      "packs": 1,
+      "expect": { "status": "unavailable", "code": "offer-ineligible" }
+    },
+    {
+      "name": "refuses an offer with no positive price",
+      "offer": "zeroPriced",
+      "packs": 1,
+      "expect": { "status": "unavailable", "code": "offer-ineligible" }
+    }
+  ]
+}
