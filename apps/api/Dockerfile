@@ -14,6 +14,9 @@ RUN corepack enable
 
 # Copy manifests first so dependency layers cache independently of source edits.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json tsconfig.json ./
+# pnpm reads every patch listed in pnpm-workspace.yaml, even for packages the
+# filtered install below skips.
+COPY patches ./patches
 COPY packages/contracts/package.json ./packages/contracts/
 COPY apps/api/package.json ./apps/api/
 COPY apps/web/package.json ./apps/web/
@@ -33,6 +36,8 @@ ENV NODE_ENV=production
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/packages/contracts/package.json ./packages/contracts/
+# typebox is a runtime dependency of the contracts, linked only in this directory.
+COPY --from=build /app/packages/contracts/node_modules ./packages/contracts/node_modules
 COPY --from=build /app/packages/contracts/dist ./packages/contracts/dist
 COPY --from=build /app/apps/api/package.json ./apps/api/
 COPY --from=build /app/apps/api/node_modules ./apps/api/node_modules

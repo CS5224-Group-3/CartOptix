@@ -12,6 +12,10 @@
     "./domain/*": {
       "types": "./dist/domain/*.d.ts",
       "import": "./dist/domain/*.js"
+    },
+    "./fixtures": {
+      "types": "./dist/fixtures.d.ts",
+      "import": "./dist/fixtures.js"
     }
   },
   "main": "./dist/index.js",
@@ -19,5 +23,8 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "typebox": "1.3.34"
   }
 }

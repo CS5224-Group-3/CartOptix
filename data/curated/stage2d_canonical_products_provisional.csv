@@ -1,0 +1,1415 @@
+canonical_product_id,representative_product_name,canonical_name,target_category,brand_normalized,strict_pack_key,member_count,retailer_count,preliminary_active_offer_retailer_count,group_status,prelim_2plus_active_offer_retailers
+CP_004eda4240c3,Ogawa Kyoto Charcoal Roasted Premium Coffee-No Sugar,,Drinks,ogawa,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0062f6c9318a,Kirin Nama Tea (Decaf),,Drinks,kirin,ml|1|430.000000|430.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_00c952729557,Campbell's Real Stock Salt Reduced Beef Stock 1L,,Canned & Packaged Food,campbell's,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_014e7cc71ece,Alpen Swiss Style Muesli - No Added Sugar,,Breakfast Foods,alpen,g|1|560.000000|560.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_015eeaeac251,Green Earth Organic Finland Rolled Oats,,Breakfast Foods,green earth,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_016db99c77cf,Marigold HL Chocolate Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_0170a3ea6937,Glo Dishwashing Liquid - Pure & Clear (Aloe Vera),,Household Cleaning,glo,ml|1|800.000000|800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01769391e775,Banana Chips,,Snacks,anand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01ae2e9feca4,Sun Q Organic Soft Dried Dates,,Snacks,sun q,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01c1074f6964,Top Detergent Powder - Super Colour,,Household Cleaning,top,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01cbdf04620d,Walkers Chocolate Chunk & Hazelnut Biscuits 150g,,Snacks,walkers,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01e50d96fddb,SnackFirst Oishi Japanese Nuts (Mixed Peanuts from Japan),,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01e79dc30fe3,Calbee Big Bag Potato Chips - Seaweed,,Snacks,calbee,g|1|180.000000|180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_01ef5221ac5c,Calbee Potato Chips - Seaweed,,Snacks,calbee,g|1|72.000000|72.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_020a9d460350,Green Earth Green Earth Korean Ginseng Herbal Soup,,Canned & Packaged Food,green earth,g|1|110.000000|110.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0272ae6f4c7c,Green Earth Green Earth Kidney Tonic Herbal Soup,,Canned & Packaged Food,green earth,g|1|119.000000|119.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_027bb411656d,Yamasa Genen Shoyu Japanese Less Salt Soy Sauce - Kirei,,Canned & Packaged Food,yamasa,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_02b6b35d881f,Greenfields Ricotta Cheese 250g,,Dairy,greenfields,g|1|250.000000|250.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_02e2e12fb57e,Top Detergent Powder - Blooming Freshness,,Household Cleaning,top,g|1|4600.000000|4600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_034f7d26ef8a,Sensodyne Fresh Mint Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_035b322b7ab3,Marigold UHT Strawberry Milk 1L,,Dairy,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0374b3932759,Trapa Trapa Sugar Free Hazelnut Milk Chocolate with Stevia,,Snacks,trapa,g|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_03d5409fb9d4,AAA Sriracha Chilli Sauce,,Canned & Packaged Food,aaa,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_03dadc65c36c,Calbee Hot & Spicy Vegetable Fries 45g,,Snacks,calbee,g|1|45.000000|45.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0493290e3869,Train Haw Jelly,,Snacks,train,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_04cd678903bb,Izumiya Nagasaki Castella Brown Sugar Cake (10cuts),,Snacks,izumiya,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_05274387a73e,SIX FORTUNE Rice Sticks,,Rice & Noodles,six fortune,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_054354c489d9,Healthworks Hawthorn Apple Juice Drink,,Drinks,healthworks,ml|6|250.000000|1500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_05966f5303e1,New Moon Premium Fragrant Organic Rice (Thai Hom Mali),,Rice & Noodles,new moon,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_05a8c1ea995a,Apollo Layer Cake - Pandan,,Snacks,apollo,g|24|18.000000|432.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_05cb90724eb4,Nescafe Instant Soluble Coffee Jar - Classic,,Drinks,nescafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_05f3101ea435,KOPIMAS RobusKaffe Premium Roasted Coffee Bean,,Drinks,kopimas,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_061a8b189340,Yava Chocolate Vanilla Granola 200g,,Breakfast Foods,yava,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0621a26ca599,Barilla Italian Pasta - Penne Rigate,,Rice & Noodles,barilla,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_062c091889f8,Delyco Heong Peah Pastry,,Snacks,delyco,g|1|470.000000|470.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_06410c93a8b8,Earth Raku Hapi Bubbloon Foaming Cleaner for Toilet Bowl ,,Household Cleaning,earth,g|1|180.000000|180.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_0647efa64667,Zanuy Tortilla Chip - Chia,,Snacks,zanuy,g|1|130.000000|130.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_064b9cf08ed7,Sincero Milk Chocolate Almond 380g,,Snacks,sincero,g|1|380.000000|380.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_06618d68a475,Lee Kum Kee Premium Light Soy Sauce 250ml,,Canned & Packaged Food,lee kum kee,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_067c66833edd,Kavli Bacon Cheese Spread,,Dairy,kavli,g|1|275.000000|275.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_06f282178022,Fernleaf Milk Powder - Full Cream,,Dairy,fernleaf,g|1|1800.000000|1800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0714712a9b87,AAA Sweet Potato Vermicelli,,Rice & Noodles,aaa,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0783a1ff895d,Marigold UHT Low Fat Milk 1L,,Dairy,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_07c1216b0313,Schwarzkopf Extra Care Moist Recovery Shampoo 400ml,,Toiletries & Personal Care,schwarzkopf,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0895e1e73b75,Yamasa Kombu Tsuyu Soup Japanese Stock Base - Kirei,,Canned & Packaged Food,yamasa,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_08e5ec9dd9f3,Yamamori Katsu Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0918b038b079,Lay's Salt & Vinegar Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_092914e15612,YBC Chip Star-S - Salt,,Snacks,ybc,g|1|45.000000|45.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0968b315d67f,Lee Kum Kee Vegetarian Oyster Sauce 770g,,Canned & Packaged Food,lee kum kee,g|1|770.000000|770.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_09aa77b2bb69,If Local Sensation Namhom Coconut Water,,Drinks,if local sensation,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_09b2c22460fd,Marigold 100% Orange Juice 6 x 200ml,,Drinks,marigold,ml|6|200.000000|1200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_09cd07bece29,Gardini Blend Milk Chocolate Bar - 42% Cocoa,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0a1369a9de92,CocoCoast Natural Coconut Water with Passionfruit,,Drinks,cococoast,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0a1cd31589d8,Ken Ken Red Slice Cuttlefish,,Snacks,ken ken,g|1|30.000000|30.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0a4a6b40f71d,SnackFirst Summer Blueberries - Superfood Dried Fruits,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0a7062939276,Cholula Hot Sauce - Original,,Canned & Packaged Food,cholula,ml|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0a7512eb4f4e,Pigeon Liquid Cleanser Regular Refill,,Household Cleaning,pigeon,ml|1|650.000000|650.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_0ae99186ba97,Glico Tsbu Ichio Pocky (Strawberry),,Snacks,glico,g|1|55.000000|55.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0b3ec7f0994e,Sanhee Prawn Cracker (Colour),,Snacks,sanhee,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0bbcdfb54250,Mili Braised Peanuts 170g,,Canned & Packaged Food,mili,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0bfb1d33fb04,Fortune Almond Soya Beancurd 360g,,Snacks,fortune,g|1|360.000000|360.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0bfc34a4a601,Anand Madras Mixture,,Snacks,anand,g|1|200.000000|200.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_0c766aa1b4d3,Green Earth Roasted Green Kernal Black Bean,,Snacks,green earth,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0c818fcfd670,AAA Brown Rice Vermicelli (Healthy C),,Rice & Noodles,aaa,g|1|3000.000000|3000.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_0c8e6311b09a,Aveeno Body Wash - Skin Relief,,Toiletries & Personal Care,aveeno,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0c91f4dee801,Lay's Hot & Spicy Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0cba4e70070c,Quickbury Mini Brownies Chocolate,,Snacks,quickbury,g|1|125.000000|125.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0cd20fcb9106,Schwarzkopf Extra Care Ginger Scalp Purify Shampoo 400ml,,Toiletries & Personal Care,schwarzkopf,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0d4fc72e51a8,Vit's Air Dried Broad Noodles (Spinach),,Rice & Noodles,vit's,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0d856f741cac,Superfarm Raw Organic Gluten-Free Instant Oats (Wholegrain),,Breakfast Foods,superfarm,g|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0dc76e50a4b2,Organix Melty Sweetcorn Rings 20g,,Snacks,organix,g|1|20.000000|20.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_0dc7ca69dcae,Ecomil Organic Almond Milk -  Sugar Free,,Dairy,ecomil,ml|6|1000.000000|6000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0dce84b175c7,Kirei Tomomasu Suika Watermelon Japanese Cider Soda Beverage,,Drinks,kirei,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0de01e0db96f,House Ozack Light Salted Potato Chips,,Snacks,house,g|1|68.000000|68.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0e27d3813919,Kelp Noodle,,Rice & Noodles,kaiso,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0e3255af9611,Feng He Garden Light Soy Sauce,,Canned & Packaged Food,feng he garden,ml|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0e42cb92d2e1,Ecostore - Eucalyptus Laundry Liquid 5L,,Household Cleaning,ecostore,ml|1|5000.000000|5000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_0ec7538b38e8,Bio-Home Laundry Detergent - Hyacinth & Nectarine,,Household Cleaning,bio-home,ml|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0ecb75d5b7de,Green Earth Organic Green Raisin,,Snacks,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0f4da27d31d7,Green Earth Candy - White Coffee,,Snacks,green earth,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_0fd1ec5f4a0b,Lindt Swiss Classic Chocolate Bar - Milk,,Snacks,lindt,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1064007ad641,Marigold Low Fat Yoghurt - Strawberry,,Dairy,marigold,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_10cecee8cfc4,Guardsman Stone Daily Cleaner,,Household Cleaning,guardsman,ml|1|473.000000|473.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_10e7059d6beb,Green Earth Organic Black Chia Seed,,Snacks,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_110f42a48fa2,Green Earth Fruits and Nuts Mix,,Snacks,green earth,g|1|360.000000|360.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_11306ae7d64a,Green Earth Organic Brown Flaxseed,,Snacks,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_11318d6a884d,Lusol Triple Cheese Pop (12m+),,Snacks,lusol,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_116c84244cb3,Kellogg's Frosties Cereal 300g,,Breakfast Foods,kellogg's,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_118399f1bc45,Marigold Greek Style Yoghurt - Natural,,Dairy,marigold,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_11fe1a50c326,MARUSAN Marusan Oat Soy Milk,,Dairy,marusan,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_128d232dd842,Kct Superior Light Soya Sauce 640ml,,Canned & Packaged Food,kct,ml|1|640.000000|640.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_129443c6d721,Ecostore - Ultra Sensitive Laundry Liquid 2L,,Household Cleaning,ecostore,ml|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12a4d46fa428,SongHe 8020 Mixed Fragrant Rice + Red Rice,,Rice & Noodles,songhe,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12a556ff070d,Attack Liquid Detergent Refill - Perfume (Floral),,Household Cleaning,attack,g|1|1400.000000|1400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12bf2a5d7f4b,Ikari Takoyaki Sauce,,Canned & Packaged Food,ikari,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12c702fc23fb,Attack Liquid Detergent - Perfume (Floral),,Household Cleaning,attack,g|1|3600.000000|3600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12e6bbc30538,Cowhead Mozzarella Cheese Block 250g,,Dairy,cowhead,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12efc9a4d182,Kavli Jalapeno Cheese Spread,,Dairy,kavli,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_12f71756bb30,Emborg Shredded Cheese - Mozzarella,,Dairy,emborg,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_130db92a92f3,Top Super White Concentrated Liquid Detergent Refill 1.8kg,,Household Cleaning,top,g|1|1800.000000|1800.000000,3,3,2,IDENTITY_VERIFIED,True
+CP_1357af1079cc,Temole Cauliflower Puffs - Sour Cream,,Snacks,temole,g|1|56.000000|56.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_136c166c6f7c,Green Earth Candy - Cappucino,,Snacks,green earth,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_139ebf0d9bb2,Gee.ef Magic Popping Candy (Orange) 40 Pieces,,Snacks,gee.ef,g|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_13b794d38a5e,"Schar Vanilla Creams Cookies Sugar free, Gluten Free",,Snacks,schar,g|1|115.000000|115.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_13c69d248f84,Taj Ponni Rice,,Rice & Noodles,taj,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_13d2545d4e44,Tao Kae Noi Crispy Seaweed - Original ,,Snacks,tao kae noi,g|1|59.000000|59.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_13d4df21f005,Laobanniang Roasted Green Peas,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_13d741de8069,Pokka Peach Oolong Tea 6 x 250ml,,Drinks,pokka,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_14141d34f15a,Vatan Se Low Fat Paneer,,Dairy,vatan se,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_143821953d03,Delyco Prunes Kueh Lapis,,Snacks,delyco,g|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_14ae27ddfaf6,SnackFirst Crunchy Cashew Cookies  (Festive CNY Goodies),,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_14e7be929a04,Soaply Dishwashing Soap Sparkling Eucalyptus Scent,,Household Cleaning,soaply,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_15015cde2968,Yamamori Gluten Free Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_153bbc117a1b,Megachef Premium Oyster Sauce 600g,,Canned & Packaged Food,megachef,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1545d72e672a,Mili Premium Pork Luncheon Meat 340g,,Canned & Packaged Food,mili,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_15a29c891d3f,Boncafe Morning Coffee Beans 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1600df48c06b,Marigold Packet Drink - Ice Lemon Tea (Less Sweet),,Drinks,marigold,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_164668216f12,Pasta Zara Potato Pasta - Gnocchi,,Rice & Noodles,pasta zara,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_167144a32449,SnackFirst Pagoda Murukku Crackers (Deepavali Special),,Snacks,snackfirst,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_16840baf0aac,Bebesup Laundry Detergent - Breeze Garden,,Household Cleaning,bebesup,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_175e54831a07,Method All-Purpose Cleaner - Lime+Sea Salt,,Household Cleaning,method,ml|1|828.000000|828.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_176ad049baf7,Songhe Plus Enriched Fragrant Rice 2kg,,Rice & Noodles,songhe,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_176d0ad8e249,Greenfields Fresh Milk - Low Fat,,Dairy,greenfields,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_179a98a66ef8,Magnolia Fresh Milk 200ml,,Dairy,magnolia,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_17d086b1c98c,Glo Squeezy Ultra Concentrated Dishwashing Liquid - Lemon,,Household Cleaning,glo,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_17d42d472877,Parodontax Herbal Toothpaste 90g,,Toiletries & Personal Care,parodontax,g|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_18055d301dab,Glico Pocky Strawberry Family,,Snacks,glico,g|1|93.600000|93.600000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_1809c6b14d05,Splat Lavendersept Toothpaste 100ml,,Toiletries & Personal Care,splat,ml|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_18754c93cb6e,Kellogg's Granola Boost Protein Extra 300g,,Breakfast Foods,kellogg's,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_188577438afa,Segafredo Espresso Roma Ground Coffee 200g,,Drinks,segafredo,g|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_18ae38c97604,Green Earth Green Earth Healthy Brain Herbal Soup,,Canned & Packaged Food,green earth,g|1|137.000000|137.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_18b05f83edcb,Boncafe Colombiana Coffee Beans 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_18fbc7a86b3a,Bad Lab Roll-On Deodorant For Sensitive Skin,,Toiletries & Personal Care,bad lab,ml|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_19211545b8ee,Nissin Fruit Granola 500g,,Breakfast Foods,nissin,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1929d49efd9e,Galbani Ricotta Cheese 250g,,Dairy,galbani,g|1|250.000000|250.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_1936181b1448,Top Detergent Powder Packet Super Low Suds - Colour Protect,,Household Cleaning,top,g|1|4600.000000|4600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1952d9abe852,Marigold PowerBeans Original Fresh Soya Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_19d74c120402,President Unsalted Butter 200g,,Dairy,president,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1a013933fce6,Ecostore - Ultra Sensitive Laundry Liquid 5L,,Household Cleaning,ecostore,ml|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1a3e13f92e65,Pigeon Baby Laundry Detergent - Powder,,Household Cleaning,pigeon,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1a80420ac084,Yamamori Ponzu Shoyu,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1a94be915fb3,XOX Honey Mustard & Onion Pretzels 125g,,Snacks,xox,g|1|125.000000|125.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_1aa3a88d52fc,Pokka Chrysanthemum White Tea 6 x 250ml,,Drinks,pokka,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1adf2522505b,Itsuki Prawn Miso Ramen,,Rice & Noodles,itsuki,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1afa67e7d6c7,Oral-B Vitality Pro Electric Toothbrush - Deep Clean (Lilac),,Toiletries & Personal Care,oral-b,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1b0215914c8b,Anil Finger Millet Vermicelli,,Rice & Noodles,anil,g|1|180.000000|180.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_1b1761430fd0,Cowhead Natural Cheese Slices - Cheddar,,Dairy,cowhead,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1ba661280bb0,Tai Hua Superior Light Soy Sauce 640ml,,Canned & Packaged Food,tai hua,ml|1|640.000000|640.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_1bb64e692408,Haguruma Yuzu Juice,,Drinks,haguruma,ml|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1bc1faea3d6e,SnackFirst Chunky Peanut Cookies (Festive CNY Goodies),,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1bd737ce8e1c,Aureli Pure Juice - Carrot Apple Orange,,Drinks,aureli,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1bf48d0258d3,Del Monte Sardines in Miso Sauce 100g,,Canned & Packaged Food,del monte,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1bf863c576a9,FUJIYA Peko Poko Stick Chocolate,,Snacks,fujiya,g|1|24.000000|24.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1c160b696bfd,YUMSAY Foods Fishball Noodles,,Canned & Packaged Food,yumsay foods,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1c1f2aac1ae2,Hu Kitchen Dark Chocolate Bar Salty,,Snacks,hu kitchen,g|1|60.000000|60.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_1c2c3bf2b461,Heinz Baked Beans in Tomato Sauce 220g,,Canned & Packaged Food,heinz,g|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1c4c18ca8163,Imuraya Mini Ogura Yokan 4P,,Snacks,imuraya,g|1|240.000000|240.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1c4fe9cf59d6,Foodsterr Roasted Turkish Hazelnuts,,Snacks,foodsterr,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1c5152b17db8,Chek Hup Microground Colombian - Latte,,Drinks,chek hup,g|1|115.000000|115.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1c7a3ba5065d,Nespray Fortified Instant Milk Powder - Full Cream,,Drinks,nespray,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1cd497ac1a1f,Pantene Silky Smooth Care Shampoo 680ml,,Toiletries & Personal Care,pantene,ml|1|680.000000|680.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1d24d2b49f5d,Ishinomaki Hitomebore Japanese Rice,,Rice & Noodles,ishinomaki,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1d27045608f3,Boxgreen Umami Shiitake Mushroom Chips 70g,,Snacks,boxgreen,g|1|70.000000|70.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_1d2a034ff92f,Glico Pocky Chocolate Family,,Snacks,glico,g|1|101.600000|101.600000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_1d31da0c5802,KOHL Mountain Apple Juice & Elderflower,,Drinks,kohl,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1d3e9f6bda14,Ferrero Collection Chocolate - T24,,Snacks,ferrero,g|1|259.200000|259.200000,2,2,2,IDENTITY_VERIFIED,True
+CP_1d5571ae6590,Tafu Super Catechin Genmai Tea(Leaf),,Drinks,tafu,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1d59df19be6c,Choco And Biscuit Family Pack,,Snacks,bourbon,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1d916fffd39f,Temole Original Pomegranate Chips 40g,,Snacks,temole,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1db62152ba00,Pigeon Baby Laundry Capsule,,Household Cleaning,pigeon,piece|42|1.000000|42.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_1e08114ae722,Van Houten Cocoa Powder,,Snacks,van houten,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1e2fa6aed90d,SUKIN Botanical Body Wash,,Toiletries & Personal Care,sukin,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1e418194aed4,Ayam Brand Pulled Chicken Honey Mustard 150g,,Canned & Packaged Food,ayam brand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1e43874763b1,Tungsan Tungsan Teriyaki Sauce,,Canned & Packaged Food,tungsan,g|1|2300.000000|2300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1e770e45b78c,Lotte Crunky Crunch Chocolate Bar,,Snacks,lotte,g|1|45.000000|45.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1e7a67fec54a,SCS Pure Creamery Butter Block - Salted,,Dairy,scs,g|1|227.000000|227.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1e9115f980cb,Yamamori Katsu Sauce,,Canned & Packaged Food,yamamori,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1eb9349da978,Six Fortune Prepared Broad Bean Original,,Snacks,six fortune,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1ed9aafb7d46,Dajung Honey Jujube Tea,,Drinks,dajung,g|1|580.000000|580.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1ee3fbf8b6de,Gerber Lil Crunchies Mild Cheddar 42g,,Snacks,gerber,g|1|42.000000|42.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1efa7b1fa70b,Georgia Japan Craftman - Cafe Latte,,Drinks,georgia,ml|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_1f15ddd9430d,SnackFirst Berry Nutty Medley (Mixed Nuts and Fruits),,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1f54d8bc72ab,Hup Seng Special Cream Crackers 225g,,Snacks,hup seng,g|1|225.000000|225.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1f6f1ba1b9fc,Walch Laundry Sanitiser - Lemon,,Household Cleaning,walch,ml|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1f92ff9f2af1,Kirei Tomomasu Musk Melon Japanese Cider Soda Beverage,,Drinks,kirei,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1fbce81dacdd,PaddyKing Taiwan Pearl Rice,,Rice & Noodles,paddyking,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_1febff5c5c49,Gluten Free Tamari Sweet Soy Sauce 300ml Glass Bottle,,Canned & Packaged Food,kirei,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_201aea639865,Bref Power Active Automatic Toilet Bowl Cleaner - Juicy Lemon,,Household Cleaning,bref,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_20208407505b,Green Earth Kombu Ramen,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_2036e0ad27e8,Royal Umbrella Thai Fragrant Brown Rice 2kg,,Rice & Noodles,royal umbrella,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_20961a6f8539,GW Disinfectant Floor Cleaner - Fresh Pine,,Household Cleaning,gw,ml|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2097cc4e5dc4,Sincero Assorted Chocolate Almond 380g,,Snacks,sincero,g|1|380.000000|380.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_210667e4913e,Bisto Chicken Gravy Granules 190g,,Canned & Packaged Food,bisto,g|1|190.000000|190.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_21ee47dc3cea,Lee Kum Kee Vegetarian Golden Mushroom Oyster Sauce 510g,,Canned & Packaged Food,lee kum kee,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2214f6f72cf2,Green Earth Green Earth Perfect Ten Herbal Soup,,Canned & Packaged Food,green earth,g|1|163.000000|163.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2237573dde35,Lay's Extra BBQ Potato Chips 50g,,Snacks,lay's,g|1|50.000000|50.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_2270cc2258a0,Swanson Pork Broth,,Canned & Packaged Food,swanson,ml|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_227ed91fae9b,Sunfresh Pineapple Juice with No Added Sugar,,Drinks,sunfresh,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_22a89fbfd829,YBC Noir Black Cocoa,,Snacks,ybc,g|1|173.000000|173.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_22ca0797f30b,Ken Ken Crispy Rolled Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_22dca57b497d,Bio-Home Floor Cleaner - Lavender & Bergamot,,Household Cleaning,bio-home,ml|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_22e046ee692e,Diet Food Organic Shirataki Konjac - Rice,,Rice & Noodles,diet food,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2332cf5ddb10,Naturel Organic Rice - Mixed Brown and Red,,Rice & Noodles,naturel,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2335d103564d,Post Honey Bunches Of Oats Cereal - Real Strawberries,,Breakfast Foods,post,g|1|311.000000|311.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_23ad9d8f46e0,Camel Natural Wholesome Nut Mix - Power Delight,,Snacks,camel,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_23d1700e31b4,New Moon Low Calorie Round Konjac Noodles 270g,,Rice & Noodles,new moon,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2451a16547ed,SongHe Noble Red Rice,,Rice & Noodles,songhe,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_24ccaf15bbaa,Kirin Nama Cha Houji Sencha Drink,,Drinks,kirin,ml|1|525.000000|525.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_24db8422d6d6,Lay's Nori Seaweed Potato Chips 50g,,Snacks,lay's,g|1|50.000000|50.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_24e38936010a,Nectar Peach Juice - Kirei,,Drinks,nectar,ml|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_252c90c65795,Nissin Strawberry Granola 400g,,Breakfast Foods,nissin,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_252ddb306dda,Ken Ken Soft Shredded Cuttlefish,,Snacks,ken ken,g|1|45.000000|45.000000,4,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_256d4b092b4e,Milkmaid Full Cream Sweetened Condensed Milk 392g,,Dairy,milkmaid,g|1|392.000000|392.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2570953c7e45,Itsuki Tomato Ramen,,Rice & Noodles,itsuki,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_269e611666d2,Sensodyne Complete Protection Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_26b79f104c2d,Buster Block Preventer 500 Ml,,Household Cleaning,buster,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2707d0c2d4f3,Munchy's Lexus Original Cookies 189g,,Snacks,munchy's,g|1|189.000000|189.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2772cccdf763,Irodori Fruit Jelly's Time - Orange,,Snacks,irodori,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_27879c1a6961,Yamamori Unagi Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_27b32f60663c,Quaker Oats - 5 Red Multigrain Mixed Instant Oatmeal,,Breakfast Foods,quaker,g|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_27b582aa5f83,Green Earth Organic Black Raisin,,Snacks,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_27ecc98633c9,Kirei Premium 100% Japan Genmai Cha Tea Powder,,Drinks,kirei,g|1|30.000000|30.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_281ae2a1f04b,Green Earth Organic Instant Soy Milk Powder,,Dairy,green earth,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2878adec497b,Post Great Grains Banana Nut Crunch Cereal 439g,,Breakfast Foods,post,g|1|439.000000|439.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_28b4d6a3e584,Naturel Organic Brown GABA & Riceberry Rice 1.8kg,,Rice & Noodles,naturel,g|1|1800.000000|1800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_28baaa551c2a,TOHATO Anpanman Soft Corn Snack Salt (8G x 5P),,Snacks,tohato,g|1|40.000000|40.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_28c8f52da8ed,Teyishi Matcha Chocolate Strawberry Snack [KEMF],,Snacks,teyishi,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_28d9aa0cafe5,Lay's BBQ Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_28ee7e7d27db,Doritos Nacho Cheese Tortilla Chips 190g,,Snacks,doritos,g|1|190.000000|190.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_28f0bfc4916c,Lay's Cheddar & Sour Cream Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,3,3,2,IDENTITY_VERIFIED,True
+CP_293fb87060fc,SnackFirst Nostalgic Iced Gem (Fancy Gem Biscuits),,Snacks,snackfirst,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2953dc08e524,Lindt Extra Creamy Milk Chocolate 80g,,Snacks,lindt,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_297948f74256,Max's Farm Original Cassava Chips 150g,,Snacks,max's farm,g|1|150.000000|150.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_29d996b045f9,KOPIMAS ArabicKaffe Premium Roasted Coffee Bean,,Drinks,kopimas,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_29df39a48e01,AAA Longkou Green Bean Vermicelli - Straight,,Rice & Noodles,aaa,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_29f591b9a34c,Vit's Air Dried Noodles(Broad),,Rice & Noodles,vit's,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2a12221004a8,Vit's Fresh Ramen Noodle,,Rice & Noodles,vit's,g|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2a55af19eb6b,Bourbon Every Burger Biscuit,,Snacks,bourbon,g|1|66.000000|66.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_2a692051e135,BOURBON Dewa Sanzan No Mizu Mineral Water,,Drinks,bourbon,ml|1|2000.000000|2000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_2aa276d5e9a1,Green Earth Organic Black Chia Seed,,Snacks,green earth,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2ab3d4b4ee90,Colgate Total Whitening Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2ad3b11bb196,Meet Mee Soup Mum's Pan Mee - Thick Noodles - Bundle of 5,,Rice & Noodles,meet mee,g|5|95.000000|475.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2afeae621dc2,Foodsterr Organic Dark Chocolate Hazelnut Granola,,Breakfast Foods,foodsterr,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b3a54496f38,Hamac Big Top Lollipop (Mixed Fruit),,Snacks,hamac,g|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b4c64311fef,House Ozack Light Salted Potato Chips with Seaweed,,Snacks,house,g|1|68.000000|68.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b59e9c5459d,Otafuku Ninniku Mashi Mashi Yakisoba Sauce 200g Tub,,Canned & Packaged Food,kirei,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b66c9523832,Yava Chocolate Banana Granola 200g,,Breakfast Foods,yava,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b672cf10d06,UFC Velvet Original Coconut Milk 1L,,Drinks,ufc,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b8684f987fb,Calbee Mala Prawn Crackers 80g,,Snacks,calbee,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2b8a0f6a70ac,Lay's Hot & Spicy Potato Chips 50g,,Snacks,lay's,g|1|50.000000|50.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_2bfe204f2f78,Lee Kum Kee Abalone Sauce 535g,,Canned & Packaged Food,lee kum kee,g|1|535.000000|535.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2c10224a8500,Ayam Brand Pulled Chicken Buffalo 150g,,Canned & Packaged Food,ayam brand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2c1f339e366f,Tao Kae Noi Crispy Seaweed - Hot & Spicy,,Snacks,tao kae noi,g|1|32.000000|32.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2c3e8d97f6bb,Deluca Bio Organic Italian Spaghetti,,Rice & Noodles,deluca,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2c4cfe447932,Cadbury Dairy Milk Chocolate Bites - Hazelnut,,Snacks,cadbury,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2c86624bbee8,Meiji Hello Panda Caramel Biscuits 47g,,Snacks,meiji,g|1|47.000000|47.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2cb32afe6f03,Yamamori Tonkatsu Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_2ce58d5bfd8f,Balducci Maccheroni No 32,,Rice & Noodles,balducci,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2cfe82af40d9,Green Earth Green Earth Liver Tonic Herbal Soup,,Canned & Packaged Food,green earth,g|1|143.000000|143.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2d04c25705a7,Ken Ken Crispy Mala Salted Egg Fish Skin,,Snacks,ken ken,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2d0f2898d601,Milkmaid Low Fat Sweetened Condensed Skimmed Milk 392g,,Dairy,milkmaid,g|1|392.000000|392.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_2d229e988e2d,Green Earth Red Rice Millet Mee Sua,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2d2615ca0a0b,Lay's Stax Original Potato Chips 100g,,Snacks,lay's,g|1|100.000000|100.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_2d35171f3d58,Diet Food Organic Fruit Jelly Fred The Snake - Blackcurrant,,Snacks,diet food,g|1|30.000000|30.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2d44daf06991,Post Great Grains Red Berry Almond Crunch Cereal 368g,,Breakfast Foods,post,g|1|368.000000|368.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2dd5725585a3,HIGASHIMARU Sashimi Soy Sauce,,Canned & Packaged Food,higashimaru,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2dd8f18b3de5,Colgate Total Gum Care Toothpaste 2 x 150g,,Toiletries & Personal Care,colgate,g|2|150.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2de860905a96,Kellogg's Strawberry Cornflakes Cereal 250g,,Breakfast Foods,kellogg's,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2eb83790ff14,Pokka Lychee Oolong Tea 6 x 250ml,,Drinks,pokka,ml|6|250.000000|1500.000000,3,3,1,IDENTITY_VERIFIED,False
+CP_2ec33446cf3f,Blue Frog Keto Almond Peanut & Raspberry Cereal 300g,,Breakfast Foods,blue frog,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2ee87cc85e8b,Cloversoft 2 in 1 Bleach-Free Toilet Cleaner - Rosemary & Ginger,,Household Cleaning,cloversoft,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2f6b6175c8e0,Perfect Italiano Block Parmesan Cheese 250g,,Dairy,perfect italiano,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2f916a9f2e89,Royal Umbrella Thai Hom Mali Rice 5kg,,Rice & Noodles,royal umbrella,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_2fe3dc864b7e,Meet Mee Chili Pan Mee Anchovies -Thick Noodles- Bundle of 5,,Rice & Noodles,meet mee,g|5|120.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_30095627db1c,Selleys Anti-Bacterial Toilet Cleaner,,Household Cleaning,selleys,ml|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_315fb2834df1,Diet Food Organic Ramen Buckwheat Noodles,,Rice & Noodles,diet food,g|1|280.000000|280.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3160ce1fc688,BOURBON Alfort Mini White Vanilla Chocolate,,Snacks,bourbon,g|1|55.000000|55.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_31656454ca7d,Fragrance BB Bak Kwa,,Snacks,fragrance,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_318d36b6b026,Munchy's Lexus Dark Chocolate Cookies 189g,,Snacks,munchy's,g|1|189.000000|189.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_31aec145cd74,Ruffles Cheddar & Sour Cream Potato Chips 50g,,Snacks,ruffles,g|1|50.000000|50.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_31aeee7da0a9,Hakubaku Organic Ramen,,Rice & Noodles,hakubaku,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_31b92413fcca,Marigold Low Fat Yoghurt - Mixed Berries,,Dairy,marigold,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_31ba246dbf2b,Ken Ken Red Slice Rolled Cuttlefish,,Snacks,ken ken,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_31d9d1fa6895,Ryo Hair Loss Expert Care Anti-Dandruff Shampoo 400ml,,Toiletries & Personal Care,ryo,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_31f34ffde479,BeBecook Junior's Korean Golden Pear Drink w Bellflower Root,,Drinks,bebecook,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_324fefcc323b,Galbani Shredded Mozzarella & Emmental Cheese 170g,,Dairy,galbani,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3252035b601c,Shokubutsu Hydro+ Body Wash - Lumi Glow,,Toiletries & Personal Care,shokubutsu,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_329269fb30f9,Ace Tanoshi Suizokkan Jelly,,Snacks,ace,g|1|345.000000|345.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_32a2798e3839,PaddyKing Thai Red Cargo Rice,,Rice & Noodles,paddyking,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_32a80b5f9fd6,Yamamori Teriyaki Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_32df30457f2a,Heinz No Salt Added Tomato Ketchup 397g,,Canned & Packaged Food,heinz,g|1|397.000000|397.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_33000e9564fa,Tao Kae Noi Crispy Seaweed - Tom Yum Goong,,Snacks,tao kae noi,g|1|59.000000|59.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3345ef2664ac,"Ripe Freshly Squeezed Pink Grapefruit Juice, 1L",,Drinks,ripe,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3352037e7cd1,Franzzi Chocolate Cookie - Vanilla Lemon [KEMF],,Snacks,franzzi,g|1|58.000000|58.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_339cac71e889,Baby Laundry Detergent Pure,,Household Cleaning,pigeon,ml|1|800.000000|800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_33a121a62c92,Pantene Daily Moisture Renewal Shampoo 680ml,,Toiletries & Personal Care,pantene,ml|1|680.000000|680.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_341bcf98628c,Train Haw Flakes (12 pcs),,Snacks,train,g|1|300.000000|300.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_343a06ed21d3,Marigold Greek Style Yoghurt - Vanilla,,Dairy,marigold,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_349550e10781,Del Monte Sardines in Lemon Sauce 100g,,Canned & Packaged Food,del monte,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_34b83f932e2b,Petit Vanilla Cream Cracker,,Snacks,bourbon,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_35176b5a8123,Lee Kum Kee Gluten Free Soy Sauce 500ml,,Canned & Packaged Food,lee kum kee,ml|1|500.000000|500.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_35269fcd28b4,SnackFirst Spicy Chilli Prawn Crackers (Festive Biscuits),,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_35b669146c47,Chheda's Long Masala Banana Chips,,Snacks,chheda's,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_35e3065d6a4d,Hachimitsu Ume Ame Japan Honey Plum Candy,,Snacks,senjaku,g|1|46.000000|46.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3616af2135eb,SnackFirst Curry Tapioca Chips (Old School Crackers),,Snacks,snackfirst,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_361a14d5d5a0,[BCRS] Farmhouse Fresh Milk 1.89L,,Dairy,farmhouse,ml|1|1890.000000|1890.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3627ebc73864,AAA Japanese Style Brewed Soy Sauce,,Canned & Packaged Food,aaa,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3678a49e32bd,Tai Hua Standard Light Soy Sauce 320ml,,Canned & Packaged Food,tai hua,ml|1|320.000000|320.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_36ab2e2d0abf,Kirin Afternoon Tea - Milk Tea,,Drinks,kirin,ml|1|500.000000|500.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_36ae3434ac74,"Hinode Udon Sauce, 400ml",,Canned & Packaged Food,hinode,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_36ef8d1a225c,SCS Sliced Cheese - Original,,Dairy,scs,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_37671a0b4485,Lunica Apple Nectar Juice,,Drinks,lunica,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_378da9370527,Tai Hua Superior Dark Soy Sauce 640ml,,Canned & Packaged Food,tai hua,ml|1|640.000000|640.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_379fe6ba1a58,Ina Kanten Papa Cup Jelly Powder (Grape),,Snacks,ina,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_37b5206e0bca,Glo Pure & Clear Dishwashing Liquid - Aloe Vera,,Household Cleaning,glo,ml|1|1200.000000|1200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_384657c73935,Green Earth Butterfly Noodles,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3866626d16a9,Meiji Chocolate Milk 946ml,,Dairy,meiji,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_38758aca10d6,Meet Mee Soup Mum's Pan Mee - Thick Noodles,,Rice & Noodles,meet mee,g|1|95.000000|95.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_38cf6e280e9e,Green Earth Raw Walnuts,,Snacks,green earth,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_38db8a84bcfb,Kokona Lavender Shower Gel,,Toiletries & Personal Care,kokona,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_391ea208260d,Shin Horng Guan Miao Noodles,,Rice & Noodles,shin horng,g|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_3935eed6169c,Kavli C'est la Brie Cheese Spread,,Dairy,kavli,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_39628928b292,Sartori BellaVitano Cheese Wedge - Gold,,Dairy,sartori,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_399d0469d467,BeBecook Junior's Jumbo Brown Rice Sticks - Blueberry,,Snacks,bebecook,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_39f56a944a1a,Daribell Pure Ginger Powder,,Drinks,daribell,g|1|180.000000|180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3a54bbd5ecd5,Itsuki Fresh Hita Yakisoba Noodle (With Sauce) 3P,,Rice & Noodles,itsuki,g|1|362.000000|362.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3a9ef1f41bb9,Argente Potato Chips - Extra Virgin Olive Oil,,Snacks,argente,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3ad3114af170,Aureli Juice Bundle 6 - Carrot Red Beet Apple Juice,,Drinks,aureli,ml|6|200.000000|1200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3afa4c553c73,Max's Farm Spicy Cassava Chips 150g,,Snacks,max's farm,g|1|150.000000|150.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_3b193ac780e2,Irodori Fruit Jelly's Time - Peach,,Snacks,irodori,g|1|250.000000|250.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_3b7adab3ef2e,Little Blossom Organic Strawberry Brown Rice Puffs 40g,,Snacks,little blossom,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3b855f3abf87,Sinsia Prawn Roll Plain Packaging,,Snacks,sinsia,g|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_3ba20f2f3c9b,Tresemme Hair Fall Control Shampoo 670ml,,Toiletries & Personal Care,tresemme,ml|1|670.000000|670.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3bbacd417d8f,Laobanniang Trail Mix,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3bdc829bfab3,AAA Pickled Mustard 170g,,Canned & Packaged Food,aaa,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3bde868b2e84,Aureli Pure Juice - Carrot Red Beet Apple,,Drinks,aureli,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3be2e9999739,Ken Ken Soft Shredded Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_3be6e8e2f281,Barilla Italian Pasta - Spaghetti No.5,,Rice & Noodles,barilla,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3bef205e74a4,Oyu Sichuan Hot & Spicy Fish Skin Snacks 70g,,Snacks,oyu,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3c0265dcb36d,Ruffles Sour Cream & Onion Potato Chips 170g,,Snacks,ruffles,g|1|170.000000|170.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_3c58479ed03a,Mitsuya Cider Candy,,Snacks,asahi,g|1|112.000000|112.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3c68651f56d5,Green Earth Raw Almond Nuts,,Snacks,green earth,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3cb1805998f3,Green Earth Green Earth Spinach Ramen,,Rice & Noodles,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3d1095b11de3,Qianhe Premium Light Soy Sauce - 180 Days,,Canned & Packaged Food,qianhe,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3d4ea6f1d1a5,Tenka Ichiban Seafood Noodle,,Rice & Noodles,tenka,g|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3da07287e4fe,Marigold Peel Fresh Juice - Lime,,Drinks,marigold,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3db088b6694c,Green Earth Black Glutinous Rice,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3de409afe4fa,Green Earth Mee Soya,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3e0995f1691b,Kavli Blue Cheese Spread,,Dairy,kavli,g|1|175.000000|175.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3eacb484b44e,Calbee Crispy Potato Chips - Hot & Spicy,,Snacks,calbee,g|1|72.000000|72.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_3eada9563668,Oyu Salted Egg Fish Skin Snacks 70g,,Snacks,oyu,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3ee6b4cb0977,Pokka Ice Peach Tea 6 x 250ml,,Drinks,pokka,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3ef6322bd40a,Hipp Organic Fruit Cereal Flakes,,Breakfast Foods,hipp,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3f02ca0755de,Fragrance Artisanal Spanish Iberico Bak Kwa,,Snacks,fragrance,g|1|380.000000|380.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3f4d96b2bb14,Heinz No Sugar Added Tomato Ketchup 369g,,Canned & Packaged Food,heinz,g|1|369.000000|369.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_3f7a797d2c3b,SnackFirst Flying Fish Biscuits (Old School Biscuits),,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3f801b787e19,Yamasa Konbu Kelp Concentrate Seasoning Sauce,,Canned & Packaged Food,yamasa,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3fd3218439fb,SnackFirst Midnight Raisins - No Preservative Dried Fruits,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_3ffbad4403e6,Harraways Steel Cut Oats 800g,,Breakfast Foods,harraways,g|1|800.000000|800.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_400b894de0ca,Tong Garden Salted Nuts - Pistachios,,Snacks,tong garden,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_400ea0548ff0,Glico Sugar Off Cheeze With Cheese,,Snacks,glico,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4054c44c4248,Ritter Sport Chocolate - Honey Salt Almonds,,Snacks,ritter sport,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_40c9bdece8ca,Post Cocoa Pebbles Cereal 311g,,Breakfast Foods,post,g|1|311.000000|311.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_40db892da395,Sau Tao Thin Shrimp Bottle,,Rice & Noodles,sau tao,g|1|880.000000|880.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_41084a5600e7,SnackFirst Go Small Figs - Natural Dried Fruits,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_410ae2bef1ab,Magiclean Floor Cleaner - Fresh Floral,,Household Cleaning,magiclean,ml|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_41122f222c55,SongHe Noble Berry Rice,,Rice & Noodles,songhe,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_411e86161b60,Ecostore - Eucalyptus Laundry Liquid,,Household Cleaning,ecostore,ml|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_41278c2ece15,Hunt's 100% Natural Tomato Ketchup 567g,,Canned & Packaged Food,hunt's,g|1|567.000000|567.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_416d0fdeb2e5,Breeze Liquid Detergent - Goodbye Musty (Indoor Drying),,Household Cleaning,breeze,g|1|3600.000000|3600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_418ce327325e,BeBecook Junior's Jumbo Brown Rice Sticks - Sweet Corn,,Snacks,bebecook,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_419b50dd1a18,Green Earth Millet Flat Noodle,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_419d7cd8ab19,Aoren Drop of Hope - Red Apple,,Drinks,aoren,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_420d0260f509,Ecostore - Grapefruit Dish Liquid,,Household Cleaning,ecostore,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_421c8d50df67,Ken Ken Shredded Soft Cuttlefish XO,,Snacks,ken ken,g|1|14.000000|14.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_426f83748c3e,Tabasco Habanero Sauce 60ml,,Canned & Packaged Food,tabasco,ml|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4273fb8b6221,LaCroix Naturally Essenced Sparkling Water - Pure,,Drinks,lacroix,ml|8|355.000000|2840.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_429ce20d5685,Yava Coconut Banana Granola 200g,,Breakfast Foods,yava,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_42ddd9912994,Green Earth Low GI Brown Rice,,Rice & Noodles,green earth,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_43170a4bb660,Colgate Total Sensitivity & Gum Health Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_438de5db463d,Gardini Blend Dark Chocolate Bar – 62% Cocoa,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_43a01b7c962e,Lunica Blueberry Nectar Juice,,Drinks,lunica,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_43a1745843d9,Marigold 100% Tropical Fruits Juice 6 x 200ml,,Drinks,marigold,ml|6|200.000000|1200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_43cb35dc7003,Kavli Crayfish Cheese Spread,,Dairy,kavli,g|1|275.000000|275.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_43de73a671fd,Lee Kum Kee Choy Sun Oyster Sauce,,Canned & Packaged Food,lee kum kee,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_43f085a0d014,Seaboss Atsuyaki Tamagoyaki (Japanese Egg Roll),,Canned & Packaged Food,seaboss,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_440e6cb8a9cc,Baby Melting Puff With Probiotics - Strawberry,,Snacks,bebecook,g|1|23.000000|23.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_44214accba61,Toyo Suisan Red Rice (Sekihan),,Rice & Noodles,toyo suisan,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_445e3ef4b1e4,Yamamori Tsuyu (Soba & Udon) 220ML,,Canned & Packaged Food,yamamori,ml|1|220.000000|220.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_447cd13fe014,Kirei Kanesu Cha Soba,,Rice & Noodles,kirei,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_449738911181,Ken Ken Sudare Cuttlefish,,Snacks,ken ken,g|1|15.000000|15.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_44bebdff098c,Starbucks Soluble Coffee - Mini Cup,,Drinks,starbucks,piece|30|1.000000|30.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_44cc5a5a7380,Lurpak Spreadable Unsalted Butter 250g,,Dairy,lurpak,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_44fe02df03cc,Glico Choco Mint Pocky,,Snacks,glico,g|1|65.000000|65.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_45653dbb2452,Grinny Multigrain Teething Stick Banana,,Snacks,grinny,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_459427684b2a,SnackFirst Chocolatey Baked Hazelnuts - Natural Unsalted Nuts,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_45f3aafef250,Camel Natural Baked Almonds,,Snacks,camel,g|1|135.000000|135.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_460505269c7a,Milo Mocha Nuggets Chocolate 25g,,Snacks,milo,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_462689c75a0a,Davidoff Fine Aroma Instant Coffee 90g,,Drinks,davidoff,g|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4670ea8a5306,Bad Lab Cooling Roll-On Deodorant For Sensitive Skin,,Toiletries & Personal Care,bad lab,ml|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_46c01223db62,Little Blossom Organic Sweet Potato Brown Rice Puffs 40g,,Snacks,little blossom,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_46d634878cd4,PaddyKing Thai Mixed Jasmine Rice,,Rice & Noodles,paddyking,g|1|2500.000000|2500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_46f5002a2f69,Splat Biocalcium Toothpaste 100ml,,Toiletries & Personal Care,splat,ml|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_479871a55bcf,Method Squirt Mop Hard Floor Cleaner - Lemon Ginger,,Household Cleaning,method,ml|1|739.000000|739.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_47a017142187,Dove Go Fresh Paraben-Free Body Wash - Avocado x Calendula,,Toiletries & Personal Care,dove,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_47a083c3457c,UFC Refresh Coconut Twist Coconut Water 500ml,,Drinks,ufc,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_47b0fc5e5319,Selleys Toilet Cleaner Gel - Peach,,Household Cleaning,selleys,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_47e5e822c110,Laobanniang Crispy Garlic Broad Beans,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_47f66986fae4,Ina Kanten Papa Cup Jelly Powder (Green Apple),,Snacks,ina,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_480085c0ffe7,"Ottogi Gold Mayonnaise, 300g",,Canned & Packaged Food,ottogi,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4841e6bc6981,Maharani Basmati Rice Suitable For Diabetics,,Rice & Noodles,maharani,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4851e2174f95,Lindt Excellence Chocolate Bar - Mint Intense (Dark),,Snacks,lindt,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_485fc9b603ab,Yamamori Nama Shoyu Japanese Raw Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_48cc5c6d46af,Monin Caramel Sauce,,Snacks,monin,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_48e422dbc409,Maggi Premium Oyster Sauce 500g,,Canned & Packaged Food,maggi,g|1|500.000000|500.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_491adbd5a23d,Kodomo Baby Laundry Detergent - Nature Care,,Household Cleaning,kodomo,ml|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4958203263ef,Green Earth Oat Meal Yee Mee,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_495c4f18420e,Fairy Port Frozen Musang King Durian Mille Crepe Cake 6-Inch,,Snacks,fairy port,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_498ecd6c0c60,Boxgreen Peanut Pretzel Dark Chocolate 130g,,Snacks,boxgreen,g|1|130.000000|130.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_49ec43483b76,Heinz Chicken Broth 1L,,Canned & Packaged Food,heinz,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4a0562662105,Green Earth Organic Black Chia Seed,,Snacks,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4a1496876a1a,Oral-B Vitality Pro Electric Toothbrush - Deep Clean (Black),,Toiletries & Personal Care,oral-b,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4a225a7b8f68,BOURBON Kikori No Kirikabu Chocolate Biscuit,,Snacks,bourbon,g|1|66.000000|66.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4a3f7b15630c,Ujinotsuyu Sencha Green Tea Leaves (Gold),,Drinks,ujinotsuyu,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4ad1d09b2e10,Anlene Actifit 3X Plain Milk Powder 1kg,,Drinks,anlene,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b06f6b83af5,Marigold 100% Orange Juice 1L,,Drinks,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b0a989f3569,Kodomo Baby Cleanser - Bottle & Accessories,,Household Cleaning,kodomo,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b1a9eb5e5b5,Fupaiyuan Soft Candy (Wu Mei),,Snacks,fupaiyuan,g|1|248.000000|248.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b1c8ad8ed34,Kanro Non Sugar Fruits Candy,,Snacks,kanro,g|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b264bafc9a6,Calbee Crispy Potato Chips - Original,,Snacks,calbee,g|1|72.000000|72.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b37063f4dda,Toblerone Milk Chocolate Bar 100g,,Snacks,toblerone,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4b3f84c8b629,Temole Sea Salt Avocado Chips 40g,,Snacks,temole,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4bd53757fc40,Parodontax Daily Whitening Toothpaste 90g,,Toiletries & Personal Care,parodontax,g|1|90.000000|90.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_4c0aa82f504b,Green Earth Pumpkin Flat Noodle,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4c7f2b4a0fc6,Temole Cheese Broccoli Puffs 56g,,Snacks,temole,g|1|56.000000|56.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_4c95aba7077f,Rizzoli Tuna Fillets in Olive Oil,,Canned & Packaged Food,rizzoli,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4ca03fc35959,Temole Kale & Pepper Cauliflower Puffs 56g,,Snacks,temole,g|1|56.000000|56.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4d10c02ab79c,Green Earth Green Earth American Ginseng Herbal Soup,,Canned & Packaged Food,green earth,g|1|129.000000|129.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4d31b9f44578,Lunica Organic Red Tomato Juice,,Drinks,lunica,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4d3bda949e49,Kirei Tomomasu Kanjuku Mango Japanese Cider Soda Beverage,,Drinks,kirei,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4d4f8cb3e1be,Meiji Multivitamin Low Fat Milk,,Dairy,meiji,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4d503cbfc4b7,BeBecook Nutri-Jelly Stick - Zinc + Vitamin E,,Snacks,bebecook,g|1|280.000000|280.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4da289447982,Glo Nature Dishwashing Liquid - Pomegranate & Yuzu Lemon,,Household Cleaning,glo,ml|1|800.000000|800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4daa237a9e17,Minerva Organic Feta Cheese 150g,,Dairy,minerva,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4e262632e4bb,SongHe Jasmine Brown Rice,,Rice & Noodles,songhe,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4e385f4456d5,RYO Damage Care & Nourishing Conditioner 480ml,,Toiletries & Personal Care,ryo,ml|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4e63fe595601,SnackFirst Supreme Hearty Medley (Mixed Nuts and Fruits),,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4e709f3257eb,Meiji Pistachio Nuts Chocolate 35G,,Snacks,meiji,g|1|35.000000|35.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_4eaf87bef0b4,Bio-Home Kitchen Cleaner - Lemongrass & Green Tea,,Household Cleaning,bio-home,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4eb5602b03f2,Green Earth Original Yee Mee,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4f18c2083d8c,SnackFirst Bitter Belinjau Crackers (Emping Belinjo Chips),,Snacks,snackfirst,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4fe01a813f40,Imoto Imoto Mix Bean Cracker,,Snacks,imoto,g|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_4fe8455c7bc1,KOHL Mountain Apple Juice Rouge,,Drinks,kohl,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5054ff777cba,AAA Black Sesame Seed,,Snacks,aaa,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_507b7094ffcf,Imoto Wasabi Bean Cracker,,Snacks,imoto,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5084ef15bdde,Post Honey Bunches Of Oats Cereal - Honey Roasted,,Breakfast Foods,post,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_508e3c9cef8f,Aureli Pure Juice - Celery Lemon Apple,,Drinks,aureli,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_50906f4c806c,President Salted Butter 200g,,Dairy,president,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_509dffe4f629,Ken Ken Cod Fish Snacks,,Snacks,ken ken,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_50fb88170514,Cadbury Dairy Milk Sharepack Chocolate,,Snacks,cadbury,g|1|144.000000|144.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_50fb97cb8056,Post Great Grains Blueberry Morning Cereal 382g,,Breakfast Foods,post,g|1|382.000000|382.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_511cdc368cb3,Colavita Pasta - Spaghetti,,Rice & Noodles,colavita,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_51ad12e6d147,KOHL Mountain Apple Juice & Blackcurrant,,Drinks,kohl,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_51b9ed4412ac,Haribo Zourr Worms Gummy Candy 160g,,Snacks,haribo,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_51c89c2638eb,Bob's Red Mill Classic Instant Oatmeal 6 x 45g,,Breakfast Foods,bob's red mill,g|6|45.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_51d5523e2346,Royal Umbrella Thai Hom Mali Rice 1kg,,Rice & Noodles,royal umbrella,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_51ecf3c89598,Hakubaku Organic Soba,,Rice & Noodles,hakubaku,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_520c8991a07f,Iliada Kalamata Pitted Olives 370g,,Canned & Packaged Food,iliada,g|1|370.000000|370.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_52201747fabe,New Moon Abalone Sauce 510g,,Canned & Packaged Food,new moon,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5250192fde42,Laobanniang Raw Cashew Nuts (big),,Snacks,laobanniang,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_52ab61a7c76b,Hi-Chew Strawberry & Grape Chewy Candy 100g,,Snacks,hi-chew,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_52cdf0f179e6,Ritter Sport Cubes Classic Chocolate 176g,,Snacks,ritter sport,g|1|176.000000|176.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_52e953be9321,Anand Badamika,,Snacks,anand,g|1|225.000000|225.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_530e8a75e72d,Foodsterr Australian Oat Bran,,Breakfast Foods,foodsterr,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_531618b9d86f,Ecostore - Eucalyptus Antibacterial Toilet Cleaner,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_535d1b94fedb,Top Detergent Powder - Anti-Bacterial,,Household Cleaning,top,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_53da6dea94e8,Yamamori Japanese Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5410484bd361,Green Earth Sunflower Seed Powder,,Breakfast Foods,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5480c98c6033,Grinny Fruity Straws - Blueberry & Strawberry,,Snacks,grinny,g|1|15.000000|15.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_54ad87a7a9be,Tai Hua Special Dark Soy Sauce 640ml,,Canned & Packaged Food,tai hua,ml|1|640.000000|640.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_55259f4d1b40,Yuzusco Seasoned Japan Nameko Mushroom Glass Bottle,,Canned & Packaged Food,kirei,g|1|140.000000|140.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_552bffc7b9a4,Kirei Hakkenaka Luxury Tea Cha Soba Noodles,,Rice & Noodles,kirei,g|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_556ceb1c6c82,Boncafe All Day Coffee Beans 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_557ad797416f,Green Earth Organic Sunflower Seed,,Snacks,green earth,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_55cc602bb664,RedMan Petit Crunch Paillete Feuilletine,,Snacks,redman,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_55eaa75479cb,Super Clean Soap Bar?,,Household Cleaning,sanada seiko,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_55f2119c82e9,SongHe Glutinous Rice,,Rice & Noodles,songhe,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_560e9c1e9400,Julie's Cheese Sandwich Biscuits 336g,,Snacks,julie's,g|1|336.000000|336.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5632165ba35b,Colgate Max Fresh Cool Mint Toothpaste 160g,,Toiletries & Personal Care,colgate,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_563bf5cf3776,Blue Frog Macadamia Almond & Manuka Honey Cereal 350g,,Breakfast Foods,blue frog,g|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_567cecec0822,Asahi Calpis Non-Carbonated Drink,,Drinks,asahi,ml|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_56b1b0839593,Kikkoman Special Fragrance Soy Sauce 600ml,,Canned & Packaged Food,kikkoman,ml|1|600.000000|600.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_56c6d4921645,Suntory Oolong Tea Beverage - Kirei,,Drinks,suntory,ml|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_56d48ede5150,Ecostore - Grapefruit Dish Liquid,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_56d4ff6dbf4f,Kewpie Dressing Sesame Soy Sauce,,Canned & Packaged Food,kewpie,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_56de5ddfef49,Marigold Low Fat Yoghurt - Peach,,Dairy,marigold,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_56ed5d9e9f18,BeBecook Organic Plum & Grape Juice,,Drinks,bebecook,ml|1|100.000000|100.000000,4,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_56f8788dae4e,Naturel Organic Brown Rice 2kg,,Rice & Noodles,naturel,g|1|2000.000000|2000.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_570d8cf0ebc8,Iwate Ginga no Shizuku Japanese Rice,,Rice & Noodles,iwate,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_57108b9d4705,Haribo Goldbears Gummy Candy 160g,,Snacks,haribo,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5725932a71a4,Pokka No Sugar Sencha Japanese Green Tea 6 x 250ml,,Drinks,pokka,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_573f90772a40,Meiji Fresh Milk 830ml,,Dairy,meiji,ml|1|830.000000|830.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_57c2b5f594e9,Green Earth Green Earth 3 Colours Quinoa Ramen,,Rice & Noodles,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_57da90247855,Gin Thye Huat Kueh 2 Catty x Brown  1.2kg,,Snacks,gin thye,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_57e9b3821dd5,Amocan Golden Label Dark Soya Sauce,,Canned & Packaged Food,amocan,ml|1|640.000000|640.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_580b098e0edd,Kodomo Baby Laundry Softener,,Household Cleaning,kodomo,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5812c889041f,Dajung Honey Ginger Tea,,Drinks,dajung,g|1|580.000000|580.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5838b0fcab7a,MARUSAN Marusan Red Tea Soy Milk with Reduced 50% Calories,,Dairy,marusan,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_58502e7de33f,Green Earth Burdock Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5856f4ecdd09,Ecostore Antibacterial Multi-Purpose Cleaner - Citrus,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_58d3f897fd57,Yamamori Japanese Cha Soba,,Rice & Noodles,yamamori,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_58dc54409fc4,New Moon Premium Oyster Sauce 510g,,Canned & Packaged Food,new moon,g|1|510.000000|510.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_592b19b4890f,Greenfields Fresh Milk 1L,,Dairy,greenfields,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_59c78fe668a1,Calbee Original Prawn Crackers 90g,,Snacks,calbee,g|1|90.000000|90.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_59cc221088e6,Green Earth Purple Sweet Potato Ramen,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_59f83a1e069c,Kodomo Baby Laundry Detergent Refill - Low Suds ,,Household Cleaning,kodomo,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5a3d0e13a082,Purely Elizabeth Vanilla Chocolate Chip Ancient Grain Granola 340g,,Breakfast Foods,purely elizabeth,g|1|340.000000|340.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_5a473dfe3804,BOURBON Roanne Vanilla Cream Wafer,,Snacks,bourbon,g|1|85.000000|85.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5a4a88ebf7be,Chun Guang Classic Coconut Candy,,Snacks,chun guang,g|1|120.000000|120.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_5a79849e60d2,Camel Smoked Almonds,,Snacks,camel,g|1|135.000000|135.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5a94b0921d72,Nivea Extra Bright Velvet Romance Deodorant Roll On 50ml,,Toiletries & Personal Care,nivea,ml|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5aa8cf374ecd,Masterfoods Dijonnaise Mustard 250g,,Canned & Packaged Food,masterfoods,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ab0bcc6b792,Sensodyne Repair & Protect Extra Fresh Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_5ac503e3f232,Itsuki Yakisoba Noodles with Sauce,,Rice & Noodles,itsuki,g|1|680.000000|680.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5acbfe34a2c9,UFC Refresh Coconut Twist Coconut Water 1L,,Drinks,ufc,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_5ad892ed1709,AAA White Sesame Seed,,Snacks,aaa,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ae5a4d8468a,Marigold 100% Apple Juice 6 x 200ml,,Drinks,marigold,ml|6|200.000000|1200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5afea3853067,Swanson Clear Chicken Broth,,Canned & Packaged Food,swanson,ml|1|250.000000|250.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_5b846d2d2533,Lemnos Haloumi Cheese 180g,,Dairy,lemnos,g|1|180.000000|180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5b99220111d2,Greenfields Fresh Milk - Low Fat,,Dairy,greenfields,ml|1|1890.000000|1890.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5bac8d63e5c6,Takamori Yakisoba Japanese Noodle - Kirei,,Rice & Noodles,takamori,g|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5bbc6f7c64d3,GW Disinfectant Floor Cleaner - Fresh Pine,,Household Cleaning,gw,ml|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5bdec5d62069,Gim's Heritage Special Grade Chilli Sauce,,Canned & Packaged Food,gim's heritage,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5be5f2e2e278,Schweppes Cream Soda No Sugar Can - Bundle of 8,,Drinks,schweppes,ml|8|330.000000|2640.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5c6b50a2f11e,Heinz Chicken Broth 250ml,,Canned & Packaged Food,heinz,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5c7163dbc478,Pringles Sour Cream & Onion Potato Chips 134g,,Snacks,pringles,g|1|134.000000|134.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5c94e5a7b2df,Colgate Total Breath Health Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ca817862550,Schweppes Cream Soda Can - Bundle of 8,,Drinks,schweppes,ml|8|330.000000|2640.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ce8df965a94,Top Detergent Powder - Blooming Freshness,,Household Cleaning,top,g|1|2100.000000|2100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ceb37e83dd1,Yamasa Premium Organic Shoyu Soy Sauce,,Canned & Packaged Food,yamasa,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5d33e4820783,Systema Gokujo Toothbrush - Ultra Soft,,Toiletries & Personal Care,systema,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5d54c7056955,Chirin All Season Chocolate - Amao Strawberry Chocolate,,Snacks,chirin,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5d6490ed456f,Starbucks Caffe Verona Dark Roast Ground Coffee 200g,,Drinks,starbucks,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5d6bdfbd8a73,Green Earth Organic Pumpkin Seed,,Snacks,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5dbce56e46be,Ildong Ayiyum Ocean Friends Biscuits (Cheese),,Snacks,ildong,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5dc68a8f71be,Julie's Charm Sandwich - Tiramisu,,Snacks,julie's,g|1|172.000000|172.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5dd2cd57f6e7,Ujinotsuyu Maccha Hagoromo Green Tea Powder,,Drinks,ujinotsuyu,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ddf22fea3f4,Kozhi Koden's Palak Murukku,,Snacks,kozhi koden's,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5df135d3e651,Lunica Organic Ketchup,,Canned & Packaged Food,lunica,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5df5da8e29cd,Ecostore - Multi Purpose Kitchen Cleaner - Orange & Thyme,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5e2aa25f2491,RedMan Jasmine Green Tea Leaf,,Drinks,redman,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5e5232ae8b22,Yamamori Japanese Cha Udon,,Rice & Noodles,yamamori,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5e5867641f72,Bio-Home Laundry Detergent Delicate - Hyacinth & Nectarine,,Household Cleaning,bio-home,ml|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5e951b287c66,Selleys Rapid Mould Killer,,Household Cleaning,selleys,ml|1|500.000000|500.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_5ed9c38edfa2,SUKIN Botanical Body Wash - Eucalyptus & Tea Tree,,Toiletries & Personal Care,sukin,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5efe96ae3794,Aureli Pure Juice - Carrot Apple Orange,,Drinks,aureli,ml|6|750.000000|4500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5f04f7fcbfc6,Kadocho Yuasa Handmade Soy Sauce,,Canned & Packaged Food,kadocho,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5f4a19e9f7d6,Nestle Koko Krunch Strawberry Cereal 285g,,Breakfast Foods,nestle,g|1|285.000000|285.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5f6cf19534a8,Cadbury Dairy Milk Chocolate Bar - Bubbly,,Snacks,cadbury,g|1|112.000000|112.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5f6f0813264e,SnackFirst ABC Alphabet Biscuits (Old School Kids Snacks),,Snacks,snackfirst,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5fb69e25dc9b,Green Earth Teochew Kwey Tiao,,Rice & Noodles,green earth,g|1|240.000000|240.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_5ff48f7a8b03,Bref Blue Active Automatic Toilet Bowl Cleaner - Eucalyptus,,Household Cleaning,bref,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6066fb4b1a0f,Hershey's Kisses Creamy Milk Chocolate 146g,,Snacks,hershey's,g|1|146.000000|146.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_607355ed856e,Taj Basmati Low GI Rice,,Rice & Noodles,taj,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_60811b3d449b,Attack Liquid Detergent Refill - Plus Softener,,Household Cleaning,attack,g|1|1400.000000|1400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_60a48ff0650a,Yamasa Kombu Tsuyu Soup Japanese Stock Base 1L - Kirei,,Canned & Packaged Food,yamasa,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_60a801caefd6,Sunsweet Pitted Prunes 340g,,Snacks,sunsweet,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6111e233cc7b,Maharani Basmati Rice Suitable For Diabetics,,Rice & Noodles,maharani,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_612c9e1ac8e5,Marigold Mango Fruit Drink 6 x 250ml,,Drinks,marigold,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6164616a5dd1,Kinmemai Better White Rice,,Rice & Noodles,kinmemai,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_617d0a920c9e,Itsuki Kumamoto Akashin Spicy Tonkotsu Ramen,,Rice & Noodles,itsuki,g|1|114.000000|114.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_61856bd97200,BeBecook Soft Fish Chip - Salmon,,Snacks,bebecook,g|1|30.000000|30.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_61b5a5684693,Yamamori Gluten Free Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_61d1c65b9a2d,Songhe Plus Enriched Fragrant Rice,,Rice & Noodles,songhe,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_61d7e3322d7c,Chek Hup Matcha Vanilla Latte,,Drinks,chek hup,g|1|115.000000|115.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_622075e2a876,Bio-Home Multi-Surface Cleaner - Lavender & Bergamot,,Household Cleaning,bio-home,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_626b1e12d821,BeBecook Wise Moms Rice Snacks - Veggie,,Snacks,bebecook,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_62c5d1a22eb5,Yamamori Japanese Cha Somen,,Rice & Noodles,yamamori,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_62c94f9592e1,Deluca Italian Spaghetti,,Rice & Noodles,deluca,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_62cf720c571f,Naturel Organic Brown Rice 750g,,Rice & Noodles,naturel,g|1|750.000000|750.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_634721024b6f,Otafuku Japanese Omelette Rice Sauce 300g Tub,,Canned & Packaged Food,kirei,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_635efa9d14d1,Green Earth Quinoa Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_63f36e77f9c2,Camel Natural Baked - Ruby Mix,,Snacks,camel,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_642624bc12d7,Blue Elephant Sweet Chilli Sauce 190ml,,Canned & Packaged Food,blue elephant,ml|1|190.000000|190.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_644ea8f60017,Camel Mixed Snacks,,Snacks,camel,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6457d4890a0c,Colgate Max Fresh Watermelon Blast Toothpaste 100g,,Toiletries & Personal Care,colgate,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6458f5025d0a,Soresina Parmigiano Reggiano Cheese 200g,,Dairy,soresina,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_649ed5890b2f,Everfresh Deep Moisturising Body shampoo-Lavender & Chamomile,,Toiletries & Personal Care,everfresh,ml|1|2100.000000|2100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_64ea76ace570,Selleys Mould & Stain Remover ,,Household Cleaning,selleys,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_653fabfd04c9,Ina Kanten Papa Cup Jelly Powder (Peach),,Snacks,ina,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_657ed6372c04,Lee Kum Kee Superior Light Soy Sauce 500ml,,Canned & Packaged Food,lee kum kee,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_65b298c33fdf,Kavli Long Live the Cheddar Cheese Spread,,Dairy,kavli,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_66062bcb2b77,Green Earth Golden Bergamot,,Snacks,green earth,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6616fdae7658,Stella Parmesan Cheese Popcorn 70g,,Snacks,stella,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_666cac9846a3,Bzu Bzu Baby 2-in-1 Laundry Detergent & Softener 1L,,Household Cleaning,bzu bzu,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_66a1f9fc7fc9,Kagura Organic Matcha Green Tea Powder,,Drinks,kagura,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_672d31aafaf1,Train Haw Ball,,Snacks,train,g|1|230.000000|230.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6740b4af71d6,Colgate Total Sensitivity & Gum Health Toothpaste 2 x 150g,,Toiletries & Personal Care,colgate,g|2|150.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_675e065f0bfd,Green Earth Purple Yam Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_679cdc5e7473,Kellogg's Granola Boost Vitamin D + Calcium 300g,,Breakfast Foods,kellogg's,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_67dd3d702369,IKO Sugar Free Original Oatmeal Cracker,,Snacks,iko,g|1|178.000000|178.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_67fe774795b9,Colavita Pasta - Linguine,,Rice & Noodles,colavita,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6810d723c07d,Tai Hua Sweet Sauce 320ml,,Canned & Packaged Food,tai hua,ml|1|320.000000|320.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6840d5be8ce7,Yit Foh Tenom Latte - 2 in 1,,Drinks,yit foh tenom,g|1|20.000000|20.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_68525ce618bc,Lukang Thin Noodles-Crispy Shallot Flavor,,Rice & Noodles,shin horng,g|1|315.000000|315.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_68578c201b5e,Green Earth Pumpkin Seed Powder,,Breakfast Foods,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_687437424439,Golden Pineapple Thai Fragrant Rice 5kg,,Rice & Noodles,golden pineapple,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_68916e5de133,Lee Kum Kee Supreme Authentic First Draw Soy Sauce - Salt Reduced,,Canned & Packaged Food,lee kum kee,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_693f8b98cebb,Shokubutsu Men Body Foam Refill - Recharge,,Toiletries & Personal Care,shokubutsu,ml|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_697c1d5026c4,Ecomil Organic Cashew Milk - Sugar Free,,Dairy,ecomil,ml|1|1000.000000|1000.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_697c9dad6ccd,Lumonde Thin Cookies,,Snacks,bourbon,g|1|88.000000|88.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_698fab729774,Little Blossom Seaweed & Corn Veggie Sticks 12g,,Snacks,little blossom,g|1|12.000000|12.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6991d8536211,Heinz Seriously Good Mayonnaise 215g,,Canned & Packaged Food,heinz,g|1|215.000000|215.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_699dd3c44a07,AAA Rice Stick Kway Teow,,Rice & Noodles,aaa,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_69a6492c1bd3,SEABOSS Waten Soba Tempura Sauce Tsuyu (Halal),,Canned & Packaged Food,seaboss,ml|1|400.000000|400.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_69bf5fdace61,Marigold HL Plain Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,3,3,2,IDENTITY_VERIFIED,True
+CP_6a0b431bba93,Good Virtues Co Aloe Vera Roll-On Deodorant,,Toiletries & Personal Care,good virtues co.,ml|1|55.000000|55.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6a1ed24e3d85,Lavazza Qualita Rossa Coffee Beans 250g,,Drinks,lavazza,g|1|250.000000|250.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_6a531d602305,Kleen-Up Wet Floor Wipes - Rose Elegance,,Household Cleaning,kleen-up,piece|15|1.000000|15.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6a60af75ac69,KOHL Mountain Apple Juice & Pear,,Drinks,kohl,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6a9f93e18634,Mission White Corn Tortilla Chips 230g,,Snacks,mission,g|1|230.000000|230.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6ae2d3b265f0,Aureli Pure Juice - Carrot Red Beet Apple,,Drinks,aureli,ml|6|750.000000|4500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6aef3d290934,Lucido Deodorant Scalp Shampoo 450ml,,Toiletries & Personal Care,lucido,ml|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6b352a9e070d,Yamamori Takoyaki Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6b6018f62df4,[BCRS] Pokka Lychee Oolong Tea 1.5L,,Drinks,pokka,ml|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6b84d4a4cb3a,Tradition Shredded Mozzarella & Red Cheddar,,Dairy,tradition,g|1|225.000000|225.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6c116209737b,Lindt Excellence Chocolate Bar - 85% (Dark),,Snacks,lindt,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6da02600895d,Nespray Fortified Instant Milk Powder - Full Cream,,Drinks,nespray,g|1|1800.000000|1800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6dceaac3222a,Feng He Garden Dark Soy Sauce,,Canned & Packaged Food,feng he garden,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6dcfaf71f0a3,Ibaraki Niji no Kirameki Japanese Rice,,Rice & Noodles,ibaraki,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6e1c680b4660,Itsuki Fresh Yakisoba Noodles With Sauce,,Rice & Noodles,itsuki,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6ec5e539a0ac,Gott & Blandat Original,,Snacks,cloetta,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6f076f574cfe,Pauls Low Fat Milk 1L,,Dairy,pauls,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_6f0d4a505dbf,Top Super Colour Concentrated Liquid Detergent Refill 1.8kg,,Household Cleaning,top,g|1|1800.000000|1800.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_6f132215dfa2,Ken Ken Teppanyaki Sudare Cuttlefish,,Snacks,ken ken,g|1|45.000000|45.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6f169e4b1e52,Kavli Ham Cheese Spread,,Dairy,kavli,g|1|275.000000|275.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6f3f8318cb7f,Six Fortune Dao Shiao Noodle,,Rice & Noodles,six fortune,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_6f8edfcf426b,PaddyKing Thai Hom Mali Jasmine Rice,,Rice & Noodles,paddyking,g|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_6fc4a668386a,Ecostore - Geranium & Orange Laundry Liquid,,Household Cleaning,ecostore,ml|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_70087d76eeb7,Green Earth Brown Rice Bee Hoon,,Rice & Noodles,green earth,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_70359f6bcd36,Lindt Extra Creamy Dark Chocolate 80g,,Snacks,lindt,g|1|80.000000|80.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_7064d3015a8e,Julie's Charm Sandwich - Double Chocolate,,Snacks,julie's,g|1|172.000000|172.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_714558fa47ac,Lindt Excellence Chocolate Bar - Intense Orange (Dark),,Snacks,lindt,g|1|100.000000|100.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_7149ba38b488,Sanwa Crispy Anchovy Fish with Seaweed,,Snacks,sanwa,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_71b6f49ee583,Green Earth Cordyceps Flower Herbal Soup,,Canned & Packaged Food,green earth,g|1|127.000000|127.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_71d1d6a8c273,Tai Hua Standard Dark Soy Sauce 640ml,,Canned & Packaged Food,tai hua,ml|1|640.000000|640.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_71f6408fd857,Purely Elizabeth Ancient Grain Granola Original 340g,,Breakfast Foods,purely elizabeth,g|1|340.000000|340.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_723f72c335c4,Tai Hua Standard Light Soy Sauce 640ml,,Canned & Packaged Food,tai hua,ml|1|640.000000|640.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_72719a3c184f,Munchy's Crackers - Cheese,,Snacks,munchy's,g|1|260.000000|260.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_72a510e0fde9,Kellogg's Rice Krispies Cereal 130g,,Breakfast Foods,kellogg's,g|1|130.000000|130.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_72f4f1251479,President Grated Emmental Cheese 100g,,Dairy,president,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_731721c38d82,Lee Kum Kee Seafood XO Sauce 210g,,Canned & Packaged Food,lee kum kee,g|1|210.000000|210.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7360abdec43a,Cocobella Straight Up Coconut Water 1L,,Drinks,cocobella,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_7369f2251f7a,Head & Shoulders Bare Soothing Hydration Shampoo 400ml,,Toiletries & Personal Care,head & shoulders,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_739a1254ac97,Magnolia Fresh Milk 475ml,,Dairy,magnolia,ml|1|475.000000|475.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_73a61df61cc2,Sanwa Crispy Anchovy Fish Snack,,Snacks,sanwa,g|1|70.000000|70.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_73a7e1d9fbec,Ecomil Organic Hazelnut Milk - Sugar Free,,Dairy,ecomil,ml|1|1000.000000|1000.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_73c026ba333f,Gee.ef Magic Popping Candy (Grape) 40 Pieces,,Snacks,gee.ef,g|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_73d65f45a3a1,Linwoods Original Energy Overnight Oats 300g,,Breakfast Foods,linwoods,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_747e896cbf91,SnackFirst Spicy Belinjau Crackers (Emping Belinjo Chips),,Snacks,snackfirst,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_74c549f4471a,Yamamori Teriyaki Sauce,,Canned & Packaged Food,yamamori,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_750ba2355a51,BRU Coffee Original Refill Pack,,Drinks,bru,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_752ccc9bc9e6,RYO Damage Care & Nourishing Shampoo 480ml,,Toiletries & Personal Care,ryo,ml|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_753756e92423,White Rollita Cookies,,Snacks,bourbon,g|1|98.000000|98.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7540c470a650,Biograde Dishwashing Liquid - Fresh Lime,,Household Cleaning,biograde,ml|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7541e267df6d,Marigold Low Fat Yoghurt - Natural,,Dairy,marigold,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_75500dcc6c9a,Barilla Italian Pasta - Farfalle,,Rice & Noodles,barilla,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_75773fff9345,Nobel Super Lemon Candy,,Snacks,nobel,g|1|88.000000|88.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_75a9c64ec172,Camel Natural Nutty Berries Delight,,Snacks,camel,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_75d1bef0feac,Diet Food Organic Millet Noodles,,Rice & Noodles,diet food,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_75f3490fad42,Green Earth Organic Golden Flaxseed,,Snacks,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_75ffcf13449e,Lusol Rice Furikake Vegetable & Seafood (12m+),,Snacks,lusol,g|1|20.000000|20.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7604abd998a9,YumEarth Organic Pops - Vitamin C,,Snacks,yumearth,g|1|87.000000|87.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_762d14efb1e0,Post Great Grains Cranberry Almond Crunch Cereal 396g,,Breakfast Foods,post,g|1|396.000000|396.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_763dbc44f7e4,Lal Qilla Basmati Rice - Suitable For Diabetes And Obesity,,Rice & Noodles,lal qilla,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_765b81bd117b,Train Haw Slice - Bottle,,Snacks,train,g|1|180.000000|180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_767eec11b5a0,Toyo Suisan Attaka Rice Instant Rice,,Rice & Noodles,toyo suisan,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_767f9c34fad4,Campbell's Real Stock Salt Reduced Chicken Stock 1L,,Canned & Packaged Food,campbell's,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_76b98e16d3ea,Gluten Free Tamari Sweet Soy Sauce 1.8L Family Size Bottle,,Canned & Packaged Food,kirei,ml|1|1800.000000|1800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_76c4f3af29d5,Laobanniang Raw Pumpkin Seeds,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_76e65f575b9b,Green Earth Red Yeast Ramen,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_779f0bf986c9,Laurier Worry-Free Sleep Gathers Night Pads - 40cm,,Toiletries & Personal Care,laurier,piece|8|1.000000|8.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_77b8b2e39488,Bio-Home Floor Cleaner - Lemongrass & Green Tea,,Household Cleaning,bio-home,ml|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_77c893d3a7f5,CocoCoast Natural Coconut Water with Ginger,,Drinks,cococoast,ml|1|500.000000|500.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_77d4b0d76466,SnackFirst Zumba Baked Brazil Nuts (Baked in Singapore),,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_77dd60d81f25,Kerrygold Salted Butter 227g,,Dairy,kerrygold,g|1|227.000000|227.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_77dfd253ae49,SnackFirst Burger Iced Gem Biscuits (Old School Biscuits),,Snacks,snackfirst,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_78cc2be4d8f1,Laobanniang Traditional BBQ Red Cuttlefish Snack,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_79134958aefa,Lukang Thin Noodles-Ginger&Sesame Oil Flavor,,Rice & Noodles,shin horng,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7937dac81667,Colgate Total Breath Health Toothpaste +Tote Bag 3 x 150g,,Toiletries & Personal Care,colgate,g|3|150.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_794aca1ca4c2,Lotte Chilsung Cider - Lemon Lime Soda,,Drinks,lotte,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_796ba86f1b57,Yeo's Oolong Tea No Sugar 330ml,,Drinks,yeo's,ml|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7975eafce80d,Yeo's 100% Natural Coconut Water 1L,,Drinks,yeo's,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_79954d93ab21,Biona Organic Carrot Juice,,Drinks,biona,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_79a06ba4bcc5,Colgate Total Fresh Mint Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_79b2820bfad9,Marigold PowerBeans Reduced Sugar Fresh Soya Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7a01c3242d4d,Babyganics Laundry Detergent - Fragrance Free,,Household Cleaning,babyganics,ml|1|1700.000000|1700.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7a05cd30b7c7,Julie's Wheat Crackers,,Snacks,julie's,g|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7a1cfa29d97b,Milo Regular Malt Drink 900g,,Snacks,milo,g|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7a280877e5ff,Manimark Black Sesame Balls,,Snacks,manimark,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7a2e5271f2c5,Ken Ken Sudare Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7a2ec66e892d,Vatan Se Malai Rabri,,Snacks,vatan se,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7ae057a1ae0c,Hi-C Melon Flavored Soy Milk Low Sugar - Bundle of 6,,Dairy,hi-c,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7af06c47d37f,Ryvita Dark Rye Crispbread 250g,,Snacks,ryvita,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b00ffb2625d,Top Detergent Powder - Super Colour,,Household Cleaning,top,g|1|2300.000000|2300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b01dd9cc199,Anand Mullu Murukku,,Snacks,anand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b1a54ca9df1,Nissin Kyushu Black Ramen Bowl 110g,,Rice & Noodles,nissin,g|1|110.000000|110.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b21bb71d7e3,Top Super Low Suds Anti-Bacterial Concentrated Liquid Detergent Refill 1.7kg,,Household Cleaning,top,g|1|1700.000000|1700.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b2268a0b68f,Amocan Plant Based Thai Curry Chicken,,Canned & Packaged Food,amocan,g|1|180.000000|180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b2c48fb6370,National Flower Ikan satay,,Snacks,national,g|1|45.000000|45.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7b971fe4ca74,Shokubutsu Men Body Foam Refill - Refresh,,Toiletries & Personal Care,shokubutsu,ml|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7be4c8425ffc,Maeyai Rice Stick Noodles,,Rice & Noodles,maeyai,g|1|454.000000|454.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7bf0f0f4b5f6,Meiji Fresh Milk 450ml,,Dairy,meiji,ml|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7c0b38765ae6,Green Earth Pumpkin Yee Mee,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7c7f59ea130b,Dove Go Fresh Deodorant Spray Grapefruit & Lemongrass,,Toiletries & Personal Care,dove,ml|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7c9f30dc6db4,Pagoda Almond Jelly Powder 120g,,Snacks,pagoda,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7ccfcc075fe0,Whalesun Crispy Satay Fish (Spicy),,Snacks,whalesun,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7d018181f4da,Golden Wheel Thai Fragrant Rice,,Rice & Noodles,golden wheel,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7d366325c37f,IKO Sugar Free Oat Bran Oatmeal Cracker,,Snacks,iko,g|1|178.000000|178.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7d37c8689478,Arabian Treatz Premium Pistachio Kunafa Dark chocolate,,Snacks,arabian treatz,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7d58133ffaf1,Munchy's Crackers - Chocolate,,Snacks,munchy's,g|1|260.000000|260.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7decc0c72094,RedMan Melon Seed Kernel,,Snacks,redman,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7e0ca84ea89b,illy Ground Espresso Classico Coffee - Medium Roast,,Drinks,illy,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7e37492662ba,Lay's Classic Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7e51d806bf44,Gin Thye Huat Kueh 3 Catty x Brown  1.8kg,,Snacks,gin thye,piece|1|1.000000|1.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_7eb66340141a,Tai Hua Teriyaki Sauce,,Canned & Packaged Food,tai hua,ml|1|305.000000|305.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7eb96a2ffc5e,Cowhead Salted Butter 250g,,Dairy,cowhead,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7ebf810d4607,Pokka Ice Lemon Tea 6 x 250ml,,Drinks,pokka,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7f022265dc50,Choco Liere Chocolate Cookies,,Snacks,bourbon,g|1|110.000000|110.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7f549552b7c7,Top Detergent Powder Packet Super Low Suds - Anti-Bacterial,,Household Cleaning,top,g|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7f8340f5a8b2,Calbee BBQ Prawn Crackers 90g,,Snacks,calbee,g|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7fe5a905a44b,Boxgreen Coffee Almond Biscotti,,Snacks,boxgreen,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_7fe664739ff2,Meiji Low Fat High Protein Plain Milk 350ml,,Dairy,meiji,ml|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_800673ede7c8,RedMan Ice Jelly Powder,,Snacks,redman,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_801005b3896b,Green Earth Black Oats Pumpkin Mee Sua,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8024ab475cb3,Ken Ken Crispy Tom Yum Salted Egg Fish Skin,,Snacks,ken ken,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8026eb2dd2c8,Nissin Spicy Seafood Instant Noodles Cup 75g,,Rice & Noodles,nissin,g|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_811a7323433b,Daawat Super Basmati Rice 1kg,,Rice & Noodles,daawat,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_818a8d2e0dd0,Aureli Pure Carrot Red Beet Apple Juice (Carton),,Drinks,aureli,ml|12|200.000000|2400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_819d2227fb59,Igagoe Gluten Free Shoyu Soy Sauce - Kirei,,Canned & Packaged Food,igagoe,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_81f9213c9cab,Sinsin Garlic Chilli Sauce 330g,,Canned & Packaged Food,sinsin,g|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_820b544bd716,Ken Ken Crispy Cuttlefish Cake Ika Senbei,,Snacks,ken ken,g|1|42.000000|42.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_825145655693,Lee Kum Kee Premium Dark Soy Sauce 250ml,,Canned & Packaged Food,lee kum kee,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_829e8f5bdf9e,Green Earth Spinach Ramen,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_82c6af36d82d,Khong Guan Crackers - Cream,,Snacks,khong guan,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_82cf81e6d2e2,SnackFirst Romantic Red Dates - No Preservative Dried Fruits,,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8302b29ea214,Lee Kum Kee Premium Dark Soy Sauce 500ml,,Canned & Packaged Food,lee kum kee,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_836fce787895,Foodsterr Organic Chia Seeds,,Snacks,foodsterr,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8391668c7eed,Grinny Cereal Puff Strawberry,,Snacks,grinny,g|1|60.000000|60.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_83ba56714293,Whalesun Sweet Roasted Satay Fish,,Snacks,whalesun,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_843ce4b4d178,Kinmemai Better White Rice,,Rice & Noodles,kinmemai,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_84841d5911b2,KiomKee Black Bean Pork Ribs Soup,,Canned & Packaged Food,kiomkee,g|1|520.000000|520.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_84bec8ecb617,Franzzi Rich Aroma Dark Chocolate Cookie 58g [KEMF],,Snacks,franzzi,g|1|58.000000|58.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_84c55eaba7c5,Boxgreen Honey Mustard Soy Crisps 130g,,Snacks,boxgreen,g|1|130.000000|130.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_84cfee1a9072,Sunrice Hinata Short Grain Rice,,Rice & Noodles,sunrice,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_84e13e9951e9,SnackFirst Goji Wolfberries - No Preservative Dried Fruits,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_84e76ac39292,Tong Garden Broad Beans - Onion & Garlic without Skin,,Snacks,tong garden,g|1|160.000000|160.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_84f92cf12564,Toblerone Tiny Chocolate Sharebag - Milk,,Snacks,toblerone,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_85817c9c2847,SCS Pure Creamery Butter Block - Unsalted,,Dairy,scs,g|1|227.000000|227.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_85a2f2392310,SnackFirst Butterfly Ear Biscuits (Old School Biscuits),,Snacks,snackfirst,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_85bc7b0f59a4,RedMan Instant Jelly Powder,,Snacks,redman,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_85d0a6a5b346,SnackFirst Supreme Honey Medley (Honey Roasted Nuts & Crisps),,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_86118f45a3bf,AAA Longkou Green Bean Vermicelli 50G,,Rice & Noodles,aaa,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8681d80dd4d0,Little Blossom Tomato & Carrot Veggie Sticks 12g,,Snacks,little blossom,g|1|12.000000|12.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8682c1404fd5,Dilmah Ceylon Teabags 100 x 2g,,Drinks,dilmah,g|100|2.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_86a043d0f040,Nivea Derma Control Defend Deodorant Spray 150ml,,Toiletries & Personal Care,nivea,ml|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_870d6eddcb35,Top Detergent Powder - Super White,,Household Cleaning,top,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_874f92760aff,Guardsman Stone Shine & Polish,,Household Cleaning,guardsman,ml|1|473.000000|473.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_876d2bf0bb61,Naturel Organic Brown Rice Fusilli 250g,,Rice & Noodles,naturel,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_87c06280da08,AAA Shaved Noodles(Purple Sweet Potato),,Rice & Noodles,aaa,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_881194723ede,Boncafe Mocca Coffee Beans 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_881b260453c9,Del Monte Sardines in Teriyaki Sauce 100g,,Canned & Packaged Food,del monte,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_883fdf801c5b,Takao Japan Iced Coffee Drink Pack - Sugar Free,,Drinks,kirei,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_889eb7ecdf69,Foodsterr Organic Finnish Rolled Oats,,Breakfast Foods,foodsterr,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_88b47e4cc14e,illy Whole Bean Classico Coffee - Medium Roast,,Drinks,illy,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_89807ada869f,Gardini Insolito Gianduia Bar – Sweet Cervia Sea Salt,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_89b9c62f69d1,PaddyKing Thai Hom Mali Jasmine Rice,,Rice & Noodles,paddyking,g|1|2500.000000|2500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_8a2479a881e7,Herbal Essences Bio:Renew Coconut Milk Hydrate Shampoo 400ml,,Toiletries & Personal Care,herbal essences,ml|1|400.000000|400.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_8a24dc8f6224,Ken Ken Crispy Rolled Cuttlefish,,Snacks,ken ken,g|1|120.000000|120.000000,4,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_8a6b5c97e5ac,Asamurasaki MENDOROBOU Japan Noodle Sauce Bottle,,Canned & Packaged Food,kirei,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8aa2a447132e,Maltesers Milk Chocolate - Fun Size,,Snacks,maltesers,g|1|144.000000|144.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8ab064790490,Lay's Sour Cream & Onion Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_8abee16c9cc7,[BCRS] Monster Pipeline Punch Energy Drink Can 355ml,,Drinks,monster,ml|1|355.000000|355.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8b48bece7a31,Laobanniang White Glutinous Rice,,Rice & Noodles,laobanniang,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8b4a645bea68,Calbee Jagabee Potato Sticks - Honey Butter,,Snacks,calbee,g|1|85.000000|85.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8bb269e472da,Australia's Own A2 Protein UHT Milk - Full Cream,,Dairy,australia's own,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8c19736f1f6f,Julie's Butter Crackers,,Snacks,julie's,g|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8c3e7792459b,Delyco Crispy Rusks Roti Kok,,Snacks,delyco,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8c570b617560,Yotsuba Hokkaido 4.0 Fresh Milk 1L,,Dairy,yotsuba,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_8c604639df04,Beryl's Classic Tiramisu - Milk Chocolate,,Snacks,beryl's,g|1|65.000000|65.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_8cd4794e1f63,Seaboss Fresh Frozen Japanese Ramen Noodles,,Rice & Noodles,seaboss,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8d38db3c09be,Ruffles Cheddar & Sour Cream Potato Chips 170g,,Snacks,ruffles,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8d514dd42ad5,Prego Pasta - Macaroni,,Rice & Noodles,prego,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8e402e6c46b4,Clearspring Organic Gluten Free 100% Brown Rice Noodles,,Rice & Noodles,clearspring,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8e7856ec9582,Blue Elephant Hot Red Chilli Sauce 190ml,,Canned & Packaged Food,blue elephant,ml|1|190.000000|190.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8e7f45441c74,Kozhi Koden's Bitter Gourd Chips 200 G,,Snacks,kozhi koden's,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8e8a6a4308ab,Aoren Drop Of Hope Red Apple (CTN),,Drinks,aoren,ml|6|1000.000000|6000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8ee316f811ed,Nivea Derma Control Defend Deodorant Roll On 50ml,,Toiletries & Personal Care,nivea,ml|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8f206b010a5b,Twinings Earl Grey Teabags 50 x 2g,,Drinks,twinings,g|50|2.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8f665b5262b2,Cocobella Chocolate Coconut Water 1L,,Drinks,cocobella,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8f83faf713ea,Snickers Strawberry Chocolate Bar 40g,,Snacks,snickers,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_8fa10c38db9a,Lurpak Spreadable Slightly Salted Butter 500g,,Dairy,lurpak,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_90219a5abd0d,Green Earth Sweet Potato Yee Mee,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_907d3e6933cd,Bad Lab Bl Dual Anti-Bac and Deo Spray - War Machine,,Toiletries & Personal Care,bad lab,ml|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_908dd1eea2df,Tai Hua Special Light Soy Sauce 640ml,,Canned & Packaged Food,tai hua,ml|1|640.000000|640.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_90a5752cfd93,Igagoe Naturally Brewed Tenen Jyozo Soy Sauce 200Ml - Kirei,,Canned & Packaged Food,igagoe,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_90ce89b28ffe,AAA Sweet Potato Vermicelli (Thick),,Rice & Noodles,aaa,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_910d286faa71,Green Earth Tomato Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_911f1adc35c9,Hormel Spam Lite Luncheon Meat 340g,,Canned & Packaged Food,hormel,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_915350ea3b10,Mainland Block Vintage Cheddar Cheese 250g,,Dairy,mainland,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_915beadbdaef,[BCRS] Magnolia High Protein Chocolate Milk 375ml,,Drinks,magnolia,ml|1|375.000000|375.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_91c1bb43b494,Breeze Liquid Detergent - Anti-Bacterial & Colour Protect,,Household Cleaning,breeze,g|1|3600.000000|3600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9207ef5013ac,Colgate Max Fresh Peach Passion Toothpaste 100g,,Toiletries & Personal Care,colgate,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9212da7a732b,Delyco Cuttlefish Slice Red Shredded - Bundle of 10,,Snacks,delyco,g|10|50.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9243dd3bdfef,Kikkoman Sushi & Sashimi Soy Sauce 250ml,,Canned & Packaged Food,kikkoman,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9244d02fd9f4,BeBecook Nutri-Jelly Stick - Vitamin B & Manganese,,Snacks,bebecook,g|1|280.000000|280.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_92a89d5a30b4,Bahlsen Zoo Jungle Cocoa Biscuits 100g,,Snacks,bahlsen,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_92aed0e63475,BeBecook Wise Moms Rice Snacks - Grains,,Snacks,bebecook,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_92d90e4051c0,Imuraya Mini Cha Yokan 4P,,Snacks,imuraya,g|1|240.000000|240.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9367c1490d68,YUMSAY Foods Salted Egg Chicken Pasta,,Canned & Packaged Food,yumsay foods,g|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93a01a1345c3,Stella Fried Calamari Popcorn 70g,,Snacks,stella,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93a03afd7ea3,Yamamori Sushi And Sashimi Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93ad04bfd328,Lee Kum Kee Premium Oyster Sauce 510g,,Canned & Packaged Food,lee kum kee,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93c2699f44a3,Ayam Brand Mackerel in Tomato Sauce 425g,,Canned & Packaged Food,ayam brand,g|1|425.000000|425.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93d234580e43,Sincero Dark Chocolate Almond 380g,,Snacks,sincero,g|1|380.000000|380.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93d3cab5f674,Tai Hua Soy Sauce - Seafood,,Canned & Packaged Food,tai hua,ml|1|305.000000|305.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93db0ce2de33,Top Detergent Powder - Super White,,Household Cleaning,top,g|1|2300.000000|2300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93e343a3c1d1,Kirei Saito Sora Iro Cola Japanese Soft Drink - Blue Skies,,Drinks,kirei,ml|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_93eca5fe5299,Marutai Hokkaido Sapporo Miso Flavour Ramen Noodle,,Rice & Noodles,marutai,g|1|216.000000|216.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_94379cecc029,Marutai Nagasaki Sara Udon Noodle With Sauce,,Rice & Noodles,marutai,g|1|140.000000|140.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9484cc8c9e79,BOURBON Petit Choco Chip Biscuit,,Snacks,bourbon,g|1|58.000000|58.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_952880f51fa4,Ken Ken Prawn Crackers,,Snacks,ken ken,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_957308720aab,Ryo Hair Loss Expert Care Oily Scalp Shampoo 400ml,,Toiletries & Personal Care,ryo,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_957752c0fcd7,Selleys White for Life Tile & Grout Cleaner,,Household Cleaning,selleys,ml|1|750.000000|750.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_959ba03da446,Foodsterr Organic Vanilla Almond Maple Granola,,Breakfast Foods,foodsterr,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_95fe79920cdb,Kikkoman Less Salt Soy Sauce 600ml,,Canned & Packaged Food,kikkoman,ml|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_961d048f1e7f,Dove Body Wash - Gentle Exfoliating,,Toiletries & Personal Care,dove,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9624ba20a633,Baum Roll Chocolate Cake,,Snacks,bourbon,g|1|91.000000|91.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_962f4f25849c,Taylor 100% Organic Prunes ,,Snacks,taylor,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_96343f746863,YUMSAY Foods Singapore Laksa,,Canned & Packaged Food,yumsay foods,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_969a70c5d484,SunRice Kangaroo Premium Calrose Rice,,Rice & Noodles,sunrice,g|1|2500.000000|2500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_96c505332e4b,Galbani Parmigiano Reggiano Cheese 200g,,Dairy,galbani,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_97a766410c9f,Boncafe Mocca Ground Coffee 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_97d93da3022b,Yomee Yomee Salted Egg Cookies 100g 100 G,,Snacks,yomee,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_97f7dee16d02,Lee Kum Kee Squeezy Bottle Oyster Sauce - Panda (Reduced Salt),,Canned & Packaged Food,lee kum kee,g|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_98481d199037,Green Earth Natural Pine Nuts,,Snacks,green earth,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9856d4454580,Omi Premium Omija Extract,,Drinks,omi,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_98774e5b9cf1,Sau Tao Instant Noodle King,,Rice & Noodles,sau tao,g|1|360.000000|360.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_98b27a247ae7,OSK Japanese Green Tea with Osmanthus Tea Bags 50 x 1.3g,,Drinks,osk,g|50|1.300000|65.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_98b9f8b6c061,Breeze Liquid Detergent Refill - Colour Care,,Household Cleaning,breeze,g|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_98cd37000673,Mars Chocolate Bar,,Snacks,mars,g|1|47.000000|47.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_98ebc699421d,Tao Kae Noi Crispy Seaweed - Hot & Spicy ,,Snacks,tao kae noi,g|1|59.000000|59.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_99029989a488,Gullon Gluten Free Sharkies Biscuit,,Snacks,gullon,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_992e4682c15e,Kintry Pandan Gula Melaka Granola,,Breakfast Foods,kintry,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_995b753fc95b,Kurkure Green chutney style,,Snacks,kurkure,g|1|68.000000|68.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_995f963fa78f,Snickers Almond Dark Chocolate Bar - Less Sugar ,,Snacks,snickers,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_996b38cb1251,Laobanniang Raw Pistachios Kernel,,Snacks,laobanniang,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_99ac2bdfa636,Ruffles Original Potato Chips 170g,,Snacks,ruffles,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9a3a5ee1473d,Kiddylicious Cheesy Straws 12g,,Snacks,kiddylicious,g|1|12.000000|12.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_9a3cdbf8061a,Kasugai Ika Peana,,Snacks,kasugai,g|1|62.000000|62.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_9a3ef101e461,Tabasco Sauce - Sriracha,,Canned & Packaged Food,tabasco,ml|1|256.000000|256.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9a4f9a97ccbd,Meiji Fresh Milk 2L,,Dairy,meiji,ml|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9a874d976adc,John West Salmon Tempters with Tomato & Onion 95g,,Canned & Packaged Food,john west,g|1|95.000000|95.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9a88c39e36c9,Imuraya Mini Neri Yokan 4P,,Snacks,imuraya,g|1|240.000000|240.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9aa421323ebf,Kanro Non Sugar Honey Candy,,Snacks,kanro,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9ab34af5b079,Green Earth Rainbow Macaroni,,Rice & Noodles,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9adfd609e237,Calbee Truffle Prawn Crackers 80g,,Snacks,calbee,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9aed6b4f7a86,Hunt's Whole Peeled Plum Tomatoes 411g,,Canned & Packaged Food,hunt's,g|1|411.000000|411.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9b035bfd32e9,UIC Natural Plus Ultra Dishwashing Liquid - Anti-Bacterial,,Household Cleaning,uic,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9b54e4a80146,Lotte Koala No March Assorted Biscuits (4packs),,Snacks,lotte,g|1|15.000000|15.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9bba6d95cedd,Toblerone Tiny Chocolate Sharebag - Dark Chocolate,,Snacks,toblerone,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9bfd8d1ab50c,Ken Ken Cod Fish Snacks,,Snacks,ken ken,g|1|25.000000|25.000000,4,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_9c205d35771e,Grinny Fruity Straws - Banana & Apple,,Snacks,grinny,g|1|15.000000|15.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9c26ef95869a,Lavazza Crema e Aroma Coffee Beans,,Drinks,lavazza,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9c374cd78692,Kinder Milkredible Milk Candy 105.3g,,Snacks,kinder,g|1|105.300000|105.300000,2,2,1,IDENTITY_VERIFIED,False
+CP_9c6a33c8f766,Zenko Ancient Grain Granola Tropical Fruit 300g,,Breakfast Foods,zenko,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9cc3fea2c79e,Bonaroma Cup Of Joe Ground Coffee 200g,,Drinks,bonaroma,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9d02eb174de8,Lusol Banana Yogurt Pop (12m+),,Snacks,lusol,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9d10a9c1a6b6,Colgate Total Breath Health Toothpaste 2 x 150g,,Toiletries & Personal Care,colgate,g|2|150.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9d99405ace66,Qianhe Premium Light Soy Sauce - Less Salt,,Canned & Packaged Food,qianhe,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9df28a963d38,Hu Kitchen Dark Chocolate Bar Hazelnut Butter,,Snacks,hu kitchen,g|1|60.000000|60.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_9e2fa2a520d1,Green Earth Buckwheat Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9e563ecd5018,UIC Natural Plus Ultra Dishwashing Liquid - Sparkling Fresh,,Household Cleaning,uic,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9eacaaadbd8c,Green Earth Mee Sua,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9ec673088e34,Ken Ken Shredded Cuttlefish,,Snacks,ken ken,g|1|10.000000|10.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9f2d646b4b10,Green Earth Organic Buckwheat Noodles,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_9fcf84645bda,Gardini Deciso Bar - Extra Dark Chocolate with Cocoa Beans,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a07a7822c7d9,Green Earth Rainbow Shell Noodle,,Rice & Noodles,green earth,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a0a57c073214,Sensodyne Gum Care Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a0cfadbb1aca,Naturel Organic Buckwheat Spaghetti 250g,,Rice & Noodles,naturel,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a0ee06c7dd33,Kasugai Kiwi Gummy Candy,,Snacks,kasugai,g|1|113.000000|113.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a0f99c64a1dc,Sanwa Satay Fish - Sesame,,Snacks,sanwa,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a1218b762c55,CocoCoast Natural Coconut Water with Yuzu,,Drinks,cococoast,ml|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_a12f486bd320,Okome Shortgrain Rice,,Rice & Noodles,okome,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a13a0cb919b6,Green Earth Brown Rice Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a148572b1a12,Systema Hi-Density Toothbrush - Pro Defence,,Toiletries & Personal Care,systema,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a16914db91c8,Little Blossom Mixed Berry Fruity Sticks 12g,,Snacks,little blossom,g|1|12.000000|12.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a1c07c4e9b54,KOALA Koala Haw Flakes 276 G,,Snacks,koala,g|1|276.000000|276.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a222570c051f,Top Anti-Bacterial Concentrated Liquid Detergent Refill 1.8kg,,Household Cleaning,top,g|1|1800.000000|1800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a22429731d3e,Beryl's Assorted Almond Chocolate 370g,,Snacks,beryl's,g|1|370.000000|370.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_a23e9b5b8490,Ecostore - Lemon Laundry Powder,,Household Cleaning,ecostore,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a255a6cd2b10,Vatan Se Fresh Paneer,,Dairy,vatan se,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a25fcf13a117,Pringles Original Potato Chips 134g,,Snacks,pringles,g|1|134.000000|134.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_a2746ae88f5d,Pantene Anti-Dandruff Shampoo 680ml,,Toiletries & Personal Care,pantene,ml|1|680.000000|680.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a307bd7f2afb,Temole Cauliflower Puffs - Chili Lime,,Snacks,temole,g|1|56.000000|56.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a309745c9d44,Ujinotsuyu Sencha Green Tea Leaves (Green),,Drinks,ujinotsuyu,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a328dc88dfae,Splat White Plus Toothpaste 100ml,,Toiletries & Personal Care,splat,ml|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a383fd36237c,Glo Squeezy Ultra Concentrated Dishwashing Liquid - Lime,,Household Cleaning,glo,ml|1|500.000000|500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_a39e8407a50e,Green Earth Millet Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a3a74775942c,Calbee Spicy Prawn Crackers 90g,,Snacks,calbee,g|1|90.000000|90.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_a3c40097841e,Dove Body Wash - Go Fresh Revive,,Toiletries & Personal Care,dove,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a42ac7a6ffbb,Breeze Liquid Detergent Refill - Anti-Bacterial & Colour Protect,,Household Cleaning,breeze,g|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a43f2dd5a05c,Irvins Salted Egg Fish Skin Snacks 95g,,Snacks,irvins,g|1|95.000000|95.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a46389c5a8f7,SongHe Jasmine Brown Rice,,Rice & Noodles,songhe,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a4c13454fa7c,Grinny Cereal Puff Purple Sweet Potato,,Snacks,grinny,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a4cba9ea1400,Calbee Crispy Potato Chips - Sour Cream,,Snacks,calbee,g|1|72.000000|72.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a5043ba9e9f5,[BCRS] Volvic Natural Mineral Water 6 x 1.5L,,Drinks,volvic,ml|6|1500.000000|9000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a50b5e8c69a6,Jin Huang Thai Fragrant Jasmine Rice 10kg,,Rice & Noodles,jin huang,g|1|10000.000000|10000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a525730378c0,Splat Extreme White Toothpaste 75ml,,Toiletries & Personal Care,splat,ml|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a57475066f87,Ikari Nakano Sauce,,Canned & Packaged Food,ikari,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a591312361c5,IKO Sugar Free 9 Grains Oatmeal Cracker,,Snacks,iko,g|1|178.000000|178.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a5c6ab28d5d0,Somat Classic Dishwasher Powder	,,Household Cleaning,somat,g|1|960.000000|960.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a5cd779a67df,RYO Deep Cleansing & Cooling Shampoo 480ml,,Toiletries & Personal Care,ryo,ml|1|480.000000|480.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a6139e3415c6,Euky Bear Nursery Cleaner,,Household Cleaning,euky bear,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a661c529cc00,Munchy's Lexus Mixed Nuts Cookies 189g,,Snacks,munchy's,g|1|189.000000|189.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_a6770cdf5715,Green Earth Candy - Milk Tea,,Snacks,green earth,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a6dff8b13982,Kozhi Koden's Banana Chips,,Snacks,kozhi koden's,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7010f727480,Kasugai Mix Gummy Candy,,Snacks,kasugai,g|1|102.000000|102.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7138b43e161,Vesta Coffee Filter Stock Holder Case,,Drinks,vesta,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a71bf4a9414a,Gardini Blend Dark Chocolate Bar - 85% Cocoa,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a71e60f867ba,Marigold King Of Kings Full Cream Evaporated Milk 395g,,Dairy,marigold,g|1|395.000000|395.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a734a28ab22d,Kirei Banshu Soba Japan Jukusei Traditional Buckwheat Noodle,,Rice & Noodles,kirei,g|1|320.000000|320.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7afaf0ba403,"Bonaroma Ground Coffee Peck Me Up, 200g",,Drinks,bonaroma,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7b22b016da1,Green Earth Green Earth Lung Nourishing Herbal Soup,,Canned & Packaged Food,green earth,g|1|136.000000|136.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7c663824769,Heinz Tomato Ketchup ,,Canned & Packaged Food,heinz,g|1|567.000000|567.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7ca5ec8d969,Snickers Peanut Chocolate Bar 70g,,Snacks,snickers,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7d725847eaf,Diet Food Organic Ramen Millet Noodles,,Rice & Noodles,diet food,g|1|280.000000|280.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a7ed03d209ef,GardenScent Premium Mixed Trail,,Snacks,gardenscent,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a817b41c2382,Sau Tao Thin Spinach Bottle,,Rice & Noodles,sau tao,g|1|828.000000|828.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_a86c67df8dda,Ai Musenmai Japanese Rice,,Rice & Noodles,ai,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a88c7306be65,Masterfoods Mild American Mustard 250g,,Canned & Packaged Food,masterfoods,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a89826a035a2,Pasta Zara Italian Pasta - Spaghetti (Bundle 3),,Rice & Noodles,zara,g|3|500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a8bf469af129,Temole Nacho Cheese Avocado Chips 40g,,Snacks,temole,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a8cec4de3d75,SongHe Noble Brown Rice,,Rice & Noodles,songhe,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a8d0c0547fe7,Marigold Evaporated Creamer 385g,,Dairy,marigold,g|1|385.000000|385.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a91686431cb2,Green Earth Green Earth Beauty Herbal Soup,,Canned & Packaged Food,green earth,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a938839bfc48,Minor Figures Organic Barista Oat Milk 1L,,Dairy,minor figures,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_a940b89ed4af,Gott & Blandat Salted Liquorice,,Snacks,cloetta,g|1|150.000000|150.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_a946949d63ea,Pokka Bandung Rose Milk Drink,,Drinks,pokka,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a97e17d9a6a5,Yeo's Peach Oolong Tea 330ml,,Drinks,yeo's,ml|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a9807041cec7,Van Houten Cocoa Powder 350g,,Snacks,van houten,g|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_a99e272ccaba,Ribbon Pakoda,,Snacks,anand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_aa49f4335e50,Ripe Freshly Squeezed Orange Juice 1L,,Drinks,ripe,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_aa508afc707e,Risenta Crispy Muesli Coconut Hazelnut,,Breakfast Foods,risenta,g|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_aaa124a3ae7d,House Tongari Corn - Salt,,Snacks,house,g|1|68.000000|68.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_aab0853bba45,Galbani Cheese - Mascarpone,,Dairy,galbani,g|1|250.000000|250.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_aafa0737dd2c,AAA Premium Kong Moon Rice Stick,,Rice & Noodles,aaa,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ab20d2339d6f,Nissin Kyushu White Instant Noodles Cup 75g,,Rice & Noodles,nissin,g|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ab6de6b2810f,SwizzLef Swiss Roll - Strawberry Flavour,,Snacks,swizzlef,g|1|480.000000|480.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_ab790f83456a,Heinz Yellow Mustard 368g,,Canned & Packaged Food,heinz,g|1|368.000000|368.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_abda1c8ecb5e,Healthworks Sugarcane Rhizoma Imperatae and Sea Coconut Drink,,Drinks,healthworks,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_abf24261ddb1,Schar Gluten Free Wild Biscuits for Kids,,Snacks,schar,g|1|115.000000|115.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ac21715b9ad2,Ebara Yangnyeom Korean Chicken Sauce Easy Bottle,,Canned & Packaged Food,kirei,g|1|595.000000|595.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ac431bb0acbf,Giovannini Speciale N.1 - Fresh Espresso Beans Coffee,,Drinks,giovannini,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ac4d47e6ced8,Yamamori Worcester Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ac7a4067172a,Songhe Glutinous Rice 1kg,,Rice & Noodles,songhe,g|1|1000.000000|1000.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_ac9c0a57a28e,TAKA Premium Short Grain Rice,,Rice & Noodles,taka,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_acc5972c4b65,Asahi Calpis Non-Carbonated Drink,,Drinks,asahi,ml|1|1500.000000|1500.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_acc9967e7d33,SunRice Kangaroo Premium Calrose Rice,,Rice & Noodles,sunrice,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_acd2ff91a82e,Ayam Brand Pulled Chicken Truffle Mayonnaise 150g,,Canned & Packaged Food,ayam brand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ad0d864ecf37,IKARI Non Oil Aojiso Perilla Leaf Dressing,,Canned & Packaged Food,ikari,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ad2c34ae2720,Lee Kum Kee Panda Oyster Sauce 510g,,Canned & Packaged Food,lee kum kee,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ad65ec24c175,ECOS Toilet Cleaner Cedar 24oz/710ml,,Household Cleaning,ecos,ml|1|710.000000|710.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_ad80d7b2350b,Aureli Organic Red Beet Juice (Carton),,Drinks,aureli,ml|12|200.000000|2400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_adbb24785b6b,Itsuki Fresh Spaghetti Noodle (With Sauce) 2P,,Rice & Noodles,itsuki,g|1|318.000000|318.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_adc5c4d2ad01,Lavazza Qualita Oro Coffee Beans 250g,,Drinks,lavazza,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_adf927c6cdf7,Green Earth Green Earth 4 Colour Mee Sua,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ae4a9e367dda,Camel Tapioca Ikan Bilis - Chilli,,Snacks,camel,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ae769885f32c,Ken Ken Roasted Rolled Squid (BBQ),,Snacks,ken ken,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_aea9ab857902,Teraoka Natto Shoyu,,Canned & Packaged Food,teraoka,ml|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_aec128d5b571,Sanwa Malt Soda Cracker(Original),,Snacks,sanwa,g|1|480.000000|480.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_aecd1c237a18,Colgate Total Enamel Strength Toothpaste +Tote Bag 3 x 150g,,Toiletries & Personal Care,colgate,g|3|150.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_af20a9451995,Tao Kae Noi Crispy Seaweed - Original,,Snacks,tao kae noi,g|1|32.000000|32.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_af6594d4d389,Marigold 100% Tropical Fruits Juice 1L,,Drinks,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_af70cb3a623a,Marusan Japanese Soy Milk 45-Percent Reduced Calories,,Dairy,marusan,ml|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_af8739cd9c85,Irvins Hot Boom Salted Egg Potato Chips 95g,,Snacks,irvins,g|1|95.000000|95.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_af8a4bfae8d9,Cetaphil Gentle Skin Cleanser 473ml,,Toiletries & Personal Care,cetaphil,ml|1|473.000000|473.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_afa79568e57b,[BCRS] Marigold HL Milk Plain 1.89L,,Dairy,marigold,ml|1|1890.000000|1890.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_aff86ea53b48,Laobanniang Refreshing Herbal Candy - Mint,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b008cc87c0e5,Elgydium Anti-Plaque Toothpaste 75ml,,Toiletries & Personal Care,elgydium,ml|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b050873e25a3,Green Earth Red Rice Beetroot Bee Hoon,,Rice & Noodles,green earth,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b07511514bb7,SongHe Noble Red Rice,,Rice & Noodles,songhe,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b0ad8556b00c,Heritage Flax Seeds,,Snacks,heritage,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b0c187f3b773,Toblerone White Chocolate Bar 100g,,Snacks,toblerone,g|1|100.000000|100.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b0dc8bbef473,Head & Shoulders Bare Pure Clean Shampoo 400ml,,Toiletries & Personal Care,head & shoulders,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b10229909000,Shi Le Po Curry Fish Head Potato Chips 80g,,Snacks,shi le po,g|1|80.000000|80.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b16fa40bc62f,Carnation Full Cream Evaporated Milk 390g,,Dairy,carnation,g|1|390.000000|390.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b1a9fd0371ea,Bebeskin Life Green Tangerine Liquid Dish Detergent (Vegan),,Household Cleaning,bebeskin life,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b1e395c5ade2,Fortune Noodles - Kway Teow,,Rice & Noodles,fortune,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b224af9d90c5,Breeze Liquid Detergent Refill - Goodbye Musty,,Household Cleaning,breeze,g|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b2338ee41280,Starbucks House Blend Medium Roast Ground Coffee 200g,,Drinks,starbucks,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b24a289d4b25,Koita Lactose Free Low Fat Milk 1L,,Dairy,koita,ml|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b2535931fad9,Apollo Layer Cake - Strawberry,,Snacks,apollo,g|24|18.000000|432.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b26f600ad0b6,Tai Hua Premium Oyster Sauce,,Canned & Packaged Food,tai hua,g|1|255.000000|255.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b27ad728fc89,Gerber Lil Crunchies Garden Tomato 42g,,Snacks,gerber,g|1|42.000000|42.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b2956535d39b,Diet Food Organic Pad Thai Rice Noodles,,Rice & Noodles,diet food,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b2d78e09c8a7,KOHL Mountain Apple Juice & Wild Blueberry,,Drinks,kohl,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b300bfcc25ed,Ujinotsuyu Hojicha Roasted Green Tea Teabag,,Drinks,ujinotsuyu,g|1|144.000000|144.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b30adb85c0df,Yamamori Yakiniku Sauce 220ML,,Canned & Packaged Food,yamamori,ml|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b31fda977ffd,Kagura Matcha Green Tea Powder,,Drinks,kagura,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b375c6cfcd9b,Yamamori Tamari Japanese Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b3908fc418a5,Calbee Jagarico Potato Sticks - Original,,Snacks,calbee,g|1|55.000000|55.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b3920919c7b5,Cetaphil Ultra Gentle Body Wash - Fragrance Free,,Toiletries & Personal Care,cetaphil,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b39e5bce99ae,Homesoy Soya Milk - Less Sugar,,Dairy,homesoy,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b47bcdf961dd,Lay's Stax Smokin BBQ Potato Chips 100g,,Snacks,lay's,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b4b92865aa5c,Lay's Stax Potato Chips - BBQ,,Snacks,lay's,g|1|42.000000|42.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b50c00bd3848,"SnackFirst Seedy Trail Medley -Mixed Nuts, Seeds, Raisins",,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b514b40b4fb9,Marutai Hokkaido Asahikawa Soy Sauce Flavour Ramen Noodle,,Rice & Noodles,marutai,g|1|212.000000|212.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b552e3747252,Kodomo Baby Laundry Softener Refill,,Household Cleaning,kodomo,ml|1|800.000000|800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b5837f93677c,Yeo's Apple Oolong Tea 330ml,,Drinks,yeo's,ml|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b5d67f8e4e14,Heinz Seriously Good Mayonnaise 395g,,Canned & Packaged Food,heinz,g|1|395.000000|395.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b5e6c0ab62f0,SCS Sliced Reduced Fat Cheese 200g,,Dairy,scs,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b69cc470c126,Kodomo Baby Laundry Detergent Refill - Nature Care ,,Household Cleaning,kodomo,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b6f7a270e955,Dove Body Wash - Oxygen Moisture,,Toiletries & Personal Care,dove,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b6f9a22e6026,Country Ma'am Vanilla Soft Cookies Family Pack,,Snacks,fujiya,g|1|180.000000|180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b6fc69d462e6,SnackFirst Detoxifying Ginger - Natural Root Snack,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b70f6cf72755,Magnolia Fresh Milk 946ml,,Dairy,magnolia,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b7132e75965c,Sensodyne Sensitivity & Gum Whitening Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b71c6bf5ad79,Green Earth Organic White Chia Seed,,Snacks,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b7350cf88a45,Taj Low GI Basmati Rice,,Rice & Noodles,taj,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b7928023790b,Persil Quick Wash Liquid Detergent - Speed Clean,,Household Cleaning,persil,ml|1|1180.000000|1180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b7ad7c5911ec,"Schar Gnocchi, Gluten Free",,Rice & Noodles,schar,g|1|300.000000|300.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_b80eefac6aba,Tai Hua First Draw Soy Sauce 305ml,,Canned & Packaged Food,tai hua,ml|1|305.000000|305.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b8f5dddd60e9,Green Earth Natural Brown Rice Mee Sua,,Rice & Noodles,green earth,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b9564414647b,XOX Cheddar Cheese Pretzels 125g,,Snacks,xox,g|1|125.000000|125.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b9750b7811c4,Sau Tao Thin Scallop Bottle,,Rice & Noodles,sau tao,g|1|880.000000|880.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_b9abaaca2880,Wai Wai Rice Vermicelli (Bihoon),,Rice & Noodles,wai wai,g|1|500.000000|500.000000,3,2,1,REVIEW_DUPLICATE_RETAILER,False
+CP_b9c5b73ff00d,Lay's Classic Potato Chips 28.3g,,Snacks,lay's,g|1|28.300000|28.300000,2,2,2,IDENTITY_VERIFIED,True
+CP_b9cd0380a718,Sanwa Layer Biscuit - Strawberry,,Snacks,sanwa,g|1|450.000000|450.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_b9e849bfdecb,GABA Brown Rice - Kirei,,Rice & Noodles,gaba,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ba3869193dc8,Gerber Baby Cereal - Rice,,Breakfast Foods,gerber,g|1|227.000000|227.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ba501399a0b2,"Kangaroo Harvest Baked Cashew, 5x100g",,Snacks,kangaroo,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ba64cc97a6c2,Prego Buddies Kids Shaped Pasta - Space,,Rice & Noodles,prego,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bab224f9f0d7,Top Detergent Powder Packet Super Low Suds - Colour Protect ,,Household Cleaning,top,g|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bac2380c6bfa,Fernleaf Full Cream Milk Powder 1.1kg,,Drinks,fernleaf,g|1|1100.000000|1100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_badb1d7e60c6,Haribo Happy Cola Gummy Candy 160g,,Snacks,haribo,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bb2f443298bf,Koita Lactose Free Whole Fat Milk,,Dairy,koita,ml|12|1000.000000|12000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bb5d614f441f,Green Earth Pumpkin Ramen,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bb5eafd44862,Kirin Afternoon Tea No Sugar 500ml,,Drinks,kirin,ml|24|500.000000|12000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_bb6879d53f7a,Songhe Noble Brown Rice 5kg,,Rice & Noodles,songhe,g|1|5000.000000|5000.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_bb6905795b8c,Nivea Extra Bright Fresh Lavier Deodorant Roll On 50ml,,Toiletries & Personal Care,nivea,ml|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bbb691e55a78,Kintry Honey Quinoa Granola,,Breakfast Foods,kintry,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bbc0d1cf680f,Marigold Peel Fresh Juice - Tropical Mango,,Drinks,marigold,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bc2ca19d0d1e,Vatan Se Basil & Oregano Paneer,,Dairy,vatan se,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bc3d66bae0f5,Post Fruity Pebbles Cereal 311g,,Breakfast Foods,post,g|1|311.000000|311.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bc4c7b4090dd,Killiney Classic Singapore Black Coffee,,Drinks,killiney,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bc9a6f34986d,Kozhi Koden's Special Butter Murukku,,Snacks,kozhi koden's,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bc9f6bdbe735,Top Detergent Powder Packet Super Low Suds - Anti-Bacterial,,Household Cleaning,top,g|1|4600.000000|4600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bcba5d66b784,Julie's Sandwich Biscuits - Choco More,,Snacks,julie's,g|1|352.000000|352.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bcc38773208c,Toyo Suisan Gomoku Kama Meshi Instant Rice,,Rice & Noodles,toyo suisan,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bd31613e70de,Fupaiyuan Soft Candy (Qing Mei),,Snacks,fupaiyuan,g|1|248.000000|248.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bd5125e2d35a,AAA Ipoh White Coffee 3 in 1 (Classic),,Drinks,aaa,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bd5772b56fd5,Selleys Bathroom & Toilet Cleaner - Floral,,Household Cleaning,selleys,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bd5c2363a78d,Yamamori Nama Shoyu Japanese Raw Soy Sauce,,Canned & Packaged Food,yamamori,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bd6115f5822b,Stella Sour Cream & Chives Popcorn 70g,,Snacks,stella,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bd8548f686c1,Lavazza Qualita Rossa Ground Coffee 250g,,Drinks,lavazza,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bdbc365772d4,Sensodyne Repair & Protect Whitening Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_bdcc0e95f6f1,Old El Paso Mild Beef Taco Kit 308g,,Canned & Packaged Food,old el paso,g|1|308.000000|308.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_be3e72609013,Julie's Wheat Crackers 250g,,Snacks,julie's,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_be62bc0b8f40,Schwarzkopf Extra Care Volume Fortify Shampoo 400ml,,Toiletries & Personal Care,schwarzkopf,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_be648dbf7230,Muscat Grape Flavor Jelly,,Snacks,han shuo,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_be970e2b35b6,Bourbon Alfort Mini Chocolate - Vanilla,,Snacks,bourbon,g|1|55.000000|55.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_be9f3c7694c7,Hakubaku Organic Somen,,Rice & Noodles,hakubaku,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bf1b06395a7c,Itsuki Saisai Somen,,Rice & Noodles,itsuki,g|1|360.000000|360.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bf628c6b1b35,Marigold Peel Fresh Select Juice - Yuzu,,Drinks,marigold,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bf65b273d470,SnackFirst Rempeyek Peanut Crackers  - Old School Biscuits,,Snacks,snackfirst,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bf83e8d83c69,IKO Buckwheat Oat Cracker,,Snacks,iko,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bfae9130538d,SnackFirst Zumba Brazil Nuts (Raw from Bolivia),,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bfb52d4af503,Tong Garden Baked Nuts - Cocktail,,Snacks,tong garden,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_bff8c4376c21,Hu Kitchen Dark Chocolate Bar Vanilla Crunch,,Snacks,hu kitchen,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c05546cc68b6,Lee Kum Kee Superior Light Soy Sauce 150ml,,Canned & Packaged Food,lee kum kee,ml|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c0bebb911e3b,Laobanniang Roasted Chickpeas,,Snacks,laobanniang,g|1|330.000000|330.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c0d4a18aa5f2,Persil Quick Wash Liquid Detergent - Sensitive,,Household Cleaning,persil,ml|1|1180.000000|1180.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c0e1c783007d,Marigold HL Dark Chocolate Milk with Plant Sterols,,Dairy,marigold,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c0f9d924ad38,Biona Organic Red Grape,,Drinks,biona,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c1652712af14,OGX Coconut Miracle Oil Shampoo 385ml,,Toiletries & Personal Care,ogx,ml|1|385.000000|385.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c1bdad2260e2,Doritos Taco Tortilla Chips 190g,,Snacks,doritos,g|1|190.000000|190.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_c1def02d0c6a,Ellu Murukku,,Snacks,anand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c200e1cad04d,Dajung Honey Citron Tea,,Drinks,dajung,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c2062d5043f0,Carnation Low Fat Evaporated Milk 405g,,Dairy,carnation,g|1|405.000000|405.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_c21688226c80,Green Earth Black Rice,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c22d1322d160,Ina Kanten Cook,,Snacks,ina,g|1|16.000000|16.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c24dd5a6f11b,Mizunotokei Japanese Drip Coffee Bags,,Drinks,kirei,g|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c27fee6f9782,Diet Food Organic Shirataki Konjac - Udon,,Rice & Noodles,diet food,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c298cc9bbd8b,Ujinotsuyu Green Tea Teabag,,Drinks,ujinotsuyu,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c2debc97300d,Sanwa Layer Biscuit (Grape),,Snacks,sanwa,g|1|450.000000|450.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_c2ef03ca883e,Rizzoli Tuna Steak in Brine,,Canned & Packaged Food,rizzoli,g|3|65.000000|195.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c308ac0eb418,FUJIYA Anpanman Biscuits (4packs),,Snacks,fujiya,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c32c25d52776,Biona Organic Beetroot Juice Pressed,,Drinks,biona,ml|1|750.000000|750.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_c34e34f6e82e,Healthworks Rock Sugar with Pear Drink,,Drinks,healthworks,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c380f0b70f1c,Lee Kum Kee Vegetarian Oyster Flavoured Sauce 510g,,Canned & Packaged Food,lee kum kee,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c3b35bdf116e,Sakura Japonica Short Grain Rice,,Rice & Noodles,sakura,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c429bc91f77d,New Moon Low Calorie Flat Konjac Noodles 270g,,Rice & Noodles,new moon,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c439b92f42dd,Cowhead Granola - Banana Raisin,,Breakfast Foods,cowhead,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c4675569b755,Pantene Total Damage Care Shampoo 680ml,,Toiletries & Personal Care,pantene,ml|1|680.000000|680.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c4678f21f1f8,Top Blooming Freshness Concentrated Liquid Detergent Refill 1.7kg,,Household Cleaning,top,g|1|1700.000000|1700.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c4715a7ade17,Tai Hua Special Light Soy Sauce 320ml,,Canned & Packaged Food,tai hua,ml|1|320.000000|320.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c4c1c00f8375,Dove Anti-Bacterial Body Wash - Care & Protect,,Toiletries & Personal Care,dove,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c52181f560c3,Green Earth Chlorella Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c53906423e5e,SCS Spreadable Butter - Salted,,Dairy,scs,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c53a6da2c8d0,MAEHARA Roasted Soybean Kinako Powder,,Snacks,maehara,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c55e2eca0d8b,OSK Tokuho Powdered Green Tea 75g,,Drinks,osk,g|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c596e6199886,Tao Kae Noi Crispy Seaweed - Tom Yum Goong,,Snacks,tao kae noi,g|1|32.000000|32.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c5a1b2e1331a,Caotina Swiss Classic Chocolate Powder,,Snacks,caotina,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c5aad5cb18ad,KiomKee Ginkgo Nut Pork Tripe Soup,,Canned & Packaged Food,kiomkee,ml|1|520.000000|520.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c61ae55c2c31,Irodori Fruit Jelly's Time - Grape,,Snacks,irodori,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c6283650444a,Temole Sea Salt Cauliflower Puffs 56g,,Snacks,temole,g|1|56.000000|56.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c6466cc16f91,Narasu's Pure Instant Granulated Instant Coffee [Green],,Drinks,narasu's,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c67cfebbc5bc,Nissin Maple Syrup Granola 500g,,Breakfast Foods,nissin,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c68d4ed90c1e,Pepperidge Farm Milano Distinctive Cookies - Double Chocolate,,Snacks,pepperidge farm,g|1|213.000000|213.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c6cc4bf9ad74,Sunrice Hinata Short Grain Rice,,Rice & Noodles,sunrice,g|1|20000.000000|20000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c6eec79ae908,Ken Ken Honey Rolled Cuttlefish,,Snacks,ken ken,g|1|70.000000|70.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c6ef5fb9d9d4,Lay's Maxx Flaming Spicy Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c732faf86b99,Ken Ken Cod Fish Snacks,,Snacks,ken ken,g|1|35.000000|35.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c73ad6b2482b,Bahlsen Zoo Original Butter Biscuits 100g,,Snacks,bahlsen,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c746848de46b,Laobanniang Raw Cashew Nuts (small),,Snacks,laobanniang,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c7b70fb8147e,"Schar Salinis Sticks Crunchy pretzels, Gluten Free",,Snacks,schar,g|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c7c20620b37f,Lotte Toppo Chocolate Pretzel Bag,,Snacks,lotte,g|1|84.000000|84.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c7e04f89f0db,Meet Mee Chili Pan Mee Anchovies - Thick Noodles,,Rice & Noodles,meet mee,g|1|120.000000|120.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c873616a3163,Diet Food Organic Shirataki Konjac - Vermicelli,,Rice & Noodles,diet food,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c883380eb102,Sanwa Layer Biscuit (Blueberry),,Snacks,sanwa,g|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c8b65d9dc4c3,Ken Ken Sugar Rolled Cuttlefish,,Snacks,ken ken,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c8d31bdbf500,Boncafe Colombiana Instant Coffee 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_c921ee82ae35,Calbee Original Snow Pea Crisps 80g,,Snacks,calbee,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ca171e8789d8,Sanwa Fish Muruku Snack,,Snacks,sanwa,g|1|360.000000|360.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ca41601f8691,Risenta Crispy Muesli Almond Apricot,,Breakfast Foods,risenta,g|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ca86247702bd,Green Earth Pumpkin Bee Hoon,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ca95dd5722e3,UIC Big Value Dishwashing Liquid Refill - Lime ,,Household Cleaning,uic,ml|4|600.000000|2400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_caa6f46a2fc8,Calbee Potato Chips - Barbecue,,Snacks,calbee,g|1|72.000000|72.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cae546230b3d,[BCRS] Evian Natural Mineral Water 6 x 1.5L,,Drinks,evian,ml|6|1500.000000|9000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cb4db90c5f37,Lunica Plum Nectar Juice,,Drinks,lunica,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cb611eb8652e,Glico Pocky Cacao 60%,,Snacks,glico,g|1|60.000000|60.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_cbeea587345f,Kirei Kuki Kuro Goma Latte Powder (Sugar Free),,Drinks,kirei,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc0a373e9b6b,Julie's Sugar Crackers,,Snacks,julie's,g|1|343.000000|343.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc0c4fbd30b1,Babyganics Foaming Dish Bottle Soap - Fragrance Free,,Household Cleaning,babyganics,ml|1|473.000000|473.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc2c067adea2,Green Earth Green Earth Four Herbs Soup,,Canned & Packaged Food,green earth,g|1|110.000000|110.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc377c243199,Lay's Sour Cream & Onion Potato Chips 28.3g,,Snacks,lay's,g|1|28.300000|28.300000,2,2,1,IDENTITY_VERIFIED,False
+CP_cc3804254fb0,Ikeshima Tamago Egg Somen Japan Noodle - Kirei,,Rice & Noodles,ikeshima,g|1|110.000000|110.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc3e77daac7f,Dani Red pepper (Nora) Pulp,,Canned & Packaged Food,dani,g|1|125.000000|125.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc633d900780,Ken Ken Crispy Fish Skin,,Snacks,ken ken,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cc934e241e8f,House Tongari Corn - Light Salt,,Snacks,house,g|1|68.000000|68.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ccb684a215b5,Kozhi Koden's Madras Mixture 200 G,,Snacks,kozhi koden's,g|1|200.000000|200.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_ccf8bec6ab4f,Ecostore - Eucalyptus Laundry Liquid,,Household Cleaning,ecostore,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ccfb88079c8e,Lee Kum Kee Premium Light Soy Sauce 500ml,,Canned & Packaged Food,lee kum kee,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cd569cf5287c,Colgate Toothbrush - Gentle Sensitive Expert,,Toiletries & Personal Care,colgate,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cd70fdf3b017,Marigold UHT Chocolate Milk 1L,,Dairy,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cd7288539983,Selleys Bathroom & Toilet Cleaner,,Household Cleaning,selleys,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cd78ba741f80,[BCRS] Yeo's First Harvest Green Tea No Sugar 1.5L,,Drinks,yeo's,ml|1|1500.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cd796097a481,Prego Pasta - Spaghetti,,Rice & Noodles,prego,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cde37083f891,Magnolia Fresh Milk 1.89L,,Dairy,magnolia,ml|1|1890.000000|1890.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ce125e6d1ec2,Six Fortune Dumpling Sauce Hot Flavour,,Canned & Packaged Food,six fortune,ml|1|190.000000|190.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ce549f75178e,Nissin Big Sized UFO Yakisoba,,Rice & Noodles,nissin,g|1|130.000000|130.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_cec180f85109,Guardsman Stone Seal & Protect,,Household Cleaning,guardsman,ml|1|473.000000|473.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_cec3a05802a3,Ujinotsuyu Mugicha Barley Teapack,,Drinks,ujinotsuyu,g|1|468.000000|468.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf01c038c2ff,Kozhi Koden's Special Masala Murukku,,Snacks,kozhi koden's,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf1d1bb29c94,SUKIN Botanical Body Wash - Ylang Ylang & Cedar,,Toiletries & Personal Care,sukin,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf216b840e18,Boncafe Rainforest Reserve Coffee Beans 500g,,Drinks,boncafe,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf44553674c6,Delyco Rainbow Kueh Lapis,,Snacks,delyco,g|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf5f43ac1f78,Itsuki Hino Kuni Kumamoto Tonkotsu Ramen,,Rice & Noodles,itsuki,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf68aa1f3bad,Gardini Gin Primo Bar - Extra Dark Chocolate with Gin Primo,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf8eb615ddc0,AAA Sweet Potato Hotpot Vermicelli (Thick),,Rice & Noodles,aaa,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cf9ff0ab6998,SongHe 8020 Mixed Fragrant + Red Rice,,Rice & Noodles,songhe,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cfafc0277634,Lee Kum Kee Panda Oyster Sauce 770g,,Canned & Packaged Food,lee kum kee,g|1|770.000000|770.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cfc26f9ebe92,Vit's Air Dried Broad Noodles (Tomato),,Rice & Noodles,vit's,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cfec419ed842,Foodsterr Organic Superfood Granola,,Breakfast Foods,foodsterr,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_cff3e4dc733e,Heinz Tomato Ketchup,,Canned & Packaged Food,heinz,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d033ebcc4128,RedMan Full Cream Milk Powder,,Dairy,redman,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d064a8bc732c,Laobanniang Refreshing Herbal Candy - Kumquat & Lemon,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d06b1534a90d,Franzzi Matcha Chocolate Cookie [KEMF],,Snacks,franzzi,g|1|58.000000|58.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d0b678e3c35c,UIC Big Value Dishwashing Liquid Refill - Lime,,Household Cleaning,uic,ml|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d0e24da4ab2d,Kozhi Koden's Banana Chips,,Snacks,kozhi koden's,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d1541074ac68,Ritter Sport - Crunchy Duo,,Snacks,ritter sport,g|1|218.000000|218.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d17d348138bb,Ken Ken Sugar Rolled Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d1c45e7447c9,Ayam Brand Sardines in Tomato Sauce 155g,,Canned & Packaged Food,ayam brand,g|1|155.000000|155.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d1fde37e91ac,Home Pie Party Pack,,Snacks,fujiya,g|1|193.000000|193.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d20085c3b2dd,HG 321 Hygenic Toilet Gel,,Household Cleaning,hg,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d22be462f47e,Lay's Stax Extra Cheese Potato Chips 100g,,Snacks,lay's,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d25c61f25af0,Lay's Sour Cream & Onion Potato Chips 50g,,Snacks,lay's,g|1|50.000000|50.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_d268fea75742,YBC Picola Strawberry Wafer Roll,,Snacks,ybc,g|1|48.000000|48.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d26e493b1233,RedMan Assam Red Tea Leaf,,Drinks,redman,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d2dc52dc535c,Carr's Table Water Biscuits - Original,,Snacks,carr's,g|1|125.000000|125.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d2fccb4bfc2e,Ikari Okonomi Yaki Sauce,,Canned & Packaged Food,ikari,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d2fe1d63286b,Hi-C Lemon Tea - Bundle of 6,,Drinks,hi-c,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d31ab9ba30fa,Sunko Ice pop,,Snacks,sunko,ml|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d31fa5ced224,Myojo Spicy Hot Chicken Instant Noodles 5 x 80g,,Rice & Noodles,myojo,g|5|80.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d32f119a5d40,Everfresh Goat'S Milk Whitening Shower Cream,,Toiletries & Personal Care,everfresh,ml|1|700.000000|700.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d37808406581,Yamamori Soy Sauce Light Color,,Canned & Packaged Food,yamamori,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d44d72875a26,Hup Seng Crackers - Cream,,Snacks,hup seng,g|1|428.000000|428.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d4510ad44d21,Lunica Strawberry Nectar Juice,,Drinks,lunica,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d464a3ee53ff,Ken Ken Teppanyaki Shredded Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d4d1a275ae44,Calbee Prawn Crackers - Grilled Squid Seaweed,,Snacks,calbee,g|1|90.000000|90.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d4e8265bd4ab,Suntory Oolong Cha,,Drinks,suntory,ml|1|2000.000000|2000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_d57f84ff70ef,GW Disinfectant Floor Cleaner - Floral,,Household Cleaning,gw,ml|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d5b1795c69e0,Kozhi Koden's Tomato Murukku,,Snacks,kozhi koden's,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d5e8655ebb5d,Vit's Fresh Udon Noodle,,Rice & Noodles,vit's,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d610610a5d3c,Galbani Shredded Mozzarella & Cheddar Cheese 170g,,Dairy,galbani,g|1|170.000000|170.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d62a12040344,Colgate Total Charcoal Clean Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d70902774ef0,Marigold Packet Drink - Chrysanthemum Tea (Less Sweet),,Drinks,marigold,ml|6|250.000000|1500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d729b76adb90,Emborg Brie Cheese 125g,,Dairy,emborg,g|1|125.000000|125.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d75ab91b3768,Barilla Pipe Rigate Pasta 500g,,Rice & Noodles,barilla,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d790095bef07,Qianhe Premium Dark Soy Sauce,,Canned & Packaged Food,qianhe,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d7e8fbaded8f,PaddyKing Thai Hom Mali Jasmine Rice,,Rice & Noodles,paddyking,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d81019c1c03d,Calbee Black Pepper Prawn Crackers 90g,,Snacks,calbee,g|1|90.000000|90.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_d817ffd03b51,Marigold UHT Full Cream Milk 1L,,Dairy,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d848f9aaf40c,Chirin All Season Chocolate - Chocolate Ball,,Snacks,chirin,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d89ee38281ff,Gee.ef Magic Popping Candy (Strawberry) 40 Pieces,,Snacks,gee.ef,g|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d8e07ce8e467,Yuri Bathroom Cleaner Spray,,Household Cleaning,yuri,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d9058edf5143,Green Earth Ginger Molasses,,Drinks,green earth,g|1|240.000000|240.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d931b33dca97,AAA Vegetarian Oyster Sauce,,Canned & Packaged Food,aaa,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d936fa99517e,BeBecook Wise Moms Rice Snacks - Berries,,Snacks,bebecook,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d9bfb54a5da0,Sabzu Sriracha Chilli Sauce,,Canned & Packaged Food,sabzu,ml|1|450.000000|450.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_d9e0e03435c0,Green Earth Instant Australian Rolled Oats,,Breakfast Foods,green earth,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_da252a22435b,Marigold Lady General Full Cream Sweetened Condensed Milk 385g,,Dairy,marigold,g|1|385.000000|385.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_da4ded73ce9b,YumEarth Organic Drops - Vitamin C,,Snacks,yumearth,g|1|93.600000|93.600000,2,2,1,IDENTITY_VERIFIED,False
+CP_da74ae508679,RedMan Ice Jelly Powder,,Snacks,redman,g|1|1000.000000|1000.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_da8c8fd1d4b1,Marigold HL Banana Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,3,3,2,IDENTITY_VERIFIED,True
+CP_dab7fa9ae17d,Cowhead Cheese - Mozzarella (Shredded),,Dairy,cowhead,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_daf294c87232,Sigolstory NFC Korean Apple Juice Family Pack,,Drinks,sigolstory,ml|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_db1b274b97a4,Kavli Spicy Chilli Cheddar Cheese Spread,,Dairy,kavli,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_db8fee274f23,Magiclean Bathroom Stain & Mold Remover Light Floral 360ml,,Household Cleaning,magiclean,ml|1|360.000000|360.000000,3,3,2,IDENTITY_VERIFIED,True
+CP_dbca5417806e,Ecostore - Lemon Dish Liquid,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dbd499086712,Marigold PowerBeans Unsweetened Fresh Soya Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dbe45f975ba0,Maille Wholegrain Mustard 210g,,Canned & Packaged Food,maille,g|1|210.000000|210.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_dbf01c65be7b,Giovannini Speciale N.1 - Fresh Espresso Coffee Beans,,Drinks,giovannini,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dc0c4718223a,Feng He Garden Light Soy Sauce,,Canned & Packaged Food,feng he garden,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dc4f840b9867,FLS Sichuan soya beancurd spicy,,Canned & Packaged Food,fls,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dce9cab54bd7,Laobanniang Refreshing Herbal Candy - Ume Plum,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dced8a9c7251,Nissin Hiyamugi Japanese Noodle,,Rice & Noodles,kirei,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dd62e801d3c8,AAA Sriracha Chilli Sauce,,Canned & Packaged Food,aaa,g|1|793.000000|793.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dd6a10647bec,SnackFirst Chunky Coconut - Sweet Dried Fruits,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ddddb5aa883e,Barilla Italian Pasta - Pappardelle With Eggs,,Rice & Noodles,barilla,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ddefb6e51f7e,Ecostore - Multi-Purpose Cleaner Ultra Sensitive,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_de370a1da1bd,Dove Serum Body Wash Hydration Boost 547ml,,Toiletries & Personal Care,dove,ml|1|547.000000|547.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_de661b86b9c1,Spindrift Lemon Sparkling Water,,Drinks,spindrift,ml|8|355.000000|2840.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_de6f73ff2626,Franzzi Yoghurt Chocolate Cookie [KEMF],,Snacks,franzzi,g|1|58.000000|58.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_de7778d16202,Temole Tomato Salsa Avocado Chips 40g,,Snacks,temole,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_deb9dce759fd,Tungsan Superior Dark Soya Sauce,,Canned & Packaged Food,tungsan,g|1|850.000000|850.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_df0d2f37e3da,UIC Big Value Dishwashing Liquid Refill - Lemon,,Household Cleaning,uic,ml|4|600.000000|2400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_df508e77f4be,Biona Organic Prune Juice,,Drinks,biona,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_df7218080f97,Biograde Fresh Lemongrass Dishwashing Liquid,,Household Cleaning,biograde,ml|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_df84400af13b,Shokubutsu Men Body Foam - Recharge,,Toiletries & Personal Care,shokubutsu,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_dfe4968c87d2,Pantene Hair Fall Control Shampoo 680ml,,Toiletries & Personal Care,pantene,ml|1|680.000000|680.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e04e9ed025f8,Camel Pecans - Honey,,Snacks,camel,g|1|120.000000|120.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_e075f405ce6b,Shokubutsu Men Body Foam - Refresh,,Toiletries & Personal Care,shokubutsu,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e09d4362b51a,Ken Ken Lemon Rolled Cuttlefish 25 G,,Snacks,ken ken,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e0c7dc7ec426,Gee.ef Magic Popping Candy (Cola) 40 Pieces,,Snacks,gee.ef,g|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e0cc0d040c1f,Colgate Total Gum Care Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e0d234322046,Twinings English Breakfast Teabags 50 x 2g,,Drinks,twinings,g|50|2.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e10ca40d48c1,Tostitos Classic Restaurant Style Tortilla Chips 250g,,Snacks,tostitos,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e118c8a9564b,Komadori Chibikko Cookie,,Snacks,komadori,g|1|125.000000|125.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e14bb5ffb710,Nestle Fitnesse Oats & Honey Granola 300g,,Breakfast Foods,nestle,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e16b9d2be43f,Kirei Akagi Kishimen Japanese Thin Flat Udon Noodle,,Rice & Noodles,kirei,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e16c692ed733,Amakunai Japan Delicious Ponzu Seasoning Sauce Glass Bottle,,Canned & Packaged Food,kirei,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e1fb69d4b073,Mission Extreme Cheese Tortilla Chips 230g,,Snacks,mission,g|1|230.000000|230.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e2553cb5d3c9,Lay's Stax Sour Cream & Onion Potato Chips 100g,,Snacks,lay's,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e25cdf3b00b4,Delyco Cuttlefish Slice Sweet & Spicy - Bundle of 10,,Snacks,delyco,g|10|23.000000|230.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e2a07908c5fe,SnackFirst Anchovies Peanuts - Savoury Topper in Nasi Lemak,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e2e8c0a8b1b2,Gardini Blend Dark Chocolate Blend Bar - 70% Cocoa,,Snacks,gardini,g|1|80.000000|80.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e31acdcc8844,Marigold HL Strawberry Milk 946ml,,Dairy,marigold,ml|1|946.000000|946.000000,3,3,2,IDENTITY_VERIFIED,True
+CP_e4131060d480,Ken Ken Crispy Rolled Squid (BBQ),,Snacks,ken ken,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e4502999ae5b,Snow Neo Soft Spread 320g,,Dairy,snow,g|1|320.000000|320.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e4a8d9331a15,Woh Hup Extra Flavour Oyster Sauce 500g,,Canned & Packaged Food,woh hup,g|1|500.000000|500.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_e4bef74390f0,Purely Elizabeth Chocolate Chip Cookie Granola 312g,,Breakfast Foods,purely elizabeth,g|1|312.000000|312.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_e4c4a1bd13e3,Nespray Everyday Instant Milk Powder,,Drinks,nespray,g|1|550.000000|550.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e4c6a06d8cca,Kikkoman Less Salt Soy Sauce 250ml,,Canned & Packaged Food,kikkoman,ml|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e4f2ca992b96,Green Earth Organic Quinoa Spaghetti,,Rice & Noodles,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e4f7a58efd69,Barilla Italian Pasta - Maccheroni,,Rice & Noodles,barilla,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e57b8d572c01,Green Earth Australian Rolled Oats,,Breakfast Foods,green earth,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e5d2b58aa6ac,Ecostore - Dish Liquid Ultra Sensitive,,Household Cleaning,ecostore,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e5d36ebb5e29,Greenfields Fresh Milk 1.89L,,Dairy,greenfields,ml|1|1890.000000|1890.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e6a6d837646f,Paddygreen Jasmine Fragrant Rice 5kg,,Rice & Noodles,paddygreen,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e71c95f28520,Ken Ken Atarime Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_e72b4983db3e,Shokubutsu Hydro+ Body Wash - Smooth Care,,Toiletries & Personal Care,shokubutsu,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e7866af4a7f4,Tao Kae Noi Crispy Seaweed - Wasabi,,Snacks,tao kae noi,g|1|59.000000|59.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e78a0f4fa5f5,Shin Horng Guan Miao Noodles (Thin),,Rice & Noodles,shin horng,g|1|1000.000000|1000.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_e79476e8aff7,Itsuki Kumamon Ramen,,Rice & Noodles,itsuki,g|1|176.000000|176.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_e7a004e6d85e,Westgold Salted Butter 250g,,Dairy,westgold,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e7c838290b1b,Gee.ef Magic Dust Candy (Cola) 40 Pieces,,Snacks,gee.ef,g|1|220.000000|220.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e7e9a8f95fbb,Grinny Multigrain Teething Stick Strawberry,,Snacks,grinny,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e800d329ffc4,AAA Premium Oyster Sauce With Dried Scallop,,Canned & Packaged Food,aaa,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e80c2f7f1f72,Boncafe Espresso Coffee Beans 200g,,Drinks,boncafe,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e846eed09575,Kerrygold Unsalted Butter 227g,,Dairy,kerrygold,g|1|227.000000|227.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e889b2b16f19,Sunsilk Strong & Long Shampoo 300ml,,Toiletries & Personal Care,sunsilk,ml|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e8978abb649b,Chek Hup Microground Colombian - Cappuccino,,Drinks,chek hup,g|1|115.000000|115.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e8b2712bbef1,Hormel Spam with Bacon Luncheon Meat 340g,,Canned & Packaged Food,hormel,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e8ba3b02baa5,Gold Kili Traditional Kopi O 20 x 20g,,Drinks,gold kili,g|20|20.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e8bef3bc3f42,AAA Sugar Free Black Soybean Soy Sauce,,Canned & Packaged Food,aaa,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e8c10ec789a2,Biona Organic Apple Juice,,Drinks,biona,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e8e0aac4bb86,Tai Hua Premium Oyster Sauce,,Canned & Packaged Food,tai hua,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e959477e54cc,Woh Hup Sauce - Oyster,,Canned & Packaged Food,woh hup,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e98a2ed9d82d,Lay's Nori Seaweed Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_e99fa18298fc,Aureli Pure Juice - Carrot Apple,,Drinks,aureli,ml|6|750.000000|4500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_e9a4118514d0,[BCRS] Sunsweet Prune Juice 946ml,,Drinks,sunsweet,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ea23c28af069,Lemnos Greek Style White Cheese 180g,,Dairy,lemnos,g|1|180.000000|180.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_ea276c75f795,Lay's Salted Egg Potato Chips 170g,,Snacks,lay's,g|1|170.000000|170.000000,3,3,3,IDENTITY_VERIFIED,True
+CP_ea7cfcfec5dd,Pods Mars Chocolate 160g,,Snacks,pods,g|1|160.000000|160.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_eabc8279a2be,Koala Quality Japonica Rice,,Rice & Noodles,koala,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eabe9c8300d3,Manimark Peanut Burfi,,Snacks,manimark,g|1|135.000000|135.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eafa90dc9c57,Marusan Soybean Milk with Malt,,Dairy,marusan,ml|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eb06ee3e14dc,Green Earth Organic Blackcurrant,,Snacks,green earth,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eb46c4321002,Barilla Italian Pasta - Fusilli,,Rice & Noodles,barilla,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eb5f4b6483ca,Buitoni Coulis de Tomate,,Canned & Packaged Food,buitoni,g|1|3000.000000|3000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eb705266b8cb,AAA Brown Rice Vermicelli Healthy Choice (Carton) 24X500G,,Rice & Noodles,aaa,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ebbd3afddb23,Izumiya Nagasaki Castella Honey Cake (10cuts),,Snacks,izumiya,g|1|270.000000|270.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ebe0b3df71ef,Cadbury Dairy Milk Chocolate Sharepack - Freddo Milky Top,,Snacks,cadbury,g|1|144.000000|144.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ebe83c82de5c,Supreme Gold 1121 Basmati Rice,,Rice & Noodles,supreme,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ec31fb518133,Shokubutsu Hydro+ Body Wash - Moisture Boost,,Toiletries & Personal Care,shokubutsu,ml|1|900.000000|900.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ec47b1cb28b3,Dove Go Fresh Body Wash - Lavender x Chamomile ,,Toiletries & Personal Care,dove,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ec56e41479f3,Knife Thai Fish Sauce 750ml,,Canned & Packaged Food,knife,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ec89f84eec01,IKO Chia Seed Oat Cracker,,Snacks,iko,g|1|130.000000|130.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ec9dbd3cd554,RYO Hair Loss Expert Care Shampoo For Sensitive Scalp 400ml,,Toiletries & Personal Care,ryo,ml|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ece48967186a,Selleys Pipe & Drain Declogger ,,Household Cleaning,selleys,g|1|800.000000|800.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ece4a244f8f6,Old El Paso Medium Taco Sauce 200g,,Canned & Packaged Food,old el paso,g|1|200.000000|200.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_ed4473e6ba27,CocoCoast Natural Coconut Water with Lychee,,Drinks,cococoast,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eda5f7888267,Kleen-Up Wipes - Wet Floor (Wood),,Household Cleaning,kleen-up,piece|15|1.000000|15.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_edb06b5a83cb,Diet Food Organic Buckwheat Soba,,Rice & Noodles,diet food,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_edc5fea88e8e,Maggi Chilli Sauce 340g,,Canned & Packaged Food,maggi,g|1|340.000000|340.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_edcc38df6212,Ecostore Dish Liquid - Ultra Sensitive,,Household Cleaning,ecostore,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ede1d526d66f,SnackFirst Shadow Black Beans - Savoury Salted Legumes,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ee63f3a067c9,AAA Longkou Green Bean Vermicelli 1KG,,Rice & Noodles,aaa,g|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_eecb565d2d99,Ah Huat Extra Rich White Coffee 13 x 36g,,Drinks,ah huat,g|13|36.000000|468.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ef0ca782be07,Vit's Air Dried Noodles(Slim),,Rice & Noodles,vit's,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ef153e453325,Grinny Cereal Puff Pumpkin,,Snacks,grinny,g|1|60.000000|60.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ef15ab70b362,Green Earth Green Earth Ba Zhen Herbal Soup,,Canned & Packaged Food,green earth,g|1|158.000000|158.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ef603e58dd16,Bad Lab Roll-On Deodorant For All Skins,,Toiletries & Personal Care,bad lab,ml|1|50.000000|50.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_efbaec350621,Kinder Milkredible Cocoa Candy 105.3g,,Snacks,kinder,g|1|105.300000|105.300000,2,2,2,IDENTITY_VERIFIED,True
+CP_efda9f428b0c,Marlbolu China Snack Konjac Apple And Grape Jelly [KEMF],,Snacks,marlbolu,g|1|192.000000|192.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_efee91f3c03d,Tai Hua Light Soy Sauce - Reduced Salt,,Canned & Packaged Food,tai hua,ml|1|305.000000|305.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f06c27afce37,Breeze Liquid Detergent - Gentle on Skin,,Household Cleaning,breeze,g|1|3600.000000|3600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f0949da2dcb1,Pepperidge Farm Milano Distinctive Cookies - Mint Chocolate,,Snacks,pepperidge farm,g|1|198.000000|198.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f0c38c5bc191,Irvins Salted Egg Potato Chips 95g,,Snacks,irvins,g|1|95.000000|95.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f14712e9e27e,"Marigold 100% Juice Summer Fruits, 1L",,Drinks,marigold,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f14bb679621d,DreamRice Low GI Rice,,Rice & Noodles,dreamrice,g|1|2000.000000|2000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f1719d3af120,Top Concentrated Liquid Detergent - Blooming Freshness,,Household Cleaning,top,g|1|3600.000000|3600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f1a4969b4fdd,Mainland Block Tasty Cheddar Cheese 250g,,Dairy,mainland,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f1af5216c2bf,AAA Premium Oyster Sauce,,Canned & Packaged Food,aaa,g|1|510.000000|510.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f26bb3b196af,Vatan Se Fresh Paneer,,Dairy,vatan se,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f29b66cde8bf,Cadbury Dairy Milk Chocolate Bar - Oreo,,Snacks,cadbury,g|1|124.000000|124.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f2caef8238d7,MilkLAB Soy Milk Plant-Based Beverage For Coffee,,Dairy,milklab,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f2d7b5bcebe8,Santa Maria Tortilla Strips Sweet Chili,,Snacks,santa maria,g|1|185.000000|185.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f36b4d962a32,Nissin Matcha Granola 500g,,Breakfast Foods,nissin,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f3b4b7b38f56,Aoren Kanjuku Ringo - Ripe Apple,,Drinks,aoren,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f3b7ef2bb3aa,Mixed Nuts Crisp,,Snacks,sanwa,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f3f11b8a1666,PaddyKing USA Calrose Rice,,Rice & Noodles,paddyking,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f3f126e8ebda,Pods Twix Chocolate 160g,,Snacks,pods,g|1|160.000000|160.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f43cd8928244,Foodsterr Spanish Almond Slices,,Snacks,foodsterr,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f440e4bcc385,Foodsterr Foodsterr Peruvian Brazil Nuts,,Snacks,foodsterr,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f4829e68a5ff,Green Earth Spinach Flat Noodle,,Rice & Noodles,green earth,g|1|300.000000|300.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f51d50efdcef,Sensodyne Repair & Protect Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f56aa2d1fff2,Ken Ken New Atarime Cuttlefish,,Snacks,ken ken,g|1|20.000000|20.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_f58d0a650017,Grinny Multigrain Teething Stick Mixed Berry,,Snacks,grinny,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f5cd3c7ba4b0,SnackFirst Satay Broad Beans - Savoury Salted Legumes,,Snacks,snackfirst,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f5d8f01cfc5b,illy Whole Bean Intenso Coffee - Dark Roast,,Drinks,illy,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f678f85ad35d,Sensodyne Complete Protection Extra Fresh Toothpaste 100g,,Toiletries & Personal Care,sensodyne,g|1|100.000000|100.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f6f6028fdf57,Quaker Instant Oatmeal - Plus Vitamin D,,Breakfast Foods,quaker,g|1|600.000000|600.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f7119d611585,Green Earth Natural Fine Ramen,,Rice & Noodles,green earth,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f71988c5f0f7,Post Great Grains Cereal - Raisins- Dates & Pecans,,Breakfast Foods,post,g|1|453.000000|453.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f72a1a741d18,Cirio Chopped Tomatoes 400g,,Canned & Packaged Food,cirio,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f742527c3f57,Cowhead Granola - Assorted Fruits,,Breakfast Foods,cowhead,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f7883596dea3,Farmhouse Milk - Fresh,,Dairy,farmhouse,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f79d574bcbbb,Itsuki Fresh Yakisoba Noodle (With Sauce) 2P,,Rice & Noodles,itsuki,g|1|340.000000|340.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f7a4150d3594,Pepperidge Farm Goldfish Baked Crackers - Cheddar,,Snacks,pepperidge farm,g|1|187.000000|187.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f7fd35bba61f,GW Dishwashing Liquid - Light Green,,Household Cleaning,gw,ml|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f84f6875ce7b,Delyco Pandan Kueh Lapis,,Snacks,delyco,g|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f84fadf0b102,McVitie's Digestive Dark Chocolate Biscuits 266g,,Snacks,mcvitie's,g|1|266.000000|266.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_f8a9c7762af8,Mitsuya Tasty Biscuit Stick,,Snacks,mitsuya,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f8abbd1346ac,Koita Lactose Free Whole Fat Milk 1L,,Dairy,koita,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9434f3f4fa8,Colgate Total Enamel Strength Toothpaste 150g,,Toiletries & Personal Care,colgate,g|1|150.000000|150.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_f966473e9a8d,Senjaku Momo Tzukushi Japanese Peach Candy - Kirei,,Snacks,senjaku,g|1|85.000000|85.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9715d2ffc94,Gin Thye Huat Kueh 5 Catty x Brown  3kg,,Snacks,gin thye,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f99c689f7213,Wel.B Freeze Dried - Raspberry,,Snacks,wel.b,g|1|14.000000|14.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9d210d9f39d,Fortune Original Soya Beancurd 360g,,Snacks,fortune,g|1|360.000000|360.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9e6cbef728b,SnackFirst Curly String Biscuits (Old School Asian Biscuits),,Snacks,snackfirst,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9eb2450c37c,Lee Kum Kee Soy Sauce - Reduced Salt,,Canned & Packaged Food,lee kum kee,ml|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9f2e1341b37,Kataoka Tsujiri Chashosen Sencha Teabag,,Drinks,kataoka,g|1|40.000000|40.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_f9fee09ba800,Feng He Garden Dark Soy Sauce,,Canned & Packaged Food,feng he garden,ml|1|350.000000|350.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fa29a36af7ed,Dove Deodorant Spray Original,,Toiletries & Personal Care,dove,ml|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fa45a571e360,Laobanniang Tom Yum Crackers (Made from Belinjo),,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fab527937521,Bourbon Choco & Coffee Biscuit,,Snacks,bourbon,g|1|108.000000|108.000000,2,2,0,IDENTITY_VERIFIED,False
+CP_fab76024839e,Tulip Danish Pork Luncheon Meat 340g,,Canned & Packaged Food,tulip,g|1|340.000000|340.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_facdb957bea5,"Dove Deodorant Roll On Original, 50ml",,Toiletries & Personal Care,dove,ml|1|50.000000|50.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_fad42261ba67,Kinmemai Better Brown Rice,,Rice & Noodles,kinmemai,g|1|5000.000000|5000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fb11bb48b762,Grinny Veggie Straws - Seaweed,,Snacks,grinny,g|1|15.000000|15.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fb1fdddc4f1a,Aureli Pure Juice - Carrot Apple,,Drinks,aureli,ml|1|750.000000|750.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fbb6308e19a0,Gullon Crackers - Quinoa & Chia,,Snacks,gullon,g|1|75.000000|75.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fbc69a09a562,Good Virtues Co. Calendula Roll-On Deodorant,,Toiletries & Personal Care,good virtues co.,ml|1|55.000000|55.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fbd32309dad1,Systema Smart Ex Power Rechargeable Toothbrush - Glacier White,,Toiletries & Personal Care,systema,piece|1|1.000000|1.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fbf2c51a5e20,Westgold Unsalted Butter 250g,,Dairy,westgold,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fc5d013df7e3,Colgate Sensitive Pro-Relief Complete Protection Toothpaste 110g,,Toiletries & Personal Care,colgate,g|1|110.000000|110.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fc6954d14190,Itsuki Fresh Yaki Udon Noodle (With Sauce) 2P,,Rice & Noodles,itsuki,g|1|446.000000|446.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fc6e1cf3bafe,Hakubaku Organic Cha Soba ,,Rice & Noodles,hakubaku,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fc952f1bc157,illy Ground Espresso Coffee Intenso - Dark Roast,,Drinks,illy,g|1|250.000000|250.000000,3,2,2,REVIEW_DUPLICATE_RETAILER,True
+CP_fcb115eb7173,BeBecook Wise Moms Rice Snacks - Banana,,Snacks,bebecook,g|1|25.000000|25.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fccfc67b7d33,AAA Longkou Green Bean Vermicelli 250G,,Rice & Noodles,aaa,g|1|250.000000|250.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fd37284ef1ac,Stella Prosciutto Ham Popcorn 70g,,Snacks,stella,g|1|70.000000|70.000000,2,2,1,IDENTITY_VERIFIED,False
+CP_fda95bd7e804,Foodsterr Organic Cacao Cashew Chia Granola,,Breakfast Foods,foodsterr,g|1|400.000000|400.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fe59a69c3364,Woh Hup Shiitake Mushroom Vegetarian Oyster Sauce 500g,,Canned & Packaged Food,woh hup,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fe5dd4b8be49,Laughing Cow Original Cheese Dippers 140g,,Dairy,laughing cow,g|1|140.000000|140.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_febed2567e76,Ayam Brand Pulled Chicken Cajun 150g,,Canned & Packaged Food,ayam brand,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_fed47ea8e7b5,Green Earth Raw Cashew Nuts,,Snacks,green earth,g|1|150.000000|150.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ff2b9d2cf17c,Emborg Pasta Cheese - Shredded,,Dairy,emborg,g|1|200.000000|200.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ff81a4635eb2,Meiji Lactose Free High Calcium Milk,,Dairy,meiji,ml|1|946.000000|946.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ffc5794f0522,Greenfields Fresh Milk - Skimmed,,Dairy,greenfields,ml|1|1000.000000|1000.000000,2,2,2,IDENTITY_VERIFIED,True
+CP_ffe0ea932f6d,Laobanniang Refreshing Herbal Candy - Quench Thirst,,Snacks,laobanniang,g|1|500.000000|500.000000,2,2,2,IDENTITY_VERIFIED,True

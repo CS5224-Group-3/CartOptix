@@ -1,0 +1,1813 @@
+retailer,source_category_raw,source_category_normalized,total_rows,catalog_eligible_rows,offer_eligible_rows,out_of_stock_rows,auto_target_category,mapping_status
+redmart,Biscuits & Crackers,biscuits & crackers,1840,1770,1294,507,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Seasonal Accessories,seasonal accessories,1805,1693,1265,449,,REVIEW
+redmart,Fresh Herbs & Spices,fresh herbs & spices,1640,1553,1486,67,,REVIEW
+redmart,Baking Needs & Sugar,baking needs & sugar,1533,1518,1180,340,,REVIEW
+redmart,Asian Sauces & Pastes,asian sauces & pastes,1400,1320,1320,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,"Nuts, Peas & Seeds","nuts, peas & seeds",1397,1289,1004,342,Snacks,AUTO_SOURCE_CATEGORY
+redmart,White Goods & Products,white goods & products,1246,1176,771,415,,REVIEW
+redmart,Multivitamin Supplements,multivitamin supplements,1201,1015,733,323,,REVIEW
+redmart,Red Products,red products,1073,996,995,2,,REVIEW
+redmart,Cooking Utensils,cooking utensils,1453,880,650,350,,REVIEW
+redmart,Sexual & Sensual Toys,sexual & sensual toys,899,879,471,416,,REVIEW
+redmart,Food Storage Savers,food storage savers,1101,814,513,381,,REVIEW
+redmart,Shampoos & Conditioners,shampoos & conditioners,851,782,587,204,,REVIEW
+redmart,Ready-to-Eat Meals,ready-to-eat meals,841,768,717,57,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Red Wine,red wine,752,742,690,58,,REVIEW
+redmart,Cat Wet Food,cat wet food,801,718,718,0,,REVIEW
+redmart,Frozen Fish Fillet,frozen fish fillet,732,689,546,148,,REVIEW
+redmart,"Baby Food, Crackers & Biscuits","baby food, crackers & biscuits",771,672,446,268,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Herbal Tea,herbal tea,701,671,497,185,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Baby & Toddler Feeding Bowls,baby & toddler feeding bowls,718,665,263,409,,REVIEW
+redmart,Potato Chips & Crisps,potato chips & crisps,691,654,431,228,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,"Halal Rice, Noodles & Cooking Ingredients","halal rice, noodles & cooking ingredients",621,615,600,16,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Pretzels & Savory Snacks,pretzels & savory snacks,660,610,426,191,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Protein Supplements,protein supplements,609,591,371,229,,REVIEW
+fairprice,Shampoo,shampoo,598,579,553,30,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Candles & Holders,candles & holders,585,569,432,139,,REVIEW
+fairprice,Body Wash,body wash,599,563,538,28,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Baking Accessories,baking accessories,562,561,467,94,,REVIEW
+redmart,Frozen Chicken,frozen chicken,594,557,494,65,,REVIEW
+fairprice,Halal Drinks,halal drinks,677,556,547,19,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Pasta & Spaghetti,pasta & spaghetti,605,548,407,158,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Bowls Collection,bowls collection,564,529,332,208,,REVIEW
+redmart,Black Tea,black tea,560,526,384,163,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Dry Dog Food,dry dog food,611,522,460,80,,REVIEW
+redmart,Vinegar & Condiments,vinegar & condiments,537,516,396,124,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Nutritional Foods & Drinks,nutritional foods & drinks,580,515,374,158,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Baby & Toddler Cups,baby & toddler cups,567,508,224,291,,REVIEW
+redmart,Fruit Snacks & Chocolate,fruit snacks & chocolate,503,491,343,150,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Indian Snacks,indian snacks,494,484,286,208,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Gourmet Food and Gifts,gourmet food and gifts,516,479,359,144,,REVIEW
+redmart,Ready-to-Eat & Canned Food,ready-to-eat & canned food,562,471,309,219,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Flour & Sugar,flour & sugar,514,463,310,180,,REVIEW
+redmart,Chocolate Bars,chocolate bars,470,462,271,196,Snacks,AUTO_SOURCE_CATEGORY
+redmart,shop-frozen-shellfish-&-seafood-specialties,shop-frozen-shellfish-&-seafood-specialties,457,431,328,115,,REVIEW
+redmart,Baby Feeding & Storage,baby feeding & storage,481,430,191,259,,REVIEW
+redmart,Cat Dry Food,cat dry food,540,423,352,117,,REVIEW
+redmart,Plates Collection,plates collection,440,423,246,180,,REVIEW
+redmart,Pasta Sauce,pasta sauce,439,421,333,91,,REVIEW
+redmart,Juice & Drinks,juice & drinks,426,421,300,124,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Hand Washes & Sanitizers,hand washes & sanitizers,483,420,336,104,,REVIEW
+redmart,Plain Noodles,plain noodles,427,417,334,86,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Food Storage Containers,food storage containers,445,414,269,162,,REVIEW
+redmart,Sparkling & Flavored Drinks,sparkling & flavored drinks,405,401,248,153,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Frozen Beef,frozen beef,434,396,319,79,,REVIEW
+redmart,shop-chinese-dried-goods,shop-chinese-dried-goods,405,395,339,57,,REVIEW
+redmart,Adult Cereals,adult cereals,421,391,255,145,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Cake & Cookie Accessories,cake & cookie accessories,480,387,328,77,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Honey Spreads,honey spreads,424,387,285,120,,REVIEW
+redmart,shop-green-black-&-regular-tea,shop-green-black-&-regular-tea,397,386,302,90,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Body Lotion & Butter,body lotion & butter,407,383,274,120,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Cooking Paste,cooking paste,387,380,358,27,,REVIEW
+redmart,Pots and Pans,pots and pans,527,377,377,0,,REVIEW
+redmart,Champagne & Sparkling Wines,champagne & sparkling wines,429,371,277,106,,REVIEW
+fairprice,Cat Wet Food,cat wet food,383,371,356,16,,REVIEW
+redmart,Multipurpose Cleaners,multipurpose cleaners,430,370,261,129,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,shop-cake-jelly-&-pudding,shop-cake-jelly-&-pudding,398,370,242,142,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Halal Pantry Goods,halal pantry goods,372,362,355,11,,REVIEW
+fairprice,Halal Snacks & Confectionery,halal snacks & confectionery,378,358,342,18,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Frozen Pork,frozen pork,371,353,317,38,,REVIEW
+redmart,Salt & Seasoning,salt & seasoning,368,353,273,85,,REVIEW
+redmart,Sake & Umeshu,sake & umeshu,352,350,292,59,,REVIEW
+redmart,Delicate Laundry Care,delicate laundry care,436,348,309,62,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Cup & Bowl Noodles,cup & bowl noodles,354,348,280,71,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Nursery Blankets,nursery blankets,375,346,185,183,,REVIEW
+redmart,Bin Liners & Sundries,bin liners & sundries,505,344,254,129,,REVIEW
+fairprice,Spices,spices,364,342,317,38,,REVIEW
+redmart,Disposable Diapers,disposable diapers,466,338,258,93,,REVIEW
+fairprice,Beauty & Personal Care,beauty & personal care,399,337,322,18,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Perfumes,perfumes,336,329,325,4,,REVIEW
+fairprice,Cleansers & Exfoliators,cleansers & exfoliators,356,328,309,21,,REVIEW
+fairprice,Dog Treats,dog treats,336,325,320,6,,REVIEW
+redmart,Spirits & Liquors,spirits & liquors,329,321,245,76,,REVIEW
+fairprice,Seasoning,seasoning,326,320,304,19,,REVIEW
+fairprice,Deodorants,deodorants,326,319,295,27,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,shop-frozen-vegetables,shop-frozen-vegetables,332,318,267,53,,REVIEW
+redmart,Face Cleansers,face cleansers,362,317,304,15,,REVIEW
+fairprice,Tonics & Treatments,tonics & treatments,326,315,312,3,,REVIEW
+redmart,Soy Sauce & Cooking Essentials,soy sauce & cooking essentials,337,313,264,54,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Toothbrushes,toothbrushes,319,309,257,54,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Dim Sum & Convenience Foods,dim sum & convenience foods,315,308,265,47,,REVIEW
+fairprice,White Wine,white wine,312,305,278,29,,REVIEW
+redmart,Unisex Fragrances,unisex fragrances,322,304,304,0,,REVIEW
+redmart,Hand Dishwashing Supplies,hand dishwashing supplies,330,303,236,74,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Prawn & Fish Snacks,prawn & fish snacks,320,303,235,75,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Baby Body Washes,baby body washes,520,302,200,191,,REVIEW
+redmart,Aromatherapy & Essential Oils,aromatherapy & essential oils,329,301,255,59,,REVIEW
+redmart,"Jams, Marmalade & Honey","jams, marmalade & honey",318,300,210,93,,REVIEW
+redmart,Gummy Sweets,gummy sweets,315,299,178,126,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Beans & Chickpeas,beans & chickpeas,321,295,229,74,,REVIEW
+redmart,Baking Trays & Pans,baking trays & pans,370,294,213,120,,REVIEW
+redmart,Cat Catnip,cat catnip,329,294,217,90,,REVIEW
+redmart,Protein Bars,protein bars,304,294,178,117,,REVIEW
+redmart,Cooking Knives,cooking knives,718,293,239,97,,REVIEW
+redmart,White Jasmine Rice,white jasmine rice,356,292,209,95,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Facial Moisturizers,facial moisturizers,333,292,221,85,,REVIEW
+fairprice,"Beans, Seeds & Nuts","beans, seeds & nuts",294,289,255,38,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Food Colouring & Icing,food colouring & icing,367,287,281,16,,REVIEW
+redmart,Home Fragrance,home fragrance,347,287,242,55,,REVIEW
+redmart,Dried Grains & Food Staples,dried grains & food staples,302,287,210,86,,REVIEW
+redmart,Scotch Whisky,scotch whisky,289,287,217,70,,REVIEW
+fairprice,Body Lotions,body lotions,290,284,276,9,,REVIEW
+fairprice,Sports Nutrition,sports nutrition,325,282,249,37,,REVIEW
+redmart,Mixed Juice,mixed juice,284,282,176,107,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Dried & Preserved Fruits,dried & preserved fruits,290,280,253,31,,REVIEW
+fairprice,Frozen Fish,frozen fish,283,279,255,25,,REVIEW
+redmart,Dog Treats & Snacks,dog treats & snacks,356,277,277,5,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Flavoured Yoghurt,flavoured yoghurt,270,270,199,71,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Chinese Herbs & Others,chinese herbs & others,294,267,249,18,,REVIEW
+coldstorage,More Great Deals,more great deals,278,267,236,33,,REVIEW
+redmart,Flavoring Syrups,flavoring syrups,267,266,215,51,,REVIEW
+fairprice,Ready Meals,ready meals,285,264,238,32,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,shop-frozen-desserts,shop-frozen-desserts,268,261,200,61,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Hair Colour,hair colour,281,260,258,3,,REVIEW
+fairprice,Baby & Toddler Snacks,baby & toddler snacks,265,260,239,26,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Hard Cheese,hard cheese,262,258,192,66,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Toothpaste,toothpaste,263,257,246,12,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Asian Health Drinks,asian health drinks,261,257,174,85,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Noodles & Vermicelli,noodles & vermicelli,267,256,176,80,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Canned Vegetables,canned vegetables,308,253,246,62,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Conditioners,conditioners,256,253,246,7,,REVIEW
+redmart,Pepper & Seasoning,pepper & seasoning,259,252,190,66,,REVIEW
+redmart,Bacon & Sausages,bacon & sausages,256,247,224,28,,REVIEW
+redmart,Gin Selection,gin selection,250,247,211,37,,REVIEW
+redmart,Chilled Ready Meals,chilled ready meals,248,246,179,67,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,"Fruit, Flower & Herbal","fruit, flower & herbal",313,245,226,26,,REVIEW
+redmart,Instant Coffee,instant coffee,259,245,178,71,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Craft & Specialty Beer,craft & specialty beer,258,245,148,105,,REVIEW
+redmart,Lollipops & Sweets,lollipops & sweets,255,245,158,92,Snacks,AUTO_SOURCE_CATEGORY
+redmart,UHT Milk & Milk Powder,uht milk & milk powder,258,243,198,50,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Shochu & Meechu,shochu & meechu,243,243,210,33,,REVIEW
+fairprice,Frozen Beef & Lamb,frozen beef & lamb,248,242,237,10,,REVIEW
+redmart,Face Serums & Treatments,face serums & treatments,288,241,172,87,,REVIEW
+fairprice,Liquid Detergents,liquid detergents,290,240,233,8,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Air Freshener Sprays,air freshener sprays,263,240,186,58,,REVIEW
+redmart,Sliced & Grated Cheese,sliced & grated cheese,246,240,203,37,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Lotions,lotions,253,236,109,136,,REVIEW
+fairprice,Hair Styling,hair styling,254,235,227,11,,REVIEW
+redmart,"Jams, Honey & Spreads","jams, honey & spreads",250,235,152,85,,REVIEW
+redmart,Granulated Sugar & Sweeteners,granulated sugar & sweeteners,241,235,163,76,,REVIEW
+redmart,3-in-1 Coffee,3-in-1 coffee,265,234,168,72,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Immunity Boosters,immunity boosters,253,229,162,71,,REVIEW
+fairprice,Flour,flour,252,228,216,35,,REVIEW
+coldstorage,Homecare,homecare,330,227,203,35,,REVIEW
+fairprice,Hand Soap,hand soap,263,227,213,22,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Arts & Crafts,arts & crafts,408,226,226,19,,REVIEW
+redmart,Coffee Capsules,coffee capsules,247,226,165,69,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,"Rice, Noodles & Cooking Ingredients","rice, noodles & cooking ingredients",231,226,210,19,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Sauces,sauces,236,225,202,25,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Frozen Pork,frozen pork,228,223,219,7,,REVIEW
+redmart,Coffee Beans,coffee beans,244,221,154,77,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Essence & Flavours,essence & flavours,232,221,211,20,,REVIEW
+redmart,Deodorants,deodorants,295,220,192,29,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Baby Pillows & Bedding,baby pillows & bedding,262,220,122,125,,REVIEW
+redmart,Body Wash & Soaps,body wash & soaps,240,220,220,0,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,"Beer, Wine & Spirits","beer, wine & spirits",228,219,195,26,,REVIEW
+coldstorage,Pre-mixed,pre-mixed,220,219,208,11,,REVIEW
+redmart,Baking Mixes & Sugar,baking mixes & sugar,232,216,152,69,,REVIEW
+redmart,Ice Cream Multipacks,ice cream multipacks,227,216,198,25,,REVIEW
+fairprice,Fresh Pork,fresh pork,213,213,210,3,,REVIEW
+fairprice,Potato Chips & Crisps,potato chips & crisps,228,210,184,31,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Ice Cream Pints,ice cream pints,226,209,169,49,,REVIEW
+redmart,Stock & Gravy,stock & gravy,221,209,144,68,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Chocolate Multipacks & Sharing Bags,chocolate multipacks & sharing bags,212,209,144,65,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Lip Balms & Treatments,lip balms & treatments,237,208,121,94,,REVIEW
+redmart,"Cough, Cold & Flu Medicine","cough, cold & flu medicine",236,208,155,61,,REVIEW
+redmart,Chilli Sauce & Condiments,chilli sauce & condiments,218,208,151,59,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Honey,honey,213,207,189,18,,REVIEW
+redmart,Hair Coloring,hair coloring,209,207,175,33,,REVIEW
+fairprice,Food Containers,food containers,727,206,185,48,,REVIEW
+redmart,Lager Beer,lager beer,215,206,140,68,,REVIEW
+redmart,Frozen Apples & Pears,frozen apples & pears,212,206,174,32,,REVIEW
+redmart,Senior Health,senior health,224,205,183,31,,REVIEW
+redmart,Kitchen Tools for Fruits & Veggies,kitchen tools for fruits & veggies,406,204,166,91,,REVIEW
+redmart,Large Block Chocolate,large block chocolate,205,204,117,87,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Sexual Lubricants,sexual lubricants,297,203,137,93,,REVIEW
+redmart,Boxed & Tin Chocolates,boxed & tin chocolates,208,203,92,111,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Baby Wipes & Refills,baby wipes & refills,276,202,142,94,,REVIEW
+fairprice,Air Fresheners,air fresheners,278,201,195,8,,REVIEW
+fairprice,Instant Noodles,instant noodles,210,201,182,21,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Moisturisers,moisturisers,205,201,193,9,,REVIEW
+redmart,Instant & Soup Noodles,instant & soup noodles,206,200,150,51,,REVIEW
+redmart,Chilled Tea & Coffee,chilled tea & coffee,200,200,135,65,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Fresh Beef & Lamb,fresh beef & lamb,200,199,186,14,,REVIEW
+redmart,Thermal Flasks,thermal flasks,230,198,146,60,,REVIEW
+redmart,"Jams, Honey, Spreads, Nut Butters","jams, honey, spreads, nut butters",218,196,132,64,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Halal Frozen,halal frozen,206,193,192,1,,REVIEW
+redmart,Chewy Candy & Sweets,chewy candy & sweets,202,193,130,66,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Hair Styling Products,hair styling products,198,193,165,29,,REVIEW
+redmart,Digestive Care,digestive care,198,190,148,45,,REVIEW
+redmart,Pickles & Antipasti,pickles & antipasti,192,188,139,53,,REVIEW
+fairprice,Frozen Chicken & Poultry,frozen chicken & poultry,196,186,171,15,,REVIEW
+coldstorage,Red Wine,red wine,190,186,164,25,,REVIEW
+coldstorage,Block & Bar Chocolates,block & bar chocolates,204,185,165,20,Snacks,AUTO_SOURCE_CATEGORY
+redmart,UHT Milk & Soy,uht milk & soy,191,185,128,59,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Wafers & Sweet Biscuits,wafers & sweet biscuits,187,184,116,69,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Bath & Shower,bath & shower,211,183,178,13,,REVIEW
+redmart,Fresh Apple Juice,fresh apple juice,184,182,158,24,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Dog Wet Food,dog wet food,247,179,179,2,,REVIEW
+coldstorage,Instant Coffee,instant coffee,183,179,173,6,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Cutting Boards,cutting boards,220,178,140,43,,REVIEW
+redmart,Ice Cream Singles,ice cream singles,185,178,148,30,,REVIEW
+fairprice,Cooking Noodles,cooking noodles,182,178,170,11,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Face Mask Packs,face mask packs,225,177,130,60,,REVIEW
+redmart,Food Bags Storage,food bags storage,205,177,134,53,,REVIEW
+redmart,Insecticide Sprays,insecticide sprays,205,177,143,54,,REVIEW
+redmart,"Cakes, Fruit Loaves & Scones","cakes, fruit loaves & scones",187,177,112,69,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Granola,granola,193,175,113,69,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Baby & Toddler Meals,baby & toddler meals,181,175,154,25,,REVIEW
+fairprice,Dog Dry Food,dog dry food,177,175,168,8,,REVIEW
+redmart,Small Pet Food,small pet food,306,174,119,105,,REVIEW
+fairprice,Dishwashing Liquids,dishwashing liquids,187,173,168,5,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Still Water,still water,180,173,155,21,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Sunscreen & Lotion,sunscreen & lotion,228,172,93,99,,REVIEW
+fairprice,Instant Coffee,instant coffee,187,171,158,19,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Floor Cleaners,floor cleaners,189,170,137,39,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Dog Shampoos,dog shampoos,415,169,153,72,,REVIEW
+fairprice,Household,household,276,169,163,12,,REVIEW
+redmart,Bar Soaps,bar soaps,200,168,146,29,,REVIEW
+redmart,Fresh & Artisanal Breads,fresh & artisanal breads,173,166,105,61,,REVIEW
+fairprice,Fish & Prawn Snacks,fish & prawn snacks,170,166,154,15,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Dog Cages,dog cages,169,166,150,17,,REVIEW
+redmart,Butter & Spreads,butter & spreads,170,165,129,38,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Baby Puree,baby puree,183,164,118,54,,REVIEW
+fairprice,Chocolate Bars & Blocks,chocolate bars & blocks,162,159,150,11,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Cat Treats,cat treats,160,159,155,4,,REVIEW
+redmart,Air Care & Dehumidifiers,air care & dehumidifiers,177,158,90,72,,REVIEW
+fairprice,Fresh Fish & Seafood,fresh fish & seafood,158,158,157,1,,REVIEW
+redmart,Hair Brushes,hair brushes,167,157,133,24,,REVIEW
+fairprice,Lipstick & Gloss,lipstick & gloss,160,157,123,34,,REVIEW
+fairprice,Toothbrush,toothbrush,313,156,154,6,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Rose Wine,rose wine,167,156,108,50,,REVIEW
+fairprice,Drinks,drinks,182,155,140,19,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Frozen Bread & Pastries,frozen bread & pastries,163,155,100,63,,REVIEW
+redmart,Lunch Bags & Boxes,lunch bags & boxes,230,153,99,67,,REVIEW
+fairprice,Protein Bars,protein bars,156,153,136,20,,REVIEW
+redmart,Hair Treatments,hair treatments,176,152,152,0,,REVIEW
+redmart,Dried Seafood,dried seafood,159,152,109,44,,REVIEW
+redmart,Baby Food & Cereal,baby food & cereal,153,152,99,54,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Vermicelli Noodles,vermicelli noodles,171,151,134,21,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Ready to Drink Coffee,ready to drink coffee,155,151,101,50,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Ground Coffee & Beans,ground coffee & beans,168,149,143,7,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Cordials & Syrups,cordials & syrups,156,149,146,7,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Serums,serums,154,148,145,4,,REVIEW
+redmart,Bone & Joint Support,bone & joint support,153,148,115,35,,REVIEW
+fairprice,White Rice,white rice,149,148,135,14,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Kitchen & Glass Cleaners,kitchen & glass cleaners,173,147,112,46,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Cat Litters,cat litters,164,147,143,6,,REVIEW
+redmart,Baby Detergent,baby detergent,155,147,99,51,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Energy Gels & Tablets,energy gels & tablets,178,144,64,101,,REVIEW
+fairprice,Crackers,crackers,160,144,128,18,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Cat Dry Food,cat dry food,151,144,141,3,,REVIEW
+fairprice,Fresh Chicken & Poultry,fresh chicken & poultry,145,143,141,4,,REVIEW
+redmart,Fabric Conditioners,fabric conditioners,167,142,124,30,,REVIEW
+redmart,shop-frozen-bread,shop-frozen-bread,145,142,111,32,,REVIEW
+redmart,Sparkling Water,sparkling water,150,141,111,32,Drinks,AUTO_SOURCE_CATEGORY
+redmart,shop-oat-milk,shop-oat-milk,168,139,116,31,,REVIEW
+redmart,Toothpastes,toothpastes,151,139,118,24,,REVIEW
+redmart,"Kimchi, Pickles & Chutney","kimchi, pickles & chutney",139,139,102,37,,REVIEW
+redmart,Masks & First Aid Supplies,masks & first aid supplies,158,138,74,76,,REVIEW
+redmart,Lipsticks,lipsticks,150,138,112,27,,REVIEW
+fairprice,Sausages & Bacon,sausages & bacon,138,138,133,5,,REVIEW
+redmart,Eye Shadows,eye shadows,138,138,128,10,,REVIEW
+fairprice,Bar Soap,bar soap,147,136,111,27,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Mouthwash,mouthwash,145,136,127,9,,REVIEW
+redmart,Traditional Medicine,traditional medicine,140,136,120,18,,REVIEW
+fairprice,"For Hamsters, Chinchillas, Guinea Pigs & Gerbils","for hamsters, chinchillas, guinea pigs & gerbils",137,136,129,7,,REVIEW
+redmart,Natural Yoghurt,natural yoghurt,136,136,90,46,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Olive Oil,olive oil,155,135,132,23,,REVIEW
+redmart,Pet Habitat & Accessories,pet habitat & accessories,167,134,134,0,,REVIEW
+redmart,Rum Selection,rum selection,140,134,108,27,,REVIEW
+coldstorage,Potato Chips,potato chips,139,133,110,24,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Oral Care,oral care,230,132,127,8,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Vinegar,vinegar,164,132,126,38,,REVIEW
+redmart,shop-milk-tea,shop-milk-tea,149,132,93,40,,REVIEW
+fairprice,"Granola, Muesli & Oats","granola, muesli & oats",143,132,121,20,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Sanitary Napkins,sanitary napkins,133,132,128,4,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Candy,candy,145,131,113,19,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Natural Sweeteners,natural sweeteners,142,130,91,44,,REVIEW
+redmart,shop-christmas-decoration-&-models,shop-christmas-decoration-&-models,131,130,119,11,,REVIEW
+fairprice,"Halal Dairy, Chilled & Eggs","halal dairy, chilled & eggs",139,129,124,7,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Japanese Whisky,japanese whisky,132,129,113,16,,REVIEW
+redmart,"Film, Foil & Baking Paper","film, foil & baking paper",141,128,111,18,,REVIEW
+fairprice,Other Snacks,other snacks,135,128,114,19,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Creamed & Filled,creamed & filled,137,127,97,31,,REVIEW
+redmart,Brushes & Applicators,brushes & applicators,135,127,85,42,,REVIEW
+redmart,Salad Dressing & Condiments,salad dressing & condiments,137,126,92,35,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Pain Relief,pain relief,136,126,123,3,,REVIEW
+redmart,Women's Fragrances,women's fragrances,135,126,111,15,,REVIEW
+fairprice,Instant Cups,instant cups,135,124,111,16,,REVIEW
+redmart,Burger & Sausage,burger & sausage,131,123,103,20,,REVIEW
+redmart,Olives & Antipasti,olives & antipasti,129,123,99,26,,REVIEW
+redmart,Mooncakes,mooncakes,123,123,94,29,,REVIEW
+fairprice,Dog Wet Food,dog wet food,125,122,122,0,,REVIEW
+redmart,Biscuits & Rice Corn Cakes,biscuits & rice corn cakes,130,121,67,57,,REVIEW
+redmart,Foundations,foundations,123,121,109,12,,REVIEW
+fairprice,Soju & Sake,soju & sake,122,121,110,12,,REVIEW
+fairprice,Multi-Purpose Cleaners,multi-purpose cleaners,160,120,113,7,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Frozen Fries & Potato Rings,frozen fries & potato rings,123,120,101,20,,REVIEW
+redmart,Toys Selection,toys selection,451,119,106,129,,REVIEW
+redmart,Toilet Cleaners,toilet cleaners,135,119,97,29,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Cow's Milk,cow's milk,124,119,104,17,Dairy,AUTO_SOURCE_CATEGORY
+redmart,shop-deli-meats,shop-deli-meats,120,119,73,46,,REVIEW
+redmart,Coffee Capsule Holders,coffee capsule holders,174,118,92,37,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Herbs,herbs,121,118,117,2,,REVIEW
+redmart,Long Life & Fresh Bread,long life & fresh bread,121,116,99,19,,REVIEW
+coldstorage,Chips,chips,127,115,97,23,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Other Cookies,other cookies,121,115,104,13,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Sunscreens,sunscreens,118,115,110,5,,REVIEW
+coldstorage,Chilled Juices,chilled juices,115,115,82,33,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Ground Coffee,ground coffee,183,114,74,53,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Dog Grooming,dog grooming,133,114,92,23,,REVIEW
+fairprice,Local Delights,local delights,130,114,106,9,,REVIEW
+fairprice,Peanut Butter & Nut Spread,peanut butter & nut spread,122,114,107,15,,REVIEW
+redmart,shop-chilled-desserts,shop-chilled-desserts,120,113,73,41,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Primers,primers,113,113,101,12,,REVIEW
+redmart,Facial Tissues,facial tissues,222,112,92,32,,REVIEW
+redmart,Baby Vitamins,baby vitamins,127,112,76,45,,REVIEW
+coldstorage,Canned Vegetables,canned vegetables,115,112,98,15,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Spreads,spreads,114,112,105,8,,REVIEW
+redmart,Frozen Soups & Convenience Foods,frozen soups & convenience foods,135,111,103,11,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Batteries,batteries,112,111,82,30,,REVIEW
+redmart,Relishes & Chutneys,relishes & chutneys,110,110,50,60,,REVIEW
+redmart,World Whisky,world whisky,116,109,94,20,,REVIEW
+fairprice,Frozen Crabs & Prawns,frozen crabs & prawns,111,109,99,12,,REVIEW
+redmart,"Eye, Nose, Throat Care","eye, nose, throat care",110,109,68,41,,REVIEW
+redmart,Men's Fragrance,men's fragrance,109,109,77,32,,REVIEW
+fairprice,Sweeteners,sweeteners,118,108,104,10,,REVIEW
+fairprice,Pasta Sauces,pasta sauces,112,108,99,13,,REVIEW
+fairprice,Bakery Sweet Treats,bakery sweet treats,119,107,94,16,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Cream Cheese & Cottage Cheese,cream cheese & cottage cheese,108,107,79,28,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Frozen Crab Sticks & Fish Balls,frozen crab sticks & fish balls,122,106,87,19,,REVIEW
+redmart,Plasters & Bandages,plasters & bandages,112,106,83,26,,REVIEW
+fairprice,Mixed Nuts,mixed nuts,108,106,103,5,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Nail Polish,nail polish,106,106,102,4,,REVIEW
+fairprice,Sparkling Wine,sparkling wine,111,105,94,14,,REVIEW
+fairprice,Canned Meat,canned meat,108,105,105,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Laundry Accessories,laundry accessories,412,104,88,33,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,"Dried Fruits, Nuts & Sprinkles","dried fruits, nuts & sprinkles",117,104,98,14,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Wafers,wafers,110,104,83,23,,REVIEW
+redmart,Baby Drinks,baby drinks,110,104,82,24,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Frozen Shellfish & Others,frozen shellfish & others,109,104,102,2,,REVIEW
+fairprice,Light Soy Sauce,light soy sauce,105,103,92,13,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,"Organic Rice, Noodles & Cooking Ingredients","organic rice, noodles & cooking ingredients",104,103,99,4,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Spirits,spirits,103,103,97,6,,REVIEW
+fairprice,Sanitary Pads,sanitary pads,137,102,99,11,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Corn Chips & Tortillas,corn chips & tortillas,109,102,81,27,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Air Freshener Devices,air freshener devices,104,102,78,25,,REVIEW
+redmart,Instant & Ready-to-Eat Soups,instant & ready-to-eat soups,233,100,80,57,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Muesli Breakfast,muesli breakfast,100,99,73,26,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Aperitif Spirits,aperitif spirits,99,99,68,31,,REVIEW
+redmart,Brandy Spirits,brandy spirits,99,99,74,25,,REVIEW
+fairprice,Bathroom Cleaners,bathroom cleaners,148,98,91,9,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Whisky,whisky,100,98,93,5,,REVIEW
+fairprice,Dog Accessories,dog accessories,111,97,91,9,,REVIEW
+fairprice,Mouthwash,mouthwash,110,97,95,2,,REVIEW
+fairprice,Fruit & Vegetable Chips,fruit & vegetable chips,104,96,88,11,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Gummies & Pastilles,gummies & pastilles,98,96,91,6,,REVIEW
+coldstorage,Instant Noodles,instant noodles,97,96,91,5,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Home Improvement & DIY,home improvement & diy,671,95,90,43,,REVIEW
+redmart,Hair Removal,hair removal,103,95,66,34,,REVIEW
+fairprice,Kitchen Tools,kitchen tools,992,94,94,0,,REVIEW
+redmart,Dog Frozen Food,dog frozen food,120,94,94,0,,REVIEW
+fairprice,Indian Snacks,indian snacks,100,94,69,26,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Yoghurt Drinks,yoghurt drinks,95,94,59,35,,REVIEW
+coldstorage,Baby Food & Drinks,baby food & drinks,94,94,84,10,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Jam,jam,106,93,78,26,,REVIEW
+redmart,Bleach for Laundry & Cleaning,bleach for laundry & cleaning,105,93,68,27,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,shop-decorative-accessories-&-statues,shop-decorative-accessories-&-statues,98,93,83,10,,REVIEW
+redmart,Soft & Semi-Soft Cheese,soft & semi-soft cheese,95,93,64,29,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Mints & Lozenges,mints & lozenges,103,92,83,9,,REVIEW
+redmart,shop-hot-chocolate-powder,shop-hot-chocolate-powder,97,92,69,23,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Soda Water & Mixers,soda water & mixers,92,92,61,31,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Canned Seafood,canned seafood,94,91,81,10,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Makeup Removers,makeup removers,94,91,78,13,,REVIEW
+fairprice,Sparkling Water,sparkling water,99,90,83,13,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Spaghetti & Linguine,spaghetti & linguine,95,90,84,11,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Creams & Moisturizers,creams & moisturizers,93,90,84,7,,REVIEW
+fairprice,Rice Crackers,rice crackers,92,90,70,22,,REVIEW
+fairprice,Green Tea,green tea,95,89,82,7,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Kids Cereals,kids cereals,94,89,57,37,Breakfast Foods,AUTO_SOURCE_CATEGORY
+coldstorage,Indulgence You Deserve,indulgence you deserve,91,89,74,16,,REVIEW
+redmart,Mints,mints,90,89,54,35,,REVIEW
+coldstorage,Bottled Drinks,bottled drinks,89,89,77,12,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Dog Feeders & Waterers,dog feeders & waterers,163,88,81,22,,REVIEW
+redmart,Stroller Organizer,stroller organizer,99,88,43,49,,REVIEW
+redmart,Baby Hooded Towels,baby hooded towels,90,88,50,38,,REVIEW
+fairprice,Halal Meat & Seafood,halal meat & seafood,89,88,86,2,,REVIEW
+redmart,Pain Relief & Fever Medicine,pain relief & fever medicine,89,88,75,14,,REVIEW
+coldstorage,Beverages,beverages,100,87,74,20,Drinks,AUTO_SOURCE_CATEGORY
+redmart,shop-pies-&-snacks,shop-pies-&-snacks,91,87,76,14,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Fresh & Soy Milk,fresh & soy milk,89,87,54,33,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Tomato Sauce,tomato sauce,88,87,66,21,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Laundry Stain Remover,laundry stain remover,116,86,72,24,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Kitchen Cleaners,kitchen cleaners,115,86,79,9,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Cold Storage 123 Years,cold storage 123 years,90,86,65,21,,REVIEW
+fairprice,Vermicelli,vermicelli,86,85,78,7,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,100% Aussie Goodness: Right At Home,100% aussie goodness: right at home,85,85,76,9,,REVIEW
+redmart,shop-brie-camembert-&-blue-cheese,shop-brie-camembert-&-blue-cheese,85,85,48,37,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Jam & Marmalade,jam & marmalade,84,84,79,5,,REVIEW
+fairprice,Foundation & Concealer,foundation & concealer,84,84,81,3,,REVIEW
+redmart,Tonic Water & Mixers,tonic water & mixers,84,84,50,34,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Essential Oil,essential oil,158,83,78,9,,REVIEW
+redmart,Dog Brushes & Combs,dog brushes & combs,99,83,56,34,,REVIEW
+redmart,Body Scrubs,body scrubs,94,83,71,14,,REVIEW
+fairprice,Bird's Nest,bird's nest,92,83,78,8,,REVIEW
+fairprice,Seaweed & Floss,seaweed & floss,87,83,76,7,,REVIEW
+fairprice,Jellies & Puddings,jellies & puddings,84,83,69,15,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Eye Liners & Kajal,eye liners & kajal,83,83,49,34,,REVIEW
+fairprice,Storage Bags,storage bags,184,82,82,10,,REVIEW
+fairprice,Joss Paper & Sticks,joss paper & sticks,143,82,77,7,,REVIEW
+redmart,Vodka Selection,vodka selection,102,82,57,30,,REVIEW
+redmart,shop-cocktails,shop-cocktails,88,82,48,35,,REVIEW
+fairprice,Toners,toners,85,82,80,2,,REVIEW
+coldstorage,Toothpaste,toothpaste,84,82,77,5,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Dim Sum & Ready Meals,dim sum & ready meals,82,82,81,1,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Laundry Capsules,laundry capsules,192,81,81,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Alkaline & Lithium Batteries,alkaline & lithium batteries,146,81,81,7,,REVIEW
+fairprice,Chocolate Cookies,chocolate cookies,87,81,64,22,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Eggs,eggs,85,81,76,6,,REVIEW
+redmart,"Pau, Mantou & Frozen Bread","pau, mantou & frozen bread",81,81,69,12,,REVIEW
+fairprice,Capsules & Pods,capsules & pods,108,80,76,13,,REVIEW
+fairprice,Baking Chocolate & Cocoa,baking chocolate & cocoa,89,80,76,11,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Antiseptics & Disinfectants,antiseptics & disinfectants,84,80,67,13,,REVIEW
+redmart,Cheese & Spreads,cheese & spreads,83,80,59,22,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Nail Polish,nail polish,81,80,80,0,,REVIEW
+redmart,"Wines, Sherry & Port","wines, sherry & port",81,80,52,28,,REVIEW
+fairprice,Frozen Vegetables,frozen vegetables,80,80,76,4,,REVIEW
+fairprice,Salt,salt,80,80,78,2,,REVIEW
+redmart,Health Accessories,health accessories,82,79,44,37,,REVIEW
+redmart,Sports Drinks,sports drinks,82,79,65,14,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Specialty Oil,specialty oil,81,79,75,5,,REVIEW
+fairprice,Chicken Delights,chicken delights,79,79,72,7,,REVIEW
+redmart,Laundry Washing Powder,laundry washing powder,103,78,70,21,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Frozen Lamb Meat,frozen lamb meat,86,78,58,20,,REVIEW
+redmart,Cat Litter,cat litter,165,77,77,0,,REVIEW
+redmart,Dog Training Pads & Trays,dog training pads & trays,140,77,43,75,,REVIEW
+fairprice,Baby & Toddler Juices,baby & toddler juices,81,77,70,7,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Pasta Sauces,pasta sauces,77,77,69,8,,REVIEW
+fairprice,Chutney & Relish,chutney & relish,79,76,75,4,,REVIEW
+redmart,Breastfeeding Pumps & Accessories,breastfeeding pumps & accessories,78,76,47,29,,REVIEW
+coldstorage,Fresh Milk,fresh milk,77,76,56,21,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Tubs & Pints,tubs & pints,77,76,63,13,,REVIEW
+redmart,Concealers,concealers,77,76,59,17,,REVIEW
+redmart,Mustard & Condiments,mustard & condiments,77,76,53,23,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,UHT Milk,uht milk,76,76,62,14,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Eyebrow Products,eyebrow products,86,75,51,24,,REVIEW
+fairprice,Flavoured UHT Milk,flavoured uht milk,85,75,58,23,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Mayonnaise & Condiments,mayonnaise & condiments,84,75,55,25,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Feminine Cleansing,feminine cleansing,83,75,57,18,,REVIEW
+redmart,Baby Wash Clothes,baby wash clothes,106,74,31,60,,REVIEW
+redmart,Bathroom Cleaners,bathroom cleaners,84,74,62,14,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Hair Accessories,hair accessories,83,74,61,14,,REVIEW
+redmart,Fresh Noodles & Hot Pot Ingredients,fresh noodles & hot pot ingredients,74,74,62,12,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Writing Materials,writing materials,353,73,73,19,,REVIEW
+fairprice,Adult Diapers,adult diapers,171,73,72,7,,REVIEW
+fairprice,Face & Eye Masks,face & eye masks,132,73,65,13,,REVIEW
+redmart,Kitchen Organizers,kitchen organizers,120,73,56,29,,REVIEW
+fairprice,Savoury Snacks,savoury snacks,81,73,68,7,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Broths & Stocks,broths & stocks,74,73,67,7,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Leafy Vegetables,leafy vegetables,73,73,61,12,,REVIEW
+fairprice,Floor Cleaners,floor cleaners,110,72,70,5,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Slimming Beverages,slimming beverages,94,72,44,36,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Tampons,tampons,77,72,40,32,,REVIEW
+fairprice,Canned Tuna & Salmon,canned tuna & salmon,76,72,72,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Polish & Wax,polish & wax,75,72,55,18,,REVIEW
+coldstorage,White Wine,white wine,73,72,65,7,,REVIEW
+redmart,Fresh Pasta & Sauces,fresh pasta & sauces,72,72,43,29,,REVIEW
+fairprice,Bathroom Accessories,bathroom accessories,428,71,63,15,,REVIEW
+redmart,Ointments & Creams,ointments & creams,78,70,53,19,,REVIEW
+fairprice,Salad Dressing,salad dressing,71,70,60,11,,REVIEW
+fairprice,Party Decorations,party decorations,683,69,68,104,,REVIEW
+fairprice,Tropical Fruits,tropical fruits,83,69,42,29,,REVIEW
+coldstorage,Crackers,crackers,77,69,60,9,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Cookware,cookware,505,68,58,20,,REVIEW
+fairprice,Hooks & Organizers,hooks & organizers,250,68,65,29,,REVIEW
+fairprice,Almonds,almonds,74,68,58,16,,REVIEW
+redmart,Bath & Body Accessories,bath & body accessories,73,68,61,9,,REVIEW
+redmart,Compacts & Powder,compacts & powder,69,68,54,15,,REVIEW
+redmart,Dog Mouthwash & Dental Care,dog mouthwash & dental care,85,67,43,35,,REVIEW
+redmart,"Appliance, Kitchen & Glass Cleaners","appliance, kitchen & glass cleaners",82,67,50,22,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Baby Potty Seats,baby potty seats,80,67,33,35,,REVIEW
+fairprice,Stage 3,stage 3,78,67,62,5,,REVIEW
+fairprice,Organic Baby Food,organic baby food,73,67,51,16,,REVIEW
+fairprice,Soft & Chewy Candy,soft & chewy candy,71,67,55,13,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Post-Workout Recovery,post-workout recovery,69,67,45,23,,REVIEW
+fairprice,Cooking Ingredients,cooking ingredients,68,67,61,7,,REVIEW
+fairprice,Dried Mushroom,dried mushroom,68,67,61,7,,REVIEW
+fairprice,Assorted Biscuits,assorted biscuits,67,67,56,11,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Printers & Ink,printers & ink,96,66,66,3,,REVIEW
+fairprice,Stage 4 & Above,stage 4 & above,75,66,59,8,,REVIEW
+fairprice,Carbonated Drinks,carbonated drinks,71,66,58,10,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Flavoured Yoghurt,flavoured yoghurt,70,66,53,16,Dairy,AUTO_SOURCE_CATEGORY
+redmart,"Stress, Sleep, & Anxiety","stress, sleep, & anxiety",69,66,47,20,,REVIEW
+redmart,Chinese New Year Lanterns,chinese new year lanterns,66,66,57,9,,REVIEW
+redmart,Kitchen Tools & Gadgets,kitchen tools & gadgets,115,65,50,22,,REVIEW
+fairprice,Pretzels & Biscuit Sticks,pretzels & biscuit sticks,69,65,59,9,Snacks,AUTO_SOURCE_CATEGORY
+redmart,BBQ Sauce & Condiments,bbq sauce & condiments,68,65,48,18,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Greek Yoghurt,greek yoghurt,66,65,50,16,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Tumblers & Water Bottles,tumblers & water bottles,351,64,60,9,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Jelly Powder & Mix,jelly powder & mix,74,64,59,15,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Dental Floss & Sticks,dental floss & sticks,70,64,61,6,,REVIEW
+fairprice,Lip Care,lip care,69,64,63,3,,REVIEW
+redmart,Marinades & Dressings,marinades & dressings,66,64,55,10,,REVIEW
+coldstorage,Aussie Goodness: Flavours That Raised Generations,aussie goodness: flavours that raised generations,64,64,59,5,,REVIEW
+fairprice,Ice Tea,ice tea,82,63,53,15,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Canned Beans,canned beans,71,63,57,14,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Non-Fresh,non-fresh,70,63,59,6,,REVIEW
+redmart,Face Scrubs & Peels,face scrubs & peels,70,63,44,20,,REVIEW
+redmart,Teeth Whitening,teeth whitening,66,63,57,8,,REVIEW
+coldstorage,Tea Leaves & Teabags,tea leaves & teabags,64,63,55,8,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Deodorizers,deodorizers,105,62,61,3,,REVIEW
+fairprice,Makeup Removers,makeup removers,88,62,58,5,,REVIEW
+fairprice,Frozen Dim Sum,frozen dim sum,81,62,56,8,,REVIEW
+fairprice,Other Canned Seafood,other canned seafood,66,62,61,5,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Ice Cream Tubs,ice cream tubs,63,62,59,4,,REVIEW
+coldstorage,Instant Cereals,instant cereals,62,62,57,5,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Ice Cream Packs,ice cream packs,62,62,59,3,,REVIEW
+redmart,Foot Deodorants,foot deodorants,66,61,50,13,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,"Fries, Wedges & Hash Browns","fries, wedges & hash browns",62,61,57,4,,REVIEW
+redmart,Apple Cider,apple cider,61,61,45,16,,REVIEW
+coldstorage,Baby Fair,baby fair,88,60,45,22,,REVIEW
+fairprice,Car Accessories,car accessories,82,60,58,3,,REVIEW
+coldstorage,"Buns, Cakes & Muffins","buns, cakes & muffins",75,60,39,28,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Cookies,cookies,70,60,55,8,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Softeners,softeners,65,60,60,0,,REVIEW
+fairprice,Fabric Conditioners,fabric conditioners,62,60,59,1,,REVIEW
+coldstorage,Dressings,dressings,61,60,54,6,,REVIEW
+fairprice,Chocolate Boxes & Gifts,chocolate boxes & gifts,61,60,54,7,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Kombucha,kombucha,61,60,52,9,,REVIEW
+fairprice,Canned Fruits & Desserts,canned fruits & desserts,60,60,58,2,,REVIEW
+redmart,Cola & Soft Drinks,cola & soft drinks,60,60,42,18,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Dips & Spreads,dips & spreads,60,60,32,28,,REVIEW
+redmart,Preserved Vegetables,preserved vegetables,60,60,49,11,,REVIEW
+redmart,Mixing & Prep Bowls,mixing & prep bowls,81,59,47,17,,REVIEW
+fairprice,Black Tea,black tea,74,59,51,11,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Lager & Pilsner,lager & pilsner,71,59,55,5,,REVIEW
+fairprice,Scrubs & Exfoliators,scrubs & exfoliators,69,59,57,2,,REVIEW
+fairprice,Frozen Food,frozen food,65,59,57,2,,REVIEW
+fairprice,Gin,gin,59,59,58,1,,REVIEW
+redmart,"Dog Shampoos, Flea, Tick","dog shampoos, flea, tick",59,59,20,39,,REVIEW
+redmart,Foot Relief Products,foot relief products,73,58,51,12,,REVIEW
+redmart,Breast Pumps,breast pumps,61,58,30,28,,REVIEW
+fairprice,Lollipops & Hard Candy,lollipops & hard candy,60,58,44,15,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Marshmallows & Mochi Sweets,marshmallows & mochi sweets,60,58,45,14,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Cashews,cashews,58,58,57,1,,REVIEW
+fairprice,Cooking Wine,cooking wine,58,58,51,7,,REVIEW
+redmart,Toddler Milk,toddler milk,58,58,55,3,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Brown Rice,brown rice,76,57,46,13,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,"Eye, Ear & Nasal Drops","eye, ear & nasal drops",67,57,53,6,,REVIEW
+redmart,Eye Cream & Serum,eye cream & serum,65,57,41,17,,REVIEW
+fairprice,Chocolate Pouches,chocolate pouches,61,57,51,9,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Sports & Energy Drinks,sports & energy drinks,61,57,38,20,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Instant Meals,instant meals,59,57,47,10,,REVIEW
+redmart,"Pastes, Sauces & Marinades","pastes, sauces & marinades",58,57,43,14,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,shop-aquariums-tanks-&-bowls,shop-aquariums-tanks-&-bowls,58,57,49,8,,REVIEW
+redmart,Frozen Noodles & Convenience Foods,frozen noodles & convenience foods,57,57,41,16,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Size XL & Above Diapers,size xl & above diapers,138,56,55,1,,REVIEW
+fairprice,Mixed Juice,mixed juice,59,56,40,17,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,"Baking Paper, Foil, Wrap","baking paper, foil, wrap",276,55,55,7,,REVIEW
+fairprice,Dry & Wet Wipes,dry & wet wipes,198,55,53,11,,REVIEW
+redmart,Kitchen Scales,kitchen scales,91,55,38,29,,REVIEW
+coldstorage,Finger Food,finger food,57,55,47,9,,REVIEW
+fairprice,"Black, Brown & Red Rice","black, brown & red rice",57,55,50,7,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Derma Skincare,derma skincare,57,55,51,4,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Superfoods,superfoods,57,55,51,4,,REVIEW
+coldstorage,Cereal Bars,cereal bars,56,55,47,9,Breakfast Foods,AUTO_SOURCE_CATEGORY
+coldstorage,Olive Oil,olive oil,56,55,53,2,,REVIEW
+coldstorage,UHT Juices,uht juices,56,55,46,9,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Sliced Bread,sliced bread,56,55,48,7,,REVIEW
+redmart,Feminine Care & Sanitary Panties,feminine care & sanitary panties,55,55,49,6,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Food Storage & Containers,food storage & containers,205,54,54,6,,REVIEW
+fairprice,Powder Detergents,powder detergents,60,54,51,3,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Laundry,laundry,59,54,50,5,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Multipack,multipack,58,54,44,10,,REVIEW
+fairprice,Chili Sauce,chili sauce,57,54,48,9,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Tofu & Hot Pot Ingredients,tofu & hot pot ingredients,56,54,50,4,,REVIEW
+coldstorage,Shampoo,shampoo,54,54,50,4,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Contours & Highlighters,contours & highlighters,54,54,50,4,,REVIEW
+fairprice,Immunity,immunity,152,53,51,8,,REVIEW
+redmart,Cat Odor & Stain Removers,cat odor & stain removers,67,53,34,25,,REVIEW
+redmart,Condoms,condoms,59,53,48,5,,REVIEW
+fairprice,Hair Care,hair care,54,53,51,2,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Maternity Supporting Belts,maternity supporting belts,53,53,10,43,,REVIEW
+redmart,Panty Liners,panty liners,53,53,47,6,,REVIEW
+redmart,Tequila Spirits,tequila spirits,60,52,49,3,,REVIEW
+redmart,Growth Milk,growth milk,56,52,49,6,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Meatballs,meatballs,53,52,43,9,,REVIEW
+redmart,Malted Drinks & Chocolate,malted drinks & chocolate,52,52,45,7,,REVIEW
+fairprice,Bakeware,bakeware,986,51,50,47,,REVIEW
+redmart,Insect Baits & Pest Control,insect baits & pest control,65,51,43,13,,REVIEW
+redmart,Brain & Memory,brain & memory,56,51,41,13,,REVIEW
+fairprice,Peanuts & Groundnuts,peanuts & groundnuts,53,51,46,5,,REVIEW
+fairprice,Eyeliner,eyeliner,52,51,49,3,,REVIEW
+redmart,Feta & Goat Cheese,feta & goat cheese,52,51,36,15,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Skin Nourishment,skin nourishment,51,51,33,18,,REVIEW
+redmart,Baby & Toddler Bottles,baby & toddler bottles,285,50,18,154,,REVIEW
+fairprice,Shavers,shavers,164,50,50,7,,REVIEW
+fairprice,Vitality,vitality,136,50,49,2,,REVIEW
+redmart,Toilet Paper,toilet paper,108,50,41,12,,REVIEW
+fairprice,Aquatic Animal Cleaning & Maintenance,aquatic animal cleaning & maintenance,56,50,50,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Heart & Blood Pressure,heart & blood pressure,55,50,33,18,,REVIEW
+coldstorage,Capsules,capsules,54,50,48,4,,REVIEW
+redmart,shop-halloween-accessories,shop-halloween-accessories,52,50,34,17,,REVIEW
+fairprice,Instant Soups,instant soups,51,50,39,11,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Breadcrumbs & Tempura Flour,breadcrumbs & tempura flour,50,50,46,4,,REVIEW
+fairprice,Rose Wine,rose wine,54,49,46,5,,REVIEW
+redmart,Flavoured Water,flavoured water,51,49,41,10,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Cocktail Mixes,cocktail mixes,50,49,48,1,,REVIEW
+fairprice,Dental Aid,dental aid,102,48,47,2,,REVIEW
+redmart,Burgers,burgers,58,48,35,14,,REVIEW
+fairprice,Cough & Cold,cough & cold,52,48,46,4,,REVIEW
+fairprice,Adult Milk,adult milk,51,48,45,4,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Fusilli & Spirals,fusilli & spirals,50,48,45,5,,REVIEW
+coldstorage,Ready To Drink Coffee,ready to drink coffee,48,48,38,10,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Baby & Toddler Cereals,baby & toddler cereals,48,48,47,1,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Savoury Spread,savoury spread,48,48,44,4,,REVIEW
+redmart,Artisanal Cheese,artisanal cheese,48,48,26,22,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Baby Teethers,baby teethers,175,47,12,103,,REVIEW
+redmart,Frozen Meat & Seafood,frozen meat & seafood,53,47,36,13,,REVIEW
+coldstorage,Body Wash,body wash,48,47,35,13,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Instant Bases,instant bases,48,47,42,5,,REVIEW
+fairprice,Natural Cheese,natural cheese,48,47,43,4,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Asian & Local Snacks,asian & local snacks,47,47,45,2,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Honey,honey,47,47,42,5,,REVIEW
+fairprice,Canned Sardines & Mackerels,canned sardines & mackerels,47,47,47,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Dips,dips,47,47,34,13,,REVIEW
+redmart,Wraps & Indian Breads,wraps & indian breads,47,47,42,5,,REVIEW
+fairprice,Files,files,139,46,46,1,,REVIEW
+redmart,Kitchen Knife Sharpeners,kitchen knife sharpeners,64,46,25,25,,REVIEW
+coldstorage,Baby Biscuits & Snacks,baby biscuits & snacks,60,46,39,16,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Multi Grains & Quinoa,multi grains & quinoa,50,46,38,11,,REVIEW
+redmart,Injury Support & Braces,injury support & braces,46,46,31,15,,REVIEW
+redmart,Oyster Sauce,oyster sauce,46,46,38,8,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Hand Moisturizers & Creams,hand moisturizers & creams,74,45,36,20,,REVIEW
+redmart,Laundry Fresheners & Ironing Aids,laundry fresheners & ironing aids,72,45,40,6,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Salt & Pepper Tools,salt & pepper tools,68,45,33,19,,REVIEW
+coldstorage,Baking Ingredients,baking ingredients,62,45,34,14,,REVIEW
+redmart,Bottle Care & Cleaning,bottle care & cleaning,59,45,27,20,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Energy & Isotonic Drinks,energy & isotonic drinks,52,45,44,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Dried Seafood,dried seafood,46,45,39,7,,REVIEW
+fairprice,BBQ & Teriyaki Sauce,bbq & teriyaki sauce,45,45,43,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Chili Paste & Sambal,chili paste & sambal,45,45,43,2,,REVIEW
+fairprice,Tapes & Adhesives,tapes & adhesives,228,44,43,20,,REVIEW
+redmart,Pacifiers for Babies & Toddlers,pacifiers for babies & toddlers,222,44,21,126,,REVIEW
+fairprice,Skin & Hair Supplements,skin & hair supplements,115,44,41,8,,REVIEW
+redmart,First Aid Accessories,first aid accessories,55,44,27,19,,REVIEW
+fairprice,Insecticides & Insect Killers,insecticides & insect killers,54,44,41,3,,REVIEW
+coldstorage,6.6 Mid-Year Special,6.6 mid-year special,52,44,37,7,,REVIEW
+redmart,shop-bakeware-sets-&-dishes,shop-bakeware-sets-&-dishes,51,44,29,18,,REVIEW
+redmart,Herbs & Traditional Medicine,herbs & traditional medicine,47,44,37,8,,REVIEW
+fairprice,Ham & Salami,ham & salami,45,44,39,6,,REVIEW
+redmart,Wall Art,wall art,45,44,26,18,,REVIEW
+coldstorage,Cup Noodles,cup noodles,44,44,44,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Eyeshadow,eyeshadow,44,44,29,15,,REVIEW
+redmart,Fresh Soups & Miso,fresh soups & miso,44,44,40,4,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Drinking Glass,drinking glass,207,43,43,22,,REVIEW
+fairprice,Support & Braces,support & braces,87,43,43,1,,REVIEW
+coldstorage,Lion Matsuri,lion matsuri,60,43,39,5,,REVIEW
+coldstorage,Instant Tea,instant tea,57,43,42,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Frozen Breaded Seafood,frozen breaded seafood,54,43,39,11,,REVIEW
+fairprice,Multi Pack Chocolates,multi pack chocolates,46,43,41,2,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Automatic Dishwashing Detergents,automatic dishwashing detergents,46,43,32,12,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Biscuits,biscuits,45,43,35,9,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Mushrooms,mushrooms,44,43,38,5,,REVIEW
+redmart,Instant Pasta,instant pasta,44,43,29,15,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Essence of Chicken & Fish,essence of chicken & fish,43,43,43,0,,REVIEW
+redmart,Vases & Vessels,vases & vessels,43,43,30,13,,REVIEW
+redmart,Baby Grooming,baby grooming,133,42,22,50,,REVIEW
+fairprice,Laundry Aids,laundry aids,54,42,41,1,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Hand Sanitizer,hand sanitizer,49,42,39,3,,REVIEW
+fairprice,Raw & Brown Sugar,raw & brown sugar,46,42,36,10,,REVIEW
+fairprice,UHT Milk,uht milk,46,42,29,14,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Antipasti & Toppings,antipasti & toppings,45,42,33,9,,REVIEW
+redmart,Mascaras,mascaras,44,42,22,20,,REVIEW
+fairprice,Feminine Wash,feminine wash,43,42,41,1,,REVIEW
+fairprice,Franks & Sausages,franks & sausages,43,42,40,2,,REVIEW
+fairprice,Instant Cereals,instant cereals,43,42,39,3,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Yoghurt & Drinks,yoghurt & drinks,43,42,34,9,,REVIEW
+coldstorage,Alcohol,alcohol,42,42,35,7,,REVIEW
+coldstorage,"Granola, Muesli & Oats","granola, muesli & oats",42,42,38,4,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Antipasti & Deli Meats,antipasti & deli meats,42,42,24,18,,REVIEW
+redmart,Christmas Figurines,christmas figurines,42,42,31,11,,REVIEW
+fairprice,BBQ Accessories,bbq accessories,68,41,41,5,,REVIEW
+coldstorage,Dish Washing,dish washing,64,41,37,4,,REVIEW
+fairprice,Potatoes & Roots,potatoes & roots,46,41,34,9,,REVIEW
+fairprice,Fabric Fresheners,fabric fresheners,45,41,41,0,,REVIEW
+redmart,Fish Sauce & Cooking Essentials,fish sauce & cooking essentials,44,41,34,8,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,"Noodles, Rice Cake & Pasta","noodles, rice cake & pasta",42,41,37,4,,REVIEW
+redmart,Mexican Sauces,mexican sauces,42,41,28,13,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Oral Care Accessories,oral care accessories,42,41,38,3,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Fruit Snacks,fruit snacks,41,41,32,9,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Blushes,blushes,41,41,34,7,,REVIEW
+redmart,Breadcrumbs & Dried Goods,breadcrumbs & dried goods,41,41,31,10,,REVIEW
+redmart,Pizza & Convenience Foods,pizza & convenience foods,41,41,36,5,,REVIEW
+fairprice,Garbage Bags & Bin Liners,garbage bags & bin liners,157,40,40,8,,REVIEW
+fairprice,Insect Repellents,insect repellents,64,40,35,6,,REVIEW
+redmart,Figurine Lamps,figurine lamps,50,40,10,35,,REVIEW
+coldstorage,Canned Fruits,canned fruits,43,40,37,3,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Sesame Oil,sesame oil,43,40,35,7,,REVIEW
+coldstorage,Dairy & Non Dairy,dairy & non dairy,42,40,32,8,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Instant Soup,instant soup,42,40,36,4,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Electric Kettles,electric kettles,42,40,20,22,,REVIEW
+fairprice,Cheese Blocks,cheese blocks,40,40,37,3,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Disinfectants,disinfectants,60,39,38,2,,REVIEW
+redmart,Pre-Workout Nutrition,pre-workout nutrition,46,39,22,24,,REVIEW
+coldstorage,Other Oils,other oils,40,39,38,1,,REVIEW
+coldstorage,Salt & Sugar,salt & sugar,40,39,34,6,,REVIEW
+coldstorage,Seasonings,seasonings,40,39,34,5,,REVIEW
+fairprice,Frozen,frozen,40,39,38,1,,REVIEW
+redmart,shop-digestive-biscuits,shop-digestive-biscuits,40,39,19,20,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Pasta Shapes,pasta shapes,39,39,36,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Butter,butter,39,39,34,5,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Sponges & Scrubbers,sponges & scrubbers,403,38,35,28,,REVIEW
+fairprice,Weight Management,weight management,93,38,35,6,,REVIEW
+redmart,Frozen Cat Food,frozen cat food,42,38,35,3,,REVIEW
+coldstorage,Carbonated Bottled Drinks,carbonated bottled drinks,38,38,35,3,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Wet Cat Food,wet cat food,38,38,38,0,,REVIEW
+fairprice,Adult Cereals,adult cereals,38,38,37,1,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Mayonnaise,mayonnaise,38,38,30,8,,REVIEW
+redmart,Ice Cream Selection,ice cream selection,38,38,31,7,,REVIEW
+fairprice,Bedsheets,bedsheets,266,37,37,3,,REVIEW
+fairprice,Towels,towels,129,37,37,4,,REVIEW
+redmart,Kitchen Roll & Paper,kitchen roll & paper,92,37,25,25,,REVIEW
+fairprice,Hair Accessories,hair accessories,76,37,32,12,,REVIEW
+redmart,Toner & Mists,toner & mists,44,37,36,2,,REVIEW
+redmart,Drain Cleaners,drain cleaners,41,37,28,9,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Drinking Vinegar,drinking vinegar,39,37,36,2,,REVIEW
+redmart,"Cotton Balls, Pads & Buds","cotton balls, pads & buds",39,37,29,8,,REVIEW
+coldstorage,Bread Loaf,bread loaf,38,37,23,14,,REVIEW
+coldstorage,Canned Meat,canned meat,37,37,33,4,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,"Gelatin, Gum & Yeast","gelatin, gum & yeast",65,36,33,5,,REVIEW
+fairprice,Children's Vitamins & Immunities,children's vitamins & immunities,53,36,33,4,,REVIEW
+redmart,Aquariums & Decor,aquariums & decor,52,36,30,9,,REVIEW
+fairprice,Panty Liners,panty liners,45,36,36,0,,REVIEW
+fairprice,Butter Cookies,butter cookies,42,36,33,8,,REVIEW
+coldstorage,Filled Biscuits,filled biscuits,39,36,34,2,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Cereal Bars,cereal bars,39,36,36,1,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,"Garlic, Ginger & Onions","garlic, ginger & onions",38,36,33,3,,REVIEW
+fairprice,Organic Drinks,organic drinks,38,36,34,2,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Dark Soy Sauce,dark soy sauce,37,36,34,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Natural & Flavoured,natural & flavoured,36,36,26,10,,REVIEW
+coldstorage,"Rice, Noodles & Oil","rice, noodles & oil",36,36,35,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Specialty & Assorted Biscuits,specialty & assorted biscuits,36,36,32,4,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Stage 1,stage 1,36,36,34,2,,REVIEW
+fairprice,Cat Toys,cat toys,86,35,30,20,,REVIEW
+fairprice,Dehumidifiers,dehumidifiers,86,35,34,3,,REVIEW
+fairprice,Dog Healthcare,dog healthcare,55,35,31,4,,REVIEW
+fairprice,Fertilisers,fertilisers,48,35,34,1,,REVIEW
+redmart,Breast Pads & Nipple Shields,breast pads & nipple shields,45,35,22,15,,REVIEW
+fairprice,Cake & Cookie Mix,cake & cookie mix,40,35,32,8,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Oil Sprayers & Dispensers,oil sprayers & dispensers,40,35,23,14,,REVIEW
+redmart,Women's Health,women's health,39,35,28,9,,REVIEW
+fairprice,Asian Drinks,asian drinks,38,35,24,11,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Mineral Spring Water,mineral spring water,37,35,33,2,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Chocolate & Malted,chocolate & malted,36,35,32,3,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Diapering Creams & Ointments,diapering creams & ointments,36,35,17,19,,REVIEW
+fairprice,Eye Creams,eye creams,35,35,34,1,,REVIEW
+fairprice,Puddings & Jellies,puddings & jellies,35,35,29,6,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Bowls & Plates,bowls & plates,409,34,34,17,,REVIEW
+fairprice,Dog Cleaning & Maintenance,dog cleaning & maintenance,89,34,33,4,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Edge & Corner Guards,edge & corner guards,59,34,22,22,,REVIEW
+fairprice,Digestion & Heartburn,digestion & heartburn,45,34,32,2,,REVIEW
+coldstorage,Cheese Blocks,cheese blocks,44,34,31,5,Dairy,AUTO_SOURCE_CATEGORY
+redmart,"Toffee, Fudge & Nougat","toffee, fudge & nougat",41,34,3,35,,REVIEW
+fairprice,Liqueur,liqueur,38,34,31,6,,REVIEW
+coldstorage,Chocolate & Malt,chocolate & malt,37,34,32,2,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Tomato Paste & Puree,tomato paste & puree,36,34,33,3,,REVIEW
+redmart,Body Enhancers & Treatments,body enhancers & treatments,36,34,20,14,,REVIEW
+coldstorage,Dried Meat,dried meat,35,34,33,1,,REVIEW
+fairprice,Digestive & Marie,digestive & marie,35,34,27,8,,REVIEW
+fairprice,Oyster & Abalone Sauce,oyster & abalone sauce,35,34,33,1,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Carbonated Canned Drinks,carbonated canned drinks,34,34,30,4,,REVIEW
+coldstorage,Ham & Cooked Ham,ham & cooked ham,34,34,29,5,,REVIEW
+coldstorage,Sports Drink,sports drink,34,34,31,3,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Artificial Sweeteners,artificial sweeteners,34,34,28,6,,REVIEW
+redmart,Deli & Seafood,deli & seafood,34,34,25,9,,REVIEW
+redmart,Kids Yoghurt,kids yoghurt,34,34,28,6,Dairy,AUTO_SOURCE_CATEGORY
+redmart,shop-christmas-tree-&-accessories,shop-christmas-tree-&-accessories,34,34,27,7,,REVIEW
+redmart,Insect Repellent,insect repellent,55,33,24,16,,REVIEW
+coldstorage,Breakfast Cereals,breakfast cereals,44,33,32,7,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Cookware Sets,cookware sets,41,33,20,15,,REVIEW
+fairprice,Coconut Water,coconut water,40,33,30,4,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Milk Tea,milk tea,35,33,29,4,,REVIEW
+redmart,Lemon Lime Drinks,lemon lime drinks,35,33,25,8,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Meatballs & Others,meatballs & others,34,33,32,1,,REVIEW
+fairprice,Soy UHT Milk,soy uht milk,34,33,21,13,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,"Sunflower, Melon & Pumpkin Seeds","sunflower, melon & pumpkin seeds",34,33,33,1,,REVIEW
+coldstorage,Champagne & Sparkling Wine,champagne & sparkling wine,33,33,27,6,,REVIEW
+coldstorage,Food Pantry,food pantry,33,33,29,4,,REVIEW
+coldstorage,Japanese Liqour,japanese liqour,33,33,32,1,,REVIEW
+coldstorage,"Lager, Wheat & Flavoured","lager, wheat & flavoured",33,33,31,2,,REVIEW
+fairprice,Chilled & Frozen,chilled & frozen,33,33,32,1,,REVIEW
+redmart,Bagels & Pretzels,bagels & pretzels,33,33,29,4,,REVIEW
+redmart,Manicure Kits & Accessories,manicure kits & accessories,54,32,31,2,,REVIEW
+coldstorage,Cough & Cold,cough & cold,43,32,31,3,,REVIEW
+coldstorage,Popcorn,popcorn,40,32,27,7,Snacks,AUTO_SOURCE_CATEGORY
+redmart,"UHT Milk, Milk Powder, Creamer","uht milk, milk powder, creamer",36,32,22,10,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Plungers & Presses,plungers & presses,35,32,17,16,,REVIEW
+coldstorage,Butter,butter,34,32,31,1,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Dried Fruits,dried fruits,33,32,30,2,,REVIEW
+fairprice,Spices & Herbs,spices & herbs,33,32,26,6,,REVIEW
+fairprice,Organic Pantry Goods,organic pantry goods,32,32,31,1,,REVIEW
+fairprice,Plasters & Bandages,plasters & bandages,89,31,29,6,,REVIEW
+fairprice,Kids Cereals,kids cereals,33,31,29,2,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Other Desserts,other desserts,32,31,31,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Adult Milk Powder,adult milk powder,31,31,28,3,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Japanese Rice,japanese rice,31,31,31,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Cloth Diapers,cloth diapers,31,31,6,25,,REVIEW
+redmart,Cognacs & Spirits,cognacs & spirits,31,31,22,9,,REVIEW
+fairprice,Bottles & Cups,bottles & cups,246,30,30,5,,REVIEW
+redmart,Dog Beds,dog beds,56,30,30,5,,REVIEW
+fairprice,Fresh,fresh,43,30,25,6,,REVIEW
+fairprice,Mineral Water,mineral water,42,30,26,7,Drinks,AUTO_SOURCE_CATEGORY
+redmart,shop-bathroom-counter-storage-&-holders,shop-bathroom-counter-storage-&-holders,38,30,27,7,,REVIEW
+redmart,Coffee Filters,coffee filters,33,30,24,6,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Coconut Products,coconut products,32,30,29,3,,REVIEW
+fairprice,Tomato Sauce,tomato sauce,32,30,24,8,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Baby & Maternity Moisturizers,baby & maternity moisturizers,32,30,8,23,,REVIEW
+coldstorage,Vinegar & Cooking Wine,vinegar & cooking wine,31,30,30,0,,REVIEW
+coldstorage,Wafer Biscuits,wafer biscuits,31,30,29,1,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Women's Deodorant,women's deodorant,31,30,24,6,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Pistachios,pistachios,31,30,29,2,,REVIEW
+fairprice,Popcorns,popcorns,31,30,26,5,,REVIEW
+coldstorage,Aussie Goodness: New & Exclusive,aussie goodness: new & exclusive,30,30,27,3,,REVIEW
+coldstorage,Energy Drink,energy drink,30,30,24,6,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Frozen Vegetables,frozen vegetables,30,30,12,18,,REVIEW
+coldstorage,Sparkling Water,sparkling water,30,30,21,9,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Traditional Ointments,traditional ointments,30,30,28,2,,REVIEW
+redmart,Frozen Bread & Breakfast,frozen bread & breakfast,30,30,25,5,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Joint Care,joint care,77,29,29,1,,REVIEW
+fairprice,Polish & Wax,polish & wax,50,29,29,1,,REVIEW
+redmart,Diaper Bags,diaper bags,42,29,1,38,,REVIEW
+coldstorage,Facial Care,facial care,41,29,27,3,,REVIEW
+coldstorage,Breakfast,breakfast,40,29,21,11,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Acne,acne,36,29,29,0,,REVIEW
+fairprice,Cleaning & Sterilisers,cleaning & sterilisers,36,29,26,5,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Desserts Mix,desserts mix,35,29,27,6,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,New Zealand Fair,new zealand fair,35,29,25,4,,REVIEW
+redmart,Men's Health Products,men's health products,33,29,22,9,,REVIEW
+fairprice,Condoms,condoms,32,29,28,1,,REVIEW
+redmart,Instant Rice,instant rice,32,29,24,7,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Irish Whisky,irish whisky,31,29,28,1,,REVIEW
+fairprice,Farfalle & Shapes,farfalle & shapes,30,29,25,5,,REVIEW
+redmart,Mooncakes & Frozen Bread,mooncakes & frozen bread,30,29,22,7,,REVIEW
+redmart,Pate & Foie Gras,pate & foie gras,30,29,23,6,,REVIEW
+coldstorage,Packeted Drinks,packeted drinks,29,29,26,3,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Soybean Paste,soybean paste,29,29,27,2,,REVIEW
+redmart,Body Bath Sets,body bath sets,29,29,25,4,,REVIEW
+fairprice,Size L Diapers,size l diapers,92,28,28,1,,REVIEW
+redmart,Pocket Tissues,pocket tissues,50,28,24,8,,REVIEW
+redmart,Indian Sweets,indian sweets,46,28,13,32,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Glass Cleaners,glass cleaners,36,28,26,3,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Penne,penne,33,28,26,7,,REVIEW
+redmart,shop-pastries-&-tarts,shop-pastries-&-tarts,33,28,12,16,,REVIEW
+fairprice,Cocktails,cocktails,31,28,27,3,,REVIEW
+coldstorage,Organic and Wellness,organic and wellness,28,28,22,6,,REVIEW
+coldstorage,Personal Care,personal care,28,28,24,4,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Champagne,champagne,28,28,26,2,,REVIEW
+fairprice,Frozen Soups,frozen soups,28,28,26,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Ready-to-Eat Rice,ready-to-eat rice,28,28,11,17,,REVIEW
+redmart,Shimmers & Highlighters,shimmers & highlighters,28,28,21,7,,REVIEW
+fairprice,Home & Travel Storage,home & travel storage,554,27,22,41,,REVIEW
+fairprice,Size M Diapers,size m diapers,88,27,27,1,,REVIEW
+coldstorage,Flour,flour,54,27,24,6,,REVIEW
+fairprice,Halal Bakery,halal bakery,47,27,25,7,,REVIEW
+coldstorage,Ointments,ointments,41,27,25,3,,REVIEW
+fairprice,Otah & Satay,otah & satay,37,27,26,2,,REVIEW
+coldstorage,Bulk & Exclusive,bulk & exclusive,35,27,14,15,,REVIEW
+coldstorage,Other Cheese,other cheese,33,27,18,10,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Breakfast Food,breakfast food,31,27,24,5,Breakfast Foods,AUTO_SOURCE_CATEGORY
+redmart,Soju & Korean Wine,soju & korean wine,30,27,21,7,,REVIEW
+redmart,Tanning Oil,tanning oil,30,27,15,15,,REVIEW
+fairprice,Stain Removers,stain removers,29,27,26,1,,REVIEW
+fairprice,Rice,rice,28,27,27,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Vodka,vodka,28,27,27,0,,REVIEW
+redmart,Carpet & Upholstery Cleaning,carpet & upholstery cleaning,28,27,24,3,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Pantry,pantry,27,27,20,7,,REVIEW
+fairprice,Mops & Buckets,mops & buckets,145,26,18,19,,REVIEW
+coldstorage,Ready To Eat Seafood,ready to eat seafood,40,26,25,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Baby Sun Protection,baby sun protection,35,26,13,16,,REVIEW
+fairprice,Assorted Candies,assorted candies,32,26,17,15,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Sliced Cheese,sliced cheese,32,26,25,2,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Health & Wellness,health & wellness,31,26,24,2,,REVIEW
+fairprice,Body Powder,body powder,30,26,24,2,,REVIEW
+coldstorage,Stage 1,stage 1,29,26,20,7,,REVIEW
+coldstorage,Asian Delicatessen,asian delicatessen,28,26,18,9,,REVIEW
+coldstorage,Hard Cheese,hard cheese,28,26,23,3,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Fresh & Chilled Noodles,fresh & chilled noodles,27,26,24,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Cocktails,cocktails,26,26,26,0,,REVIEW
+coldstorage,Coconut Milk & Cream,coconut milk & cream,26,26,24,2,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,"Soy, Oat & Lactose Free Milk","soy, oat & lactose free milk",26,26,18,8,,REVIEW
+fairprice,Antiseptics,antiseptics,26,26,24,2,,REVIEW
+redmart,Frozen Muffins & Doughnuts,frozen muffins & doughnuts,26,26,23,3,,REVIEW
+redmart,Men's Razors,men's razors,26,26,25,1,,REVIEW
+fairprice,Heart Care,heart care,100,25,24,3,,REVIEW
+fairprice,Carriers & Trolleys,carriers & trolleys,90,25,23,5,,REVIEW
+coldstorage,Best Sellers,best sellers,40,25,22,4,,REVIEW
+fairprice,Pesto,pesto,35,25,20,15,,REVIEW
+redmart,Face Wash & Cleansers,face wash & cleansers,34,25,22,6,,REVIEW
+fairprice,Macaroni & Shells,macaroni & shells,28,25,25,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Conditioner,conditioner,25,25,22,3,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Fat Burners,fat burners,25,25,19,6,,REVIEW
+redmart,Fresh & Cooking Cream,fresh & cooking cream,25,25,23,2,,REVIEW
+redmart,Frozen Satay Meat,frozen satay meat,25,25,23,2,,REVIEW
+redmart,Skin Care Gifts & Value Sets,skin care gifts & value sets,25,25,22,3,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Whipping Cream,whipping cream,25,25,22,3,,REVIEW
+fairprice,Dog Toys,dog toys,53,24,23,2,,REVIEW
+fairprice,"Wraps, Naans & Flatbreads","wraps, naans & flatbreads",40,24,22,3,,REVIEW
+fairprice,Cat Cleaning & Maintenance,cat cleaning & maintenance,39,24,24,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Cat Accessories,cat accessories,35,24,20,4,,REVIEW
+redmart,Stovetop Kettles,stovetop kettles,33,24,17,10,,REVIEW
+fairprice,Dumplings & Gyoza,dumplings & gyoza,32,24,22,2,,REVIEW
+coldstorage,Healthy Snacks,healthy snacks,30,24,20,8,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Pastries & Dumplings,pastries & dumplings,29,24,24,1,,REVIEW
+fairprice,Cheese Spreads,cheese spreads,26,24,21,3,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,New Arrivals,new arrivals,25,24,22,2,,REVIEW
+redmart,Compact Fluorescent Bulbs,compact fluorescent bulbs,25,24,11,14,,REVIEW
+redmart,Sun-Dried Tomatoes,sun-dried tomatoes,25,24,17,7,,REVIEW
+coldstorage,Long Pasta,long pasta,24,24,24,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Salami,salami,24,24,21,3,,REVIEW
+fairprice,Non Alcoholic Wine & Spirits,non alcoholic wine & spirits,24,24,23,1,,REVIEW
+redmart,Cold Pressed Juice,cold pressed juice,24,24,14,10,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Cultured Milk,cultured milk,24,24,10,14,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Foot Masks,foot masks,24,24,23,1,,REVIEW
+fairprice,Sports & Fitness,sports & fitness,200,23,23,1,,REVIEW
+redmart,Baby Bottle Nipples,baby bottle nipples,156,23,5,84,,REVIEW
+fairprice,Cleaning Gloves,cleaning gloves,100,23,22,6,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Probiotics,probiotics,51,23,23,7,,REVIEW
+fairprice,Light Bladder Leakage Pads,light bladder leakage pads,40,23,23,4,,REVIEW
+fairprice,Dishwashing Paste & Tablets,dishwashing paste & tablets,33,23,23,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Eyebrow Pencil,eyebrow pencil,27,23,22,1,,REVIEW
+fairprice,Washing Machine Cleaners,washing machine cleaners,27,23,22,1,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Cabbages & Lettuces,cabbages & lettuces,26,23,21,2,,REVIEW
+fairprice,Nuggets,nuggets,25,23,19,4,,REVIEW
+redmart,Pooper Scoopers & Bags,pooper scoopers & bags,25,23,11,13,,REVIEW
+fairprice,Chilled Fish Balls & Fish Cakes,chilled fish balls & fish cakes,24,23,23,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Ice Coffee,ice coffee,24,23,20,3,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Mochi,mochi,24,23,21,3,,REVIEW
+redmart,"Butter, Spreads & Margarine","butter, spreads & margarine",24,23,22,1,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Frozen Fruits,frozen fruits,23,23,15,8,,REVIEW
+coldstorage,Other Rice,other rice,23,23,22,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Hand Cream,hand cream,23,23,19,4,,REVIEW
+fairprice,Macadamia,macadamia,23,23,23,0,,REVIEW
+redmart,Couscous & Dried Goods,couscous & dried goods,23,23,20,3,,REVIEW
+redmart,Iced Tea & Milk Tea,iced tea & milk tea,23,23,18,5,,REVIEW
+redmart,Thermometers,thermometers,23,23,5,18,,REVIEW
+redmart,Shopping Carriers,shopping carriers,45,22,16,22,,REVIEW
+redmart,Glutinous Rice,glutinous rice,27,22,19,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Mixed Rice,mixed rice,27,22,16,6,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Baking Powder & Soda,baking powder & soda,26,22,21,5,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Mustard,mustard,26,22,21,4,,REVIEW
+fairprice,Burger Patties,burger patties,24,22,21,1,,REVIEW
+redmart,Men's Moisturizers & Creams,men's moisturizers & creams,24,22,17,7,,REVIEW
+coldstorage,Chobani,chobani,22,22,18,4,,REVIEW
+coldstorage,Craft & Speciality Beer,craft & speciality beer,22,22,17,5,,REVIEW
+coldstorage,Dry Cat Food,dry cat food,22,22,20,2,,REVIEW
+coldstorage,Exclusive Deals,exclusive deals,22,22,22,0,,REVIEW
+coldstorage,Frozen Chicken,frozen chicken,22,22,20,2,,REVIEW
+coldstorage,Mouthwash,mouthwash,22,22,19,3,,REVIEW
+fairprice,Fresh Milk,fresh milk,22,22,18,4,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Lip Glosses,lip glosses,22,22,16,6,,REVIEW
+redmart,Pastry & Dumpling Skins,pastry & dumpling skins,22,22,13,9,,REVIEW
+redmart,Smoothies & Chilled Drinks,smoothies & chilled drinks,22,22,21,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Office & School Essentials,office & school essentials,440,21,21,8,,REVIEW
+fairprice,Apples & Pears,apples & pears,37,21,21,2,,REVIEW
+fairprice,Foot Cream & Powder,foot cream & powder,26,21,21,0,,REVIEW
+redmart,Cat Scratchers,cat scratchers,23,21,16,5,,REVIEW
+coldstorage,Cashew,cashew,22,21,19,2,,REVIEW
+coldstorage,Preseved Vegetables,preseved vegetables,22,21,20,1,,REVIEW
+fairprice,Tomatoes,tomatoes,22,21,18,3,,REVIEW
+coldstorage,Hand Wash,hand wash,21,21,17,4,,REVIEW
+coldstorage,Shredded & Grated,shredded & grated,21,21,19,2,,REVIEW
+coldstorage,White Rice,white rice,21,21,20,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Instant Porridge,instant porridge,21,21,18,3,,REVIEW
+redmart,Fresh & Thickened Cream,fresh & thickened cream,21,21,17,4,,REVIEW
+redmart,Frozen Cakes & Brownies,frozen cakes & brownies,21,21,21,0,Snacks,AUTO_SOURCE_CATEGORY
+redmart,shop-flower-&-fruit-tea,shop-flower-&-fruit-tea,21,21,18,3,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Minerals,minerals,59,20,18,7,,REVIEW
+fairprice,Chilled Dim Sum,chilled dim sum,44,20,15,5,,REVIEW
+redmart,Masks & Repellents,masks & repellents,44,20,13,17,,REVIEW
+fairprice,Eye Care,eye care,39,20,20,1,,REVIEW
+coldstorage,Cleaning,cleaning,38,20,15,6,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Citrus Fruits,citrus fruits,33,20,20,6,,REVIEW
+fairprice,Brandy & Cognac,brandy & cognac,25,20,20,5,,REVIEW
+fairprice,Fever & Pain Relief,fever & pain relief,24,20,20,1,,REVIEW
+coldstorage,Arla GWP,arla gwp,23,20,19,1,,REVIEW
+fairprice,Marshmallow & Nougat,marshmallow & nougat,23,20,19,1,,REVIEW
+fairprice,Shaving Foam & Gel,shaving foam & gel,22,20,19,3,,REVIEW
+fairprice,Baby Powder,baby powder,21,20,14,7,,REVIEW
+coldstorage,Cooking Noodles,cooking noodles,20,20,20,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Hair Styling,hair styling,20,20,19,1,,REVIEW
+coldstorage,Spices & Powdered,spices & powdered,20,20,17,3,,REVIEW
+fairprice,Cat Supplements,cat supplements,20,20,20,0,,REVIEW
+fairprice,Coconut Oil,coconut oil,20,20,18,2,,REVIEW
+fairprice,Flavoured Milk,flavoured milk,20,20,20,0,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Flavoured Cider,flavoured cider,20,20,11,9,,REVIEW
+redmart,Radler & Flavored Beer,radler & flavored beer,20,20,8,12,,REVIEW
+redmart,Baby Quilts,baby quilts,86,19,12,49,,REVIEW
+fairprice,Cider,cider,23,19,19,0,,REVIEW
+coldstorage,Sausages,sausages,22,19,17,2,,REVIEW
+coldstorage,DKSH $4 Off $20 Coupon,dksh $4 off $20 coupon,20,19,18,1,,REVIEW
+fairprice,Sunflower Oil,sunflower oil,20,19,17,2,,REVIEW
+coldstorage,Almond & Walnut,almond & walnut,19,19,19,0,,REVIEW
+coldstorage,Plain & Savoury Biscuits,plain & savoury biscuits,19,19,16,3,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Car Fresheners,car fresheners,19,19,19,0,,REVIEW
+fairprice,Chillies & Capsicums,chillies & capsicums,19,19,14,5,,REVIEW
+fairprice,Cooking Oil,cooking oil,19,19,19,0,,REVIEW
+fairprice,Pancake Mix,pancake mix,19,19,18,1,,REVIEW
+redmart,HD Picture Frames,hd picture frames,19,19,14,5,,REVIEW
+redmart,Bottle Sterilizers & Warmers,bottle sterilizers & warmers,96,18,4,49,,REVIEW
+fairprice,Cake Whole,cake whole,60,18,16,2,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Constipation Medicine,constipation medicine,22,18,12,6,,REVIEW
+fairprice,Bakery Snacks,bakery snacks,20,18,18,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Soy Milk,soy milk,20,18,11,7,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Nail Polish Removers,nail polish removers,19,18,12,7,,REVIEW
+coldstorage,Cultured Milk,cultured milk,18,18,14,4,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Flavoured Water,flavoured water,18,18,17,1,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Wet Dog Food,wet dog food,18,18,18,0,,REVIEW
+redmart,BB & CC Creams,bb & cc creams,18,18,15,3,,REVIEW
+redmart,Baby Nasal Aspirators,baby nasal aspirators,18,18,10,8,,REVIEW
+redmart,Ginger Ale & Mixers,ginger ale & mixers,18,18,9,9,,REVIEW
+redmart,Topical Analgesics,topical analgesics,18,18,17,1,,REVIEW
+fairprice,Dustbins,dustbins,169,17,11,14,,REVIEW
+fairprice,Bottle Nipples & Accessories ,bottle nipples & accessories,76,17,17,1,,REVIEW
+redmart,shop-soother-accessories,shop-soother-accessories,45,17,6,16,,REVIEW
+fairprice,Kitchen Towels,kitchen towels,40,17,17,1,,REVIEW
+fairprice,Pies & Pizza,pies & pizza,21,17,17,0,,REVIEW
+redmart,Bathroom Shelves,bathroom shelves,21,17,11,8,,REVIEW
+redmart,Cabinet Locks & Straps,cabinet locks & straps,21,17,14,4,,REVIEW
+fairprice,Beancurd & Tofu,beancurd & tofu,20,17,17,2,,REVIEW
+redmart,Puffs & Sponges,puffs & sponges,20,17,15,2,,REVIEW
+redmart,Salsa Spreads,salsa spreads,19,17,10,7,,REVIEW
+fairprice,Instant Pasta,instant pasta,18,17,16,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Canned Drinks,canned drinks,17,17,15,2,,REVIEW
+coldstorage,Singles,singles,17,17,17,0,,REVIEW
+fairprice,Aquatic Animal Food,aquatic animal food,17,17,15,2,,REVIEW
+fairprice,"Dairy, Chilled & Eggs","dairy, chilled & eggs",17,17,17,0,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Granulated Sugar,granulated sugar,17,17,16,1,,REVIEW
+fairprice,Instant Rice,instant rice,17,17,13,4,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Margarine & Spreads,margarine & spreads,17,17,12,5,,REVIEW
+fairprice,"Sugar Cubes, Sticks & Crystals","sugar cubes, sticks & crystals",17,17,14,3,,REVIEW
+fairprice,Walnuts,walnuts,17,17,16,1,,REVIEW
+redmart,Red Packet & Gift Bags,red packet & gift bags,17,17,16,1,,REVIEW
+fairprice,Luggage,luggage,331,16,16,11,,REVIEW
+fairprice,Cups & Mugs,cups & mugs,285,16,14,11,,REVIEW
+fairprice,Disposable Bowls & Plates,disposable bowls & plates,195,16,16,5,,REVIEW
+fairprice,Squeegees & Wipers,squeegees & wipers,63,16,15,1,,REVIEW
+fairprice,Women's Health,women's health,54,16,15,5,,REVIEW
+coldstorage,Sliced Cheese,sliced cheese,34,16,6,12,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Dog Supplements,dog supplements,27,16,16,5,,REVIEW
+redmart,Nail Art Supplies,nail art supplies,25,16,16,0,,REVIEW
+fairprice,Disposable Underwear,disposable underwear,23,16,16,3,,REVIEW
+fairprice,Potting Soil,potting soil,22,16,16,2,,REVIEW
+fairprice,Pesticides,pesticides,21,16,16,0,,REVIEW
+fairprice,Cucumbers & Lady Fingers,cucumbers & lady fingers,17,16,13,4,,REVIEW
+redmart,Maternal Milk,maternal milk,17,16,14,2,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Coffee Beans,coffee beans,16,16,15,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Apple Juice,apple juice,16,16,15,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Kaya,kaya,16,16,15,1,,REVIEW
+fairprice,Maple Syrup,maple syrup,16,16,15,1,,REVIEW
+redmart,Bourbon Whisky,bourbon whisky,16,16,16,0,,REVIEW
+redmart,Flavoured Milk,flavoured milk,16,16,15,1,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Hair & Nail Care,hair & nail care,16,16,16,0,,REVIEW
+redmart,Hand & Footprint Makers,hand & footprint makers,16,16,3,13,,REVIEW
+redmart,Kids Sanitizers,kids sanitizers,16,16,3,13,,REVIEW
+fairprice,Cutlery,cutlery,253,15,14,13,,REVIEW
+redmart,Dog Flea & Tick Sprays,dog flea & tick sprays,27,15,8,14,,REVIEW
+redmart,Instant Cereals & Oats,instant cereals & oats,23,15,13,4,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Drain & Sink Declogger,drain & sink declogger,21,15,15,1,,REVIEW
+redmart,Vision Care,vision care,20,15,10,6,,REVIEW
+fairprice,Fish Sauce,fish sauce,17,15,14,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Juices,juices,17,15,14,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Kiwi & Grapes,kiwi & grapes,17,15,10,6,,REVIEW
+fairprice,Stage 2,stage 2,16,15,13,2,,REVIEW
+redmart,Baby Feeding Mats,baby feeding mats,16,15,6,9,,REVIEW
+coldstorage,Cat Treats,cat treats,15,15,14,1,,REVIEW
+coldstorage,Cordials,cordials,15,15,15,0,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Greek Yoghurt,greek yoghurt,15,15,12,3,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Stage 3,stage 3,15,15,14,1,,REVIEW
+fairprice,Bread Slice,bread slice,15,15,15,0,,REVIEW
+fairprice,Frozen Fruits,frozen fruits,15,15,14,1,,REVIEW
+fairprice,Icing & Caster Sugar,icing & caster sugar,15,15,12,3,,REVIEW
+redmart,Ashtrays,ashtrays,15,15,14,1,,REVIEW
+redmart,Blades & Cartridges,blades & cartridges,15,15,15,0,,REVIEW
+redmart,Nursing Covers,nursing covers,15,15,8,7,,REVIEW
+fairprice,Learning & Education,learning & education,365,14,14,10,,REVIEW
+fairprice,Men's Fashion,men's fashion,59,14,14,2,,REVIEW
+fairprice,"Baits, Traps & Devices","baits, traps & devices",38,14,14,0,,REVIEW
+redmart,Canister Vacuum Cleaners,canister vacuum cleaners,33,14,8,13,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Shoe Care Products,shoe care products,22,14,12,4,,REVIEW
+coldstorage,100% Aussie Goodness: Freshest Picks,100% aussie goodness: freshest picks,21,14,11,7,,REVIEW
+fairprice,For Birds,for birds,18,14,13,1,,REVIEW
+coldstorage,Cakes & Desserts,cakes & desserts,16,14,11,3,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Stage 2,stage 2,16,14,12,2,,REVIEW
+fairprice,Assorted Chocolates,assorted chocolates,15,14,13,1,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,CSO Homecare fair,cso homecare fair,14,14,14,0,,REVIEW
+coldstorage,Digestive & Healthy Biscuits,digestive & healthy biscuits,14,14,12,2,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Fresh Pasta,fresh pasta,14,14,11,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Kimchi,kimchi,14,14,12,2,,REVIEW
+coldstorage,Vegetarian Meals,vegetarian meals,14,14,12,2,,REVIEW
+fairprice,Beans & Peas,beans & peas,14,14,14,0,,REVIEW
+fairprice,Instant Desserts,instant desserts,14,14,13,1,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Rum,rum,14,14,14,0,,REVIEW
+redmart,"Creams, Foams & Gels","creams, foams & gels",14,14,14,0,,REVIEW
+redmart,Frozen Croissants,frozen croissants,14,14,12,2,,REVIEW
+redmart,Wall Stickers,wall stickers,14,14,8,6,,REVIEW
+fairprice,Utensils,utensils,232,13,13,8,,REVIEW
+fairprice,Baby Wipes,baby wipes,120,13,13,12,,REVIEW
+fairprice,Disposable Cutlery,disposable cutlery,88,13,13,3,,REVIEW
+coldstorage,Tonic Supplement,tonic supplement,44,13,13,4,,REVIEW
+fairprice,Vitamins,vitamins,44,13,13,2,,REVIEW
+coldstorage,Fruits & Vegetables,fruits & vegetables,42,13,10,8,,REVIEW
+fairprice,Bone Care,bone care,34,13,13,2,,REVIEW
+redmart,Dish Racks & Sink Accessories,dish racks & sink accessories,30,13,10,16,,REVIEW
+fairprice,Coffee Filters,coffee filters,29,13,13,0,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Cheese Spread,cheese spread,21,13,12,3,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Oat Biscuits,oat biscuits,16,13,12,1,,REVIEW
+fairprice,Tropical Juice,tropical juice,16,13,6,8,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Talcum Powder Women,talcum powder women,16,13,10,4,,REVIEW
+fairprice,Vermouth,vermouth,15,13,13,2,,REVIEW
+fairprice,Children's Cough & Cold,children's cough & cold,14,13,13,0,,REVIEW
+fairprice,Mascara & False Eyelashes,mascara & false eyelashes,14,13,13,0,,REVIEW
+redmart,Blood Pressure Monitors,blood pressure monitors,14,13,5,8,,REVIEW
+redmart,Potty Change Kits,potty change kits,14,13,5,8,,REVIEW
+coldstorage,Dips,dips,13,13,11,2,,REVIEW
+coldstorage,Distilled Water,distilled water,13,13,10,3,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Free Magnum Keychain With Min. Spend $45,free magnum keychain with min. spend $45,13,13,7,6,,REVIEW
+coldstorage,Kids Run 2026,kids run 2026,13,13,13,0,,REVIEW
+coldstorage,Margarine,margarine,13,13,13,0,,REVIEW
+fairprice,Broccoli & Cauliflowers,broccoli & cauliflowers,13,13,12,1,,REVIEW
+fairprice,Dark Beer & Stout,dark beer & stout,13,13,13,0,,REVIEW
+fairprice,Smoked Salmon,smoked salmon,13,13,13,0,,REVIEW
+redmart,Detoxification Products,detoxification products,13,13,7,6,,REVIEW
+redmart,Lion Dance Costumes,lion dance costumes,13,13,11,2,,REVIEW
+fairprice,Towel & Tablecloth,towel & tablecloth,275,12,11,35,,REVIEW
+fairprice,Quilts,quilts,100,12,12,4,,REVIEW
+fairprice,Size S Diapers,size s diapers,40,12,12,1,,REVIEW
+fairprice,Diabetic Supplies,diabetic supplies,22,12,12,0,,REVIEW
+fairprice,Fresh Eggs,fresh eggs,20,12,9,6,,REVIEW
+redmart,Foot Moisturizers & Creams,foot moisturizers & creams,20,12,10,4,,REVIEW
+fairprice,Chocolate Spread,chocolate spread,15,12,10,5,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Spice Tools,spice tools,15,12,10,2,,REVIEW
+coldstorage,Peanut & Groundnut,peanut & groundnut,14,12,12,1,,REVIEW
+coldstorage,Sun Care,sun care,14,12,10,2,,REVIEW
+fairprice,Toddler Ready to Drink Milk,toddler ready to drink milk,14,12,12,0,,REVIEW
+coldstorage,Cooking Needs,cooking needs,13,12,11,1,,REVIEW
+coldstorage,Father's Day,father's day,13,12,11,1,,REVIEW
+fairprice,Carrots,carrots,13,12,10,2,,REVIEW
+fairprice,Carton Drinks,carton drinks,13,12,10,2,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Children's Pain Relief & Fever,children's pain relief & fever,13,12,12,1,,REVIEW
+fairprice,Orange Juice,orange juice,13,12,12,0,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Organic Snacks,organic snacks,13,12,12,0,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Dinnerware Sets,dinnerware sets,13,12,6,7,,REVIEW
+coldstorage,Milk Powder,milk powder,12,12,11,1,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Organic Milk,organic milk,12,12,9,3,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,The World's Greatest Toast,the world's greatest toast,12,12,11,1,,REVIEW
+fairprice,Canned Abalone,canned abalone,12,12,9,3,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Fruit & Vegetable Wash,fruit & vegetable wash,12,12,11,1,,REVIEW
+fairprice,Glutinous Rice,glutinous rice,12,12,10,2,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Baby Gift Baskets,baby gift baskets,12,12,7,5,,REVIEW
+redmart,Dog Claw Care,dog claw care,12,12,10,2,,REVIEW
+redmart,Indigestion & Heartburn Medicine,indigestion & heartburn medicine,12,12,9,3,,REVIEW
+redmart,Naan & Indian Breads,naan & indian breads,12,12,11,1,,REVIEW
+redmart,shop-vegetable-juice,shop-vegetable-juice,12,12,9,3,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Furniture,furniture,298,11,11,15,,REVIEW
+fairprice,"Lighting, Bulbs & Lamps","lighting, bulbs & lamps",113,11,11,5,,REVIEW
+fairprice,Makeup Accessories,makeup accessories,77,11,11,7,,REVIEW
+fairprice,Newborn Diapers,newborn diapers,40,11,11,0,,REVIEW
+redmart,Stand Fans,stand fans,37,11,2,20,,REVIEW
+fairprice,Men's Health,men's health,33,11,11,1,,REVIEW
+redmart,Dog Fountains,dog fountains,27,11,10,3,,REVIEW
+redmart,Washing Machine Cleaners,washing machine cleaners,25,11,11,2,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Water Purifiers,water purifiers,21,11,4,10,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Liquid Detergent,liquid detergent,15,11,11,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Maternity Skincare,maternity skincare,15,11,10,1,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Toilet Blocks,toilet blocks,15,11,10,1,,REVIEW
+coldstorage,Japan & Korea Fair,japan & korea fair,13,11,10,1,,REVIEW
+fairprice,Bleaches,bleaches,13,11,11,0,,REVIEW
+fairprice,"Shandy, Radler & Flavoured Beer","shandy, radler & flavoured beer",13,11,11,2,,REVIEW
+fairprice,Dessert Wine,dessert wine,12,11,10,2,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Seasonings,seasonings,12,11,11,0,,REVIEW
+coldstorage,Fresh Soya Milk,fresh soya milk,11,11,11,0,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Frozen,frozen,11,11,5,6,,REVIEW
+coldstorage,Pistachio,pistachio,11,11,9,2,,REVIEW
+coldstorage,Ready To Eat Meat,ready to eat meat,11,11,9,2,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Sharing Pack & Assorted Chocolates,sharing pack & assorted chocolates,11,11,10,1,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Asparagus & Sprouts,asparagus & sprouts,11,11,8,3,,REVIEW
+fairprice,Cooking & Thickened Creams,cooking & thickened creams,11,11,10,1,,REVIEW
+fairprice,Craft Beer,craft beer,11,11,6,5,,REVIEW
+fairprice,Fungal,fungal,11,11,11,0,,REVIEW
+fairprice,Kimchi,kimchi,11,11,10,1,,REVIEW
+fairprice,Tequila,tequila,11,11,11,0,,REVIEW
+redmart,Aquarium Lightings & Accessories,aquarium lightings & accessories,11,11,11,0,,REVIEW
+redmart,Baby & Child Health,baby & child health,11,11,10,1,,REVIEW
+redmart,Baby Playards,baby playards,11,11,9,2,,REVIEW
+redmart,Diabetes Care,diabetes care,11,11,6,5,,REVIEW
+redmart,Facial Oils,facial oils,11,11,7,4,,REVIEW
+redmart,Fish Food,fish food,11,11,11,0,,REVIEW
+redmart,Meal Replacement,meal replacement,11,11,6,5,,REVIEW
+fairprice,Bolsters & Pillows,bolsters & pillows,175,10,8,13,,REVIEW
+coldstorage,Men's Shaving,men's shaving,24,10,9,5,,REVIEW
+redmart,Tissue Holders,tissue holders,19,10,9,2,,REVIEW
+fairprice,Umbrella,umbrella,15,10,10,0,,REVIEW
+fairprice,Squashes,squashes,12,10,10,0,,REVIEW
+redmart,Nipple Care,nipple care,12,10,1,9,,REVIEW
+fairprice,Lemon & Lime Juice,lemon & lime juice,11,10,9,1,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Bathroom Mirrors,bathroom mirrors,11,10,6,4,,REVIEW
+redmart,Face & Skin Care Tools,face & skin care tools,11,10,9,1,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Arla,arla,10,10,9,1,,REVIEW
+coldstorage,Cellar Selection,cellar selection,10,10,8,2,,REVIEW
+coldstorage,Dried Vegetable & Chilli,dried vegetable & chilli,10,10,10,0,,REVIEW
+coldstorage,Fortified Wine,fortified wine,10,10,10,0,,REVIEW
+coldstorage,Korean Liqour,korean liqour,10,10,10,0,,REVIEW
+coldstorage,Side Dishes,side dishes,10,10,8,2,,REVIEW
+coldstorage,Soup,soup,10,10,10,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Soup & Sauces,soup & sauces,10,10,9,1,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Tequila,tequila,10,10,10,0,,REVIEW
+fairprice,Baby Oils,baby oils,10,10,10,0,,REVIEW
+fairprice,Chilled Juice,chilled juice,10,10,10,0,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Condensed Milk & Creamers,condensed milk & creamers,10,10,8,2,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Stone Fruits,stone fruits,10,10,7,3,,REVIEW
+redmart,Sarsaparilla & Root Beer,sarsaparilla & root beer,10,10,10,0,,REVIEW
+fairprice,Cameras,cameras,166,9,9,11,,REVIEW
+fairprice,Blender & Juicers,blender & juicers,149,9,9,6,,REVIEW
+fairprice,Balloons,balloons,138,9,9,6,,REVIEW
+fairprice,Facial Tissues,facial tissues,119,9,9,2,,REVIEW
+fairprice,Paper & Plastic Cups,paper & plastic cups,88,9,8,5,,REVIEW
+fairprice,Sleep Aids,sleep aids,32,9,9,1,,REVIEW
+fairprice,Baby Grooming,baby grooming,31,9,7,3,,REVIEW
+redmart,Kitchen Thermometers & Timers,kitchen thermometers & timers,27,9,9,0,,REVIEW
+redmart,Rice Cookers,rice cookers,25,9,4,11,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Ska Multi Cookers,ska multi cookers,20,9,7,6,,REVIEW
+redmart,shop-multifunction-tools,shop-multifunction-tools,16,9,0,10,,REVIEW
+coldstorage,Snacks,snacks,13,9,9,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Brinjals & Gourds,brinjals & gourds,12,9,7,2,,REVIEW
+coldstorage,Pies & Pizza,pies & pizza,11,9,9,0,,REVIEW
+fairprice,Fish Balls & Fish Cakes,fish balls & fish cakes,11,9,8,1,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Nail & Cuticle Care,nail & cuticle care,11,9,8,1,,REVIEW
+redmart,Red Rice & Food Staples,red rice & food staples,11,9,7,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Sauces & Spread,sauces & spread,10,9,9,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Grape Juice,grape juice,10,9,8,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Still Water,still water,10,9,8,1,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,"Beans, Nuts & Seeds","beans, nuts & seeds",9,9,9,0,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Hand & Body Care,hand & body care,9,9,8,1,,REVIEW
+coldstorage,International Earth Day,international earth day,9,9,5,4,,REVIEW
+coldstorage,Lips Care,lips care,9,9,8,1,,REVIEW
+coldstorage,Rose Wine,rose wine,9,9,7,2,,REVIEW
+coldstorage,Sesame & Coconut Oil,sesame & coconut oil,9,9,8,1,,REVIEW
+coldstorage,Whipping Cream,whipping cream,9,9,8,1,,REVIEW
+coldstorage,Wholegrain Rice,wholegrain rice,9,9,9,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Bread Whole,bread whole,9,9,9,0,,REVIEW
+fairprice,Frozen Cakes,frozen cakes,9,9,9,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Natural Yoghurt,natural yoghurt,9,9,4,5,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Pecans,pecans,9,9,9,0,,REVIEW
+fairprice,Shredded & Grated Cheese,shredded & grated cheese,9,9,8,1,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Snacks & Confectionery,snacks & confectionery,9,9,9,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Tomato & Vegetable Juice,tomato & vegetable juice,9,9,7,2,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Amino Acids,amino acids,9,9,8,1,,REVIEW
+redmart,Anti-Inflammatory Medicine,anti-inflammatory medicine,9,9,9,0,,REVIEW
+redmart,Fresh & Sour Cream,fresh & sour cream,9,9,6,3,,REVIEW
+redmart,Medicine Storage,medicine storage,9,9,0,9,,REVIEW
+fairprice,Pillow & Mattress Protectors,pillow & mattress protectors,321,8,8,5,,REVIEW
+fairprice,Kettles & Air Pots,kettles & air pots,149,8,8,6,,REVIEW
+fairprice,Rice Cookers,rice cookers,126,8,8,4,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Masks,masks,68,8,6,12,,REVIEW
+redmart,Dog Collars,dog collars,60,8,8,4,,REVIEW
+redmart,Bath Tubs & Seats,bath tubs & seats,43,8,1,24,,REVIEW
+coldstorage,First Aids,first aids,30,8,7,2,,REVIEW
+fairprice,Rechargeable Batteries,rechargeable batteries,30,8,8,0,,REVIEW
+fairprice,Bicycle Accessories,bicycle accessories,26,8,8,2,,REVIEW
+redmart,shop-travel-wallets-&-passport-cover,shop-travel-wallets-&-passport-cover,24,8,2,15,,REVIEW
+fairprice,Women's Fashion,women's fashion,19,8,8,1,,REVIEW
+fairprice,Drip Coffee,drip coffee,18,8,8,0,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Stomach Relief,stomach relief,16,8,5,5,,REVIEW
+redmart,Truffles & Condiments,truffles & condiments,16,8,6,3,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+redmart,Laundry Bleach,laundry bleach,14,8,8,2,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,"UHT Milk, Powder & Condensed Milk","uht milk, powder & condensed milk",13,8,7,2,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Salad,salad,11,8,7,1,,REVIEW
+coldstorage,Dog Treats,dog treats,9,8,7,1,,REVIEW
+coldstorage,Football Season Special,football season special,9,8,7,1,,REVIEW
+fairprice,Berries & Cherries,berries & cherries,9,8,6,2,,REVIEW
+fairprice,Soda Water,soda water,9,8,8,1,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Tampons,tampons,9,8,7,1,,REVIEW
+redmart,Mirrors,mirrors,9,8,7,1,,REVIEW
+redmart,Pregnancy & Fertility,pregnancy & fertility,9,8,7,1,,REVIEW
+coldstorage,Bar Soap,bar soap,8,8,7,1,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Lotion & Powder,lotion & powder,8,8,7,1,,REVIEW
+coldstorage,Method,method,8,8,4,4,,REVIEW
+coldstorage,Stage 4,stage 4,8,8,8,0,,REVIEW
+coldstorage,Stout,stout,8,8,4,4,,REVIEW
+coldstorage,Vermicelli,vermicelli,8,8,7,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Cat Healthcare,cat healthcare,8,8,8,0,,REVIEW
+fairprice,Lasagna Sheets,lasagna sheets,8,8,7,1,,REVIEW
+fairprice,Maternal & Lactating Milk ,maternal & lactating milk,8,8,5,3,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Setting Spray,setting spray,8,8,8,0,,REVIEW
+redmart,Shower Curtain & Accessories,shower curtain & accessories,8,8,8,0,,REVIEW
+fairprice,Bags & Wallets,bags & wallets,334,7,7,8,,REVIEW
+fairprice,Video Games,video games,293,7,7,22,,REVIEW
+fairprice,Vacuum Cleaners,vacuum cleaners,261,7,7,20,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Jugs & Pitchers,jugs & pitchers,144,7,3,7,,REVIEW
+coldstorage,Feminine Hygiene,feminine hygiene,77,7,3,27,,REVIEW
+fairprice,Musical Toys,musical toys,66,7,7,4,,REVIEW
+fairprice,Brooms & Dustpans,brooms & dustpans,63,7,6,3,,REVIEW
+fairprice,Bathroom Tissues,bathroom tissues,60,7,7,3,,REVIEW
+coldstorage,Vitamins,vitamins,50,7,6,6,,REVIEW
+fairprice,Food Trays,food trays,33,7,7,2,,REVIEW
+coldstorage,"Dairy, Chilled & Eggs","dairy, chilled & eggs",20,7,7,2,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Dental Care,dental care,20,7,7,0,,REVIEW
+fairprice,Cat Grooming,cat grooming,14,7,5,2,,REVIEW
+coldstorage,Bacon,bacon,13,7,5,6,,REVIEW
+fairprice,Baby Nasal Care,baby nasal care,13,7,7,0,,REVIEW
+coldstorage,Fresh Bakery,fresh bakery,10,7,5,4,,REVIEW
+redmart,Eyelash Curlers,eyelash curlers,9,7,6,1,,REVIEW
+coldstorage,"Air Care, Dehumidifiers & Deodorizers","air care, dehumidifiers & deodorizers",8,7,0,7,,REVIEW
+coldstorage,Eu Yan Sang,eu yan sang,8,7,7,0,,REVIEW
+coldstorage,Fill Your Fridge With Quality Essentials,fill your fridge with quality essentials,8,7,6,1,,REVIEW
+fairprice,Corns,corns,8,7,5,2,,REVIEW
+fairprice,Pregnancy & Ovulation Kits,pregnancy & ovulation kits,8,7,7,0,,REVIEW
+fairprice,Tonic Water,tonic water,8,7,7,0,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Basmati Rice,basmati rice,7,7,7,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Chilled Asian,chilled asian,7,7,5,2,,REVIEW
+coldstorage,Dipping Sauce,dipping sauce,7,7,4,3,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Frozen Pork,frozen pork,7,7,7,0,,REVIEW
+coldstorage,Hair Nourishment,hair nourishment,7,7,6,1,,REVIEW
+coldstorage,Other Snacks,other snacks,7,7,6,1,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Berry Juice,berry juice,7,7,7,0,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Cranberry & Pomegranate Juice,cranberry & pomegranate juice,7,7,5,2,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Non Alcoholic Beer,non alcoholic beer,7,7,7,0,,REVIEW
+fairprice,Preserved Eggs,preserved eggs,7,7,6,1,,REVIEW
+fairprice,Whipping Creams,whipping creams,7,7,7,0,,REVIEW
+redmart,Garlic & Shallots,garlic & shallots,7,7,6,1,,REVIEW
+fairprice,Multi Cookers,multi cookers,154,6,6,5,,REVIEW
+fairprice,Manicure & Pedicure Tools,manicure & pedicure tools,26,6,6,0,,REVIEW
+redmart,Dog Perfumes & Deodorizers,dog perfumes & deodorizers,24,6,5,6,,REVIEW
+coldstorage,Frozen Beef & Lamb,frozen beef & lamb,15,6,6,0,,REVIEW
+coldstorage,Beef & Lamb,beef & lamb,14,6,4,3,,REVIEW
+redmart,Baby Nail Care,baby nail care,12,6,4,3,,REVIEW
+fairprice,Blood Pressure Monitors,blood pressure monitors,8,6,6,0,,REVIEW
+redmart,Black Rice,black rice,8,6,3,3,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Meat & Poultry Tools,meat & poultry tools,8,6,6,1,,REVIEW
+coldstorage,Canned Food,canned food,7,6,5,1,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Smoked Salmon,smoked salmon,7,6,6,0,,REVIEW
+fairprice,Bakery Breakfast,bakery breakfast,7,6,5,1,Breakfast Foods,AUTO_SOURCE_CATEGORY
+fairprice,Chinese Liquor,chinese liquor,7,6,6,1,,REVIEW
+redmart,Goat's Milk & Fresh Milk,goat's milk & fresh milk,7,6,3,3,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Beer,beer,6,6,6,0,,REVIEW
+coldstorage,Incredibly Good Tomatoes,incredibly good tomatoes,6,6,6,0,,REVIEW
+coldstorage,Medicinal Candy,medicinal candy,6,6,5,1,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Noodle Kit,noodle kit,6,6,4,2,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Vodka,vodka,6,6,5,1,,REVIEW
+fairprice,Ale & IPA,ale & ipa,6,6,6,0,,REVIEW
+fairprice,"Baby, Child & Toys","baby, child & toys",6,6,6,0,,REVIEW
+fairprice,Baking Needs,baking needs,6,6,6,0,,REVIEW
+fairprice,Lubricants,lubricants,6,6,6,0,,REVIEW
+fairprice,Primer,primer,6,6,6,0,,REVIEW
+fairprice,Roasted Meat,roasted meat,6,6,6,0,,REVIEW
+fairprice,Yoghurt Drinks,yoghurt drinks,6,6,2,4,,REVIEW
+redmart,Baby Journals,baby journals,6,6,0,6,,REVIEW
+redmart,Car Seats & Back Protectors,car seats & back protectors,6,6,3,3,,REVIEW
+redmart,Chocolate Fondue Makers,chocolate fondue makers,6,6,0,6,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Top & Base Coat,top & base coat,6,6,6,0,,REVIEW
+redmart,shop-hot-chocolate-ready-to-drink,shop-hot-chocolate-ready-to-drink,6,6,3,3,,REVIEW
+fairprice,Fans,fans,347,5,5,23,,REVIEW
+fairprice,Pacifiers & Teethers,pacifiers & teethers,157,5,5,9,,REVIEW
+fairprice,Stove & Induction Hobs,stove & induction hobs,80,5,5,43,,REVIEW
+fairprice,First Aid,first aid,65,5,5,3,,REVIEW
+fairprice,Correction Tapes & Erasers,correction tapes & erasers,31,5,5,2,,REVIEW
+coldstorage,Chilli & Tomato,chilli & tomato,12,5,5,0,,REVIEW
+fairprice,Hand & Foot Mask,hand & foot mask,11,5,5,0,,REVIEW
+redmart,Dog Diapers,dog diapers,11,5,3,8,,REVIEW
+fairprice,Air Conditioner Cleaners,air conditioner cleaners,10,5,5,0,,REVIEW
+fairprice,Wax Strips,wax strips,10,5,5,0,,REVIEW
+coldstorage,Frozen Food,frozen food,9,5,3,2,,REVIEW
+fairprice,"Children's Eye, Ear & Nasal Drops","children's eye, ear & nasal drops",8,5,5,0,,REVIEW
+redmart,Cat Litter Scoops,cat litter scoops,8,5,5,2,,REVIEW
+fairprice,Allergies,allergies,7,5,5,0,,REVIEW
+redmart,Men's Shampoos & Conditioners,men's shampoos & conditioners,7,5,5,0,,REVIEW
+redmart,Slow Cookers,slow cookers,7,5,4,3,,REVIEW
+coldstorage,Asian Dessert,asian dessert,6,5,5,1,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Snacks & Confectionery,snacks & confectionery,6,5,5,0,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Creamers,creamers,6,5,4,2,,REVIEW
+fairprice,Thermometers,thermometers,6,5,5,0,,REVIEW
+redmart,Cradle Bumpers,cradle bumpers,6,5,5,0,,REVIEW
+redmart,Creamer & Sugar Bowls,creamer & sugar bowls,6,5,4,1,,REVIEW
+coldstorage,Baby Bath,baby bath,5,5,5,0,,REVIEW
+coldstorage,Baby Shampoo,baby shampoo,5,5,4,1,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Softeners & Conditioners,softeners & conditioners,5,5,5,0,,REVIEW
+coldstorage,Turkey,turkey,5,5,4,1,,REVIEW
+fairprice,Corn & Soya Bean Oil,corn & soya bean oil,5,5,5,0,,REVIEW
+fairprice,Nail Polish Remover,nail polish remover,5,5,5,0,,REVIEW
+fairprice,Organic Fruits & Vegetables,organic fruits & vegetables,5,5,5,0,,REVIEW
+fairprice,Pasta,pasta,5,5,4,1,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Rice & Noodles,rice & noodles,5,5,5,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+redmart,Allergy Medicine,allergy medicine,5,5,5,0,,REVIEW
+redmart,Blood Glucose Monitor,blood glucose monitor,5,5,0,5,,REVIEW
+redmart,Fresh Cream & Butter Milk,fresh cream & butter milk,5,5,1,4,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Ice Cream & Sorbet,ice cream & sorbet,5,5,4,1,,REVIEW
+redmart,Lip Liners,lip liners,5,5,3,2,,REVIEW
+redmart,"Tweezers, Pluckers, Razors","tweezers, pluckers, razors",5,5,3,2,,REVIEW
+redmart,shop-fruit-drinks,shop-fruit-drinks,5,5,5,0,Drinks,AUTO_SOURCE_CATEGORY
+redmart,shop-photo-albums-frames-&-accessories,shop-photo-albums-frames-&-accessories,5,5,1,4,,REVIEW
+redmart,shop-specialty-meat,shop-specialty-meat,5,5,3,2,,REVIEW
+fairprice,Gardening Seeds,gardening seeds,167,4,2,3,,REVIEW
+fairprice,Massagers,massagers,131,4,4,8,,REVIEW
+fairprice,Coffee Machines,coffee machines,128,4,4,1,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Blankets & Throws,blankets & throws,84,4,1,39,,REVIEW
+redmart,shop-travel-accessories-&-supplies,shop-travel-accessories-&-supplies,63,4,4,6,,REVIEW
+fairprice,Irons & Garment Steamers,irons & garment steamers,35,4,4,2,,REVIEW
+fairprice,Napkins,napkins,29,4,4,1,,REVIEW
+redmart,shop-coin-purses-&-pouches,shop-coin-purses-&-pouches,15,4,3,2,,REVIEW
+redmart,Electric Massagers,electric massagers,11,4,3,1,,REVIEW
+coldstorage,Hair Coloring,hair coloring,9,4,3,1,,REVIEW
+redmart,Baby Food Blenders,baby food blenders,6,4,3,2,,REVIEW
+coldstorage,Asian Desserts,asian desserts,5,4,4,0,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Marinated Meat,marinated meat,5,4,4,0,,REVIEW
+coldstorage,Men's Deodorant,men's deodorant,5,4,4,0,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Alkaline Water,alkaline water,5,4,4,0,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Wallets & Key Holders,wallets & key holders,5,4,4,0,,REVIEW
+redmart,Weight & Mass Gainers,weight & mass gainers,5,4,3,1,,REVIEW
+coldstorage,Apetina,apetina,4,4,2,2,,REVIEW
+coldstorage,"Beemster (Buy Any 1, Get 1 Free Fig Jam)","beemster (buy any 1, get 1 free fig jam)",4,4,4,0,,REVIEW
+coldstorage,Brand's,brand's,4,4,4,0,,REVIEW
+coldstorage,Buy ANY 2 for 1x FREE Walch Grapefruit Natural Disinfectant 60ml,buy any 2 for 1x free walch grapefruit natural disinfectant 60ml,4,4,4,0,,REVIEW
+coldstorage,Canola Oil,canola oil,4,4,4,0,,REVIEW
+coldstorage,Castello,castello,4,4,4,0,,REVIEW
+coldstorage,Codorniu,codorniu,4,4,4,0,,REVIEW
+coldstorage,Cooking Cream & Others,cooking cream & others,4,4,3,1,,REVIEW
+coldstorage,Free Carlsberg Jersey with Min. $95 Spend,free carlsberg jersey with min. $95 spend,4,4,4,0,,REVIEW
+coldstorage,Free Coca-Cola Shoe Bag,free coca-cola shoe bag,4,4,3,1,,REVIEW
+coldstorage,Japanese Rice,japanese rice,4,4,4,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Light Bites,light bites,4,4,3,1,,REVIEW
+coldstorage,Meatballs & Sausages,meatballs & sausages,4,4,4,0,,REVIEW
+coldstorage,Other Cooking Oils,other cooking oils,4,4,4,0,,REVIEW
+coldstorage,Protein Drinks,protein drinks,4,4,3,1,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Ready Meals,ready meals,4,4,3,1,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+coldstorage,Snacking,snacking,4,4,4,0,,REVIEW
+coldstorage,Vegetable Oil,vegetable oil,4,4,4,0,,REVIEW
+fairprice,Antigen Rapid Test (ART),antigen rapid test (art),4,4,4,0,,REVIEW
+fairprice,Canola Oil,canola oil,4,4,3,1,,REVIEW
+fairprice,Cheese,cheese,4,4,4,0,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Condiments,condiments,4,4,3,1,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Cultured Milk,cultured milk,4,4,2,2,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Feminine Care,feminine care,4,4,4,0,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,For Rabbits,for rabbits,4,4,4,0,,REVIEW
+fairprice,Grapeseed Oil,grapeseed oil,4,4,4,0,,REVIEW
+fairprice,Meat Balls,meat balls,4,4,4,0,,REVIEW
+fairprice,Onion Rings,onion rings,4,4,4,0,,REVIEW
+fairprice,Vegetable Oil,vegetable oil,4,4,4,0,,REVIEW
+redmart,Hanging Organizers,hanging organizers,4,4,2,2,,REVIEW
+redmart,Sandwich Makers,sandwich makers,4,4,1,3,,REVIEW
+redmart,Waffle Makers,waffle makers,4,4,2,2,,REVIEW
+fairprice,Headphones & Headsets,headphones & headsets,325,3,3,28,,REVIEW
+fairprice,Speakers & Sound Bars,speakers & sound bars,263,3,3,12,,REVIEW
+fairprice,Air Fryers,air fryers,60,3,3,3,,REVIEW
+coldstorage,Home & Household,home & household,46,3,1,9,,REVIEW
+fairprice,Diaper Pants,diaper pants,36,3,3,7,,REVIEW
+fairprice,Straws & Stirrers,straws & stirrers,35,3,3,3,,REVIEW
+redmart,Toasters,toasters,35,3,3,8,,REVIEW
+fairprice,Cotton Wools & Tips ,cotton wools & tips,21,3,2,2,,REVIEW
+fairprice,Food Steamers,food steamers,20,3,3,1,,REVIEW
+redmart,Pet Grooming & Health,pet grooming & health,19,3,3,5,,REVIEW
+redmart,Rugs & Carpets,rugs & carpets,15,3,3,6,,REVIEW
+coldstorage,Herbs & Spices,herbs & spices,11,3,2,1,,REVIEW
+coldstorage,Stone Fruits,stone fruits,10,3,3,2,,REVIEW
+coldstorage,Citrus,citrus,9,3,3,0,,REVIEW
+redmart,Ovens,ovens,8,3,0,4,,REVIEW
+coldstorage,Soft Cheese,soft cheese,7,3,3,0,Dairy,AUTO_SOURCE_CATEGORY
+redmart,Dog Toothbrush & Dental Care,dog toothbrush & dental care,7,3,2,4,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Health & Medical Support,health & medical support,6,3,3,0,,REVIEW
+fairprice,Children's Mental Development,children's mental development,6,3,3,1,,REVIEW
+coldstorage,Creamers & Sweetners,creamers & sweetners,4,3,1,2,,REVIEW
+coldstorage,Repellents,repellents,4,3,2,1,,REVIEW
+fairprice,Children's Probiotics,children's probiotics,4,3,3,0,,REVIEW
+redmart,Baby Bathroom Safety,baby bathroom safety,4,3,2,1,,REVIEW
+redmart,Dog Feeding Mats,dog feeding mats,4,3,3,0,,REVIEW
+coldstorage,Chicken & Duck,chicken & duck,3,3,3,0,,REVIEW
+coldstorage,Dry Dog Food,dry dog food,3,3,3,0,,REVIEW
+coldstorage,Mints,mints,3,3,3,0,,REVIEW
+coldstorage,Non Carbonated Drinks,non carbonated drinks,3,3,2,1,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Noodles,noodles,3,3,3,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+coldstorage,Prata & Chappati,prata & chappati,3,3,3,0,,REVIEW
+coldstorage,Rice Bran Oil,rice bran oil,3,3,3,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Beef Meatball,beef meatball,3,3,2,1,,REVIEW
+fairprice,Canned & Tetra Soups,canned & tetra soups,3,3,3,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Celeries,celeries,3,3,3,0,,REVIEW
+fairprice,Fruits & Vegetables,fruits & vegetables,3,3,2,1,,REVIEW
+fairprice,Infant,infant,3,3,3,0,,REVIEW
+fairprice,Noodles,noodles,3,3,3,0,Rice & Noodles,AUTO_SOURCE_CATEGORY
+fairprice,Oil,oil,3,3,3,0,,REVIEW
+fairprice,Ready-to-Eat,ready-to-eat,3,3,3,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Sugar & Sweeteners,sugar & sweeteners,3,3,3,0,,REVIEW
+redmart,Baby & Toddler Monitors,baby & toddler monitors,3,3,3,0,,REVIEW
+redmart,Baby Gates,baby gates,3,3,3,0,,REVIEW
+redmart,Cloth Diaper Inserts & Liners,cloth diaper inserts & liners,3,3,2,1,,REVIEW
+redmart,Cradle Mattress Pads,cradle mattress pads,3,3,3,0,,REVIEW
+redmart,Doorstops,doorstops,3,3,3,0,,REVIEW
+redmart,Ice Cream Cakes,ice cream cakes,3,3,2,1,Snacks,AUTO_SOURCE_CATEGORY
+redmart,Pregnancy Care,pregnancy care,3,3,1,2,,REVIEW
+redmart,Ramadan Garlands,ramadan garlands,3,3,0,3,,REVIEW
+redmart,shop-dog-food-storage,shop-dog-food-storage,3,3,3,0,,REVIEW
+fairprice,Mouse,mouse,166,2,2,7,,REVIEW
+fairprice,Camera Accessories,camera accessories,156,2,2,2,,REVIEW
+fairprice,Mattresses & Bedding Sheets,mattresses & bedding sheets,110,2,2,2,,REVIEW
+fairprice,Ovens & Microwaves,ovens & microwaves,88,2,2,10,,REVIEW
+fairprice,Note Books & Pads,note books & pads,84,2,2,3,,REVIEW
+fairprice,Pillow Cases,pillow cases,72,2,2,2,,REVIEW
+fairprice,Water Dispensers & Purifiers,water dispensers & purifiers,72,2,2,8,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Watering Systems & Garden Hoses,watering systems & garden hoses,63,2,2,6,,REVIEW
+fairprice,Coasters & Placemats,coasters & placemats,57,2,2,2,,REVIEW
+fairprice,Gift Bags & Wrappers,gift bags & wrappers,52,2,2,4,,REVIEW
+fairprice,Toasters,toasters,49,2,2,0,,REVIEW
+redmart,Aquarium Cleaning Tools,aquarium cleaning tools,30,2,1,8,Household Cleaning,AUTO_SOURCE_CATEGORY
+redmart,Tote Bags Women,tote bags women,29,2,1,7,,REVIEW
+redmart,Dog Carrier Backpacks,dog carrier backpacks,26,2,2,8,,REVIEW
+coldstorage,Analgesic,analgesic,16,2,2,0,,REVIEW
+fairprice,Tweezers,tweezers,15,2,2,1,,REVIEW
+fairprice,Wine System,wine system,15,2,2,0,,REVIEW
+coldstorage,Leafy Vegeables,leafy vegeables,14,2,2,3,,REVIEW
+coldstorage,"Carrots, Potatoes & Roots Vegetables","carrots, potatoes & roots vegetables",8,2,2,0,,REVIEW
+coldstorage,Dried Food,dried food,8,2,2,0,,REVIEW
+fairprice,Monitors & Gadgets,monitors & gadgets,8,2,2,0,,REVIEW
+fairprice,Lactation Support,lactation support,6,2,2,0,,REVIEW
+coldstorage,Pate,pate,5,2,0,3,,REVIEW
+redmart,Dog Flea & Tick Treatments,dog flea & tick treatments,5,2,1,3,,REVIEW
+redmart,Steamers,steamers,5,2,1,1,,REVIEW
+coldstorage,Litter,litter,3,2,2,0,,REVIEW
+fairprice,Chicken Meatball,chicken meatball,3,2,2,0,,REVIEW
+redmart,Lash Treatments,lash treatments,3,2,2,0,,REVIEW
+redmart,Refrigerators,refrigerators,3,2,2,1,,REVIEW
+coldstorage,Air Fresheners,air fresheners,2,2,2,0,,REVIEW
+coldstorage,Antipasto,antipasto,2,2,1,1,,REVIEW
+coldstorage,Baby Milk,baby milk,2,2,0,2,Dairy,AUTO_SOURCE_CATEGORY
+coldstorage,Chinese Liqour,chinese liqour,2,2,2,0,,REVIEW
+coldstorage,Cleaning & Steriliser,cleaning & steriliser,2,2,2,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Dessert Wine,dessert wine,2,2,2,0,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Dried Seafood,dried seafood,2,2,2,0,,REVIEW
+coldstorage,Floor Cleaners,floor cleaners,2,2,2,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Heineken,heineken,2,2,2,0,,REVIEW
+coldstorage,Insecticides,insecticides,2,2,2,0,,REVIEW
+coldstorage,Jellies & Puddings,jellies & puddings,2,2,2,0,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Laundry Detergent,laundry detergent,2,2,2,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Mother's Day,mother's day,2,2,2,0,,REVIEW
+coldstorage,Nuts & Seeds,nuts & seeds,2,2,1,1,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Premium Delicatessen,premium delicatessen,2,2,2,0,,REVIEW
+coldstorage,Rillettes & Terrines,rillettes & terrines,2,2,2,0,,REVIEW
+coldstorage,Sanlucar,sanlucar,2,2,2,0,,REVIEW
+coldstorage,Seeds,seeds,2,2,2,0,,REVIEW
+coldstorage,Soya Bean & Peanut,soya bean & peanut,2,2,2,0,,REVIEW
+coldstorage,Stage 5 & Above,stage 5 & above,2,2,2,0,,REVIEW
+fairprice,Aquatic Animal Healthcare,aquatic animal healthcare,2,2,2,0,,REVIEW
+fairprice,Buns & Rolls,buns & rolls,2,2,2,0,,REVIEW
+fairprice,Chestnuts,chestnuts,2,2,1,1,,REVIEW
+fairprice,Ice Cream,ice cream,2,2,2,0,,REVIEW
+redmart,Aftershave Lotions & Creams,aftershave lotions & creams,2,2,2,0,,REVIEW
+redmart,Air Purifiers,air purifiers,2,2,2,0,,REVIEW
+redmart,Anti-Aging Skincare,anti-aging skincare,2,2,2,0,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+redmart,Bitter Lemon Mixers,bitter lemon mixers,2,2,1,1,,REVIEW
+redmart,Booster Car Seats,booster car seats,2,2,0,2,,REVIEW
+redmart,Breast Shells & Creams,breast shells & creams,2,2,1,1,,REVIEW
+redmart,Dog Calming Aids,dog calming aids,2,2,0,2,,REVIEW
+redmart,Face Bronzers,face bronzers,2,2,2,0,,REVIEW
+redmart,Floor Lamps,floor lamps,2,2,1,1,,REVIEW
+redmart,Outdoor Lighting,outdoor lighting,2,2,2,0,,REVIEW
+redmart,Roasting Trays,roasting trays,2,2,0,2,,REVIEW
+redmart,shop-bathrobes-&-bath-footwear,shop-bathrobes-&-bath-footwear,2,2,2,0,,REVIEW
+fairprice,Earbuds,earbuds,300,1,1,19,,REVIEW
+fairprice,Board & Card Games,board & card games,265,1,1,9,,REVIEW
+fairprice,Video Consoles,video consoles,254,1,1,12,,REVIEW
+fairprice,Keyboard,keyboard,161,1,1,8,,REVIEW
+redmart,Pillows,pillows,161,1,1,58,,REVIEW
+fairprice,Cables,cables,145,1,1,8,,REVIEW
+fairprice,Phone Cases & Accessories,phone cases & accessories,139,1,1,24,,REVIEW
+fairprice,Smart Watches,smart watches,134,1,1,14,,REVIEW
+fairprice,Extension & Adaptors,extension & adaptors,132,1,1,15,,REVIEW
+fairprice,Serveware,serveware,112,1,1,1,,REVIEW
+fairprice,Gardening Tools,gardening tools,88,1,1,2,,REVIEW
+fairprice,Hair Dryers,hair dryers,82,1,1,3,,REVIEW
+fairprice,Scissors & Cutters,scissors & cutters,65,1,1,1,,REVIEW
+fairprice,Security Cameras,security cameras,53,1,1,8,,REVIEW
+fairprice,Bibs & Washcloths,bibs & washcloths,39,1,1,3,,REVIEW
+fairprice,Warmers & Sterilizers,warmers & sterilizers,34,1,1,3,,REVIEW
+coldstorage,Chicken Eggs,chicken eggs,32,1,1,7,,REVIEW
+fairprice,"Breast Pads, Shells & Nipple Shields","breast pads, shells & nipple shields",31,1,0,3,,REVIEW
+fairprice,Tablets,tablets,31,1,1,8,,REVIEW
+fairprice,Dusters & Lint Rollers,dusters & lint rollers,30,1,1,3,,REVIEW
+redmart,Dog Milk Replacers,dog milk replacers,23,1,1,4,Dairy,AUTO_SOURCE_CATEGORY
+fairprice,Children Puzzles,children puzzles,17,1,1,1,,REVIEW
+redmart,Baby Pillows,baby pillows,15,1,0,10,,REVIEW
+fairprice,Drones,drones,14,1,0,1,,REVIEW
+coldstorage,Milk & Juices,milk & juices,12,1,0,3,,REVIEW
+coldstorage,Tampons,tampons,9,1,0,5,,REVIEW
+coldstorage,Biscuits & Snacks,biscuits & snacks,8,1,1,7,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Mushrooms,mushrooms,8,1,1,0,,REVIEW
+coldstorage,Beauty Accessories,beauty accessories,6,1,1,1,,REVIEW
+redmart,shop-carrier-accessories,shop-carrier-accessories,6,1,0,4,,REVIEW
+coldstorage,Children's Oral Care,children's oral care,5,1,1,1,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+coldstorage,Condoms,condoms,5,1,1,2,,REVIEW
+fairprice,Feeding & Mobility Aids,feeding & mobility aids,5,1,1,0,,REVIEW
+coldstorage,Berries & Cherries,berries & cherries,4,1,1,0,,REVIEW
+coldstorage,Bread & Cake Mixes,bread & cake mixes,4,1,1,2,Snacks,AUTO_SOURCE_CATEGORY
+coldstorage,Fresh Fish,fresh fish,3,1,1,0,,REVIEW
+coldstorage,Household Essentials,household essentials,3,1,0,2,,REVIEW
+fairprice,Flavoured Water,flavoured water,3,1,1,0,Drinks,AUTO_SOURCE_CATEGORY
+redmart,Nursery Furniture Sets,nursery furniture sets,3,1,0,1,,REVIEW
+fairprice,Maternity Pads,maternity pads,2,1,1,0,,REVIEW
+fairprice,Scented Candles,scented candles,2,1,1,0,,REVIEW
+redmart,"Curtains, Blinds, Shades","curtains, blinds, shades",2,1,1,0,,REVIEW
+coldstorage,Bakery,bakery,1,1,0,1,,REVIEW
+coldstorage,Bathroom Cleaning,bathroom cleaning,1,1,0,1,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Brandy & Cognac,brandy & cognac,1,1,1,0,,REVIEW
+coldstorage,Charcoals,charcoals,1,1,1,0,,REVIEW
+coldstorage,Daily Perks With The Best Brews,daily perks with the best brews,1,1,1,0,,REVIEW
+coldstorage,Dim Sum & Bao,dim sum & bao,1,1,1,0,,REVIEW
+coldstorage,Everyday Western Favourites,everyday western favourites,1,1,1,0,,REVIEW
+coldstorage,Fabric Fresheners,fabric fresheners,1,1,1,0,,REVIEW
+coldstorage,Fever & Pain Relief,fever & pain relief,1,1,1,0,,REVIEW
+coldstorage,Garbage Bags,garbage bags,1,1,1,0,,REVIEW
+coldstorage,Get 1 Wagon Trolley With Min. Spend $66 ,get 1 wagon trolley with min. spend $66,1,1,1,0,,REVIEW
+coldstorage,Instant Beverages,instant beverages,1,1,1,0,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Lubricants,lubricants,1,1,1,0,,REVIEW
+coldstorage,Mineral & Bottled Water Cases,mineral & bottled water cases,1,1,1,0,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Premium Delicatessen: Picnic Perfection,premium delicatessen: picnic perfection,1,1,1,0,,REVIEW
+coldstorage,Sprays,sprays,1,1,1,0,,REVIEW
+coldstorage,Whisky,whisky,1,1,0,1,,REVIEW
+coldstorage,Wine,wine,1,1,0,1,,REVIEW
+fairprice,Cleaning Products,cleaning products,1,1,1,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Cooking Paste & Sauces,cooking paste & sauces,1,1,1,0,Canned & Packaged Food,AUTO_SOURCE_CATEGORY
+fairprice,Cooling Water,cooling water,1,1,1,0,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Cultured & Yoghurt Drinks,cultured & yoghurt drinks,1,1,0,1,,REVIEW
+fairprice,For Reptiles,for reptiles,1,1,0,1,,REVIEW
+fairprice,Ginger Ale,ginger ale,1,1,0,1,,REVIEW
+fairprice,Hair Removal,hair removal,1,1,1,0,,REVIEW
+fairprice,Menstrual Cups,menstrual cups,1,1,1,0,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Mineral Powder,mineral powder,1,1,1,0,,REVIEW
+fairprice,Specialty Oils,specialty oils,1,1,1,0,,REVIEW
+redmart,Antibacterial & Antifungal Medicine,antibacterial & antifungal medicine,1,1,1,0,,REVIEW
+redmart,Baby Bottle Tote Bags,baby bottle tote bags,1,1,0,1,,REVIEW
+redmart,Baby Sleep Positioners,baby sleep positioners,1,1,1,0,,REVIEW
+redmart,Bedding Accessories,bedding accessories,1,1,1,0,,REVIEW
+redmart,Cat Condo,cat condo,1,1,1,0,,REVIEW
+redmart,"Comforters, Quilts & Duvets","comforters, quilts & duvets",1,1,1,0,,REVIEW
+redmart,Counter Top Ovens,counter top ovens,1,1,1,0,,REVIEW
+redmart,Cradle Mattresses,cradle mattresses,1,1,1,0,,REVIEW
+redmart,Diaper Pails & Refills,diaper pails & refills,1,1,1,0,,REVIEW
+redmart,Diapering Powders,diapering powders,1,1,1,0,,REVIEW
+redmart,Griddles & Grills,griddles & grills,1,1,1,0,,REVIEW
+redmart,Humidifiers,humidifiers,1,1,1,0,,REVIEW
+redmart,Maternity & Pregnancy Pillows,maternity & pregnancy pillows,1,1,1,0,,REVIEW
+redmart,Nursery Toy Chests,nursery toy chests,1,1,1,0,,REVIEW
+redmart,Potty Change Pads,potty change pads,1,1,0,1,,REVIEW
+redmart,Spice Racks & Containers,spice racks & containers,1,1,1,0,,REVIEW
+redmart,Washing Machines,washing machines,1,1,1,0,,REVIEW
+redmart,shop-groceries-dairychilled-hotpotingredients-fishballsfishcakes,shop-groceries-dairychilled-hotpotingredients-fishballsfishcakes,1,1,1,0,,REVIEW
+redmart,shop-ramen,shop-ramen,1,1,1,0,,REVIEW
+redmart,shop-travel-beds-&-accessories,shop-travel-beds-&-accessories,1,1,0,1,,REVIEW
+fairprice,Fresh Flowers & Plants,fresh flowers & plants,1000,0,0,0,,REVIEW
+fairprice,Building Sets,building sets,545,0,0,26,,REVIEW
+fairprice,Wellness Hampers,wellness hampers,261,0,0,55,,REVIEW
+fairprice,"Computer Docks, Hubs & Accessories","computer docks, hubs & accessories",158,0,0,30,,REVIEW
+fairprice,Nursing Pillows,nursing pillows,153,0,0,0,,REVIEW
+fairprice,Powerbank & Chargers,powerbank & chargers,116,0,0,3,,REVIEW
+coldstorage,Homecare Fair 2026 Coupon,homecare fair 2026 coupon,101,0,0,6,,REVIEW
+fairprice,Party Costumes,party costumes,84,0,0,0,,REVIEW
+fairprice,Air Dehumidifiers & Purifiers,air dehumidifiers & purifiers,77,0,0,14,,REVIEW
+fairprice,Cooler Box,cooler box,77,0,0,2,,REVIEW
+fairprice,Mobile Phones,mobile phones,77,0,0,5,,REVIEW
+fairprice,Portable Fans,portable fans,77,0,0,7,,REVIEW
+fairprice,Pretend Play,pretend play,72,0,0,9,,REVIEW
+fairprice,Craft Toys,craft toys,71,0,0,4,,REVIEW
+fairprice,Science Kits,science kits,67,0,0,0,,REVIEW
+fairprice,Wi-Fi & Networking,wi-fi & networking,67,0,0,15,,REVIEW
+fairprice,Monitors,monitors,66,0,0,4,,REVIEW
+fairprice,Baby Footwear,baby footwear,61,0,0,3,,REVIEW
+fairprice,Baby Fashion Accessories,baby fashion accessories,50,0,0,4,,REVIEW
+fairprice,Cake Toppers,cake toppers,50,0,0,1,Snacks,AUTO_SOURCE_CATEGORY
+fairprice,Action Figures,action figures,48,0,0,1,,REVIEW
+fairprice,Refrigerators & Freezers,refrigerators & freezers,46,0,0,4,,REVIEW
+fairprice,Dolls & Soft Toys,dolls & soft toys,45,0,0,1,,REVIEW
+fairprice,Music Instruments,music instruments,44,0,0,0,,REVIEW
+fairprice,Pots & Planters,pots & planters,43,0,0,2,,REVIEW
+fairprice,Memory & SD Card,memory & sd card,40,0,0,0,,REVIEW
+fairprice,Night Lights,night lights,40,0,0,0,,REVIEW
+fairprice,Candles,candles,38,0,0,1,,REVIEW
+fairprice,Hand & Stand Mixers,hand & stand mixers,37,0,0,1,,REVIEW
+fairprice,Mouse Pads & Mats,mouse pads & mats,36,0,0,0,,REVIEW
+fairprice,Hair Straighteners,hair straighteners,34,0,0,0,,REVIEW
+coldstorage,Toothbrush,toothbrush,30,0,0,4,Toiletries & Personal Care,AUTO_SOURCE_CATEGORY
+fairprice,Microphones,microphones,30,0,0,1,,REVIEW
+fairprice,Bottle Care & Cleaning,bottle care & cleaning,29,0,0,1,Household Cleaning,AUTO_SOURCE_CATEGORY
+fairprice,Breast Pump Accessories,breast pump accessories,29,0,0,1,,REVIEW
+fairprice,Nail & Cuticle Clippers,nail & cuticle clippers,29,0,0,0,,REVIEW
+fairprice,Water Heaters,water heaters,29,0,0,6,Drinks,AUTO_SOURCE_CATEGORY
+fairprice,Webcams,webcams,29,0,0,0,,REVIEW
+fairprice,Washing Machines & Dishwashers,washing machines & dishwashers,28,0,0,0,,REVIEW
+fairprice,Floor Mats,floor mats,27,0,0,0,,REVIEW
+fairprice,Wine Chillers,wine chillers,27,0,0,6,,REVIEW
+fairprice,Gaming Chair,gaming chair,26,0,0,0,,REVIEW
+fairprice,Television,television,25,0,0,2,,REVIEW
+fairprice,Pinatas,pinatas,24,0,0,2,,REVIEW
+fairprice,Strollers,strollers,24,0,0,3,,REVIEW
+fairprice,"Cribs, Beds & Playpens","cribs, beds & playpens",22,0,0,2,,REVIEW
+fairprice,Strollers Accessories,strollers accessories,22,0,0,1,,REVIEW
+fairprice,Corkscrew & Bottle Opener,corkscrew & bottle opener,19,0,0,0,,REVIEW
+fairprice,Potty Training,potty training,19,0,0,0,,REVIEW
+fairprice,Formula Dispensers & Mixers,formula dispensers & mixers,18,0,0,0,,REVIEW
+fairprice,High Chairs,high chairs,18,0,0,0,,REVIEW
+redmart,Cat Litter Boxes,cat litter boxes,17,0,0,5,,REVIEW
+fairprice,Air Cooler & Portable Aircon,air cooler & portable aircon,16,0,0,3,,REVIEW
+fairprice,Laptops,laptops,16,0,0,0,,REVIEW
+coldstorage,Tropical Fruits,tropical fruits,15,0,0,3,,REVIEW
+fairprice,Baby Bath Tubs,baby bath tubs,15,0,0,1,,REVIEW
+fairprice,Baby Swaddle,baby swaddle,15,0,0,1,,REVIEW
+fairprice,Corner Guards & Door Locks,corner guards & door locks,14,0,0,2,,REVIEW
+coldstorage,Apple & Pears,apple & pears,13,0,0,1,,REVIEW
+fairprice,Bath Toys,bath toys,13,0,0,3,,REVIEW
+fairprice,Smart Ring,smart ring,13,0,0,3,,REVIEW
+fairprice,Walkers,walkers,11,0,0,0,,REVIEW
+fairprice,Safety Gates,safety gates,10,0,0,4,,REVIEW
+redmart,"Pillows, Bolsters, Cases","pillows, bolsters, cases",10,0,0,1,,REVIEW
+fairprice,Breast Pumps,breast pumps,9,0,0,0,,REVIEW
+fairprice,Doorbells,doorbells,9,0,0,2,,REVIEW
+fairprice,Nursing Covers,nursing covers,9,0,0,0,,REVIEW
+fairprice,Projectors,projectors,9,0,0,4,,REVIEW
+redmart,Dog Electric Clippers,dog electric clippers,9,0,0,0,,REVIEW
+coldstorage,"Beans, Peas & Corns","beans, peas & corns",8,0,0,1,,REVIEW
+coldstorage,Brinjal & Gourds,brinjal & gourds,8,0,0,0,,REVIEW
+coldstorage,Women's Shaving,women's shaving,8,0,0,6,,REVIEW
+coldstorage,Wraps,wraps,8,0,0,0,,REVIEW
+fairprice,Mom Accessories,mom accessories,8,0,0,0,,REVIEW
+fairprice,Nursing Accessories,nursing accessories,8,0,0,0,,REVIEW
+redmart,Cross Body & Shoulder Bags,cross body & shoulder bags,8,0,0,2,,REVIEW
+redmart,Irons,irons,8,0,0,2,,REVIEW
+redmart,Dog Shoes,dog shoes,7,0,0,0,,REVIEW
+coldstorage,Other Vegetables,other vegetables,6,0,0,0,,REVIEW
+coldstorage,Pull-Up Pants,pull-up pants,6,0,0,2,,REVIEW
+coldstorage,"Baking Paper, Foil & Wraps","baking paper, foil & wraps",5,0,0,0,,REVIEW
+coldstorage,"Broccoli,  Cauliflowers & Cabbages","broccoli, cauliflowers & cabbages",5,0,0,1,,REVIEW
+coldstorage,Buy $8 of Participating Glad Products to Get 1 FREE Plushie Blind Box (worth $8),buy $8 of participating glad products to get 1 free plushie blind box (worth $8),5,0,0,0,,REVIEW
+coldstorage,"Garlic, Ginger & Onions","garlic, ginger & onions",5,0,0,0,,REVIEW
+coldstorage,Pork,pork,5,0,0,1,,REVIEW
+fairprice,Baby Car Accessories,baby car accessories,5,0,0,0,,REVIEW
+fairprice,Nail Stickers,nail stickers,5,0,0,0,,REVIEW
+redmart,Flea & Tick Treatments,flea & tick treatments,5,0,0,1,,REVIEW
+redmart,Luggage Sets,luggage sets,5,0,0,4,,REVIEW
+coldstorage,BBQ Needs,bbq needs,4,0,0,0,,REVIEW
+coldstorage,Bananas & Grapes,bananas & grapes,4,0,0,2,,REVIEW
+fairprice,Avocados,avocados,4,0,0,0,,REVIEW
+fairprice,Car Seat,car seat,4,0,0,0,,REVIEW
+redmart,Aquarium Filters & Accessories,aquarium filters & accessories,4,0,0,1,,REVIEW
+redmart,Baby Bouncers,baby bouncers,4,0,0,3,,REVIEW
+redmart,Baby Safety Caps,baby safety caps,4,0,0,0,,REVIEW
+redmart,Women's Coin Purses,women's coin purses,4,0,0,1,,REVIEW
+redmart,shop-bag-accessories,shop-bag-accessories,4,0,0,0,,REVIEW
+redmart,shop-food-processors-grinders-&-chopper,shop-food-processors-grinders-&-chopper,4,0,0,2,,REVIEW
+redmart,shop-lip-sets,shop-lip-sets,4,0,0,0,,REVIEW
+redmart,shop-rockers-&-ride-ons,shop-rockers-&-ride-ons,4,0,0,3,,REVIEW
+coldstorage,Cleaning Needs,cleaning needs,3,0,0,0,Household Cleaning,AUTO_SOURCE_CATEGORY
+coldstorage,Facial Masks,facial masks,3,0,0,1,,REVIEW
+coldstorage,Facial Tissue & Wipes,facial tissue & wipes,3,0,0,0,,REVIEW
+coldstorage,Foot Care,foot care,3,0,0,0,,REVIEW
+coldstorage,Kitchenware,kitchenware,3,0,0,0,,REVIEW
+coldstorage,Melons,melons,3,0,0,1,,REVIEW
+coldstorage,Wipes & Cotton Buds,wipes & cotton buds,3,0,0,1,,REVIEW
+redmart,Cat Diet & Vet Food,cat diet & vet food,3,0,0,3,,REVIEW
+redmart,Cat Ramps,cat ramps,3,0,0,2,,REVIEW
+redmart,Cooling Racks,cooling racks,3,0,0,0,,REVIEW
+redmart,Men's Crossbody Bags,men's crossbody bags,3,0,0,1,,REVIEW
+redmart,shop-laptop-bags-&-cases,shop-laptop-bags-&-cases,3,0,0,0,,REVIEW
+redmart,shop-other-kitchen-appliances,shop-other-kitchen-appliances,3,0,0,0,,REVIEW
+coldstorage,A Tropical Affair With Sumifru,a tropical affair with sumifru,2,0,0,2,,REVIEW
+coldstorage,Adult Diapers,adult diapers,2,0,0,0,,REVIEW
+coldstorage,Antiseptic,antiseptic,2,0,0,0,,REVIEW
+coldstorage,Buy ANY 2 Get 1 FREE Vinda Hook ,buy any 2 get 1 free vinda hook,2,0,0,0,,REVIEW
+coldstorage,"Prawns, Squids & Shellfish","prawns, squids & shellfish",2,0,0,0,,REVIEW
+coldstorage,Tape Diapers,tape diapers,2,0,0,2,,REVIEW
+fairprice,Baby Swimwear,baby swimwear,2,0,0,0,,REVIEW
+fairprice,Diaper Bags,diaper bags,2,0,0,0,,REVIEW
+fairprice,Diaper Bins,diaper bins,2,0,0,0,,REVIEW
+fairprice,Party Favours,party favours,2,0,0,0,,REVIEW
+redmart,Dog Strollers,dog strollers,2,0,0,0,,REVIEW
+redmart,Mini & Hand Held Fans,mini & hand held fans,2,0,0,2,,REVIEW
+redmart,Water Dispensers,water dispensers,2,0,0,1,Drinks,AUTO_SOURCE_CATEGORY
+coldstorage,Cottons,cottons,1,0,0,0,,REVIEW
+coldstorage,Eye & Ear,eye & ear,1,0,0,0,,REVIEW
+coldstorage,Fishballs & Fishcakes,fishballs & fishcakes,1,0,0,0,,REVIEW
+coldstorage,Frozen Fish,frozen fish,1,0,0,0,,REVIEW
+coldstorage,Hair Removal,hair removal,1,0,0,0,,REVIEW
+coldstorage,Kitchen Towels,kitchen towels,1,0,0,0,,REVIEW
+coldstorage,Quail Eggs,quail eggs,1,0,0,0,,REVIEW
+coldstorage,Toilet Rolls,toilet rolls,1,0,0,0,,REVIEW
+fairprice,Baby Monitor,baby monitor,1,0,0,0,,REVIEW
+fairprice,E-Books & Digital Dictionaries,e-books & digital dictionaries,1,0,0,0,,REVIEW
+fairprice,Greeting Cards,greeting cards,1,0,0,0,,REVIEW
+fairprice,Hip-Seat Carriers,hip-seat carriers,1,0,0,0,,REVIEW
+fairprice,Intimate,intimate,1,0,0,0,,REVIEW
+fairprice,Wine Hampers,wine hampers,1,0,0,0,,REVIEW
+redmart,Baby Prams,baby prams,1,0,0,1,,REVIEW
+redmart,Dog Nursing Supplies,dog nursing supplies,1,0,0,0,,REVIEW
+redmart,Men's Backpacks,men's backpacks,1,0,0,0,,REVIEW
+redmart,Men's Tote Bags,men's tote bags,1,0,0,0,,REVIEW
+redmart,Small Air Fryers,small air fryers,1,0,0,0,,REVIEW
+redmart,Travel Systems & Car Seats,travel systems & car seats,1,0,0,1,,REVIEW
