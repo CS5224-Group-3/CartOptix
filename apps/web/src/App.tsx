@@ -30,8 +30,6 @@ import { createContext, type ReactNode, useCallback, useContext, useMemo, useSta
 import { toast } from "sonner";
 import { Link, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { type BasketLine, DEMO_SCENARIOS, type RetailerLimit } from "./demo";
 import {
@@ -723,7 +721,15 @@ export function BasketPage() {
               </div>
               {basket.map((line) => {
                 const product = products.get(line.productId);
-                if (!product) return null;
+                if (!product)
+                  return (
+                    <div className="basket-row" key={line.productId}>
+                      <div className="basket-row__identity">
+                        <strong>Loading product…</strong>
+                        <span>{line.quantity} packs</span>
+                      </div>
+                    </div>
+                  );
                 return (
                   <BasketRow
                     key={line.productId}
@@ -1067,8 +1073,9 @@ function NoPlanResult({ searchLimitReached }: { searchLimitReached: boolean }) {
           No complete basket plan met the dataset’s stock and order constraints within the selected
           retailer limit.{" "}
           {searchLimitReached
-            ? "The search stopped at its limit, so this is not labelled impossible."
-            : "This is not labelled impossible: the search did not prove that no plan exists."}
+            ? "The search stopped at its limit, so a valid plan may still exist."
+            : "Every permitted combination fell short of a retailer's minimum order or stock."}{" "}
+          Try allowing more retailer orders, or add packs so each order meets its minimum.
         </p>
         <Link href="/basket" className="text-link">
           Edit basket and try again <ArrowRight size={15} />
@@ -1373,16 +1380,12 @@ export default function App({ queryClient }: { queryClient?: QueryClient }) {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={client}>
-        <ThemeProvider defaultTheme="light">
-          <TooltipProvider>
-            <BasketProvider>
-              <Toaster />
-              <AppShell>
-                <Router />
-              </AppShell>
-            </BasketProvider>
-          </TooltipProvider>
-        </ThemeProvider>
+        <BasketProvider>
+          <Toaster />
+          <AppShell>
+            <Router />
+          </AppShell>
+        </BasketProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
