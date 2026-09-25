@@ -1,3 +1,5 @@
 packages:
   - "apps/*"
   - "packages/*"
+patchedDependencies:
+  '@biomejs/biome@2.5.14': patches/@biomejs__biome@2.5.14.patch
