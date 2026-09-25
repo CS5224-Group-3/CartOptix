@@ -26,26 +26,6 @@
       }
     }
   },
-  "overrides": [
-    {
-      "includes": ["apps/web/src/components/ui/**"],
-      "linter": {
-        "rules": {
-          "a11y": {
-            "useFocusableInteractive": "off",
-            "useKeyWithClickEvents": "off",
-            "useSemanticElements": "off"
-          },
-          "security": {
-            "noDangerouslySetInnerHtml": "off"
-          },
-          "suspicious": {
-            "noArrayIndexKey": "off"
-          }
-        }
-      }
-    }
-  ],
   "assist": {
     "actions": {
       "source": {
