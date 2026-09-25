@@ -865,9 +865,9 @@ export function ResultsPage() {
                 <span>Estimated total</span>
                 <strong>{formatSgd(total)}</strong>
                 {comparison.savingsCents && comparison.savingsCents > 0 ? (
-                  <em>Save {formatSgd(comparison.savingsCents)}</em>
+                  <em>{comparison.savingsLabel}</em>
                 ) : (
-                  <em className="result-hero__neutral">No lower split total</em>
+                  <em className="result-hero__neutral">{comparison.savingsLabel}</em>
                 )}
               </div>
             </div>
