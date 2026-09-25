@@ -9,10 +9,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./domain/*": {
-      "types": "./dist/domain/*.d.ts",
-      "import": "./dist/domain/*.js"
-    },
     "./fixtures": {
       "types": "./dist/fixtures.d.ts",
       "import": "./dist/fixtures.js"

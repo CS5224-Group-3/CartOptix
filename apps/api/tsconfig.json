@@ -3,10 +3,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "types": ["node"],
-    "moduleResolution": "bundler",
-    "module": "preserve",
-    "allowImportingTsExtensions": true
+    "types": ["node"]
   },
   "include": ["src/**/*.ts"],
   "references": [{ "path": "../../packages/contracts" }]

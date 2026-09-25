@@ -47,6 +47,18 @@ if (database.status !== 0) {
   fail("Could not start PostgreSQL. Inspect the output above, then see README.md.");
 }
 process.stdout.write("PostgreSQL is ready on localhost:5433.\n");
+
+// The API and web app import the contracts' compiled output at runtime.
+process.stdout.write("Building shared contracts…\n");
+const contracts = spawnSync(pnpmCommand, ["--filter", "@cartoptix/contracts", "build"], {
+  cwd: repoRoot,
+  stdio: "inherit",
+  shell: process.platform === "win32",
+});
+if (contracts.status !== 0) {
+  fail("Could not build packages/contracts. Inspect the output above.");
+}
+
 process.stdout.write("Starting the API and web app. Stop with Ctrl+C.\n");
 process.stdout.write("The database keeps running; stop it with: docker compose down\n\n");
 

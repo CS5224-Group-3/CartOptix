@@ -44,10 +44,11 @@ cp .env.example .env    # local placeholder values; never commit .env
 pnpm dev
 ```
 
-`pnpm dev` starts PostgreSQL, the CartOptix API, and the web app. Open
-<http://localhost:5173>. The catalogue, product offers, basket comparison and
-demo scenarios are served by the API at <http://localhost:3001/api/trpc>.
-The API health check is available at <http://localhost:3001/health/ready>.
+`pnpm dev` starts PostgreSQL, builds the shared contracts, then starts the API
+and web app. Open <http://localhost:5173>. The catalogue, product offers and
+basket comparison are served by the API under <http://localhost:3001/api/v1>,
+using a synthetic placeholder dataset until the curated seed lands. The API
+health check is available at <http://localhost:3001/health/ready>.
 
 Never commit real credentials. `.env` is ignored by Git; only `.env.example` is
 tracked, and it holds local placeholders.
@@ -58,7 +59,7 @@ Run these from the repository root.
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm dev` | Start PostgreSQL, the API and web app |
+| `pnpm dev` | Start PostgreSQL, the API and the web app |
 | `pnpm check` | Format check, lint, type check and tests — the same checks CI runs |
 | `pnpm fix` | Apply formatting and safe lint fixes |
 | `pnpm build` | Production build of the API and web app |
@@ -90,9 +91,8 @@ build it locally.
 | `Docker is not available or not running` | Start Docker Desktop, then rerun `pnpm dev`. |
 | `Missing .env` | Run `cp .env.example .env`. |
 | `Missing required environment variable DATABASE_URL` | `.env` exists but is incomplete; compare it against `.env.example`. |
-| Database shows `unavailable` on the page | PostgreSQL is not healthy. Check `docker compose ps` and `docker compose logs postgres`. |
+| `/health/ready` reports the database as `unavailable` | PostgreSQL is not healthy. Check `docker compose ps` and `docker compose logs postgres`. |
 | Port 5433, 3001 or 5173 already in use | Another process holds the port. Stop it, or change the value in `.env` and `docker-compose.yml`. |
-
 
 ## Simple File Architecture
 
@@ -103,14 +103,12 @@ when navigating the project.
 CartOptix/
 ├── .github/            # Repository and CI configuration
 ├── apps/               # Runnable web and API applications
-│   ├── api/            # Fastify/tRPC backend, PostgreSQL health checks and comparison services
+│   ├── api/            # Fastify backend: health checks and shopper endpoints (placeholder data for now)
 │   └── web/            # React/Vite browser client and its user interface
 ├── data/               # Retailer source exports used for the curated dataset
 ├── docs/               # Product and technical specifications
 ├── packages/           # Shared libraries used by the applications
-│   └── contracts/      # Shared package boundary for API/domain contracts
-│       └── dist/       # Generated declarations and JavaScript for the contracts package
-│       └── src/        # Source definitions for shared contracts and domain types
+│   └── contracts/      # Request and response schemas and types shared by the API and web app
 ├── scripts/            # Development and repository utility scripts
 ├── AGENTS.md           # Project instructions for contributors and coding agents
 ├── biome.json          # Formatting and linting configuration

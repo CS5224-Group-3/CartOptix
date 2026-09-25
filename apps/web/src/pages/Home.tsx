@@ -1,6 +1,6 @@
 // Renders the CartOptix basket comparison home page.
 
-import { DEMO_BASKET, RETAILERS } from "@cartoptix/contracts/domain/cartoptix";
+import { SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
 import {
   ArrowRight,
   Check,
@@ -16,12 +16,8 @@ import {
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
 import { HowItWorks, useBasket } from "@/App";
-
-const retailerMeta = {
-  RedMart: { className: "retailer-badge--red", sub: "online grocery" },
-  FairPrice: { className: "retailer-badge--green", sub: "everyday value" },
-  "Cold Storage": { className: "retailer-badge--blue", sub: "fresh favourites" },
-} as const;
+import { DEMO_BASKET } from "@/demo";
+import { RETAILER_DISPLAY, RETAILER_IDS } from "@/lib/format";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -43,7 +39,7 @@ export default function Home() {
             </h1>
             <p className="hero-lede">
               CartOptix compares estimated basket costs across Singapore supermarkets — including
-              delivery fees and supported promotions — so you can decide with more clarity before
+              delivery fees and minimum orders — so you can decide with more clarity before
               checkout.
             </p>
             <div className="hero-actions">
@@ -116,17 +112,18 @@ export default function Home() {
         <div className="container retailer-strip__inner">
           <span className="retailer-strip__label">Compare demo offers from</span>
           <div className="retailer-badges">
-            {RETAILERS.map((retailer) => (
-              <div key={retailer} className={`retailer-badge ${retailerMeta[retailer].className}`}>
-                <span className="retailer-badge__logo">
-                  {retailer === "RedMart" ? "R" : retailer === "FairPrice" ? "F" : "C"}
-                </span>
-                <div>
-                  <strong>{retailer}</strong>
-                  <small>{retailerMeta[retailer].sub}</small>
+            {RETAILER_IDS.map((retailerId) => {
+              const retailer = RETAILER_DISPLAY[retailerId];
+              return (
+                <div key={retailerId} className={`retailer-badge ${retailer.badgeClass}`}>
+                  <span className="retailer-badge__logo">{retailer.initial}</span>
+                  <div>
+                    <strong>{retailer.name}</strong>
+                    <small>{retailer.tagline}</small>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -209,8 +206,7 @@ export default function Home() {
       <section className="visible-trust">
         <div className="container">
           <p>
-            <ShieldCheck size={16} /> <strong>Prototype using a fixed retailer dataset.</strong>{" "}
-            Prices and availability may have changed. Confirm details on the retailer’s website.
+            <ShieldCheck size={16} /> {SNAPSHOT_DISCLAIMER}
           </p>
         </div>
       </section>
