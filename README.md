@@ -44,9 +44,11 @@ cp .env.example .env    # local placeholder values; never commit .env
 pnpm dev
 ```
 
-`pnpm dev` starts PostgreSQL, then the API and web app. Open
-<http://localhost:5173>. The page reports API and database readiness; both
-showing `ok` means the whole chain works.
+`pnpm dev` starts PostgreSQL, builds the shared contracts, then starts the API
+and web app. Open <http://localhost:5173>. The catalogue, product offers and
+basket comparison are served by the API under <http://localhost:3001/api/v1>,
+using a synthetic placeholder dataset until the curated seed lands. The API
+health check is available at <http://localhost:3001/health/ready>.
 
 Never commit real credentials. `.env` is ignored by Git; only `.env.example` is
 tracked, and it holds local placeholders.
@@ -89,5 +91,31 @@ build it locally.
 | `Docker is not available or not running` | Start Docker Desktop, then rerun `pnpm dev`. |
 | `Missing .env` | Run `cp .env.example .env`. |
 | `Missing required environment variable DATABASE_URL` | `.env` exists but is incomplete; compare it against `.env.example`. |
-| Database shows `unavailable` on the page | PostgreSQL is not healthy. Check `docker compose ps` and `docker compose logs postgres`. |
+| `/health/ready` reports the database as `unavailable` | PostgreSQL is not healthy. Check `docker compose ps` and `docker compose logs postgres`. |
 | Port 5433, 3001 or 5173 already in use | Another process holds the port. Stop it, or change the value in `.env` and `docker-compose.yml`. |
+
+## Simple File Architecture
+
+The repository is a pnpm monorepo. The paths below are the main places to look
+when navigating the project.
+
+<pre>
+CartOptix/
+├── .github/            # Repository and CI configuration
+├── apps/               # Runnable web and API applications
+│   ├── api/            # Fastify backend: health checks and shopper endpoints (placeholder data for now)
+│   └── web/            # React/Vite browser client and its user interface
+├── data/               # Retailer source exports used for the curated dataset
+├── docs/               # Product and technical specifications
+├── packages/           # Shared libraries used by the applications
+│   └── contracts/      # Request and response schemas and types shared by the API and web app
+├── scripts/            # Development and repository utility scripts
+├── AGENTS.md           # Project instructions for contributors and coding agents
+├── biome.json          # Formatting and linting configuration
+├── docker-compose.yml  # Local PostgreSQL service definition
+├── package.json        # Workspace scripts and shared development dependencies
+├── pnpm-workspace.yaml # pnpm workspace package definitions
+├── tsconfig.base.json  # Shared TypeScript compiler defaults
+├── tsconfig.json       # Root TypeScript project references
+└── vitest.config.ts    # Root test configuration
+</pre>

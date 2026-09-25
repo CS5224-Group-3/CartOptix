@@ -10,6 +10,7 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
     "rewriteRelativeImportExtensions": true,
     "esModuleInterop": true,

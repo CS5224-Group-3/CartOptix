@@ -1,3 +1,4 @@
+// Manages the PostgreSQL connection pool and database health lifecycle.
 import type { DependencyCheck } from "@cartoptix/contracts";
 import pg from "pg";
 

@@ -5,12 +5,15 @@
     "outDir": "./dist/types",
     "noEmit": false,
     "lib": ["es2024", "dom", "dom.iterable"],
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "module": "preserve",
     "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx", "vite.config.ts"],
   "references": [{ "path": "../../packages/contracts" }]
