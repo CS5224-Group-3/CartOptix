@@ -1,0 +1,15 @@
+diff --git a/bin/biome b/bin/biome
+index c5b3631b326dcfe9820a1d43ab64cf28e6fc0aea..a8e12ef38d6817620be63762897ceb56e8ab8a2f 100755
+--- a/bin/biome
++++ b/bin/biome
+@@ -66,7 +66,9 @@ if (binPath) {
+ 		throw result.error;
+ 	}
+ 
+-	process.exitCode = result.status;
++	// A binary killed by a signal (for example on a stack overflow) has a null
++	// status. Treat that as failure, rather than exiting 0 on a partial run.
++	process.exitCode = result.status ?? 1;
+ } else {
+ 	console.error(
+ 		"The Biome CLI package doesn't ship with prebuilt binaries for your platform yet. " +

@@ -43,7 +43,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | Node.js | 24 (major pinned in `.nvmrc`) | Latest LTS line; minor and patch float during pre-production |
 | pnpm | 12.5.1 via Corepack | Pinned in `packageManager`, so only Node must be installed |
 | TypeScript | 7.0.2 | Builds all three packages through project references |
-| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted |
+| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted. `nursery/noMisusedPromises` is off because its type inference overflows the stack on TypeBox types (biomejs/biome#10277). The npm wrapper is patched (`patches/`) so a crash fails the run; unpatched, it exits 0 and a partial check passes. When upgrading Biome, redo the patch or drop it if the wrapper is fixed. |
 | Fastify | 5.12.5 | API |
 | React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
 | `pg` | 8.23.0 | Direct driver for the readiness query; Drizzle arrives with the data work |
@@ -52,13 +52,15 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Rejected: ESLint with `typescript-eslint`.** `typescript-eslint@8.70.0` declares `typescript >=4.8.4 <6.1.0` and therefore cannot lint a TypeScript 7 codebase. Biome carries its own parser, so it imposes no such constraint. Type-aware lint rules are the cost; `tsc --noEmit` still provides type checking. Revisit only if a needed rule cannot be expressed in Biome.
 
-**Deferred:** React Router, TanStack Query, TypeBox, generated OpenAPI, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
+**Contracts (A2 / #5):** `typebox` 1.3.34 defines the shared schemas, with types inferred from them. It is the 1.x line that `@fastify/type-provider-typebox` 6 requires; the older `@sinclair/typebox` 0.34 line was dropped. Tests check that Fastify 5's default validator and serialiser accept the schemas. Generated OpenAPI was evaluated and deferred: both sides share TypeScript types directly, so nothing reads it. Add `@fastify/swagger` if an external consumer appears.
+
+**Deferred:** React Router, TanStack Query, generated OpenAPI, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
 ## 2. Application architecture
 
 ### Runtime boundaries
 
-Use one backend application with catalogue, pricing, optimisation, import and click-event modules. Keep API instances stateless: basket requests contain product IDs, quantities, retailer limit and dataset ID. Do not rely on instance memory or local files for persistent user state.
+Use one backend application with catalogue, pricing, optimisation, import and click-event modules. Keep API instances stateless: basket requests contain product IDs, quantities and the retailer limit, and the server prices them from the active dataset. Do not rely on instance memory or local files for persistent user state.
 
 ```text
 Development POC
@@ -80,7 +82,7 @@ Serve browser traffic over HTTPS. Keep S3 private, restrict application ingress 
 
 Retailer websites are not runtime dependencies. Import validated seed data through an internal CLI or deployment task, not a public upload endpoint. A live retailer outage does not affect snapshot calculations; relevant serving failures are missing eligible records, invalid imports, database unavailability and application failures.
 
-Imports must be atomic and idempotent. Activate a dataset only after validation and loading succeed. Pin each comparison to one dataset and delivery-rule version. Proposed behaviour for a request using a dataset no longer served: return an explicit version-conflict response and prompt the browser to refresh; never silently mix old basket data with new prices.
+Imports must be atomic and idempotent. Activate a dataset only after validation and loading succeed. Each request reads the active dataset, including its delivery rules, from one consistent database snapshot, so an activation during a request cannot mix versions. Clients do not send a dataset version. The browser basket holds only product IDs and quantities, and the server prices every line itself, so there is no stale client pricing to detect. A product removed by a correction is rejected as unknown. Shoppers see one dataset at a time; evaluation data stays frozen on a best-effort basis (section 3).
 
 ## 3. Data design and curation
 
@@ -132,7 +134,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Delivery scenario/rule | Dataset/retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. |
 | Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
-| Click event | Event ID, retailer/listing/product, server timestamp and dataset ID; no user identity. |
+| Click event | Event ID, retailer/listing/product, and the server-recorded timestamp and active dataset ID; no user identity. |
 
 Retain a clean JSON seed and its validation schema in Git. Protect referential integrity, positive usable prices, valid quantities, unique stable IDs and consistent pack information. Different listings with similar names are not automatically duplicates. Do not deploy all 177,638 raw rows merely because they were scraped.
 
@@ -185,18 +187,42 @@ Missing single-retailer baseline means nullable savings, not zero or a fabricate
 
 ## 5. API and interface contracts
 
-Proposed endpoints, preserving the agreed load-test inventory:
+`packages/contracts` defines the first four endpoints below as schemas with inferred types and `routes` for Fastify registration. Synthetic fixtures for each outcome are exported from `@cartoptix/contracts/fixtures`. Handlers belong to their implementation issues. The outbound-click contract belongs to #19, and health responses stay as they are until #13.
 
 | Endpoint | Responsibility |
 | --- | --- |
-| `GET /api/v1/catalogue` | Dataset ID, retailers, categories, delivery assumptions and supported-pricing disclosures. No collection-date display field. |
+| `GET /api/v1/catalogue` | Dataset ID and kind, retailers, categories and delivery assumptions. No collection-date display field. |
 | `GET /api/v1/products` | Paginated search/category browse of published products. |
 | `GET /api/v1/products/:id/offers?quantity=...` | Quantity-aware eligible offers and shared pricing explanations. |
-| `POST /api/v1/basket/compare` | Dataset ID, lines and retailer limit; complete baselines, best-found/split candidates, statuses and breakdowns. |
+| `POST /api/v1/basket/compare` | Lines and retailer limit; complete baselines, best-found/split candidates, statuses and breakdowns. |
 | `POST /api/v1/events/outbound-click` | Best-effort usage event for a known listing and dataset. |
 | `GET /health/live`, `GET /health/ready` | Process health; database and active-dataset readiness. Not substitutes for measured shopper API success. |
 
-Schemas must validate IDs, integer quantities, retailer limits and dataset versions. Client-submitted prices are never trusted. Product links come from approved listing records; avoid an arbitrary redirect service.
+Schemas must validate IDs, integer quantities and retailer limits. Client-submitted prices are never trusted. Product links come from approved listing records; avoid an arbitrary redirect service.
+
+Contract decisions (#5):
+
+- **Money and limits.** Integer SGD cents; 1–50 lines, 1–20 whole packs per line, 1–3 retailers.
+- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. The server uses it to activate imports (#4), stamp click events (#19) and record which seed produced evaluation results. Only the catalogue response exposes it, with its `dataKind`; requests do not carry it and there is no dataset-conflict response. A delivery-rule change produces a new dataset ID.
+- **Duplicate lines.** A product listed twice returns 400 rather than being merged.
+- **Comparison results.** `best_found` carries `baseline`, `bestSplit`, `recommended`, `savingsCents` and `searchLimitReached`, in one of three shapes: baseline only, split only, or both. At least one plan is always present, and `recommended` always names one that is. Equal totals go to the baseline, which needs fewer orders. The recommended plan never costs more than the baseline. `savingsCents` is the baseline total minus the recommended total, and is null exactly when there is no baseline. `proven_infeasible` currently covers only `no_eligible_offer`. Other impossibility proofs return `no_plan_found` until #12 defines them, because that status never claims impossibility.
+- **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
+- **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised. A line total is unit price × quantity plus charges with `includedInPrice: false`; charges already in the price are shown but not added, so nothing is counted twice or dropped. Prices are positive. An unknown delivery rule is `unavailable`, never a zero fee. BCRS container deposits are not modelled in the MVP: the same 10¢ per container applies at every retailer, so it cannot change which plan wins, and the client shows the exported `DEPOSIT_NOTICE` instead. Item charges stay in the contract so deposits can be modelled later. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
+- **Pricing outcomes at the boundary.** The pricing module's outcomes reach shoppers as follows:
+  - An order below a retailer's minimum rules out that candidate plan, not the basket.
+  - An unverified delivery rule excludes that retailer from complete plans rather than failing the request, because a retry cannot fix it and it would count against SC-06.
+  - An unresolved charge or ineligible offer should be stopped by the importer (#4), so one reaching the pricing module returns `service_error`.
+- **Limits.** `MAX_BASKET_LINES` and the per-line pack and retailer-limit ranges are exported constants, so the web client enforces the same bounds as the API.
+- **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer and deposit notice are exported constants (`SNAPSHOT_DISCLAIMER`, `DEPOSIT_NOTICE`), not response fields.
+- **Data the seed must supply (#4).** These contracts define what the API needs, and the seed and import supply it, as the A2-before-B2–B4 ordering in section 8 intends. The seed carries whatever curation knows, without pruning, and the API derives display fields when serving. Each published dataset provides at least:
+  - A dataset ID and whether the data is curated or synthetic.
+  - The three retailers with display names, and the eight categories with stable IDs and names.
+  - The declared delivery scenario and, per retailer, either the verified delivery fee, free-delivery threshold and minimum order (each may be absent) with a short note, or an explicit "unverified".
+  - Per product: category, a representative listing name, the specification text of its listings, and an optional image URL. The API derives `name` from the representative name, removing any `[BCRS]` tag, and `packSize` from the specification, with units lower-cased. The import checks only that both inputs exist.
+  - Per eligible offer, meaning in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), a positive unit price in integer cents, and notes on excluded promotions. Mandatory item charges, with a label, per-pack amount and whether the price already includes them, are needed only once a charge is modelled; the MVP has none, since BCRS deposits are not modelled.
+  - Fixed order-level charges per retailer, and whatever rule inputs the pricing module (#8) needs to compute totals.
+  - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across dataset versions, because browser baskets keep product IDs through a correction.
+  - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
 
 The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, retailer order count and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
 
@@ -250,7 +276,7 @@ Choose run durations and sample sizes before execution. Low-RPS endpoints need s
 
 ### Correctness, quality and user evidence
 
-Reference tests cover exact quantities, multibuy remainders/limits where supported, delivery threshold boundaries, minimum orders, mandatory charges, ties, missing baseline, unavailable offers, heuristic exhaustion, stale datasets and infrastructure errors. Include naive allocations that violate minimum orders, testing bounded repair and honest unresolved-search outcomes. Verify result arithmetic independently and compare small baskets with exhaustive enumeration. Report optimality gaps, missed feasible plans and savings found; do not require mathematical optimality for all production requests.
+Reference tests cover exact quantities, multibuy remainders/limits where supported, delivery threshold boundaries, minimum orders, mandatory charges, ties, missing baseline, unavailable offers, heuristic exhaustion and infrastructure errors. Include naive allocations that violate minimum orders, testing bounded repair and honest unresolved-search outcomes. Verify result arithmetic independently and compare small baskets with exhaustive enumeration. Report optimality gaps, missed feasible plans and savings found; do not require mathematical optimality for all production requests.
 
 Recruit 10–15 regular online grocery shoppers for the formative study described in the product specification. Evaluate understanding and perceived value, including cart reconstruction effort. Record negative findings and small fixes; use broader feedback for the report's future-work section. Representative baskets must not be selected solely for savings. Report catalogue overlap and zero-saving outcomes.
 
@@ -269,7 +295,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### A2 — Define the seed schema and public API contracts
 - **Blocked by:** A1.
-- **Work:** Define versioned seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling and version conflicts.
+- **Work:** Define versioned seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling and dataset-version handling.
 - **Acceptance:** Valid and invalid examples are executable contract fixtures; money uses integer cents; missing baseline and heuristic failure are distinct; no collection-date UI contract is introduced.
 
 ### WS-B — Data curation and persistence
@@ -341,11 +367,11 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### D3 — Deliver basket comparison and outcome presentation
 - **Blocked by:** D2, C4.
 - **Work:** Integrate the comparison API with baseline/split views, itemised retailer receipts, nullable savings and all business/error states.
-- **Acceptance:** Complete plans appear side by side where available; ties favour fewer orders; missing baseline, proven blockers, no-plan and operational failures are distinct; stale dataset responses prompt refresh.
+- **Acceptance:** Complete plans appear side by side where available; ties favour fewer orders; missing baseline, proven blockers, no-plan and operational failures are distinct.
 
 #### D4 — Add purchase links and non-blocking click recording
 - **Blocked by:** D1, B4.
-- **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, timestamp and dataset reference. Collect no user identity for this feature.
+- **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, plus a server-recorded timestamp and dataset ID. Collect no user identity for this feature.
 - **Acceptance:** Known-listing validation prevents arbitrary redirects/events; navigation works when tracking fails; stored events are labelled usage rather than conversions or billable clicks.
 
 #### D5 — Verify complete shopper journeys

@@ -1,0 +1,4 @@
+target_category,redmart_catalog,fairprice_catalog,coldstorage_catalog,catalog_total,catalog_min_per_retailer,catalog_retailer_coverage,redmart_offer,fairprice_offer,coldstorage_offer,offer_total,offer_min_per_retailer,offer_retailer_coverage,meets_default_pilot_threshold,pilot_rank
+Snacks,10387,3547,1262,15196,1262,3,7280,3181,1090,11551,1090,3,True,1
+Drinks,6219,2145,1040,9404,1040,3,4489,1989,905,7383,905,3,True,2
+Canned & Packaged Food,5010,1357,628,6995,628,3,4247,1265,561,6073,561,3,True,3
