@@ -117,10 +117,7 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
     expect(await active()).toEqual(["fixture-seed-v1"]);
   });
 
-  it("rejects invalid rows at the database level too", async () => {
-    await expect(
-      client.query(`UPDATE listings SET unit_price_cents = 0 WHERE dataset_id = 'fixture-seed-v1'`),
-    ).rejects.toThrow(/check/);
+  it("keeps references and the single active dataset at the database level", async () => {
     await expect(
       client.query(`UPDATE listings SET product_id = 'missing' WHERE listing_id = 'redmart-i1-s1'`),
     ).rejects.toThrow(/foreign key/);

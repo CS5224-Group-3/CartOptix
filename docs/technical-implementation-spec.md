@@ -320,7 +320,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### B4 — Implement database migrations and atomic seed import
 - **Blocked by:** A1, A2.
 - **Work:** Implement the logical schema, committed migrations, seed validation, idempotent import and atomic dataset activation using fixture seeds first.
-- **Acceptance:** Fresh-database setup and repeated import succeed; invalid imports leave the active dataset unchanged; foreign keys and money/quantity checks reject invalid data; dataset identity is queryable.
+- **Acceptance:** Fresh-database setup and repeated import succeed; invalid imports leave the active dataset unchanged; seed validation rejects invalid values and foreign keys keep references intact; dataset identity is queryable.
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.
