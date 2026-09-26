@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "fixture-seed-v1",
+  "dataKind": "synthetic",
+  "retailers": [
+    { "retailerId": "redmart", "name": "RedMart", "productUrlHosts": ["www.lazada.sg"] },
+    { "retailerId": "fairprice", "name": "FairPrice", "productUrlHosts": ["www.fairprice.com.sg"] },
+    {
+      "retailerId": "cold-storage",
+      "name": "Cold Storage",
+      "productUrlHosts": ["coldstorage.com.sg"]
+    }
+  ],
+  "categories": [
+    { "categoryId": "rice-and-noodles", "name": "Rice & Noodles" },
+    { "categoryId": "drinks", "name": "Drinks" }
+  ],
+  "delivery": {
+    "scenario": "Synthetic Singapore address, standard delivery, non-member pricing.",
+    "rules": [
+      {
+        "retailerId": "redmart",
+        "status": "verified",
+        "deliveryFeeCents": 599,
+        "freeDeliveryFromCents": 6000,
+        "minimumOrderCents": null,
+        "thresholdIncludesMandatoryCharges": false,
+        "orderCharges": [],
+        "note": "Synthetic rule for tests.",
+        "sources": ["https://example.com/redmart-delivery"]
+      },
+      {
+        "retailerId": "fairprice",
+        "status": "verified",
+        "deliveryFeeCents": 499,
+        "freeDeliveryFromCents": 6000,
+        "minimumOrderCents": 1500,
+        "thresholdIncludesMandatoryCharges": false,
+        "orderCharges": [
+          { "label": "Synthetic service charge", "amountCents": 100, "waivedFromCents": 30000 }
+        ],
+        "note": "Synthetic rule for tests.",
+        "sources": ["https://example.com/fairprice-delivery"]
+      },
+      { "retailerId": "cold-storage", "status": "unverified" }
+    ]
+  },
+  "products": [
+    {
+      "productId": "fixture-rice-5kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "Fixture Jasmine Rice 5kg",
+      "imageUrl": null
+    },
+    {
+      "productId": "fixture-noodles-400g",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "Fixture Egg Noodles",
+      "imageUrl": "https://example.com/noodles.jpg"
+    },
+    {
+      "productId": "fixture-water-6x1-5l",
+      "categoryId": "drinks",
+      "representativeName": "Fixture Mineral Water [BCRS]",
+      "imageUrl": null
+    }
+  ],
+  "listings": [
+    {
+      "listingId": "redmart-i1-s1",
+      "productId": "fixture-rice-5kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00000002",
+      "name": "Fixture Jasmine Rice 5KG",
+      "specification": "5 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i1-s1.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1250,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-1001",
+      "productId": "fixture-rice-5kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00000002",
+      "name": "Fixture Jasmine Rice",
+      "specification": "5 KG",
+      "productUrl": "https://www.fairprice.com.sg/product/fixture-jasmine-rice-5kg-1001",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1190,
+      "excludedPromotions": ["Member price excluded; non-member pricing is used."]
+    },
+    {
+      "listingId": "fairprice-1002",
+      "productId": "fixture-noodles-400g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00000003",
+      "name": "Fixture Egg Noodles",
+      "specification": "400 G",
+      "productUrl": "https://www.fairprice.com.sg/product/fixture-egg-noodles-400g-1002",
+      "priceKind": "ordinary",
+      "unitPriceCents": 331,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-fixture-water",
+      "productId": "fixture-water-6x1-5l",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00000002",
+      "name": "Fixture Mineral Water 6x1.5L",
+      "specification": "6 x 1.5L",
+      "productUrl": "https://coldstorage.com.sg/product/fixture-mineral-water",
+      "priceKind": "ordinary",
+      "unitPriceCents": 540,
+      "excludedPromotions": []
+    }
+  ]
+}
