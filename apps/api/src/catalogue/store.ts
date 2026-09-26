@@ -6,5 +6,9 @@ export interface CatalogueStore {
 }
 
 export function createFixtureCatalogueStore(): CatalogueStore {
-  return { async catalogue() { return structuredClone(catalogueExample); } };
+  return {
+    async catalogue() {
+      return structuredClone(catalogueExample);
+    },
+  };
 }

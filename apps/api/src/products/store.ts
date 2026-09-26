@@ -1,7 +1,7 @@
 import type { OffersResponse, Product } from "@cartoptix/contracts";
 import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
 import { priceOffer } from "./offers.ts";
-import { searchProducts, type ProductSearchQuery } from "./search.ts";
+import { type ProductSearchQuery, searchProducts } from "./search.ts";
 
 export interface ProductsStore {
   products(query: ProductSearchQuery): Promise<{ products: Product[]; total: number }>;
@@ -11,7 +11,9 @@ export interface ProductsStore {
 export function createFixtureProductsStore(): ProductsStore {
   const products = productsExample.products.map((product) => ({ ...product }));
   return {
-    async products(query) { return searchProducts(products, query); },
+    async products(query) {
+      return searchProducts(products, query);
+    },
     async offers(productId, quantity) {
       if (productId !== offersExample.product.productId) return null;
       return {

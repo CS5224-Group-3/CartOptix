@@ -1,2 +1,2 @@
-export { createFixtureCatalogueStore, type CatalogueStore } from "./store.ts";
 export { registerCatalogueRoutes } from "./routes.ts";
+export { type CatalogueStore, createFixtureCatalogueStore } from "./store.ts";

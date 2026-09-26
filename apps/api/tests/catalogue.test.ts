@@ -7,7 +7,10 @@ import { createFixtureCatalogueStore, registerCatalogueRoutes } from "../src/cat
 
 describe("catalogue API", () => {
   const servers: ReturnType<typeof Fastify>[] = [];
-  afterEach(async () => { await Promise.all(servers.map((server) => server.close())); servers.length = 0; });
+  afterEach(async () => {
+    await Promise.all(servers.map((server) => server.close()));
+    servers.length = 0;
+  });
 
   function start() {
     const server = Fastify({ logger: false });
