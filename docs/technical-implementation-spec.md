@@ -43,7 +43,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | Node.js | 24 (major pinned in `.nvmrc`) | Latest LTS line; minor and patch float during pre-production |
 | pnpm | 12.5.1 via Corepack | Pinned in `packageManager`, so only Node must be installed |
 | TypeScript | 7.0.2 | Builds all three packages through project references |
-| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted |
+| Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted. `nursery/noMisusedPromises` is off because its type inference overflows the stack on TypeBox types (biomejs/biome#10277). The npm wrapper is patched (`patches/`) so a crash fails the run; unpatched, it exits 0 and a partial check passes. When upgrading Biome, redo the patch or drop it if the wrapper is fixed. |
 | Fastify | 5.12.5 | API |
 | React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
 | `pg` | 8.23.0 | Direct driver for the readiness query; Drizzle arrives with the data work |
@@ -105,7 +105,7 @@ Known examples requiring validation:
 - RedMart's “Sainsbury's Creme Brulee 2X90G” has a `2 × 180 g` specification.
 - Cold Storage's strawberry almond milk title states `3 x 180ml`, while its specification says `180ml`.
 - Matching “AAA Artificial Vinegar” names appear with 5 L and 640 ml specifications.
-- Some FairPrice names contain `[BCRS]`; the files do not establish deposit inclusion.
+- Some FairPrice names contain `[BCRS]`; the files do not establish deposit inclusion. The MVP does not model BCRS deposits (PR-04), so these listings stay eligible.
 
 Do not infer seller eligibility, collection dates or canonical identity from these files alone. Titles, URLs and category labels can supply clues but are not sufficient verification.
 
@@ -114,12 +114,12 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 1. Register original files with checksums and stable file/sheet/row references. Preserve originals outside the clean seed; do not overwrite source observations.
 2. Normalise field names, money, units, pack counts and stable retailer listing identifiers. Preserve raw values alongside transformations in provenance records.
 3. Restrict candidates to the eight product categories. Treat `Keyword` as source discovery metadata, not the canonical category taxonomy.
-4. Exclude source stock `No`, unverifiable prices, third-party fulfilment and unresolved mandatory charges.
-5. Propose matches, then manually verify exact identity. Quarantine contradictions and record corrections with evidence.
-6. Verify selected promotion terms and one delivery scenario per retailer. Multibuys are optional; if verification effort is disproportionate, publish verified ordinary/unconditional sale prices with omission notices instead. Do not infer unsupported rules. Approve dated promotions only with evidence that they belong in the recorded scenario, preserving the captured validity terms internally.
+4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
+5. Propose matches, which may use AI. A person reviews every disagreement with the name rules, and someone who did not produce the matches checks a random sample of published mappings, reporting its size and error rate. Quarantine contradictions and record corrections with evidence.
+6. Verify one delivery scenario per retailer. The MVP publishes verified ordinary and unconditional sale prices only, recording other promotions as excluded; do not infer unsupported rules.
 7. Publish clean, schema-validated seed data with version, coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
 
-Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. A second reviewer should check a sample of final mappings. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
+Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. An independent reviewer checks a sample of final mappings (step 5). Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
 
 ### Logical data model
 
@@ -127,12 +127,12 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | --- | --- |
 | Retailer | Stable ID, name and allowed product-link domains. |
 | Canonical product | ID, category, brand, variant, pack count, per-pack size/unit or equivalent non-food identity, display name. |
-| Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, verified direct-fulfilment status and evidence reference. |
+| Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, direct-fulfilment status and any evidence reference. |
 | Dataset | ID/schema version, seed revision/checksum, activation state and import metadata. Import time is not a collection date. |
 | Offer | Dataset/listing IDs, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
 | Supported promotion | Listing/dataset, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed for that seed version. |
 | Delivery scenario/rule | Dataset/retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
-| Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. |
+| Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. Unused in the MVP, which does not model BCRS deposits. |
 | Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
 | Click event | Event ID, retailer/listing/product, and the server-recorded timestamp and active dataset ID; no user identity. |
 
@@ -156,7 +156,7 @@ Unknown necessary delivery rules prevent a valid complete-total calculation for 
 
 Promotion eligibility comes from the approved seed version, not the runtime clock. Advancing the current date must not expire or activate a promotion during calculation. Keep captured validity terms as internal provenance, not website collection dates or live-validity claims. A correction to approved rules produces a new seed version. Reject a promotion from the curated rules when its applicability to the recorded scenario cannot be established; retain a verified ordinary-price fallback only with the required disclosure.
 
-The initial pricing kernel may omit multibuy execution entirely if B3 approves only ordinary/unconditional prices. Keep unsupported rules out of the active seed; bundle-specific implementation and acceptance cases apply only when that promotion type is adopted.
+The MVP pricing kernel omits multibuy execution, because B3 approves only ordinary/unconditional prices. Keep unsupported rules out of the active seed; bundle-specific implementation and acceptance cases apply only when that promotion type is adopted.
 
 ### Search procedure
 
@@ -205,23 +205,24 @@ Contract decisions (#5):
 - **Money and limits.** Integer SGD cents; 1–50 lines, 1–20 whole packs per line, 1–3 retailers.
 - **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. The server uses it to activate imports (#4), stamp click events (#19) and record which seed produced evaluation results. Only the catalogue response exposes it, with its `dataKind`; requests do not carry it and there is no dataset-conflict response. A delivery-rule change produces a new dataset ID.
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
-- **Comparison results.** `best_found` carries `baseline` and `bestSplit` (either may be null, but not both), `recommended`, `savingsCents` and `searchLimitReached`. The recommended plan never costs more than the baseline. `savingsCents` is the baseline total minus the recommended total, and is null exactly when there is no baseline. `proven_infeasible` currently covers only `no_eligible_offer`. Other impossibility proofs return `no_plan_found` until #12 defines them, because that status never claims impossibility.
+- **Comparison results.** `best_found` carries `baseline`, `bestSplit`, `recommended`, `savingsCents` and `searchLimitReached`, in one of three shapes: baseline only, split only, or both. At least one plan is always present, and `recommended` always names one that is. Equal totals go to the baseline, which needs fewer orders. The recommended plan never costs more than the baseline. `savingsCents` is the baseline total minus the recommended total, and is null exactly when there is no baseline. `proven_infeasible` currently covers only `no_eligible_offer`. Other impossibility proofs return `no_plan_found` until #12 defines them, because that status never claims impossibility.
 - **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
-- **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised, with `includedInPrice` marking those already in the price, so nothing is counted twice. An unknown delivery rule is `unavailable`, never a zero fee. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
+- **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised. A line total is unit price × quantity plus charges with `includedInPrice: false`; charges already in the price are shown but not added, so nothing is counted twice or dropped. Prices are positive. An unknown delivery rule is `unavailable`, never a zero fee. BCRS container deposits are not modelled in the MVP: the same 10¢ per container applies at every retailer, so it cannot change which plan wins, and the client shows the exported `DEPOSIT_NOTICE` instead. Item charges stay in the contract so deposits can be modelled later. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
 - **Pricing outcomes at the boundary.** The pricing module's outcomes reach shoppers as follows:
   - An order below a retailer's minimum rules out that candidate plan, not the basket.
   - An unverified delivery rule excludes that retailer from complete plans rather than failing the request, because a retry cannot fix it and it would count against SC-06.
   - An unresolved charge or ineligible offer should be stopped by the importer (#4), so one reaching the pricing module returns `service_error`.
 - **Limits.** `MAX_BASKET_LINES` and the per-line pack and retailer-limit ranges are exported constants, so the web client enforces the same bounds as the API.
-- **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer is the exported `SNAPSHOT_DISCLAIMER` constant, not a response field.
-- **Data the seed must supply (#4).** These contracts define what the API needs, and the seed and import supply it, as the A2-before-B2–B4 ordering in section 8 intends. Each published dataset provides:
+- **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer and deposit notice are exported constants (`SNAPSHOT_DISCLAIMER`, `DEPOSIT_NOTICE`), not response fields.
+- **Data the seed must supply (#4).** These contracts define what the API needs, and the seed and import supply it, as the A2-before-B2–B4 ordering in section 8 intends. The seed carries whatever curation knows, without pruning, and the API derives display fields when serving. Each published dataset provides at least:
   - A dataset ID and whether the data is curated or synthetic.
   - The three retailers with display names, and the eight categories with stable IDs and names.
   - The declared delivery scenario and, per retailer, either the verified delivery fee, free-delivery threshold and minimum order (each may be absent) with a short note, or an explicit "unverified".
-  - Per product: category, name, brand, variant, pack-size display text and an optional image URL.
-  - Per eligible offer, meaning verified, in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), unit price in integer cents, mandatory item charges with a label, per-pack amount and whether the price already includes them, and notes on excluded promotions.
+  - Per product: category, a representative listing name, the specification text of its listings, and an optional image URL. The API derives `name` from the representative name, removing any `[BCRS]` tag, and `packSize` from the specification, with units lower-cased. The import checks only that both inputs exist.
+  - Per eligible offer, meaning in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), a positive unit price in integer cents, and notes on excluded promotions. Mandatory item charges, with a label, per-pack amount and whether the price already includes them, are needed only once a charge is modelled; the MVP has none, since BCRS deposits are not modelled.
   - Fixed order-level charges per retailer, and whatever rule inputs the pricing module (#8) needs to compute totals.
-  - Product, listing and category IDs as opaque strings of 1–128 characters. Product and listing IDs stay the same across dataset versions, because browser baskets keep product IDs through a correction.
+  - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across dataset versions, because browser baskets keep product IDs through a correction.
+  - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
 
 The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, retailer order count and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
 
@@ -306,13 +307,13 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B2 — Curate and independently review a pilot catalogue
 - **Blocked by:** A2, B1.
-- **Work:** Prepare a small cross-category sample; verify exact matches, direct fulfilment, stock eligibility, prices and charge treatment. Quarantine unresolved rows and record corrections.
-- **Acceptance:** Every published pilot offer has evidence for eligibility; known title/specification contradictions are resolved or excluded; a second reviewer checks a sample; pilot coverage and gaps are reported.
+- **Work:** Prepare a small cross-category sample in the final seed format; decide exact matches (AI-assisted matching is allowed), check stock eligibility and prices, and remove listings the evidence shows are not directly fulfilled. Quarantine unresolved rows and record corrections.
+- **Acceptance:** Every published pilot offer is in stock with a reliable positive price; a person has reviewed every disagreement between proposed matches and the name rules; known title/specification contradictions are resolved or excluded; an independent reviewer checks a random sample and its size and error rate are reported; pilot coverage and gaps are reported.
 
-#### B3 — Verify delivery scenarios and supported promotion rules
+#### B3 — Verify delivery scenarios and supported prices
 - **Blocked by:** A2, B1.
-- **Work:** Capture one delivery scenario per retailer and verify selected ordinary/sale prices, optional multibuy terms and deposit treatment. Record sources, dated-promotion scenario evidence and excluded promotions. Decide whether multibuy support is justified by the evidence and effort required.
-- **Acceptance:** Standard non-member eligibility, minimum orders, fees and threshold bases are explicit; unresolved charges cannot become zero; price inclusion prevents double-counted deposits. Multibuys without sufficient terms stay unsupported, and omitting multibuy support does not block completion. Approved dated promotions have recorded scenario evidence and are fixed to a seed version; unresolved promotions use a disclosed reliable-price fallback or the offer is excluded.
+- **Work:** Capture one standard non-member delivery scenario per retailer, with its sources, and confirm each offer's price kind (ordinary or unconditional sale). Record other promotions as excluded. Multibuys and BCRS deposits are out of scope for the MVP (PR-03, PR-04).
+- **Acceptance:** Each retailer's fee, free-delivery threshold, minimum order, threshold basis and fixed order-level charges are verified with evidence, or the rule is explicitly unverified; unknown fees cannot become zero. Offers without a reliable ordinary or unconditional sale price are excluded.
 
 #### B4 — Implement database migrations and atomic seed import
 - **Blocked by:** A1, A2.
@@ -321,8 +322,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.
-- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit clean seed/provenance and document versioning, exclusions and review procedure.
-- **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed imports reproducibly and has a recorded revision/checksum.
+- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit clean seed/provenance and document versioning, exclusions and review procedure. Document how to rerun curation (order, working directory, pinned dependencies), and commit notebooks, review decisions and final outputs rather than large intermediates.
+- **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across dataset versions and product links checked against retailer domains at import; the seed imports reproducibly and has a recorded revision/checksum.
 
 ### WS-C — Pricing and recommendation engine
 

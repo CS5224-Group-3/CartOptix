@@ -1,6 +1,7 @@
 import type { LivenessResponse, ReadinessResponse } from "@cartoptix/contracts";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Database } from "./database.ts";
+import { registerShopperRoutes } from "./shopper-routes.ts";
 import { createFixtureCatalogueStore, registerCatalogueRoutes } from "./catalogue/index.ts";
 import { createFixtureProductsStore, registerProductsRoutes } from "./products/index.ts";
 
@@ -15,7 +16,12 @@ export interface BuildServerOptions {
  * server in-process using `.inject()`.
  */
 export function buildServer({ database, webOrigin }: BuildServerOptions): FastifyInstance {
-  const server = Fastify({ logger: false });
+  const server = Fastify({
+    logger: false,
+    // The contracts use closed objects; reject unknown fields instead of
+    // Fastify's default of silently stripping them.
+    ajv: { customOptions: { removeAdditional: false } },
+  });
 
   if (webOrigin !== undefined) {
     server.addHook("onSend", async (_request, reply) => {
@@ -39,6 +45,7 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
     return body;
   });
 
+  registerShopperRoutes(server);
   registerCatalogueRoutes(server, createFixtureCatalogueStore());
   registerProductsRoutes(server, createFixtureProductsStore());
 

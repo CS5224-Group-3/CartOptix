@@ -1,38 +1,20 @@
-import type { ReadinessResponse } from "@cartoptix/contracts";
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { App } from "../src/App.tsx";
-
-afterEach(() => {
-  cleanup();
-  vi.restoreAllMocks();
-});
-
-function mockReadiness(readiness: ReadinessResponse): void {
-  vi.stubGlobal(
-    "fetch",
-    vi.fn(async () => new Response(JSON.stringify(readiness))),
-  );
-}
+// Verifies the main web application renders its expected initial UI.
+import { SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import App from "../src/App.tsx";
 
 describe("App", () => {
-  it("renders the readiness reported by the API", async () => {
-    mockReadiness({ status: "ok", checks: { database: { status: "ok" } } });
-
+  it("renders the home page", () => {
     render(<App />);
 
-    expect(await screen.findByText("CartOptix")).toBeDefined();
-    expect(await screen.findAllByText("ok")).toHaveLength(2);
+    expect(screen.getByRole("link", { name: "CartOptix home" })).toBeDefined();
+    expect(screen.getByRole("heading", { name: /smartest way to fill/i })).toBeDefined();
   });
 
-  it("shows the database failure detail when the API is unavailable", async () => {
-    mockReadiness({
-      status: "unavailable",
-      checks: { database: { status: "unavailable", detail: "connection refused" } },
-    });
-
+  it("shows the shared fixed-dataset disclaimer", () => {
     render(<App />);
 
-    expect(await screen.findByText(/connection refused/)).toBeDefined();
+    expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
   });
 });

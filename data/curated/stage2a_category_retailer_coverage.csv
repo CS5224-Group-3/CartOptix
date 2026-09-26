@@ -1,0 +1,25 @@
+target_category_final,retailer,total_rows,catalog_eligible_rows,offer_eligible_rows,catalog_out_of_stock_rows
+Breakfast Foods,coldstorage,275,248,219,41
+Breakfast Foods,fairprice,351,333,314,29
+Breakfast Foods,redmart,1014,951,635,340
+Canned & Packaged Food,coldstorage,666,628,561,71
+Canned & Packaged Food,fairprice,1465,1357,1265,176
+Canned & Packaged Food,redmart,5518,5010,4247,889
+Dairy,coldstorage,512,446,362,94
+Dairy,fairprice,830,786,665,137
+Dairy,redmart,2937,2825,2110,746
+Drinks,coldstorage,1075,1040,905,142
+Drinks,fairprice,2983,2145,1989,228
+Drinks,redmart,6664,6219,4489,1865
+Household Cleaning,coldstorage,63,38,32,7
+Household Cleaning,fairprice,2494,1366,1299,125
+Household Cleaning,redmart,2686,2234,1752,613
+Rice & Noodles,coldstorage,358,357,340,17
+Rice & Noodles,fairprice,2035,1877,1774,129
+Rice & Noodles,redmart,2561,2340,1791,600
+Snacks,coldstorage,1408,1262,1090,219
+Snacks,fairprice,3847,3547,3181,469
+Snacks,redmart,11121,10387,7280,3350
+Toiletries & Personal Care,coldstorage,323,284,248,42
+Toiletries & Personal Care,fairprice,3406,2932,2775,196
+Toiletries & Personal Care,redmart,1195,1078,969,117

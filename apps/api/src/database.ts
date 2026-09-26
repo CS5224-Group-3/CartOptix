@@ -1,3 +1,4 @@
+// Manages the PostgreSQL connection pool and database health lifecycle.
 import type { DependencyCheck } from "@cartoptix/contracts";
 import pg from "pg";
 
@@ -18,6 +19,14 @@ export function createDatabase(connectionString: string): Database {
     connectionString,
     max: 4,
     connectionTimeoutMillis: 2000,
+  });
+
+  // PostgreSQL can close an idle pooled connection at any time, for example on a
+  // restart. pg then emits "error" on the pool, and with no listener Node exits.
+  // The pool has already discarded that client, so log and carry on; readiness
+  // reports any lasting outage on its next query.
+  pool.on("error", (error) => {
+    console.error("Idle PostgreSQL connection failed:", error.message);
   });
 
   return {

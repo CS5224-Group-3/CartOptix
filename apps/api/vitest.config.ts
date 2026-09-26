@@ -1,3 +1,4 @@
+// Configures Vitest for the API package and loads the repository environment file.
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";

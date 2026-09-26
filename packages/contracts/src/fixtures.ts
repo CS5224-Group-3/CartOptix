@@ -21,9 +21,7 @@ export const fixtureDatasetId = "fixture-v1";
 export const riceProduct = {
   productId: "fixture-rice",
   categoryId: "rice-noodles",
-  name: "Fixture rice",
-  brand: "Fixture",
-  variant: "White rice",
+  name: "Fixture White Rice",
   packSize: "1 × 1 kg",
   imageUrl: null,
 } satisfies Product;
@@ -31,9 +29,7 @@ export const riceProduct = {
 export const drinkProduct = {
   productId: "fixture-drink",
   categoryId: "drinks",
-  name: "Fixture drink",
-  brand: "Fixture",
-  variant: "Plain",
+  name: "Fixture Plain Drink",
   packSize: "1 × 500 ml",
   imageUrl: null,
 } satisfies Product;
@@ -111,10 +107,21 @@ const plan = (...orders: Order[]): Plan => ({
 
 const riceAtFairprice = line("fixture-rice", "fairprice", 400);
 const riceAtRedmart = line("fixture-rice", "redmart", 600);
-const drinkAtRedmart = line("fixture-drink", "redmart", 200);
+/** A 10-cent container deposit added on top of the 200-cent price. */
+const drinkAtRedmart: PlanLine = {
+  productId: "fixture-drink",
+  quantity: 1,
+  listingId: "fixture-drink-redmart",
+  productUrl: "https://example.com/fixture-drink-redmart",
+  priceKind: "ordinary",
+  unitPriceCents: 200,
+  itemCharges: [{ label: "Synthetic container deposit", amountCents: 10, includedInPrice: false }],
+  lineTotalCents: 210,
+  excludedPromotions: [],
+};
 
-/** Two packs of rice: one offer has a deposit already in its price and an
- * excluded promotion. Offers are cheapest first. */
+/** Two packs of rice. FairPrice has a deposit already in its price and an excluded
+ * promotion; RedMart adds a handling fee on top. Offers are cheapest first. */
 export const offersExample = {
   product: riceProduct,
   quantity: 2,
@@ -135,8 +142,8 @@ export const offersExample = {
       productUrl: "https://example.com/fixture-rice-redmart",
       priceKind: "unconditional_sale",
       unitPriceCents: 600,
-      itemCharges: [],
-      lineTotalCents: 1200,
+      itemCharges: [{ label: "Synthetic handling fee", amountCents: 30, includedInPrice: false }],
+      lineTotalCents: 1230,
       excludedPromotions: [],
     },
   ],
@@ -168,6 +175,27 @@ export const singleRetailerWinsExample = {
   searchLimitReached: false,
   baseline: redmartBaseline,
   bestSplit: plan(order("fairprice", [riceAtFairprice], 500), order("redmart", [drinkAtRedmart])),
+  recommended: "baseline",
+  savingsCents: 0,
+} satisfies BasketCompareResponse;
+
+/** The split costs exactly what the baseline does, so the baseline wins because it
+ * needs fewer orders (J3). */
+export const tieExample = {
+  status: "best_found",
+  searchLimitReached: false,
+  baseline: redmartBaseline,
+  bestSplit: plan(order("fairprice", [riceAtFairprice], 200), order("redmart", [drinkAtRedmart])),
+  recommended: "baseline",
+  savingsCents: 0,
+} satisfies BasketCompareResponse;
+
+/** With a one-retailer limit no split is permitted, so the baseline is the only plan. */
+export const baselineOnlyExample = {
+  status: "best_found",
+  searchLimitReached: false,
+  baseline: redmartBaseline,
+  bestSplit: null,
   recommended: "baseline",
   savingsCents: 0,
 } satisfies BasketCompareResponse;

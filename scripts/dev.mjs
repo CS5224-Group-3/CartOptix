@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Starts the local API and web development processes together.
 /**
  * Starts local development: PostgreSQL, then the API and web app together.
  *
@@ -11,6 +12,12 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const pnpmCommand = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
+const childProcessOptions = {
+  cwd: repoRoot,
+  stdio: "inherit",
+  shell: process.platform === "win32",
+};
 
 function fail(message) {
   process.stderr.write(`\n${message}\n\n`);
@@ -40,12 +47,27 @@ if (database.status !== 0) {
   fail("Could not start PostgreSQL. Inspect the output above, then see README.md.");
 }
 process.stdout.write("PostgreSQL is ready on localhost:5433.\n");
+
+// The API and web app import the contracts' compiled output at runtime.
+process.stdout.write("Building shared contracts…\n");
+const contracts = spawnSync(pnpmCommand, ["--filter", "@cartoptix/contracts", "build"], {
+  cwd: repoRoot,
+  stdio: "inherit",
+  shell: process.platform === "win32",
+});
+if (contracts.status !== 0) {
+  fail("Could not build packages/contracts. Inspect the output above.");
+}
+
 process.stdout.write("Starting the API and web app. Stop with Ctrl+C.\n");
 process.stdout.write("The database keeps running; stop it with: docker compose down\n\n");
 
 const children = [
-  spawn("pnpm", ["--filter", "@cartoptix/api", "dev"], { cwd: repoRoot, stdio: "inherit" }),
-  spawn("pnpm", ["--filter", "@cartoptix/web", "dev"], { cwd: repoRoot, stdio: "inherit" }),
+  spawn(pnpmCommand, ["--filter", "@cartoptix/api", "dev"], childProcessOptions),
+  spawn(pnpmCommand, ["--filter", "@cartoptix/web", "dev"], {
+    ...childProcessOptions,
+    env: { ...process.env, NODE_ENV: "development" },
+  }),
 ];
 
 let shuttingDown = false;

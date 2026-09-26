@@ -27,7 +27,7 @@ Primary users are people who buy groceries online in Singapore and want to know 
 | Basket line | One canonical product and the requested number of whole packs. |
 | Complete plan | Every requested line is assigned in full to an eligible retailer, with all modelled order constraints met. This does not guarantee current stock or fulfilment. |
 | Single-retailer baseline | The cheapest feasible complete plan using one retailer, calculated with the same dataset and pricing rules as split plans. |
-| Eligible offer | A listing approved for the curated dataset with usable pricing, verified direct supermarket fulfilment and an in-stock source flag. |
+| Eligible offer | A listing approved for the curated dataset with usable pricing, direct supermarket fulfilment and an in-stock source flag. A listing counts as directly fulfilled unless evidence shows otherwise (PR-02). |
 | BAU | The prospective business-as-usual service. Its demand and cost estimates are planning assumptions, not demonstrated adoption. |
 
 ### Catalogue boundary
@@ -113,13 +113,13 @@ Each line goes entirely to one retailer. Do not divide its quantity across retai
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Manually verify product mappings, direct fulfilment and ambiguous fields. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
+Product mappings may be decided with AI assistance. A person reviews every case where the proposed match disagrees with the name rules, and someone who did not produce the matches checks a random sample of published mappings; report the sample size and error rate. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
 
 ### PR-03 — Supported pricing and promotions
 
 Start with ordinary prices and clearly unconditional sale prices. Support same-product multibuys only for selected listings whose terms can be verified and encoded, including eligible quantity, repetition limits and the price of remaining packs.
 
-Multibuy support is optional for the initial MVP, not a release blocker. If reliable terms cannot be recovered within the project's effort budget, proceed with verified ordinary and unconditional sale prices and disclose the excluded promotions.
+Multibuy support is optional for the initial MVP, not a release blocker. If reliable terms cannot be recovered within the project's effort budget, proceed with verified ordinary and unconditional sale prices and disclose the excluded promotions. The MVP takes this route: it applies no multibuys, and records them as excluded promotions.
 
 Raw promotion descriptions are evidence, not executable rules. Do not automatically subtract a `Savings` amount from a price that may already include the discount. Do not infer unrestricted repetition or same-product eligibility from “Any N” wording.
 
@@ -133,7 +133,7 @@ Use one documented Singapore delivery scenario: a declared serviceable location,
 
 Maintain each retailer's delivery fee, free-delivery threshold, minimum-order value, threshold spending basis and relevant mandatory charges. Apply actual verified rules for the selected scenario; do not assume every retailer uses the same pre-/post-discount basis. Record verification evidence internally.
 
-Verify deposit treatment for affected beverage listings, including `[BCRS]` records. Itemise mandatory charges without double-counting charges already included in the recorded price. Exclude affected listings if treatment remains unresolved. Unknown delivery charges must never silently become zero or support a complete-total savings claim.
+BCRS container deposits are not modelled in the MVP. The same 10¢ per container applies at every retailer, so it cannot change which plan wins; `[BCRS]` listings stay eligible, and the comparison notes that totals exclude the refundable deposit. If a mandatory charge is modelled later, itemise it without double-counting a charge already included in the recorded price, and exclude affected listings while its treatment remains unresolved. Unknown delivery charges must never silently become zero or support a complete-total savings claim.
 
 ### PR-05 — Recommendation integrity
 
