@@ -36,7 +36,9 @@
         "freeDeliveryFromCents": 6000,
         "minimumOrderCents": 1500,
         "thresholdIncludesMandatoryCharges": false,
-        "orderCharges": [{ "label": "Synthetic service charge", "amountCents": 100 }],
+        "orderCharges": [
+          { "label": "Synthetic service charge", "amountCents": 100, "waivedFromCents": 30000 }
+        ],
         "note": "Synthetic rule for tests.",
         "sources": ["https://example.com/fairprice-delivery"]
       },

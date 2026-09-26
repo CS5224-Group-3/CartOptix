@@ -41,6 +41,7 @@ CREATE TABLE "order_charges" (
 	"retailer_id" text NOT NULL,
 	"label" text NOT NULL,
 	"amount_cents" integer NOT NULL,
+	"waived_from_cents" integer,
 	CONSTRAINT "order_charges_retailer_id_label_pk" PRIMARY KEY("retailer_id","label")
 );
 --> statement-breakpoint

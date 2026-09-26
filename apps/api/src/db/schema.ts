@@ -66,6 +66,8 @@ export const orderCharges = pgTable(
       .references(() => deliveryRules.retailerId),
     label: text("label").notNull(),
     amountCents: integer("amount_cents").notNull(),
+    /** Spend at or above which the charge is waived; NULL if never waived. */
+    waivedFromCents: integer("waived_from_cents"),
   },
   (table) => [primaryKey({ columns: [table.retailerId, table.label] })],
 );

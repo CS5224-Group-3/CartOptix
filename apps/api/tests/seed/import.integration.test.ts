@@ -63,6 +63,8 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
     expect(await count("products")).toBe(3);
     expect(await count("listings")).toBe(4);
     expect(await count("order_charges")).toBe(1);
+    const charge = await client.query("SELECT amount_cents, waived_from_cents FROM order_charges");
+    expect(charge.rows[0]).toEqual({ amount_cents: 100, waived_from_cents: 30000 });
     const rule = await client.query(
       "SELECT status, delivery_fee_cents FROM delivery_rules WHERE retailer_id = 'cold-storage'",
     );

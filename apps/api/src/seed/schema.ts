@@ -32,7 +32,14 @@ const VerifiedDeliveryRule = closed({
   minimumOrderCents: nullableCents,
   /** Whether mandatory item charges count toward the thresholds (pricing module). */
   thresholdIncludesMandatoryCharges: Type.Boolean(),
-  orderCharges: Type.Array(closed({ label: text, amountCents: CentsSchema })),
+  orderCharges: Type.Array(
+    closed({
+      label: text,
+      amountCents: CentsSchema,
+      /** Spend at or above which the charge is waived; null if never waived. */
+      waivedFromCents: nullableCents,
+    }),
+  ),
   note: text,
   /** Where the rule was verified; internal evidence, never shown. */
   sources: Type.Array(HttpsUrlSchema, { minItems: 1 }),

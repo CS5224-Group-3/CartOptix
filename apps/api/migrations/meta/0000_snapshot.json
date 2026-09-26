@@ -1,5 +1,5 @@
 {
-  "id": "5b0cd8ec-8c3f-48b0-a7dc-a60129f44215",
+  "id": "de059d2a-7133-4c91-b02b-70f5d2063b8c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -271,6 +271,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "waived_from_cents": {
+          "name": "waived_from_cents",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
