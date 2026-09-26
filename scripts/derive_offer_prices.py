@@ -50,11 +50,40 @@ def to_cents(text: str) -> int | None:
     return int(rounded) if abs(cents - rounded) < Decimal("0.001") else None
 
 
-def main() -> None:
-    raw = {
+def derive_offer(source) -> dict:
+    """Price, price kind and excluded promotion for one workbook row."""
+    price = to_cents(source["Product Price"])
+    original = to_cents(source["Original Price"])
+    savings = source["Savings"].strip()
+    is_sale = price is not None and original is not None and original > price
+    promotion = ""
+    if savings and not (is_sale and PLAIN_SAVING.fullmatch(savings)):
+        promotion = f"Promotion not applied: {DATES.sub('', savings).strip()}"
+    eligible = price is not None and price > 0
+    return {
+        "unit_price_cents": price if eligible else None,
+        "price_kind": ("unconditional_sale" if is_sale else "ordinary") if eligible else None,
+        "excluded_promotion": promotion,
+        "eligible": eligible,
+        "savings": savings,
+    }
+
+
+def load_workbooks() -> dict:
+    return {
         retailer: pd.read_excel(RAW / name, dtype=str).fillna("")
         for retailer, name in WORKBOOKS.items()
     }
+
+
+def source_row(raw: dict, source_record_id: str):
+    """The workbook row for a source_record_id (<retailer>_<excel row>)."""
+    retailer, row = source_record_id.rsplit("_", 1)
+    return raw[retailer].iloc[int(row) - 2]  # Excel row 1 is the header.
+
+
+def main() -> None:
+    raw = load_workbooks()
     with open(CURATED / "stage2d_provisional_seed_shortlist.csv", encoding="utf-8") as f:
         shortlist = {row["canonical_product_id"] for row in csv.DictReader(f)}
     with open(CURATED / "stage2d_canonical_membership_provisional.csv", encoding="utf-8") as f:
@@ -62,32 +91,22 @@ def main() -> None:
 
     out = []
     for member in members:
-        retailer = member["retailer"]
-        row = int(member["source_record_id"].rsplit("_", 1)[1])
-        source = raw[retailer].iloc[row - 2]  # Excel row 1 is the header.
+        source = source_row(raw, member["source_record_id"])
         if source["Product Name"].strip() != member["product_name_raw"].strip():
             raise SystemExit(f"Row mismatch for {member['source_record_id']}")
 
-        price = to_cents(source["Product Price"])
-        original = to_cents(source["Original Price"])
-        savings = source["Savings"].strip()
-        is_sale = price is not None and original is not None and original > price
-        promotion = ""
-        if savings and not (is_sale and PLAIN_SAVING.fullmatch(savings)):
-            promotion = f"Promotion not applied: {DATES.sub('', savings).strip()}"
-        eligible = price is not None and price > 0
-
+        offer = derive_offer(source)
         out.append(
             {
                 "source_record_id": member["source_record_id"],
-                "retailer": retailer,
-                "unit_price_cents": price if eligible else "",
-                "price_kind": ("unconditional_sale" if is_sale else "ordinary") if eligible else "",
-                "excluded_promotion": promotion,
-                "offer_status": "ELIGIBLE" if eligible else "EXCLUDED_NO_RELIABLE_PRICE",
+                "retailer": member["retailer"],
+                "unit_price_cents": offer["unit_price_cents"] or "",
+                "price_kind": offer["price_kind"] or "",
+                "excluded_promotion": offer["excluded_promotion"],
+                "offer_status": "ELIGIBLE" if offer["eligible"] else "EXCLUDED_NO_RELIABLE_PRICE",
                 "raw_product_price": source["Product Price"],
                 "raw_original_price": source["Original Price"],
-                "raw_savings": savings,
+                "raw_savings": offer["savings"],
             }
         )
 

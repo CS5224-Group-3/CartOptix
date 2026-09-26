@@ -1,0 +1,75 @@
+group_id,category,source_record_id
+CP_429ce20d5685,Breakfast Foods,coldstorage_00001720
+CP_429ce20d5685,Breakfast Foods,redmart_00045361
+CP_50fb97cb8056,Breakfast Foods,coldstorage_00001438
+CP_50fb97cb8056,Breakfast Foods,fairprice_00009499
+CP_50fb97cb8056,Breakfast Foods,redmart_00044626
+CP_72a510e0fde9,Breakfast Foods,coldstorage_00001603
+CP_72a510e0fde9,Breakfast Foods,fairprice_00009473
+CP_72a510e0fde9,Breakfast Foods,redmart_00045557
+CP_9c6a33c8f766,Breakfast Foods,coldstorage_00001786
+CP_9c6a33c8f766,Breakfast Foods,fairprice_00009372
+CP_378da9370527,Canned & Packaged Food,coldstorage_00002948
+CP_378da9370527,Canned & Packaged Food,fairprice_00066384
+CP_378da9370527,Canned & Packaged Food,redmart_00033595
+CP_520c8991a07f,Canned & Packaged Food,coldstorage_00002313
+CP_520c8991a07f,Canned & Packaged Food,fairprice_00010380
+CP_e4a8d9331a15,Canned & Packaged Food,coldstorage_00002972
+CP_e4a8d9331a15,Canned & Packaged Food,fairprice_00066536
+CP_e4a8d9331a15,Canned & Packaged Food,redmart_00035266
+CP_e4c6a06d8cca,Canned & Packaged Food,coldstorage_00002840
+CP_e4c6a06d8cca,Canned & Packaged Food,redmart_00033718
+CP_016db99c77cf,Dairy,coldstorage_00004082
+CP_016db99c77cf,Dairy,fairprice_00036897
+CP_016db99c77cf,Dairy,redmart_00010616
+CP_1b1761430fd0,Dairy,fairprice_00037552
+CP_1b1761430fd0,Dairy,redmart_00008203
+CP_2d0f2898d601,Dairy,coldstorage_00003187
+CP_2d0f2898d601,Dairy,fairprice_00060523
+CP_2d0f2898d601,Dairy,redmart_00004610
+CP_e5d36ebb5e29,Dairy,coldstorage_00004068
+CP_e5d36ebb5e29,Dairy,redmart_00010553
+CP_09b2c22460fd,Drinks,coldstorage_00004167
+CP_09b2c22460fd,Drinks,redmart_00005752
+CP_15a29c891d3f,Drinks,coldstorage_00000613
+CP_15a29c891d3f,Drinks,redmart_00003437
+CP_bac2380c6bfa,Drinks,coldstorage_00009170
+CP_bac2380c6bfa,Drinks,fairprice_00001222
+CP_cd78ba741f80,Drinks,coldstorage_00000931
+CP_cd78ba741f80,Drinks,fairprice_00059718
+CP_12c702fc23fb,Household Cleaning,fairprice_00053644
+CP_12c702fc23fb,Household Cleaning,redmart_00055279
+CP_2ee87cc85e8b,Household Cleaning,fairprice_00042610
+CP_2ee87cc85e8b,Household Cleaning,redmart_00093928
+CP_77b8b2e39488,Household Cleaning,fairprice_00042298
+CP_77b8b2e39488,Household Cleaning,redmart_00094029
+CP_df0d2f37e3da,Household Cleaning,fairprice_00052897
+CP_df0d2f37e3da,Household Cleaning,redmart_00097369
+CP_56f8788dae4e,Rice & Noodles,coldstorage_00007596
+CP_56f8788dae4e,Rice & Noodles,fairprice_00000088
+CP_56f8788dae4e,Rice & Noodles,redmart_00084343
+CP_607355ed856e,Rice & Noodles,fairprice_00067131
+CP_607355ed856e,Rice & Noodles,redmart_00084023
+CP_687437424439,Rice & Noodles,coldstorage_00007579
+CP_687437424439,Rice & Noodles,fairprice_00067172
+CP_ac7a4067172a,Rice & Noodles,coldstorage_00007569
+CP_ac7a4067172a,Rice & Noodles,fairprice_00066976
+CP_ac7a4067172a,Rice & Noodles,redmart_00084514
+CP_2d2615ca0a0b,Snacks,coldstorage_00008627
+CP_2d2615ca0a0b,Snacks,fairprice_00013912
+CP_2d2615ca0a0b,Snacks,redmart_00012703
+CP_5dc68a8f71be,Snacks,fairprice_00001494
+CP_5dc68a8f71be,Snacks,redmart_00015970
+CP_a661c529cc00,Snacks,coldstorage_00007662
+CP_a661c529cc00,Snacks,fairprice_00001409
+CP_d81019c1c03d,Snacks,coldstorage_00008716
+CP_d81019c1c03d,Snacks,fairprice_00001480
+CP_d81019c1c03d,Snacks,redmart_00015371
+CP_0cd20fcb9106,Toiletries & Personal Care,coldstorage_00009435
+CP_0cd20fcb9106,Toiletries & Personal Care,fairprice_00021661
+CP_1cd497ac1a1f,Toiletries & Personal Care,coldstorage_00007149
+CP_1cd497ac1a1f,Toiletries & Personal Care,fairprice_00021666
+CP_be62bc0b8f40,Toiletries & Personal Care,coldstorage_00009437
+CP_be62bc0b8f40,Toiletries & Personal Care,fairprice_00021659
+CP_c4c1c00f8375,Toiletries & Personal Care,fairprice_00018470
+CP_c4c1c00f8375,Toiletries & Personal Care,redmart_00072742

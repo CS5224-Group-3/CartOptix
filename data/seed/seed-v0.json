@@ -1,0 +1,1194 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "seed-v0",
+  "dataKind": "curated",
+  "retailers": [
+    {
+      "retailerId": "redmart",
+      "name": "RedMart",
+      "productUrlHosts": ["www.lazada.sg"]
+    },
+    {
+      "retailerId": "fairprice",
+      "name": "FairPrice",
+      "productUrlHosts": ["www.fairprice.com.sg"]
+    },
+    {
+      "retailerId": "cold-storage",
+      "name": "Cold Storage",
+      "productUrlHosts": ["coldstorage.com.sg"]
+    }
+  ],
+  "categories": [
+    {
+      "categoryId": "rice-and-noodles",
+      "name": "Rice & Noodles"
+    },
+    {
+      "categoryId": "drinks",
+      "name": "Drinks"
+    },
+    {
+      "categoryId": "dairy",
+      "name": "Dairy"
+    },
+    {
+      "categoryId": "breakfast-foods",
+      "name": "Breakfast Foods"
+    },
+    {
+      "categoryId": "canned-and-packaged-food",
+      "name": "Canned & Packaged Food"
+    },
+    {
+      "categoryId": "snacks",
+      "name": "Snacks"
+    },
+    {
+      "categoryId": "household-cleaning",
+      "name": "Household Cleaning"
+    },
+    {
+      "categoryId": "toiletries-and-personal-care",
+      "name": "Toiletries & Personal Care"
+    }
+  ],
+  "delivery": {
+    "scenario": "A serviceable Singapore address, standard scheduled delivery, non-member pricing and no vouchers.",
+    "rules": [
+      {
+        "retailerId": "redmart",
+        "status": "verified",
+        "deliveryFeeCents": 599,
+        "freeDeliveryFromCents": 6000,
+        "minimumOrderCents": null,
+        "thresholdIncludesMandatoryCharges": false,
+        "orderCharges": [],
+        "note": "S$5.99 standard delivery below S$60.",
+        "sources": [
+          "https://www.lazada.sg/products/pdp-i13885587905-s124895612675.html",
+          "https://redmart.lazada.sg/shop-groceries-fresh-produce/?m=redmart"
+        ]
+      },
+      {
+        "retailerId": "fairprice",
+        "status": "verified",
+        "deliveryFeeCents": 500,
+        "freeDeliveryFromCents": 5900,
+        "minimumOrderCents": null,
+        "thresholdIncludesMandatoryCharges": false,
+        "orderCharges": [
+          {
+            "label": "Service fee",
+            "amountCents": 399,
+            "waivedFromCents": 30000
+          }
+        ],
+        "note": "S$5 delivery below S$59, plus a S$3.99 service fee on every order below S$300.",
+        "sources": [
+          "https://help.fairprice.com.sg/hc/en-us/articles/360021857151-What-are-the-delivery-charges",
+          "https://help.fairprice.com.sg/hc/en-us/articles/360040544411-Service-Fee-Structure",
+          "https://www.fairprice.com.sg/events/online/lower-minimum-spend-for-free-delivery/"
+        ]
+      },
+      {
+        "retailerId": "cold-storage",
+        "status": "verified",
+        "deliveryFeeCents": 700,
+        "freeDeliveryFromCents": 8000,
+        "minimumOrderCents": null,
+        "thresholdIncludesMandatoryCharges": false,
+        "orderCharges": [],
+        "note": "S$7 delivery below S$80.",
+        "sources": [
+          "https://coldstorage.com.sg/terms-and-conditions",
+          "https://coldstorage.com.sg/faq"
+        ]
+      }
+    ]
+  },
+  "products": [
+    {
+      "productId": "attack-perfume-floral-liquid-detergent-3-6kg",
+      "categoryId": "household-cleaning",
+      "representativeName": "Attack Perfume Floral Liquid Detergent 3.6KG",
+      "imageUrl": "https://sg-test-11.slatic.net/p/acb8380f0fb02d10bd01a852c591f928.jpg"
+    },
+    {
+      "productId": "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+      "categoryId": "drinks",
+      "representativeName": "[BCRS] Yeo's First Harvest Green Tea No Sugar 1.5L",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F18946298%2F005170780.jpg%3Fv%3D1786006790&w=1200&q=75"
+    },
+    {
+      "productId": "bio-home-floor-cleaner-1-5l-lemongrass-and-green-tea",
+      "categoryId": "household-cleaning",
+      "representativeName": "Bio-Home Floor Cleaner 1.5L - Lemongrass and Green Tea",
+      "imageUrl": "https://sg-test-11.slatic.net/p/0b7b55ae2d811ac4ed4f53114d50ddb1.jpg"
+    },
+    {
+      "productId": "boncafe-morning-coffee-beans-200g",
+      "categoryId": "drinks",
+      "representativeName": "Boncafe Morning Coffee Beans 200g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F9041%2F005008776.jpg%3Fv%3D1775760946&w=1200&q=75"
+    },
+    {
+      "productId": "calbee-black-pepper-prawn-crackers-90g",
+      "categoryId": "snacks",
+      "representativeName": "Calbee Black Pepper Prawn Crackers 90g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F37904%2F005037496.jpg%3Fv%3D1775771537&w=1200&q=75"
+    },
+    {
+      "productId": "cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-and-ginger-500ml",
+      "categoryId": "household-cleaning",
+      "representativeName": "Cloversoft 2 in 1 Bleach-Free Toilet Cleaner (Rosemary & Ginger) 500ML",
+      "imageUrl": "https://sg-test-11.slatic.net/p/d09b0e824e6b9675fa971f0a89722837.jpg"
+    },
+    {
+      "productId": "cowhead-natural-cheese-slices-cheddar",
+      "categoryId": "dairy",
+      "representativeName": "Cowhead Natural Cheese Slices - Cheddar",
+      "imageUrl": "https://sg-test-11.slatic.net/p/bca2c4f06a29ede1608c35c198f9e64d.jpg"
+    },
+    {
+      "productId": "dove-anti-bacterial-care-and-protect-body-wash-1l",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Dove Anti-Bacterial Care And Protect Body Wash 1L",
+      "imageUrl": "https://sg-test-11.slatic.net/p/037d80b6fdbbb6d6e489f04a5a09c070.jpg"
+    },
+    {
+      "productId": "fernleaf-full-cream-milk-powder-1-1kg",
+      "categoryId": "drinks",
+      "representativeName": "Fernleaf Full Cream Milk Powder 1.1kg",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F110880%2F005108431.jpg%3Fv%3D1775795739&w=1200&q=75"
+    },
+    {
+      "productId": "golden-pineapple-thai-fragrant-rice-5kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "Golden Pineapple Thai Fragrant Rice 5kg",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F15515%2F005015258.jpg%3Fv%3D1775763570&w=1200&q=75"
+    },
+    {
+      "productId": "greenfields-fresh-milk-1-89l",
+      "categoryId": "dairy",
+      "representativeName": "Greenfields Fresh Milk 1.89L",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F22745%2F005022465.jpg%3Fv%3D1775766109&w=1200&q=75"
+    },
+    {
+      "productId": "iliada-kalamata-pitted-olives-370g",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Iliada Kalamata Pitted Olives 370g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F114819%2F005116673.jpg%3Fv%3D1775797199&w=1200&q=75"
+    },
+    {
+      "productId": "julie-s-charm-tiramisu-sandwich-172-g",
+      "categoryId": "snacks",
+      "representativeName": "Julie's Charm Tiramisu Sandwich 172 G",
+      "imageUrl": "https://sg-live-01.slatic.net/p/3a526914f3c53cd3bab75a6d0fbc33dd.jpg"
+    },
+    {
+      "productId": "kellogg-s-rice-krispies-cereal-130g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Kellogg's Rice Krispies Cereal 130g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F9166%2F005008903.jpg%3Fv%3D1775761004&w=1200&q=75"
+    },
+    {
+      "productId": "kikkoman-less-salt-soy-sauce-250ml",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Kikkoman Less Salt Soy Sauce 250ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F10373%2F005010116.jpg%3Fv%3D1775761577&w=1200&q=75"
+    },
+    {
+      "productId": "lay-s-stax-original-potato-chips-100g",
+      "categoryId": "snacks",
+      "representativeName": "Lay's Stax Original Potato Chips 100g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F11563980%2F005168832.jpeg&w=1200&q=75"
+    },
+    {
+      "productId": "marigold-100-orange-juice-6-x-200ml",
+      "categoryId": "drinks",
+      "representativeName": "Marigold 100% Orange Juice 6 x 200ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F34918%2F005034619.jpg%3Fv%3D1775770270&w=1200&q=75"
+    },
+    {
+      "productId": "marigold-hl-chocolate-milk-946ml",
+      "categoryId": "dairy",
+      "representativeName": "Marigold HL Chocolate Milk 946ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F6448%2F005006188.jpg%3Fv%3D1780994360&w=1200&q=75"
+    },
+    {
+      "productId": "milkmaid-low-fat-sweetened-condensed-skimmed-milk-392g",
+      "categoryId": "dairy",
+      "representativeName": "Milkmaid Low Fat Sweetened Condensed Skimmed Milk 392g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F8672%2F005008409.jpg%3Fv%3D1775760757&w=1200&q=75"
+    },
+    {
+      "productId": "munchy-s-lexus-mixed-nuts-cookies-189g",
+      "categoryId": "snacks",
+      "representativeName": "Munchy's Lexus Mixed Nuts Cookies 189g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F104372%2F005115883.jpg%3Fv%3D1775793145&w=1200&q=75"
+    },
+    {
+      "productId": "naturel-organic-brown-rice-2kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "Naturel Organic Brown Rice 2kg",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F9586%2F005009323.jpg%3Fv%3D1775761201&w=1200&q=75"
+    },
+    {
+      "productId": "pantene-silky-smooth-care-shampoo-680ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Pantene Silky Smooth Care Shampoo 680ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F92241%2F005098359.jpg%3Fv%3D1775788505&w=1200&q=75"
+    },
+    {
+      "productId": "post-great-grains-blueberry-morning-cereal-382g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Post Great Grains Blueberry Morning Cereal 382g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F2339%2F005002071.jpg%3Fv%3D1775759578&w=1200&q=75"
+    },
+    {
+      "productId": "schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Schwarzkopf Extra Care Ginger Scalp Purify Shampoo 400ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F252799%2F005132103.jpg%3Fv%3D1775801682&w=1200&q=75"
+    },
+    {
+      "productId": "schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Schwarzkopf Extra Care Volume Fortify Shampoo 400ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F252819%2F005132107.jpg%3Fv%3D1775801691&w=1200&q=75"
+    },
+    {
+      "productId": "songhe-glutinous-rice-1kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "Songhe Glutinous Rice 1kg",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F21483%2F005021186.jpg%3Fv%3D1775765625&w=1200&q=75"
+    },
+    {
+      "productId": "tai-hua-superior-dark-soy-sauce-640ml",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Tai Hua Superior Dark Soy Sauce 640ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F10114%2F005009851.jpg%3Fv%3D1775761451&w=1200&q=75"
+    },
+    {
+      "productId": "taj-basmati-rice-low-gi-5kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "TAJ Basmati Rice (Low GI) 5KG",
+      "imageUrl": "https://sg-test-11.slatic.net/p/ea80843bae2700106f0a12ae43780b2e.jpg"
+    },
+    {
+      "productId": "uic-big-value-dishwashing-liquid-lemon-refill-4-x-600ml-pack",
+      "categoryId": "household-cleaning",
+      "representativeName": "UIC Big Value Dishwashing Liquid (Lemon) Refill 4 X 600ML Pack",
+      "imageUrl": "https://sg-test-11.slatic.net/p/3fc5dfe9b4c231c0fd50f086f393fdfd.jpg"
+    },
+    {
+      "productId": "woh-hup-extra-flavour-oyster-sauce-500g",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Woh Hup Extra Flavour Oyster Sauce 500g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F9592%2F005009330.jpg%3Fv%3D1775761203&w=1200&q=75"
+    },
+    {
+      "productId": "yava-coconut-banana-granola-200g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Yava Coconut Banana Granola 200g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F256285%2F005136222.jpg%3Fv%3D1775802509&w=1200&q=75"
+    },
+    {
+      "productId": "zenko-ancient-grain-granola-tropical-fruit-300g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Zenko Ancient Grain Granola Tropical Fruit 300g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F271971%2F005162099.jpg%3Fv%3D1775805909&w=1200&q=75"
+    }
+  ],
+  "listings": [
+    {
+      "listingId": "cold-storage-boncafe-morning-bean-200g",
+      "productId": "boncafe-morning-coffee-beans-200g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00000613",
+      "name": "Boncafe Morning Coffee Beans 200g",
+      "specification": "200g",
+      "productUrl": "https://coldstorage.com.sg/product/boncafe-morning-bean-200g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 920,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $15.90"]
+    },
+    {
+      "listingId": "cold-storage-calbee-prawn-crackers-black-pepper-90g",
+      "productId": "calbee-black-pepper-prawn-crackers-90g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00008716",
+      "name": "Calbee Black Pepper Prawn Crackers 90g",
+      "specification": "90g",
+      "productUrl": "https://coldstorage.com.sg/product/calbee-prawn-crackers-black-pepper-90g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 245,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-fernleaf-full-cream-11kg",
+      "productId": "fernleaf-full-cream-milk-powder-1-1kg",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00009170",
+      "name": "Fernleaf Full Cream Milk Powder 1.1kg",
+      "specification": "1.1kg",
+      "productUrl": "https://coldstorage.com.sg/product/fernleaf-full-cream-11kg",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 2195,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-golden-pineapple-thai-fragrant-rice-5kg",
+      "productId": "golden-pineapple-thai-fragrant-rice-5kg",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00007579",
+      "name": "Golden Pineapple Thai Fragrant Rice 5kg",
+      "specification": "5kg",
+      "productUrl": "https://coldstorage.com.sg/product/golden-pineapple-thai-fragrant-rice-5kg",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1280,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-greenfields-fresh-milk-189l",
+      "productId": "greenfields-fresh-milk-1-89l",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00004068",
+      "name": "Greenfields Fresh Milk 1.89L",
+      "specification": "1.89L",
+      "productUrl": "https://coldstorage.com.sg/product/greenfields-fresh-milk-189l",
+      "priceKind": "ordinary",
+      "unitPriceCents": 615,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-iliada-kalamata-pitted-olives-370g",
+      "productId": "iliada-kalamata-pitted-olives-370g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00002313",
+      "name": "Iliada Kalamata Pitted Olives 370g",
+      "specification": "370g",
+      "productUrl": "https://coldstorage.com.sg/product/iliada-kalamata-pitted-olives-370g",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 600,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-kelloggs-rice-krispies-130g",
+      "productId": "kellogg-s-rice-krispies-cereal-130g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00001603",
+      "name": "Kellogg's Rice Krispies Cereal 130g",
+      "specification": "130g",
+      "productUrl": "https://coldstorage.com.sg/product/kelloggs-rice-krispies-130g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 390,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-kikkoman-soy-sauce-less-salt-250ml",
+      "productId": "kikkoman-less-salt-soy-sauce-250ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00002840",
+      "name": "Kikkoman Less Salt Soy Sauce 250ml",
+      "specification": "250ml",
+      "productUrl": "https://coldstorage.com.sg/product/kikkoman-soy-sauce-less-salt-250ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 535,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-lay-s-stax-original-100g",
+      "productId": "lay-s-stax-original-potato-chips-100g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00008627",
+      "name": "Lay's Stax Original Potato Chips 100g",
+      "specification": "100g",
+      "productUrl": "https://coldstorage.com.sg/product/lay-s-stax-original-100g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 260,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-marigold-100-orange-juice-6x200ml",
+      "productId": "marigold-100-orange-juice-6-x-200ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00004167",
+      "name": "Marigold 100% Orange Juice 6 x 200ml",
+      "specification": "6 x 200ml",
+      "productUrl": "https://coldstorage.com.sg/product/marigold-100-orange-juice-6x200ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 550,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-marigold-hl-milk-choc-946ml",
+      "productId": "marigold-hl-chocolate-milk-946ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00004082",
+      "name": "Marigold HL Chocolate Milk 946ml",
+      "specification": "946ml",
+      "productUrl": "https://coldstorage.com.sg/product/marigold-hl-milk-choc-946ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 360,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+    },
+    {
+      "listingId": "cold-storage-milkmaid-sweetened-condensed-skimmed-milk-low-fat-392g",
+      "productId": "milkmaid-low-fat-sweetened-condensed-skimmed-milk-392g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00003187",
+      "name": "Milkmaid Low Fat Sweetened Condensed Skimmed Milk 392g",
+      "specification": "392g",
+      "productUrl": "https://coldstorage.com.sg/product/milkmaid-sweetened-condensed-skimmed-milk-low-fat-392g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 270,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-munchys-lexus-cookies-mixed-nuts-189g",
+      "productId": "munchy-s-lexus-mixed-nuts-cookies-189g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00007662",
+      "name": "Munchy's Lexus Mixed Nuts Cookies 189g",
+      "specification": "189g",
+      "productUrl": "https://coldstorage.com.sg/product/munchys-lexus-cookies-mixed-nuts-189g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 365,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-naturel-org-brown-rice-2kg",
+      "productId": "naturel-organic-brown-rice-2kg",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00007596",
+      "name": "Naturel Organic Brown Rice 2kg",
+      "specification": "2kg",
+      "productUrl": "https://coldstorage.com.sg/product/naturel-org-brown-rice-2kg",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1185,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-pantene-silky-smooth-care-shampoo-680ml",
+      "productId": "pantene-silky-smooth-care-shampoo-680ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00007149",
+      "name": "Pantene Silky Smooth Care Shampoo 680ml",
+      "specification": "680ml",
+      "productUrl": "https://coldstorage.com.sg/product/pantene-silky-smooth-care-shampoo-680ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1215,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $17.80"]
+    },
+    {
+      "listingId": "cold-storage-post-great-grains-cereal---blueberry-morning-382g",
+      "productId": "post-great-grains-blueberry-morning-cereal-382g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00001438",
+      "name": "Post Great Grains Blueberry Morning Cereal 382g",
+      "specification": "382g",
+      "productUrl": "https://coldstorage.com.sg/product/post-great-grains-cereal---blueberry-morning-382g",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 650,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "productId": "schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00009435",
+      "name": "Schwarzkopf Extra Care Ginger Scalp Purify Shampoo 400ml",
+      "specification": "400ml",
+      "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1520,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "productId": "schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00009437",
+      "name": "Schwarzkopf Extra Care Volume Fortify Shampoo 400ml",
+      "specification": "400ml",
+      "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1520,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-songhe-glutinous-rice-1kg",
+      "productId": "songhe-glutinous-rice-1kg",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00007569",
+      "name": "Songhe Glutinous Rice 1kg",
+      "specification": "1kg",
+      "productUrl": "https://coldstorage.com.sg/product/songhe-glutinous-rice-1kg",
+      "priceKind": "ordinary",
+      "unitPriceCents": 405,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-tai-hua-superior-dark-soy-sauce-640ml",
+      "productId": "tai-hua-superior-dark-soy-sauce-640ml",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00002948",
+      "name": "Tai Hua Superior Dark Soy Sauce 640ml",
+      "specification": "640ml",
+      "productUrl": "https://coldstorage.com.sg/product/tai-hua-superior-dark-soy-sauce-640ml",
+      "priceKind": "ordinary",
+      "unitPriceCents": 680,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-woh-hup-oyster-sauce-extra-flavour-500g",
+      "productId": "woh-hup-extra-flavour-oyster-sauce-500g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00002972",
+      "name": "Woh Hup Extra Flavour Oyster Sauce 500g",
+      "specification": "500g",
+      "productUrl": "https://coldstorage.com.sg/product/woh-hup-oyster-sauce-extra-flavour-500g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 440,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-yava-granola-coconut-banana-200g",
+      "productId": "yava-coconut-banana-granola-200g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00001720",
+      "name": "Yava Coconut Banana Granola 200g",
+      "specification": "200g",
+      "productUrl": "https://coldstorage.com.sg/product/yava-granola-coconut-banana-200g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 690,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-yeo-s-first-harvest-green-t-no-suga-1-5l",
+      "productId": "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00000931",
+      "name": "[BCRS] Yeo's First Harvest Green Tea No Sugar 1.5L",
+      "specification": "1.5 l",
+      "productUrl": "https://coldstorage.com.sg/product/yeo-s-first-harvest-green-t-no-suga-1-5l",
+      "priceKind": "ordinary",
+      "unitPriceCents": 250,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "cold-storage-zenko-ancient-grain-granola-tropical-fruit-300g",
+      "productId": "zenko-ancient-grain-granola-tropical-fruit-300g",
+      "retailerId": "cold-storage",
+      "sourceRecordId": "coldstorage_00001786",
+      "name": "Zenko Ancient Grain Granola Tropical Fruit 300g",
+      "specification": "300g",
+      "productUrl": "https://coldstorage.com.sg/product/zenko-ancient-grain-granola-tropical-fruit-300g",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1195,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-13110758",
+      "productId": "taj-basmati-rice-low-gi-5kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00067131",
+      "name": "Taj Basmati Low GI Rice",
+      "specification": "5kg",
+      "productUrl": "https://www.fairprice.com.sg/product/13110758",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1890,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-attack-concentrated-liquid-detergent-perfume-36kg-13060220",
+      "productId": "attack-perfume-floral-liquid-detergent-3-6kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00053644",
+      "name": "Attack Liquid Detergent - Perfume (Floral)",
+      "specification": "3.6kg",
+      "productUrl": "https://www.fairprice.com.sg/product/attack-concentrated-liquid-detergent-perfume-36kg-13060220",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1040,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-bcrs-yeo-s-bottle-drink-first-harvest-green-tea-no-sugar-1-5l-13281653",
+      "productId": "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00059718",
+      "name": "[BCRS] Yeo's Bottle Drink - First Harvest Green Tea No Sugar",
+      "specification": "1.5L",
+      "productUrl": "https://www.fairprice.com.sg/product/bcrs-yeo-s-bottle-drink-first-harvest-green-tea-no-sugar-1-5l-13281653",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 185,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-bio-home-floor-cleaner-lemongrass-greentea-15lt-13071914",
+      "productId": "bio-home-floor-cleaner-1-5l-lemongrass-and-green-tea",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00042298",
+      "name": "Bio-Home Floor Cleaner - Lemongrass & Green Tea",
+      "specification": "1.5L",
+      "productUrl": "https://www.fairprice.com.sg/product/bio-home-floor-cleaner-lemongrass-greentea-15lt-13071914",
+      "priceKind": "ordinary",
+      "unitPriceCents": 810,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-calbee-prawn-crackers---black-pepper-13146780",
+      "productId": "calbee-black-pepper-prawn-crackers-90g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00001480",
+      "name": "Calbee Prawn Crackers - Black Pepper",
+      "specification": "90g",
+      "productUrl": "https://www.fairprice.com.sg/product/calbee-prawn-crackers---black-pepper-13146780",
+      "priceKind": "ordinary",
+      "unitPriceCents": 237,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-ginger-500ml-13242723",
+      "productId": "cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-and-ginger-500ml",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00042610",
+      "name": "Cloversoft 2 in 1 Bleach-Free Toilet Cleaner - Rosemary & Ginger",
+      "specification": "500ml",
+      "productUrl": "https://www.fairprice.com.sg/product/cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-ginger-500ml-13242723",
+      "priceKind": "ordinary",
+      "unitPriceCents": 399,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $6.50"]
+    },
+    {
+      "listingId": "fairprice-cowhead-natural-cheese-slices-cheddar-150g-13260134",
+      "productId": "cowhead-natural-cheese-slices-cheddar",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00037552",
+      "name": "Cowhead Natural Cheese Slices - Cheddar",
+      "specification": "150g",
+      "productUrl": "https://www.fairprice.com.sg/product/cowhead-natural-cheese-slices-cheddar-150g-13260134",
+      "priceKind": "ordinary",
+      "unitPriceCents": 760,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $7.80"]
+    },
+    {
+      "listingId": "fairprice-dove-anti-bacterial-body-wash-care-protect-1l-13196946",
+      "productId": "dove-anti-bacterial-care-and-protect-body-wash-1l",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00018470",
+      "name": "Dove Anti-Bacterial Body Wash - Care & Protect",
+      "specification": "1L",
+      "productUrl": "https://www.fairprice.com.sg/product/dove-anti-bacterial-body-wash-care-protect-1l-13196946",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 590,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-extra-care-ginger-scalp-purify-shampoo",
+      "productId": "schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00021661",
+      "name": "Schwarzkopf Extra Care Ginger Scalp Purify Shampoo",
+      "specification": "400 ML",
+      "productUrl": "https://www.fairprice.com.sg/product/extra-care-ginger-scalp-purify-shampoo",
+      "priceKind": "ordinary",
+      "unitPriceCents": 990,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-extra-care-volume-fortify-shampoo",
+      "productId": "schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00021659",
+      "name": "Schwarzkopf Extra Care Volume Fortify Shampoo",
+      "specification": "400 ML",
+      "productUrl": "https://www.fairprice.com.sg/product/extra-care-volume-fortify-shampoo",
+      "priceKind": "ordinary",
+      "unitPriceCents": 990,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-fernleaf-milk-powder-full-cream-1-1kg-13206646",
+      "productId": "fernleaf-full-cream-milk-powder-1-1kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00001222",
+      "name": "Fernleaf Milk Powder - Full Cream",
+      "specification": "1.1kg",
+      "productUrl": "https://www.fairprice.com.sg/product/fernleaf-milk-powder-full-cream-1-1kg-13206646",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 2160,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-golden-pineapple-thai-fragrant-rice-5-kg-90041954",
+      "productId": "golden-pineapple-thai-fragrant-rice-5kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00067172",
+      "name": "Golden Pineapple Thai Fragrant Rice",
+      "specification": "5 KG",
+      "productUrl": "https://www.fairprice.com.sg/product/golden-pineapple-thai-fragrant-rice-5-kg-90041954",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1280,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-iliada-olive-370-g-90022136",
+      "productId": "iliada-kalamata-pitted-olives-370g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00010380",
+      "name": "Iliada Kalamata Pitted Olives",
+      "specification": "370 G",
+      "productUrl": "https://www.fairprice.com.sg/product/iliada-olive-370-g-90022136",
+      "priceKind": "ordinary",
+      "unitPriceCents": 750,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-j-chm-tiramisu-sw172-13236439",
+      "productId": "julie-s-charm-tiramisu-sandwich-172-g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00001494",
+      "name": "Julie's Charm Sandwich - Tiramisu",
+      "specification": "172g",
+      "productUrl": "https://www.fairprice.com.sg/product/j-chm-tiramisu-sw172-13236439",
+      "priceKind": "ordinary",
+      "unitPriceCents": 363,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-kellogg-s-cereal-rice-krispies-130g-395302",
+      "productId": "kellogg-s-rice-krispies-cereal-130g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00009473",
+      "name": "Kellogg's Cereal - Rice Krispies",
+      "specification": "130g",
+      "productUrl": "https://www.fairprice.com.sg/product/kellogg-s-cereal-rice-krispies-130g-395302",
+      "priceKind": "ordinary",
+      "unitPriceCents": 390,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-lay-s-stax-potato-chips-original-100g-13284924",
+      "productId": "lay-s-stax-original-potato-chips-100g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00013912",
+      "name": "Lay's Stax Potato Chips - Original",
+      "specification": "100g",
+      "productUrl": "https://www.fairprice.com.sg/product/lay-s-stax-potato-chips-original-100g-13284924",
+      "priceKind": "ordinary",
+      "unitPriceCents": 260,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-marigold-hl-milk-chocolate-946ml-10054432",
+      "productId": "marigold-hl-chocolate-milk-946ml",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00036897",
+      "name": "Marigold HL Milk - Chocolate",
+      "specification": "946ml",
+      "productUrl": "https://www.fairprice.com.sg/product/marigold-hl-milk-chocolate-946ml-10054432",
+      "priceKind": "ordinary",
+      "unitPriceCents": 356,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+    },
+    {
+      "listingId": "fairprice-milkmaid-condensed-milk-skimmed-low-fat-392g-11140615",
+      "productId": "milkmaid-low-fat-sweetened-condensed-skimmed-milk-392g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00060523",
+      "name": "Milkmaid Sweetened Condensed Milk - Skimmed (Low Fat)",
+      "specification": "392g",
+      "productUrl": "https://www.fairprice.com.sg/product/milkmaid-condensed-milk-skimmed-low-fat-392g-11140615",
+      "priceKind": "ordinary",
+      "unitPriceCents": 264,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-munchy-s-lexus-cookies-mixed-nuts-189g-13217249",
+      "productId": "munchy-s-lexus-mixed-nuts-cookies-189g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00001409",
+      "name": "Munchy's Lexus Cookies - Mixed Nuts",
+      "specification": "189g",
+      "productUrl": "https://www.fairprice.com.sg/product/munchy-s-lexus-cookies-mixed-nuts-189g-13217249",
+      "priceKind": "ordinary",
+      "unitPriceCents": 363,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+    },
+    {
+      "listingId": "fairprice-naturel-organic-brown-rice-2kg-11698846",
+      "productId": "naturel-organic-brown-rice-2kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00000088",
+      "name": "Naturel Organic Rice - Brown",
+      "specification": "2kg",
+      "productUrl": "https://www.fairprice.com.sg/product/naturel-organic-brown-rice-2kg-11698846",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1100,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-pantene-shampoo-silky-smooth-care-680ml-13194386",
+      "productId": "pantene-silky-smooth-care-shampoo-680ml",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00021666",
+      "name": "Pantene Shampoo - Silky Smooth Care",
+      "specification": "680ml",
+      "productUrl": "https://www.fairprice.com.sg/product/pantene-shampoo-silky-smooth-care-680ml-13194386",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 777,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-post-great-grains-cereal-blueberry-morning-382g-13018680",
+      "productId": "post-great-grains-blueberry-morning-cereal-382g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00009499",
+      "name": "Post Great Grains Cereal - Blueberry Morning",
+      "specification": "382g",
+      "productUrl": "https://www.fairprice.com.sg/product/post-great-grains-cereal-blueberry-morning-382g-13018680",
+      "priceKind": "ordinary",
+      "unitPriceCents": 888,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-s-glutinous-rice-1kg-13215764",
+      "productId": "songhe-glutinous-rice-1kg",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00066976",
+      "name": "Songhe Glutinous Rice",
+      "specification": "1kg",
+      "productUrl": "https://www.fairprice.com.sg/product/s-glutinous-rice-1kg-13215764",
+      "priceKind": "ordinary",
+      "unitPriceCents": 403,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-tai-hua-superior-soy-sauce-dark-640ml-160119",
+      "productId": "tai-hua-superior-dark-soy-sauce-640ml",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00066384",
+      "name": "Tai Hua Dark Soy Sauce - Superior",
+      "specification": "640ml",
+      "productUrl": "https://www.fairprice.com.sg/product/tai-hua-superior-soy-sauce-dark-640ml-160119",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 575,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-uic-big-value-dishwashing-liquid-refill-lemon-4-x-600ml-13066595",
+      "productId": "uic-big-value-dishwashing-liquid-lemon-refill-4-x-600ml-pack",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00052897",
+      "name": "UIC Big Value Dishwashing Liquid Refill - Lemon",
+      "specification": "4 x 600ml",
+      "productUrl": "https://www.fairprice.com.sg/product/uic-big-value-dishwashing-liquid-refill-lemon-4-x-600ml-13066595",
+      "priceKind": "ordinary",
+      "unitPriceCents": 469,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-woh-hup-sauce-oyster-extra-flavour-500g-52572",
+      "productId": "woh-hup-extra-flavour-oyster-sauce-500g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00066536",
+      "name": "Woh Hup Sauce - Oyster (Extra Flavour)",
+      "specification": "500g",
+      "productUrl": "https://www.fairprice.com.sg/product/woh-hup-sauce-oyster-extra-flavour-500g-52572",
+      "priceKind": "ordinary",
+      "unitPriceCents": 419,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "fairprice-zenko-ancient-grain-granola-tropical-fruit-300g-13258481",
+      "productId": "zenko-ancient-grain-granola-tropical-fruit-300g",
+      "retailerId": "fairprice",
+      "sourceRecordId": "fairprice_00009372",
+      "name": "Zenko Ancient Grain Granola - Tropical Fruit",
+      "specification": "300g",
+      "productUrl": "https://www.fairprice.com.sg/product/zenko-ancient-grain-granola-tropical-fruit-300g-13258481",
+      "priceKind": "ordinary",
+      "unitPriceCents": 995,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i1621281798-s7615785334",
+      "productId": "dove-anti-bacterial-care-and-protect-body-wash-1l",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00072742",
+      "name": "Dove Anti-Bacterial Care And Protect Body Wash 1L",
+      "specification": "1 L",
+      "productUrl": "https://www.lazada.sg/products/pdp-i1621281798-s7615785334.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 989,
+      "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
+    },
+    {
+      "listingId": "redmart-pdp-i2671225481-s17422100820",
+      "productId": "julie-s-charm-tiramisu-sandwich-172-g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00015970",
+      "name": "Julie's Charm Tiramisu Sandwich 172 G",
+      "specification": "172 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2671225481-s17422100820.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 363,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i2821279080-s19464356322",
+      "productId": "yava-coconut-banana-granola-200g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00045361",
+      "name": "YAVA Coconut Banana Granola",
+      "specification": "200 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2821279080-s19464356322.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 790,
+      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+    },
+    {
+      "listingId": "redmart-pdp-i2857681278-s19702839017",
+      "productId": "cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-and-ginger-500ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00093928",
+      "name": "Cloversoft 2 in 1 Bleach-Free Toilet Cleaner (Rosemary & Ginger) 500ML",
+      "specification": "500 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2857681278-s19702839017.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 399,
+      "excludedPromotions": ["Promotion not applied: Any 2 Save $2.06"]
+    },
+    {
+      "listingId": "redmart-pdp-i301088904-s527120163",
+      "productId": "greenfields-fresh-milk-1-89l",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00010553",
+      "name": "Greenfields Fresh Milk 1.89L",
+      "specification": "1.89 L",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301088904-s527120163.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 605,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i3011048035-s20570593221",
+      "productId": "uic-big-value-dishwashing-liquid-lemon-refill-4-x-600ml-pack",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00097369",
+      "name": "UIC Big Value Dishwashing Liquid (Lemon) Refill 4 X 600ML Pack",
+      "specification": "4 × 600 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3011048035-s20570593221.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 435,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301128701-s527212520",
+      "productId": "boncafe-morning-coffee-beans-200g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00003437",
+      "name": "Boncafe Morning Coffee Beans",
+      "specification": "200 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301128701-s527212520.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 920,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301130504-s527192589",
+      "productId": "tai-hua-superior-dark-soy-sauce-640ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00033595",
+      "name": "Tai Hua Superior Dark Soy Sauce",
+      "specification": "640 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301130504-s527192589.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 575,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301140303-s527168874",
+      "productId": "milkmaid-low-fat-sweetened-condensed-skimmed-milk-392g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00004610",
+      "name": "Milkmaid Low Fat Sweetened Condensed Skimmed Milk 392G",
+      "specification": "392 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301140303-s527168874.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 265,
+      "excludedPromotions": ["Promotion not applied: Any 3 At $7.35"]
+    },
+    {
+      "listingId": "redmart-pdp-i301140377-s527168985",
+      "productId": "kellogg-s-rice-krispies-cereal-130g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00045557",
+      "name": "Kellogg's Rice Krispies Cereal 130g",
+      "specification": "130 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301140377-s527168985.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 390,
+      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+    },
+    {
+      "listingId": "redmart-pdp-i301140943-s527216954",
+      "productId": "attack-perfume-floral-liquid-detergent-3-6kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00055279",
+      "name": "Attack Perfume Floral Liquid Detergent 3.6KG",
+      "specification": "3.6 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301140943-s527216954.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1043,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301142242-s527188472",
+      "productId": "post-great-grains-blueberry-morning-cereal-382g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00044626",
+      "name": "Post Great Grains Blueberry Morning Cereal",
+      "specification": "382 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301142242-s527188472.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 826,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301146311-s527180909",
+      "productId": "woh-hup-extra-flavour-oyster-sauce-500g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00035266",
+      "name": "Woh Hup Extra Flavour Oyster Sauce",
+      "specification": "500 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301146311-s527180909.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 418,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301146957-s527220979",
+      "productId": "naturel-organic-brown-rice-2kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00084343",
+      "name": "Naturel Organic Brown Rice - 2KG",
+      "specification": "2 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301146957-s527220979.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 990,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301150658-s527232238",
+      "productId": "marigold-hl-chocolate-milk-946ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00010616",
+      "name": "Marigold HL Milk - Chocolate 946ML",
+      "specification": "946 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301150658-s527232238.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 357,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+    },
+    {
+      "listingId": "redmart-pdp-i301156348-s527210165",
+      "productId": "songhe-glutinous-rice-1kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00084514",
+      "name": "SongHe Glutinous Rice 1KG",
+      "specification": "1 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301156348-s527210165.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 405,
+      "excludedPromotions": ["Promotion not applied: Spend $20 + Free Gift"]
+    },
+    {
+      "listingId": "redmart-pdp-i301158309-s527196413",
+      "productId": "kikkoman-less-salt-soy-sauce-250ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00033718",
+      "name": "Kikkoman Less Salt Soy Sauce",
+      "specification": "250 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301158309-s527196413.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 474,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301178098-s527240659",
+      "productId": "bio-home-floor-cleaner-1-5l-lemongrass-and-green-tea",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00094029",
+      "name": "Bio-Home Floor Cleaner 1.5L - Lemongrass and Green Tea",
+      "specification": "1.5 L",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301178098-s527240659.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 690,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i303174254-s536398994",
+      "productId": "taj-basmati-rice-low-gi-5kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00084023",
+      "name": "TAJ Basmati Rice (Low GI) 5KG",
+      "specification": "5 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303174254-s536398994.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1891,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i303530725-s537166575",
+      "productId": "calbee-black-pepper-prawn-crackers-90g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00015371",
+      "name": "Calbee Black Pepper Prawn Crackers",
+      "specification": "90 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303530725-s537166575.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 237,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i303978229-s538084447",
+      "productId": "marigold-100-orange-juice-6-x-200ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00005752",
+      "name": "Marigold 100% Orange Juice (6 X 200ML)",
+      "specification": "6 × 200 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303978229-s538084447.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 460,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i3060143098-s20862985822",
+      "productId": "cowhead-natural-cheese-slices-cheddar",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00008203",
+      "name": "Cowhead Natural Cheese Slices - Cheddar",
+      "specification": "150 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3060143098-s20862985822.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 760,
+      "excludedPromotions": ["Promotion not applied: Any 2 At $7.6"]
+    },
+    {
+      "listingId": "redmart-pdp-i623724188-s1857980116",
+      "productId": "lay-s-stax-original-potato-chips-100g",
+      "retailerId": "redmart",
+      "sourceRecordId": "redmart_00012703",
+      "name": "Lay's Stax Original Potato Chips Snacks 100G",
+      "specification": "100 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i623724188-s1857980116.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 234,
+      "excludedPromotions": []
+    }
+  ]
+}
