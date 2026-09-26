@@ -25,7 +25,7 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Repository | TypeScript pnpm workspace: `apps/web`, `apps/api`, `packages/contracts`, `data/seed`, `infra`, `tests`, `scripts`. |
 | Web | React, Vite, React Router, TanStack Query; browser tab-session basket storage; no account system. |
 | API | Node.js 24 LTS and Fastify; TypeBox contracts and generated OpenAPI. |
-| Persistence | PostgreSQL, plain SQL migrations in `apps/api/migrations` and bounded `node-postgres` pools. |
+| Persistence | PostgreSQL, Drizzle ORM with drizzle-kit migrations, and bounded `node-postgres` pools. |
 | Optimisation | Pure TypeScript pricing/search modules; bounded worker-thread execution to protect the API event loop. HiGHS is not an initial dependency. |
 | Packaging | Immutable ARM64-compatible application container; local containerised PostgreSQL. |
 | Infrastructure | AWS CDK in TypeScript, with explicit development and presentation profiles. |
@@ -47,6 +47,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | Fastify | 5.12.5 | API |
 | React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
 | `pg` | 8.23.0 | Driver for readiness, migrations and seed import |
+| Drizzle | `drizzle-orm` 0.45.3, `drizzle-kit` 0.31.11 | Schema in `apps/api/src/db/schema.ts`; generated SQL migrations in `apps/api/migrations` |
 | Vitest | 5.0.1 | Playwright is deferred until there are journeys to exercise |
 | PostgreSQL | `18-alpine` locally (18.6), matching RDS 18.6 in `ap-southeast-1` | Alpine keeps the local image lean (~264 MB vs ~458 MB for the Debian-based tag); PostgreSQL 18 expects a single mount at `/var/lib/postgresql` |
 
@@ -54,7 +55,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Contracts (A2 / #5):** `typebox` 1.3.34 defines the shared schemas, with types inferred from them. It is the 1.x line that `@fastify/type-provider-typebox` 6 requires; the older `@sinclair/typebox` 0.34 line was dropped. Tests check that Fastify 5's default validator and serialiser accept the schemas. Generated OpenAPI was evaluated and deferred: both sides share TypeScript types directly, so nothing reads it. Add `@fastify/swagger` if an external consumer appears.
 
-**Seed import (B4 / #4):** migrations are plain SQL files applied in order by a small runner on `pg`, so no ORM or migration tool is needed. Drizzle was not adopted.
+**Seed import (B4 / #4):** the database holds one dataset at a time. An import validates the seed, then replaces every row in one transaction; rolling back means re-importing an older seed from Git. The schema keeps keys, references and uniqueness, and the importer's validation enforces value rules.
 
 **Deferred:** React Router, generated OpenAPI, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
@@ -84,7 +85,7 @@ Serve browser traffic over HTTPS. Keep S3 private, restrict application ingress 
 
 Retailer websites are not runtime dependencies. Import validated seed data through an internal CLI or deployment task, not a public upload endpoint. A live retailer outage does not affect snapshot calculations; relevant serving failures are missing eligible records, invalid imports, database unavailability and application failures.
 
-Imports must be atomic and idempotent. Activate a dataset only after validation and loading succeed. Each request reads the active dataset, including its delivery rules, from one consistent database snapshot, so an activation during a request cannot mix versions. Clients do not send a dataset version. The browser basket holds only product IDs and quantities, and the server prices every line itself, so there is no stale client pricing to detect. A product removed by a correction is rejected as unknown. Shoppers see one dataset at a time; evaluation data stays frozen on a best-effort basis (section 3).
+Imports must be atomic and idempotent. Replace the loaded dataset only after validation and loading succeed, in one transaction. Each request reads the dataset, including its delivery rules, from one consistent database snapshot, so an import during a request cannot mix versions. Clients do not send a dataset version. The browser basket holds only product IDs and quantities, and the server prices every line itself, so there is no stale client pricing to detect. A product removed by a correction is rejected as unknown. Shoppers see one dataset at a time; evaluation data stays frozen on a best-effort basis (section 3).
 
 ## 3. Data design and curation
 
@@ -130,7 +131,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Retailer | Stable ID, name and allowed product-link domains. |
 | Canonical product | ID, category, brand, variant, pack count, per-pack size/unit or equivalent non-food identity, display name. |
 | Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, direct-fulfilment status and any evidence reference. |
-| Dataset | ID/schema version, seed revision/checksum, activation state and import metadata. Import time is not a collection date. |
+| Dataset | ID/schema version, seed revision/checksum and import metadata; one dataset is loaded at a time. Import time is not a collection date. |
 | Offer | Dataset/listing IDs, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
 | Supported promotion | Listing/dataset, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed for that seed version. |
 | Delivery scenario/rule | Dataset/retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
@@ -205,7 +206,7 @@ Schemas must validate IDs, integer quantities and retailer limits. Client-submit
 Contract decisions (#5):
 
 - **Money and limits.** Integer SGD cents; 1–50 lines, 1–20 whole packs per line, 1–3 retailers.
-- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. The server uses it to activate imports (#4), stamp click events (#19) and record which seed produced evaluation results. Only the catalogue response exposes it, with its `dataKind`; requests do not carry it and there is no dataset-conflict response. A delivery-rule change produces a new dataset ID.
+- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. The server uses it to identify the loaded seed (#4), stamp click events (#19) and record which seed produced evaluation results. Only the catalogue response exposes it, with its `dataKind`; requests do not carry it and there is no dataset-conflict response. A delivery-rule change produces a new dataset ID.
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
 - **Comparison results.** `best_found` carries `baseline`, `bestSplit`, `recommended`, `savingsCents` and `searchLimitReached`, in one of three shapes: baseline only, split only, or both. At least one plan is always present, and `recommended` always names one that is. Equal totals go to the baseline, which needs fewer orders. The recommended plan never costs more than the baseline. `savingsCents` is the baseline total minus the recommended total, and is null exactly when there is no baseline. `proven_infeasible` currently covers only `no_eligible_offer`. Other impossibility proofs return `no_plan_found` until #12 defines them, because that status never claims impossibility.
 - **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
@@ -319,8 +320,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B4 — Implement database migrations and atomic seed import
 - **Blocked by:** A1, A2.
-- **Work:** Implement the logical schema, committed migrations, seed validation, idempotent import and atomic dataset activation using fixture seeds first.
-- **Acceptance:** Fresh-database setup and repeated import succeed; invalid imports leave the active dataset unchanged; seed validation rejects invalid values and foreign keys keep references intact; dataset identity is queryable.
+- **Work:** Implement the logical schema, committed migrations, seed validation and an idempotent, atomic import using fixture seeds first.
+- **Acceptance:** Fresh-database setup and repeated import succeed; invalid imports leave the loaded dataset unchanged; seed validation rejects invalid values and foreign keys keep references intact; dataset identity is queryable.
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.

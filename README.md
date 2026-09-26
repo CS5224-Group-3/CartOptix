@@ -64,7 +64,8 @@ Run these from the repository root.
 | `pnpm fix` | Apply formatting and safe lint fixes |
 | `pnpm build` | Production build of the API and web app |
 | `pnpm --filter @cartoptix/api db:migrate` | Apply pending database migrations |
-| `pnpm --filter @cartoptix/api seed:import <file>` | Validate, load and activate a seed dataset; an invalid seed changes nothing |
+| `pnpm --filter @cartoptix/api db:generate --name <change>` | Generate a migration after editing `apps/api/src/db/schema.ts` |
+| `pnpm --filter @cartoptix/api seed:import <file>` | Validate a seed and replace the loaded dataset with it; an invalid seed changes nothing |
 
 `pnpm dev` leaves PostgreSQL running after you stop it with `Ctrl+C`. Stop the
 database with `docker compose down`, or `docker compose down --volumes` to also

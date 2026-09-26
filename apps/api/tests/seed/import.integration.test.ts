@@ -25,10 +25,8 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
   const admin = new pg.Client({ connectionString });
   let client: pg.Client;
 
-  const active = async () =>
-    (await client.query("SELECT dataset_id FROM datasets WHERE is_active")).rows.map(
-      (row) => row.dataset_id,
-    );
+  const loaded = async () =>
+    (await client.query("SELECT dataset_id FROM dataset")).rows.map((row) => row.dataset_id);
   const count = async (table: string) =>
     Number((await client.query(`SELECT count(*) FROM ${table}`)).rows[0].count);
 
@@ -52,14 +50,16 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
   });
 
   it("migrates a fresh database, and a second run changes nothing", async () => {
-    expect(await runMigrations(client)).toEqual(["0001_datasets.sql"]);
-    expect(await runMigrations(client)).toEqual([]);
+    await runMigrations(client);
+    await runMigrations(client);
+    expect(await count("drizzle.__drizzle_migrations")).toBe(1);
+    expect(await count("listings")).toBe(0);
   });
 
-  it("imports and activates a seed", async () => {
+  it("imports a seed", async () => {
     const result = await importSeed(client, fixtureBytes);
     expect(result).toMatchObject({ status: "imported", datasetId: "fixture-seed-v1" });
-    expect(await active()).toEqual(["fixture-seed-v1"]);
+    expect(await loaded()).toEqual(["fixture-seed-v1"]);
     expect(await count("products")).toBe(3);
     expect(await count("listings")).toBe(4);
     expect(await count("order_charges")).toBe(1);
@@ -70,8 +70,8 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
   });
 
   it("treats a repeated import as a no-op", async () => {
-    expect(await importSeed(client, fixtureBytes)).toMatchObject({ status: "already-active" });
-    expect(await count("datasets")).toBe(1);
+    expect(await importSeed(client, fixtureBytes)).toMatchObject({ status: "unchanged" });
+    expect(await count("dataset")).toBe(1);
     expect(await count("listings")).toBe(4);
   });
 
@@ -81,20 +81,20 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
     });
     const result = await importSeed(client, changed);
     expect(result.status).toBe("invalid");
-    expect(await active()).toEqual(["fixture-seed-v1"]);
+    expect(await loaded()).toEqual(["fixture-seed-v1"]);
   });
 
-  it("leaves the active dataset unchanged when a seed is invalid", async () => {
+  it("leaves the loaded data unchanged when a seed is invalid", async () => {
     const invalid = seedBytes((seed) => {
       seed.datasetId = "fixture-seed-v2";
       seed.listings[0].productUrl = "https://evil.example/x";
     });
     expect((await importSeed(client, invalid)).status).toBe("invalid");
-    expect(await active()).toEqual(["fixture-seed-v1"]);
-    expect(await count("datasets")).toBe(1);
+    expect(await loaded()).toEqual(["fixture-seed-v1"]);
+    expect(await count("dataset")).toBe(1);
   });
 
-  it("rolls back a load that fails partway, keeping the active dataset", async () => {
+  it("rolls back a load that fails partway, keeping the loaded data", async () => {
     // Valid JSON and a valid seed, but PostgreSQL rejects NUL characters, so the
     // listings insert fails after the earlier tables have loaded.
     const failing = seedBytes((seed) => {
@@ -102,22 +102,27 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
       seed.listings[0].name = "Broken \u0000 name";
     });
     await expect(importSeed(client, failing)).rejects.toThrow();
-    expect(await active()).toEqual(["fixture-seed-v1"]);
-    expect(await count("datasets")).toBe(1);
+    expect(await loaded()).toEqual(["fixture-seed-v1"]);
+    expect(await count("dataset")).toBe(1);
     expect(await count("products")).toBe(3);
+    expect(await count("listings")).toBe(4);
   });
 
-  it("activates a new version, and reactivates an older one to roll back", async () => {
+  it("replaces the data with a new version, and rolls back by reimporting", async () => {
     const v2 = seedBytes((seed) => {
       seed.datasetId = "fixture-seed-v2";
+      seed.listings.pop();
+      seed.products.pop();
     });
     expect(await importSeed(client, v2)).toMatchObject({ status: "imported" });
-    expect(await active()).toEqual(["fixture-seed-v2"]);
-    expect(await importSeed(client, fixtureBytes)).toMatchObject({ status: "reactivated" });
-    expect(await active()).toEqual(["fixture-seed-v1"]);
+    expect(await loaded()).toEqual(["fixture-seed-v2"]);
+    expect(await count("listings")).toBe(3);
+    expect(await importSeed(client, fixtureBytes)).toMatchObject({ status: "imported" });
+    expect(await loaded()).toEqual(["fixture-seed-v1"]);
+    expect(await count("listings")).toBe(4);
   });
 
-  it("keeps references, uniqueness and the single active dataset at the database level", async () => {
+  it("keeps references and uniqueness at the database level", async () => {
     await expect(
       client.query(`UPDATE listings SET product_id = 'missing' WHERE listing_id = 'redmart-i1-s1'`),
     ).rejects.toThrow(/foreign key/);
@@ -126,8 +131,5 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
         `UPDATE listings SET product_id = 'fixture-rice-5kg' WHERE listing_id = 'fairprice-1002'`,
       ),
     ).rejects.toThrow(/unique/);
-    await expect(client.query("UPDATE datasets SET is_active = true")).rejects.toThrow(
-      /datasets_one_active/,
-    );
   });
 });

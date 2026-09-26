@@ -6,10 +6,8 @@ import { runMigrations } from "./migrate.ts";
 const client = new pg.Client({ connectionString: loadConfig().databaseUrl });
 await client.connect();
 try {
-  const applied = await runMigrations(client);
-  process.stdout.write(
-    applied.length ? `Applied ${applied.join(", ")}\n` : "Database is up to date.\n",
-  );
+  await runMigrations(client);
+  process.stdout.write("Database migrations are up to date.\n");
 } finally {
   await client.end();
 }

@@ -35,6 +35,7 @@ Run `pnpm check` before proposing changes; it runs the same format, lint, type a
 
 - `@cartoptix/contracts` is consumed from its compiled `dist/`. `pnpm check` and `pnpm dev` build it first; after editing contracts, run `tsc --build` before running `pnpm test` or Vitest on their own, or they will use stale output.
 - The API runs TypeScript directly with Node's type stripping (`node src/main.ts`). Use `.ts` extensions in relative imports, and avoid syntax that needs compilation: enums, namespaces and constructor parameter properties.
+- The database schema lives in `apps/api/src/db/schema.ts`. After changing it, run `pnpm --filter @cartoptix/api db:generate --name <change>` and commit the generated migration; never edit an applied migration.
 - Only `apps/web` type-checks its tests; API and contracts tests are not covered by `tsc --build`. Keep them type-correct by hand.
 
 ## Shared API contracts
