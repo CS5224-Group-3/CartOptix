@@ -117,10 +117,15 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
     expect(await active()).toEqual(["fixture-seed-v1"]);
   });
 
-  it("keeps references and the single active dataset at the database level", async () => {
+  it("keeps references, uniqueness and the single active dataset at the database level", async () => {
     await expect(
       client.query(`UPDATE listings SET product_id = 'missing' WHERE listing_id = 'redmart-i1-s1'`),
     ).rejects.toThrow(/foreign key/);
+    await expect(
+      client.query(
+        `UPDATE listings SET product_id = 'fixture-rice-5kg' WHERE listing_id = 'fairprice-1002'`,
+      ),
+    ).rejects.toThrow(/unique/);
     await expect(client.query("UPDATE datasets SET is_active = true")).rejects.toThrow(
       /datasets_one_active/,
     );

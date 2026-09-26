@@ -4,7 +4,7 @@
 --
 -- Value rules (ID format, https links, positive prices, allowed kinds) are
 -- enforced by the importer's validation (apps/api/src/seed/validate.ts). The
--- schema keeps only keys, references and the single active dataset.
+-- schema keeps only keys, references, uniqueness and the single active dataset.
 
 CREATE TABLE datasets (
   dataset_id text PRIMARY KEY,
@@ -84,6 +84,8 @@ CREATE TABLE listings (
   unit_price_cents integer NOT NULL,
   excluded_promotions text[] NOT NULL DEFAULT '{}',
   PRIMARY KEY (dataset_id, listing_id),
+  -- An exact product is listed at most once per retailer.
+  UNIQUE (dataset_id, product_id, retailer_id),
   FOREIGN KEY (dataset_id, product_id) REFERENCES products ON DELETE CASCADE,
   FOREIGN KEY (dataset_id, retailer_id) REFERENCES retailers ON DELETE CASCADE
 );
