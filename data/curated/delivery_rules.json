@@ -1,0 +1,114 @@
+{
+  "_comment": [
+    "Standard non-member delivery rules for the seed's single scenario (#4), in the seed's rule format.",
+    "Researched on 26 Sep 2026 from each retailer's own pages; evidence holds the quoted wording.",
+    "No retailer states a minimum order: their fee tables start below the free-delivery threshold with no floor, so minimumOrderCents is null.",
+    "Thresholds are inclusive ('$59 and above', 'min. $60 spend', 'S$80.00 and above').",
+    "thresholdIncludesMandatoryCharges has no effect in the MVP, which models no item charges."
+  ],
+  "scenario": "A serviceable Singapore address, standard scheduled delivery, non-member pricing and no vouchers.",
+  "rules": [
+    {
+      "retailerId": "redmart",
+      "status": "verified",
+      "deliveryFeeCents": 599,
+      "freeDeliveryFromCents": 6000,
+      "minimumOrderCents": null,
+      "thresholdIncludesMandatoryCharges": false,
+      "orderCharges": [],
+      "note": "S$5.99 standard delivery below S$60.",
+      "sources": [
+        "https://www.lazada.sg/products/pdp-i13885587905-s124895612675.html",
+        "https://redmart.lazada.sg/shop-groceries-fresh-produce/?m=redmart"
+      ],
+      "evidence": [
+        {
+          "field": "deliveryFeeCents",
+          "quote": "Scheduled (6-hour slots) -$5.99; Scheduled (2-hour slots) -$5.99",
+          "url": "https://www.lazada.sg/products/pdp-i13885587905-s124895612675.html"
+        },
+        {
+          "field": "freeDeliveryFromCents",
+          "quote": "Free delivery with min. $60 spend",
+          "url": "https://www.lazada.sg/products/pdp-i13885587905-s124895612675.html"
+        },
+        {
+          "field": "freeDeliveryFromCents",
+          "quote": "Get free delivery with $60.00 spend",
+          "url": "https://redmart.lazada.sg/shop-groceries-fresh-produce/?m=redmart"
+        }
+      ],
+      "caveats": "RedMart's help centre could not be read by automated tools; the values come from the delivery panel on RedMart product pages, which matched all 30 listings in the Stage 2F spot-check. RedMart+ members get lower thresholds; the non-member values are used."
+    },
+    {
+      "retailerId": "fairprice",
+      "status": "verified",
+      "deliveryFeeCents": 500,
+      "freeDeliveryFromCents": 5900,
+      "minimumOrderCents": null,
+      "thresholdIncludesMandatoryCharges": false,
+      "orderCharges": [{ "label": "Service fee", "amountCents": 399, "waivedFromCents": 30000 }],
+      "note": "S$5 delivery below S$59, plus a S$3.99 service fee on every order below S$300.",
+      "sources": [
+        "https://help.fairprice.com.sg/hc/en-us/articles/360021857151-What-are-the-delivery-charges",
+        "https://help.fairprice.com.sg/hc/en-us/articles/360040544411-Service-Fee-Structure",
+        "https://www.fairprice.com.sg/events/online/lower-minimum-spend-for-free-delivery/"
+      ],
+      "evidence": [
+        {
+          "field": "deliveryFeeCents",
+          "quote": "Below $59 $5.00",
+          "url": "https://help.fairprice.com.sg/hc/en-us/articles/360040544411-Service-Fee-Structure"
+        },
+        {
+          "field": "freeDeliveryFromCents",
+          "quote": "$59* and above Delivery charge waived ... *Excluding delivery charges and products directly fulfilled by Marketplace sellers.",
+          "url": "https://help.fairprice.com.sg/hc/en-us/articles/360021857151-What-are-the-delivery-charges"
+        },
+        {
+          "field": "orderCharges",
+          "quote": "Yes, the service fee is a fixed fee that will be included for all online orders",
+          "url": "https://help.fairprice.com.sg/hc/en-us/articles/360040544411-Service-Fee-Structure"
+        },
+        {
+          "field": "orderCharges",
+          "quote": "Order Value (Incl. GST) Delivery Fee (Incl. Service Fee) $300 and above Waived Between $59 to $300 $3.99 Below $59 $8.99",
+          "url": "https://www.fairprice.com.sg/events/online/lower-minimum-spend-for-free-delivery/"
+        }
+      ],
+      "caveats": "The service fee amount is derived: the event page's delivery-plus-service totals (S$8.99 below S$59, S$3.99 from S$59, waived from S$300) minus the help centre's delivery fee (S$5 below S$59, waived from S$59) give S$3.99, waived from S$300. Orders over 600 items pay S$26.75 delivery, outside the MVP's 50 lines x 20 packs. Digital Club members pay neither fee; the non-member values are used."
+    },
+    {
+      "retailerId": "cold-storage",
+      "status": "verified",
+      "deliveryFeeCents": 700,
+      "freeDeliveryFromCents": 8000,
+      "minimumOrderCents": null,
+      "thresholdIncludesMandatoryCharges": false,
+      "orderCharges": [],
+      "note": "S$7 delivery below S$80.",
+      "sources": [
+        "https://coldstorage.com.sg/terms-and-conditions",
+        "https://coldstorage.com.sg/faq"
+      ],
+      "evidence": [
+        {
+          "field": "deliveryFeeCents",
+          "quote": "For Order Value less than S$80.00 per delivery - S$7 Delivery Charge",
+          "url": "https://coldstorage.com.sg/terms-and-conditions"
+        },
+        {
+          "field": "freeDeliveryFromCents",
+          "quote": "For Order Value of S$80.00 and above per delivery - Free Delivery",
+          "url": "https://coldstorage.com.sg/terms-and-conditions"
+        },
+        {
+          "field": "freeDeliveryFromCents",
+          "quote": "Enjoy FREE delivery for orders above $80. A $7 delivery charge will be applied for orders below $80.",
+          "url": "https://coldstorage.com.sg/faq"
+        }
+      ],
+      "caveats": "The FAQ says 'above $80' and the terms say 'S$80.00 and above'; the terms are used, so S$80 exactly is free."
+    }
+  ]
+}
