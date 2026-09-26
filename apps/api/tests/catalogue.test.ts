@@ -1,32 +1,31 @@
+import { CatalogueResponseSchema, routes } from "@cartoptix/contracts";
+import { catalogueExample } from "@cartoptix/contracts/fixtures";
+import Fastify from "fastify";
+import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
-import { buildServer } from "../src/server.ts";
-
-const database = {
-  checkConnection: async () => ({ status: "ok" as const }),
-  close: async () => undefined,
-};
+import { createFixtureCatalogueStore, registerCatalogueRoutes } from "../src/catalogue/index.ts";
 
 describe("catalogue API", () => {
-  let server: ReturnType<typeof buildServer> | undefined;
+  const servers: ReturnType<typeof Fastify>[] = [];
+  afterEach(async () => { await Promise.all(servers.map((server) => server.close())); servers.length = 0; });
 
-  afterEach(async () => {
-    await server?.close();
+  function start() {
+    const server = Fastify({ logger: false });
+    registerCatalogueRoutes(server, createFixtureCatalogueStore());
+    servers.push(server);
+    return server;
+  }
+
+  it("returns the current fixture catalogue matching the contract", async () => {
+    const response = await start().inject({ method: "GET", url: routes.catalogue.url });
+    expect(response.statusCode).toBe(200);
+    expect(response.json()).toEqual(catalogueExample);
+    expect(Value.Check(CatalogueResponseSchema, response.json())).toBe(true);
   });
 
-  it("returns dataset, retailer, category and delivery metadata", async () => {
-    server = buildServer({ database });
-
-    const response = await server.inject({ method: "GET", url: "/api/v1/catalogue" });
-
-    expect(response.statusCode).toBe(200);
-    const body = response.json();
-    expect(body.dataset).toEqual({ datasetId: "fixture-v1", dataKind: "synthetic" });
-    expect(body.retailers).toHaveLength(3);
-    expect(body.categories).toEqual([
-      { categoryId: "drinks", name: "Drinks" },
-      { categoryId: "rice-noodles", name: "Rice & Noodles" },
-    ]);
-    expect(body.delivery.scenario).toBeTruthy();
-    expect(body).not.toHaveProperty("collectionDate");
+  it("does not expose collection dates", async () => {
+    const response = await start().inject({ method: "GET", url: routes.catalogue.url });
+    expect(response.json()).not.toHaveProperty("collectionDate");
+    expect(response.json().dataset).toEqual({ datasetId: "fixture-v1", dataKind: "synthetic" });
   });
 });

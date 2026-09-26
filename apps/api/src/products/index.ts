@@ -1,4 +1,11 @@
-import { routes, type OffersParams, type OffersQuery, type Product, type ProductsQuery, type OffersResponse } from "@cartoptix/contracts";
+import {
+  routes,
+  type OffersParams,
+  type OffersQuery,
+  type OffersResponse,
+  type Product,
+  type ProductsQuery,
+} from "@cartoptix/contracts";
 import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
 import type { FastifyInstance } from "fastify";
 
@@ -20,7 +27,7 @@ export function createFixtureProductsStore(): ProductsStore {
       const filtered = products.filter((product) => {
         if (query.categoryId !== undefined && product.categoryId !== query.categoryId) return false;
         if (!term) return true;
-        return [product.name, product.brand, product.variant, product.packSize].some((value) => value.toLocaleLowerCase().includes(term));
+        return [product.name, product.packSize].some((value) => value.toLocaleLowerCase().includes(term));
       });
       const start = (query.page - 1) * query.pageSize;
       // Stable array ordering plus deterministic slicing gives repeatable pages.
@@ -29,7 +36,18 @@ export function createFixtureProductsStore(): ProductsStore {
     async offers(productId, quantity) {
       // This fixture contains offers for one product; unknown IDs map to a 404 in the route.
       if (productId !== offersExample.product.productId) return null;
-      return { product: structuredClone(offersExample.product), quantity, offers: offersExample.offers.map((offer) => ({ ...offer, lineTotalCents: offer.unitPriceCents * quantity })) };
+      return {
+        product: structuredClone(offersExample.product),
+        quantity,
+        offers: offersExample.offers.map((offer) => ({
+          ...offer,
+          lineTotalCents:
+            offer.unitPriceCents * quantity +
+            offer.itemCharges
+              .filter((charge) => !charge.includedInPrice)
+              .reduce((total, charge) => total + charge.amountCents, 0),
+        })),
+      };
     },
   };
 }

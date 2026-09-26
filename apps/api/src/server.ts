@@ -2,8 +2,6 @@ import type { LivenessResponse, ReadinessResponse } from "@cartoptix/contracts";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Database } from "./database.ts";
 import { registerShopperRoutes } from "./shopper-routes.ts";
-import { createFixtureCatalogueStore, registerCatalogueRoutes } from "./catalogue/index.ts";
-import { createFixtureProductsStore, registerProductsRoutes } from "./products/index.ts";
 
 export interface BuildServerOptions {
   database: Database;
@@ -46,8 +44,6 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
   });
 
   registerShopperRoutes(server);
-  registerCatalogueRoutes(server, createFixtureCatalogueStore());
-  registerProductsRoutes(server, createFixtureProductsStore());
 
   return server;
 }
