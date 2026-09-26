@@ -63,6 +63,8 @@ Run these from the repository root.
 | `pnpm check` | Format check, lint, type check and tests — the same checks CI runs |
 | `pnpm fix` | Apply formatting and safe lint fixes |
 | `pnpm build` | Production build of the API and web app |
+| `pnpm --filter @cartoptix/api db:migrate` | Apply pending database migrations |
+| `pnpm --filter @cartoptix/api seed:import <file>` | Validate, load and activate a seed dataset; an invalid seed changes nothing |
 
 `pnpm dev` leaves PostgreSQL running after you stop it with `Ctrl+C`. Stop the
 database with `docker compose down`, or `docker compose down --volumes` to also

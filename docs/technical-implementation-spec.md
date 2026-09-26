@@ -25,7 +25,7 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Repository | TypeScript pnpm workspace: `apps/web`, `apps/api`, `packages/contracts`, `data/seed`, `infra`, `tests`, `scripts`. |
 | Web | React, Vite, React Router, TanStack Query; browser tab-session basket storage; no account system. |
 | API | Node.js 24 LTS and Fastify; TypeBox contracts and generated OpenAPI. |
-| Persistence | PostgreSQL, Drizzle migrations and bounded `node-postgres` pools. |
+| Persistence | PostgreSQL, plain SQL migrations in `apps/api/migrations` and bounded `node-postgres` pools. |
 | Optimisation | Pure TypeScript pricing/search modules; bounded worker-thread execution to protect the API event loop. HiGHS is not an initial dependency. |
 | Packaging | Immutable ARM64-compatible application container; local containerised PostgreSQL. |
 | Infrastructure | AWS CDK in TypeScript, with explicit development and presentation profiles. |
@@ -46,7 +46,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | Biome | 2.5.14 | Formatting and linting for JS/TS/JSON; Markdown is not formatted. `nursery/noMisusedPromises` is off because its type inference overflows the stack on TypeBox types (biomejs/biome#10277). The npm wrapper is patched (`patches/`) so a crash fails the run; unpatched, it exits 0 and a partial check passes. When upgrading Biome, redo the patch or drop it if the wrapper is fixed. |
 | Fastify | 5.12.5 | API |
 | React and Vite | React 19.2.0, Vite 8.3.0, `@vitejs/plugin-react` 6.1.1 | Plugin 5.x does not support Vite 8 |
-| `pg` | 8.23.0 | Direct driver for the readiness query; Drizzle arrives with the data work |
+| `pg` | 8.23.0 | Driver for readiness, migrations and seed import |
 | Vitest | 5.0.1 | Playwright is deferred until there are journeys to exercise |
 | PostgreSQL | `18-alpine` locally (18.6), matching RDS 18.6 in `ap-southeast-1` | Alpine keeps the local image lean (~264 MB vs ~458 MB for the Debian-based tag); PostgreSQL 18 expects a single mount at `/var/lib/postgresql` |
 
@@ -54,7 +54,9 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Contracts (A2 / #5):** `typebox` 1.3.34 defines the shared schemas, with types inferred from them. It is the 1.x line that `@fastify/type-provider-typebox` 6 requires; the older `@sinclair/typebox` 0.34 line was dropped. Tests check that Fastify 5's default validator and serialiser accept the schemas. Generated OpenAPI was evaluated and deferred: both sides share TypeScript types directly, so nothing reads it. Add `@fastify/swagger` if an external consumer appears.
 
-**Deferred:** React Router, TanStack Query, generated OpenAPI, Drizzle, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
+**Seed import (B4 / #4):** migrations are plain SQL files applied in order by a small runner on `pg`, so no ORM or migration tool is needed. Drizzle was not adopted.
+
+**Deferred:** React Router, generated OpenAPI, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
 ## 2. Application architecture
 
@@ -136,7 +138,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
 | Click event | Event ID, retailer/listing/product, and the server-recorded timestamp and active dataset ID; no user identity. |
 
-Retain a clean JSON seed and its validation schema in Git. Protect referential integrity, positive usable prices, valid quantities, unique stable IDs and consistent pack information. Different listings with similar names are not automatically duplicates. Do not deploy all 177,638 raw rows merely because they were scraped.
+Retain a clean JSON seed and its validation schema in Git (`data/seed/`; schema in `apps/api/src/seed/schema.ts`). Protect referential integrity, positive usable prices, valid quantities, unique stable IDs and consistent pack information. Different listings with similar names are not automatically duplicates. Do not deploy all 177,638 raw rows merely because they were scraped.
 
 Dataset freezing is best-effort. Record seed commit/checksum in evaluation output; record material changes and rerun affected checks where practical. Do not build a collection-date display or invent dates from workbook metadata.
 
