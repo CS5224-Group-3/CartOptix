@@ -5,15 +5,12 @@ import {
   routes,
 } from "@cartoptix/contracts";
 import {
-  baselineOnlyExample,
   basketRequestExample,
   duplicateLinesExample,
   duplicateLinesRequest,
-  missingBaselineExample,
-  noPlanFoundExample,
-  provenInfeasibleExample,
-  singleRetailerWinsExample,
-  splitWinsExample,
+  noFeasiblePlanExample,
+  oneRetailerCompleteExample,
+  recommendedExample,
   tieExample,
 } from "@cartoptix/contracts/fixtures";
 import Fastify, { type FastifyError } from "fastify";
@@ -47,13 +44,10 @@ afterEach(async () => {
 
 describe("basket comparison contract in Fastify", () => {
   it.each([
-    ["split wins", splitWinsExample],
-    ["single retailer wins", singleRetailerWinsExample],
+    ["recommended", recommendedExample],
+    ["one retailer complete", oneRetailerCompleteExample],
     ["tie", tieExample],
-    ["baseline only", baselineOnlyExample],
-    ["missing baseline", missingBaselineExample],
-    ["no plan found", noPlanFoundExample],
-    ["proven infeasible", provenInfeasibleExample],
+    ["no feasible plan", noFeasiblePlanExample],
   ] as const)("serialises %s unchanged", async (_name, example) => {
     server = compareServer(example);
     const response = await server.inject({
@@ -66,7 +60,7 @@ describe("basket comparison contract in Fastify", () => {
   });
 
   it("rejects duplicate lines and out-of-range quantities with the error shape", async () => {
-    server = compareServer(splitWinsExample);
+    server = compareServer(recommendedExample);
     const outOfRange = { ...basketRequestExample, lines: [{ productId: "p", quantity: 21 }] };
 
     for (const payload of [duplicateLinesRequest, outOfRange]) {

@@ -25,8 +25,6 @@ export const HttpsUrlSchema = Type.String({ pattern: "^https://", maxLength: 204
 export const MAX_BASKET_LINES = 50;
 export const MIN_PACKS_PER_LINE = 1;
 export const MAX_PACKS_PER_LINE = 20;
-export const MIN_RETAILER_LIMIT = 1;
-export const MAX_RETAILER_LIMIT = 3;
 
 /** Whole packs of one product. */
 export const QuantitySchema = Type.Integer({
@@ -45,7 +43,7 @@ export const SNAPSHOT_DISCLAIMER =
   "Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.";
 
 /** Shown near every comparison. BCRS container deposits are not modelled in the MVP:
- * the same 10¢ per container applies at every retailer, so it cannot change which plan
+ * the same 10¢ per container applies at every retailer, so it cannot change which retailer
  * wins, but totals would otherwise understate checkout. */
 export const DEPOSIT_NOTICE =
   "Totals exclude the refundable 10¢ container deposit charged at checkout.";

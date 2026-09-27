@@ -4,8 +4,6 @@ import {
   CentsSchema,
   IdSchema,
   MAX_BASKET_LINES,
-  MAX_RETAILER_LIMIT,
-  MIN_RETAILER_LIMIT,
   OfferSchema,
   OrderChargeSchema,
   PlanLineSchema,
@@ -83,7 +81,6 @@ export const BasketCompareRequestSchema = closedObject({
     minItems: 1,
     maxItems: MAX_BASKET_LINES,
   }),
-  maxRetailers: Type.Integer({ minimum: MIN_RETAILER_LIMIT, maximum: MAX_RETAILER_LIMIT }),
 });
 export type BasketCompareRequest = Static<typeof BasketCompareRequestSchema>;
 
@@ -99,68 +96,72 @@ export function duplicateProductIds(request: BasketCompareRequest): string[] {
   return [...duplicates];
 }
 
-export const OrderSchema = closedObject({
+/** Why a retailer cannot supply the complete basket. */
+export const UnavailableReasonSchema = Type.Union([
+  /** The retailer has no eligible offer for these basket products. */
+  closedObject({
+    code: Type.Literal("missing_products"),
+    productIds: Type.Array(IdSchema, { minItems: 1 }),
+  }),
+  /** The order's qualifying spend is below the retailer's minimum order. */
+  closedObject({
+    code: Type.Literal("below_minimum_order"),
+    minimumOrderCents: CentsSchema,
+    spendCents: CentsSchema,
+  }),
+  /** The retailer's delivery rule is unverified, so a complete total cannot be
+   * calculated; it is never priced as a zero fee. */
+  closedObject({ code: Type.Literal("delivery_rule_unverified") }),
+]);
+export type UnavailableReason = Static<typeof UnavailableReasonSchema>;
+
+/** The complete basket as one retailer order. */
+const orderFields = {
   retailerId: RetailerIdSchema,
   lines: Type.Array(PlanLineSchema, { minItems: 1 }),
   orderCharges: Type.Array(OrderChargeSchema),
   deliveryCents: CentsSchema,
+  /** Line totals, plus order charges and delivery. */
   totalCents: CentsSchema,
-});
+};
+
+export const OrderSchema = closedObject(orderFields);
 export type Order = Static<typeof OrderSchema>;
 
-export const PlanSchema = closedObject({
-  orders: Type.Array(OrderSchema, { minItems: 1, maxItems: MAX_RETAILER_LIMIT }),
-  totalCents: CentsSchema,
+export const CompleteOptionSchema = closedObject({
+  status: Type.Literal("complete"),
+  ...orderFields,
 });
-export type Plan = Static<typeof PlanSchema>;
+export type CompleteOption = Static<typeof CompleteOptionSchema>;
 
-/**
- * A validated plan was found; optimality is not claimed. Three shapes, so at least
- * one plan is always present and `recommended` always names a present plan:
- * `baseline` is the cheapest complete single-retailer plan, `bestSplit` the best
- * permitted plan using two or more retailers, and `savingsCents` the baseline total
- * minus the recommended total. The recommended plan never costs more than the
- * baseline; the API checks that, since a schema cannot compare totals.
- */
-const bestFound = { status: Type.Literal("best_found"), searchLimitReached: Type.Boolean() };
+export const UnavailableOptionSchema = closedObject({
+  status: Type.Literal("unavailable"),
+  retailerId: RetailerIdSchema,
+  reasons: Type.Array(UnavailableReasonSchema, { minItems: 1 }),
+});
+export type UnavailableOption = Static<typeof UnavailableOptionSchema>;
+
+export const RetailerOptionSchema = Type.Union([CompleteOptionSchema, UnavailableOptionSchema]);
+export type RetailerOption = Static<typeof RetailerOptionSchema>;
+
+/** One option per retailer: complete options first, cheapest first, then
+ * unavailable ones. The API orders them; schemas cannot compare totals. */
+const options = (item: typeof RetailerOptionSchema | typeof UnavailableOptionSchema) =>
+  Type.Array(item, { minItems: 1, maxItems: 3 });
 
 export const BasketCompareResponseSchema = Type.Union([
-  /** No split was permitted or found, so the baseline is the only plan. */
+  /** At least one retailer can supply the complete basket. The recommendation is
+   * the cheapest complete option; equal totals are broken in a stable, documented
+   * retailer order, so it is always the first option. */
   closedObject({
-    ...bestFound,
-    baseline: PlanSchema,
-    bestSplit: Type.Null(),
-    recommended: Type.Literal("baseline"),
-    savingsCents: Type.Literal(0),
+    status: Type.Literal("recommended"),
+    recommendedRetailerId: RetailerIdSchema,
+    options: options(RetailerOptionSchema),
   }),
-  /** No single retailer can serve the basket, so savings are unavailable. */
+  /** No retailer can supply the complete basket; each option gives its reasons. */
   closedObject({
-    ...bestFound,
-    baseline: Type.Null(),
-    bestSplit: PlanSchema,
-    recommended: Type.Literal("split"),
-    savingsCents: Type.Null(),
-  }),
-  /** Both exist; either may win, and savings are zero when the baseline wins. */
-  closedObject({
-    ...bestFound,
-    baseline: PlanSchema,
-    bestSplit: PlanSchema,
-    recommended: Type.Union([Type.Literal("baseline"), Type.Literal("split")]),
-    savingsCents: CentsSchema,
-  }),
-  closedObject({
-    /** Impossibility is established, not merely unfound. */
-    status: Type.Literal("proven_infeasible"),
-    blocker: closedObject({
-      code: Type.Literal("no_eligible_offer"),
-      productIds: Type.Array(IdSchema, { minItems: 1 }),
-    }),
-  }),
-  closedObject({
-    /** Search found no valid plan but did not prove that none exists. */
-    status: Type.Literal("no_plan_found"),
-    searchLimitReached: Type.Boolean(),
+    status: Type.Literal("no_feasible_plan"),
+    options: options(UnavailableOptionSchema),
   }),
 ]);
 export type BasketCompareResponse = Static<typeof BasketCompareResponseSchema>;
