@@ -1,0 +1,624 @@
+group_id,category,source_record_id
+CP_014e7cc71ece,Breakfast Foods,fairprice_00009333
+CP_014e7cc71ece,Breakfast Foods,redmart_00045628
+CP_061a8b189340,Breakfast Foods,coldstorage_00001719
+CP_061a8b189340,Breakfast Foods,redmart_00045367
+CP_116c84244cb3,Breakfast Foods,coldstorage_00001601
+CP_116c84244cb3,Breakfast Foods,fairprice_00009474
+CP_18754c93cb6e,Breakfast Foods,coldstorage_00001735
+CP_18754c93cb6e,Breakfast Foods,fairprice_00009329
+CP_19211545b8ee,Breakfast Foods,coldstorage_00001702
+CP_19211545b8ee,Breakfast Foods,fairprice_00009330
+CP_2335d103564d,Breakfast Foods,fairprice_00009508
+CP_2335d103564d,Breakfast Foods,redmart_00044668
+CP_252c90c65795,Breakfast Foods,coldstorage_00001705
+CP_252c90c65795,Breakfast Foods,fairprice_00009339
+CP_27b32f60663c,Breakfast Foods,fairprice_00009537
+CP_27b32f60663c,Breakfast Foods,redmart_00044713
+CP_2878adec497b,Breakfast Foods,coldstorage_00001437
+CP_2878adec497b,Breakfast Foods,fairprice_00009500
+CP_2878adec497b,Breakfast Foods,redmart_00044644
+CP_2b66c9523832,Breakfast Foods,coldstorage_00001718
+CP_2b66c9523832,Breakfast Foods,redmart_00045363
+CP_2d44daf06991,Breakfast Foods,coldstorage_00001442
+CP_2d44daf06991,Breakfast Foods,fairprice_00009506
+CP_2de860905a96,Breakfast Foods,coldstorage_00001737
+CP_2de860905a96,Breakfast Foods,fairprice_00009514
+CP_2ec33446cf3f,Breakfast Foods,coldstorage_00001732
+CP_2ec33446cf3f,Breakfast Foods,fairprice_00009518
+CP_3ef6322bd40a,Breakfast Foods,fairprice_00058467
+CP_3ef6322bd40a,Breakfast Foods,redmart_00065439
+CP_40c9bdece8ca,Breakfast Foods,coldstorage_00001616
+CP_40c9bdece8ca,Breakfast Foods,redmart_00045570
+CP_429ce20d5685,Breakfast Foods,coldstorage_00001720
+CP_429ce20d5685,Breakfast Foods,redmart_00045361
+CP_5084ef15bdde,Breakfast Foods,fairprice_00009509
+CP_5084ef15bdde,Breakfast Foods,redmart_00044657
+CP_50fb97cb8056,Breakfast Foods,coldstorage_00001438
+CP_50fb97cb8056,Breakfast Foods,fairprice_00009499
+CP_50fb97cb8056,Breakfast Foods,redmart_00044626
+CP_51c89c2638eb,Breakfast Foods,coldstorage_00001623
+CP_51c89c2638eb,Breakfast Foods,fairprice_00009526
+CP_563bf5cf3776,Breakfast Foods,coldstorage_00001733
+CP_563bf5cf3776,Breakfast Foods,fairprice_00009519
+CP_5f4a19e9f7d6,Breakfast Foods,coldstorage_00001784
+CP_5f4a19e9f7d6,Breakfast Foods,fairprice_00009475
+CP_679cdc5e7473,Breakfast Foods,coldstorage_00001736
+CP_679cdc5e7473,Breakfast Foods,fairprice_00009347
+CP_72a510e0fde9,Breakfast Foods,coldstorage_00001603
+CP_72a510e0fde9,Breakfast Foods,fairprice_00009473
+CP_72a510e0fde9,Breakfast Foods,redmart_00045557
+CP_73d65f45a3a1,Breakfast Foods,coldstorage_00001739
+CP_73d65f45a3a1,Breakfast Foods,redmart_00044737
+CP_762d14efb1e0,Breakfast Foods,coldstorage_00001439
+CP_762d14efb1e0,Breakfast Foods,fairprice_00009501
+CP_762d14efb1e0,Breakfast Foods,redmart_00044632
+CP_9c6a33c8f766,Breakfast Foods,coldstorage_00001786
+CP_9c6a33c8f766,Breakfast Foods,fairprice_00009372
+CP_ba3869193dc8,Breakfast Foods,fairprice_00058449
+CP_ba3869193dc8,Breakfast Foods,redmart_00065411
+CP_bc3d66bae0f5,Breakfast Foods,coldstorage_00001617
+CP_bc3d66bae0f5,Breakfast Foods,redmart_00045549
+CP_c439b92f42dd,Breakfast Foods,fairprice_00009523
+CP_c439b92f42dd,Breakfast Foods,redmart_00045402
+CP_c67cfebbc5bc,Breakfast Foods,coldstorage_00001703
+CP_c67cfebbc5bc,Breakfast Foods,fairprice_00009343
+CP_e14bb5ffb710,Breakfast Foods,coldstorage_00001699
+CP_e14bb5ffb710,Breakfast Foods,redmart_00045362
+CP_f36b4d962a32,Breakfast Foods,coldstorage_00001704
+CP_f36b4d962a32,Breakfast Foods,fairprice_00009338
+CP_f6f6028fdf57,Breakfast Foods,fairprice_00009552
+CP_f6f6028fdf57,Breakfast Foods,redmart_00044851
+CP_f71988c5f0f7,Breakfast Foods,fairprice_00009503
+CP_f71988c5f0f7,Breakfast Foods,redmart_00044652
+CP_f742527c3f57,Breakfast Foods,fairprice_00009517
+CP_f742527c3f57,Breakfast Foods,redmart_00045391
+CP_00c952729557,Canned & Packaged Food,coldstorage_00002409
+CP_00c952729557,Canned & Packaged Food,fairprice_00066694
+CP_0bbcdfb54250,Canned & Packaged Food,coldstorage_00002321
+CP_0bbcdfb54250,Canned & Packaged Food,fairprice_00010326
+CP_128d232dd842,Canned & Packaged Food,coldstorage_00002837
+CP_128d232dd842,Canned & Packaged Food,fairprice_00066418
+CP_153bbc117a1b,Canned & Packaged Food,coldstorage_00002910
+CP_153bbc117a1b,Canned & Packaged Food,fairprice_00066550
+CP_1545d72e672a,Canned & Packaged Food,coldstorage_00002139
+CP_1545d72e672a,Canned & Packaged Food,fairprice_00010830
+CP_1ba661280bb0,Canned & Packaged Food,coldstorage_00002949
+CP_1ba661280bb0,Canned & Packaged Food,fairprice_00066419
+CP_1ba661280bb0,Canned & Packaged Food,redmart_00033593
+CP_1e418194aed4,Canned & Packaged Food,coldstorage_00002128
+CP_1e418194aed4,Canned & Packaged Food,fairprice_00010781
+CP_21ee47dc3cea,Canned & Packaged Food,coldstorage_00002874
+CP_21ee47dc3cea,Canned & Packaged Food,fairprice_00066538
+CP_2bfe204f2f78,Canned & Packaged Food,coldstorage_00002857
+CP_2bfe204f2f78,Canned & Packaged Food,fairprice_00066545
+CP_2c10224a8500,Canned & Packaged Food,coldstorage_00002126
+CP_2c10224a8500,Canned & Packaged Food,fairprice_00010793
+CP_32df30457f2a,Canned & Packaged Food,coldstorage_00002813
+CP_32df30457f2a,Canned & Packaged Food,fairprice_00066355
+CP_32df30457f2a,Canned & Packaged Food,redmart_00034875
+CP_349550e10781,Canned & Packaged Food,coldstorage_00002201
+CP_349550e10781,Canned & Packaged Food,fairprice_00010146
+CP_35176b5a8123,Canned & Packaged Food,coldstorage_00002859
+CP_35176b5a8123,Canned & Packaged Food,fairprice_00066431
+CP_35176b5a8123,Canned & Packaged Food,redmart_00033578
+CP_378da9370527,Canned & Packaged Food,coldstorage_00002948
+CP_378da9370527,Canned & Packaged Food,fairprice_00066384
+CP_378da9370527,Canned & Packaged Food,redmart_00033595
+CP_3bdc829bfab3,Canned & Packaged Food,coldstorage_00002259
+CP_3bdc829bfab3,Canned & Packaged Food,fairprice_00010371
+CP_3f4d96b2bb14,Canned & Packaged Food,coldstorage_00002814
+CP_3f4d96b2bb14,Canned & Packaged Food,fairprice_00066352
+CP_3f4d96b2bb14,Canned & Packaged Food,redmart_00034857
+CP_426f83748c3e,Canned & Packaged Food,coldstorage_00002936
+CP_426f83748c3e,Canned & Packaged Food,fairprice_00066305
+CP_48e422dbc409,Canned & Packaged Food,coldstorage_00002884
+CP_48e422dbc409,Canned & Packaged Food,fairprice_00066529
+CP_48e422dbc409,Canned & Packaged Food,redmart_00035256
+CP_54ad87a7a9be,Canned & Packaged Food,coldstorage_00002942
+CP_54ad87a7a9be,Canned & Packaged Food,fairprice_00066383
+CP_54ad87a7a9be,Canned & Packaged Food,redmart_00033600
+CP_58dc54409fc4,Canned & Packaged Food,coldstorage_00002917
+CP_58dc54409fc4,Canned & Packaged Food,fairprice_00066535
+CP_58dc54409fc4,Canned & Packaged Food,redmart_00035248
+CP_642624bc12d7,Canned & Packaged Food,coldstorage_00002789
+CP_642624bc12d7,Canned & Packaged Food,fairprice_00066336
+CP_881b260453c9,Canned & Packaged Food,coldstorage_00002203
+CP_881b260453c9,Canned & Packaged Food,fairprice_00010153
+CP_8e7856ec9582,Canned & Packaged Food,coldstorage_00002788
+CP_8e7856ec9582,Canned & Packaged Food,fairprice_00066337
+CP_908dd1eea2df,Canned & Packaged Food,coldstorage_00002944
+CP_908dd1eea2df,Canned & Packaged Food,fairprice_00066420
+CP_908dd1eea2df,Canned & Packaged Food,redmart_00033605
+CP_911f1adc35c9,Canned & Packaged Food,coldstorage_00002133
+CP_911f1adc35c9,Canned & Packaged Food,fairprice_00010775
+CP_9243dd3bdfef,Canned & Packaged Food,coldstorage_00002846
+CP_9243dd3bdfef,Canned & Packaged Food,redmart_00033677
+CP_9a874d976adc,Canned & Packaged Food,coldstorage_00002213
+CP_9a874d976adc,Canned & Packaged Food,fairprice_00010220
+CP_9aed6b4f7a86,Canned & Packaged Food,coldstorage_00002311
+CP_9aed6b4f7a86,Canned & Packaged Food,fairprice_00010357
+CP_acd2ff91a82e,Canned & Packaged Food,coldstorage_00002129
+CP_acd2ff91a82e,Canned & Packaged Food,fairprice_00010787
+CP_c380f0b70f1c,Canned & Packaged Food,coldstorage_00002875
+CP_c380f0b70f1c,Canned & Packaged Food,redmart_00035246
+CP_c4715a7ade17,Canned & Packaged Food,coldstorage_00002943
+CP_c4715a7ade17,Canned & Packaged Food,fairprice_00066430
+CP_d1c45e7447c9,Canned & Packaged Food,coldstorage_00002178
+CP_d1c45e7447c9,Canned & Packaged Food,fairprice_00010138
+CP_e4a8d9331a15,Canned & Packaged Food,coldstorage_00002972
+CP_e4a8d9331a15,Canned & Packaged Food,fairprice_00066536
+CP_e4a8d9331a15,Canned & Packaged Food,redmart_00035266
+CP_e8b2712bbef1,Canned & Packaged Food,coldstorage_00002135
+CP_e8b2712bbef1,Canned & Packaged Food,fairprice_00010797
+CP_f72a1a741d18,Canned & Packaged Food,coldstorage_00002276
+CP_f72a1a741d18,Canned & Packaged Food,fairprice_00010324
+CP_fe59a69c3364,Canned & Packaged Food,coldstorage_00002976
+CP_fe59a69c3364,Canned & Packaged Food,fairprice_00066526
+CP_febed2567e76,Canned & Packaged Food,coldstorage_00002127
+CP_febed2567e76,Canned & Packaged Food,fairprice_00010792
+CP_016db99c77cf,Dairy,coldstorage_00004082
+CP_016db99c77cf,Dairy,fairprice_00036897
+CP_016db99c77cf,Dairy,redmart_00010616
+CP_035b322b7ab3,Dairy,coldstorage_00004241
+CP_035b322b7ab3,Dairy,redmart_00004407
+CP_067c66833edd,Dairy,fairprice_00037685
+CP_067c66833edd,Dairy,redmart_00008561
+CP_118399f1bc45,Dairy,fairprice_00037473
+CP_118399f1bc45,Dairy,redmart_00009452
+CP_12e6bbc30538,Dairy,coldstorage_00003721
+CP_12e6bbc30538,Dairy,redmart_00008437
+CP_12efc9a4d182,Dairy,fairprice_00037689
+CP_12efc9a4d182,Dairy,redmart_00008576
+CP_12f71756bb30,Dairy,fairprice_00002408
+CP_12f71756bb30,Dairy,redmart_00008082
+CP_14141d34f15a,Dairy,fairprice_00037582
+CP_14141d34f15a,Dairy,redmart_00008328
+CP_19d74c120402,Dairy,coldstorage_00003691
+CP_19d74c120402,Dairy,fairprice_00036974
+CP_2d0f2898d601,Dairy,coldstorage_00003187
+CP_2d0f2898d601,Dairy,fairprice_00060523
+CP_2d0f2898d601,Dairy,redmart_00004610
+CP_2f6b6175c8e0,Dairy,coldstorage_00003743
+CP_2f6b6175c8e0,Dairy,redmart_00007817
+CP_324fefcc323b,Dairy,coldstorage_00010364
+CP_324fefcc323b,Dairy,redmart_00008237
+CP_361a14d5d5a0,Dairy,coldstorage_00004110
+CP_361a14d5d5a0,Dairy,fairprice_00002437
+CP_3e0995f1691b,Dairy,fairprice_00037694
+CP_3e0995f1691b,Dairy,redmart_00008586
+CP_44cc5a5a7380,Dairy,coldstorage_00003689
+CP_44cc5a5a7380,Dairy,fairprice_00036988
+CP_50906f4c806c,Dairy,coldstorage_00003690
+CP_50906f4c806c,Dairy,fairprice_00036975
+CP_573f90772a40,Dairy,coldstorage_00004089
+CP_573f90772a40,Dairy,redmart_00010555
+CP_65b298c33fdf,Dairy,fairprice_00037693
+CP_65b298c33fdf,Dairy,redmart_00008583
+CP_69bf5fdace61,Dairy,fairprice_00036936
+CP_69bf5fdace61,Dairy,redmart_00010557
+CP_6f169e4b1e52,Dairy,fairprice_00037686
+CP_6f169e4b1e52,Dairy,redmart_00008574
+CP_72f4f1251479,Dairy,coldstorage_00010377
+CP_72f4f1251479,Dairy,redmart_00008225
+CP_7fe664739ff2,Dairy,coldstorage_00004094
+CP_7fe664739ff2,Dairy,redmart_00010784
+CP_8bb269e472da,Dairy,fairprice_00059252
+CP_8bb269e472da,Dairy,redmart_00004381
+CP_8fa10c38db9a,Dairy,coldstorage_00003688
+CP_8fa10c38db9a,Dairy,fairprice_00002484
+CP_a8d0c0547fe7,Dairy,coldstorage_00003183
+CP_a8d0c0547fe7,Dairy,redmart_00004553
+CP_b5e6c0ab62f0,Dairy,coldstorage_00003856
+CP_b5e6c0ab62f0,Dairy,fairprice_00037556
+CP_b70f6cf72755,Dairy,coldstorage_00004076
+CP_b70f6cf72755,Dairy,redmart_00010583
+CP_c0e1c783007d,Dairy,fairprice_00002428
+CP_c0e1c783007d,Dairy,redmart_00010585
+CP_c2062d5043f0,Dairy,coldstorage_00003180
+CP_c2062d5043f0,Dairy,fairprice_00060524
+CP_c2062d5043f0,Dairy,redmart_00004566
+CP_cd70fdf3b017,Dairy,coldstorage_00004238
+CP_cd70fdf3b017,Dairy,redmart_00004360
+CP_da8c8fd1d4b1,Dairy,fairprice_00036900
+CP_da8c8fd1d4b1,Dairy,redmart_00010607
+CP_db1b274b97a4,Dairy,fairprice_00037688
+CP_db1b274b97a4,Dairy,redmart_00008582
+CP_e31acdcc8844,Dairy,fairprice_00036901
+CP_e31acdcc8844,Dairy,redmart_00010633
+CP_e5d36ebb5e29,Dairy,coldstorage_00004068
+CP_e5d36ebb5e29,Dairy,redmart_00010553
+CP_f2caef8238d7,Dairy,fairprice_00059230
+CP_f2caef8238d7,Dairy,redmart_00059144
+CP_fe5dd4b8be49,Dairy,coldstorage_00003789
+CP_fe5dd4b8be49,Dairy,fairprice_00037674
+CP_ff2b9d2cf17c,Dairy,fairprice_00037617
+CP_ff2b9d2cf17c,Dairy,redmart_00008143
+CP_05cb90724eb4,Drinks,fairprice_00000826
+CP_05cb90724eb4,Drinks,redmart_00003170
+CP_1aa3a88d52fc,Drinks,coldstorage_00000961
+CP_1aa3a88d52fc,Drinks,redmart_00005286
+CP_3345ef2664ac,Drinks,coldstorage_00003949
+CP_3345ef2664ac,Drinks,redmart_00010338
+CP_3ee6b4cb0977,Drinks,coldstorage_00000963
+CP_3ee6b4cb0977,Drinks,redmart_00004695
+CP_4273fb8b6221,Drinks,fairprice_00059566
+CP_4273fb8b6221,Drinks,redmart_00006409
+CP_462689c75a0a,Drinks,coldstorage_00000651
+CP_462689c75a0a,Drinks,fairprice_00060733
+CP_47a083c3457c,Drinks,coldstorage_00004171
+CP_47a083c3457c,Drinks,fairprice_00059433
+CP_4ad1d09b2e10,Drinks,coldstorage_00009155
+CP_4ad1d09b2e10,Drinks,redmart_00077386
+CP_4b06f6b83af5,Drinks,coldstorage_00004166
+CP_4b06f6b83af5,Drinks,redmart_00005759
+CP_556ceb1c6c82,Drinks,coldstorage_00000608
+CP_556ceb1c6c82,Drinks,redmart_00003442
+CP_5725932a71a4,Drinks,coldstorage_00000976
+CP_5725932a71a4,Drinks,redmart_00004683
+CP_5d6490ed456f,Drinks,coldstorage_00000762
+CP_5d6490ed456f,Drinks,redmart_00003685
+CP_61d7e3322d7c,Drinks,fairprice_00059859
+CP_61d7e3322d7c,Drinks,redmart_00003257
+CP_6b6018f62df4,Drinks,coldstorage_00000875
+CP_6b6018f62df4,Drinks,fairprice_00015227
+CP_6da02600895d,Drinks,fairprice_00001259
+CP_6da02600895d,Drinks,redmart_00077331
+CP_796ba86f1b57,Drinks,coldstorage_00000982
+CP_796ba86f1b57,Drinks,redmart_00004886
+CP_7975eafce80d,Drinks,coldstorage_00001381
+CP_7975eafce80d,Drinks,fairprice_00000819
+CP_7ebf810d4607,Drinks,coldstorage_00000962
+CP_7ebf810d4607,Drinks,redmart_00004701
+CP_8abee16c9cc7,Drinks,coldstorage_00000997
+CP_8abee16c9cc7,Drinks,fairprice_00061106
+CP_8f206b010a5b,Drinks,coldstorage_00001160
+CP_8f206b010a5b,Drinks,fairprice_00060235
+CP_8f665b5262b2,Drinks,coldstorage_00004155
+CP_8f665b5262b2,Drinks,fairprice_00059444
+CP_915beadbdaef,Drinks,coldstorage_00007117
+CP_915beadbdaef,Drinks,fairprice_00001004
+CP_a5043ba9e9f5,Drinks,coldstorage_00002527
+CP_a5043ba9e9f5,Drinks,fairprice_00059615
+CP_a7afaf0ba403,Drinks,coldstorage_00000635
+CP_a7afaf0ba403,Drinks,redmart_00003700
+CP_aa49f4335e50,Drinks,coldstorage_00003948
+CP_aa49f4335e50,Drinks,redmart_00010329
+CP_bac2380c6bfa,Drinks,coldstorage_00009170
+CP_bac2380c6bfa,Drinks,fairprice_00001222
+CP_bbc0d1cf680f,Drinks,fairprice_00059416
+CP_bbc0d1cf680f,Drinks,redmart_00010350
+CP_bc4c7b4090dd,Drinks,fairprice_00060654
+CP_bc4c7b4090dd,Drinks,redmart_00002191
+CP_c55e2eca0d8b,Drinks,coldstorage_00001085
+CP_c55e2eca0d8b,Drinks,redmart_00002139
+CP_c8d31bdbf500,Drinks,coldstorage_00000639
+CP_c8d31bdbf500,Drinks,redmart_00003182
+CP_cae546230b3d,Drinks,coldstorage_00001354
+CP_cae546230b3d,Drinks,fairprice_00059608
+CP_cd78ba741f80,Drinks,coldstorage_00000931
+CP_cd78ba741f80,Drinks,fairprice_00059718
+CP_d70902774ef0,Drinks,fairprice_00000944
+CP_d70902774ef0,Drinks,redmart_00005291
+CP_e0d234322046,Drinks,coldstorage_00001162
+CP_e0d234322046,Drinks,fairprice_00060234
+CP_e9a4118514d0,Drinks,coldstorage_00004196
+CP_e9a4118514d0,Drinks,fairprice_00059331
+CP_eecb565d2d99,Drinks,coldstorage_00000626
+CP_eecb565d2d99,Drinks,fairprice_00000868
+CP_f14712e9e27e,Drinks,coldstorage_00009183
+CP_f14712e9e27e,Drinks,fairprice_00001194
+CP_02e2e12fb57e,Household Cleaning,fairprice_00053540
+CP_02e2e12fb57e,Household Cleaning,redmart_00055983
+CP_129443c6d721,Household Cleaning,fairprice_00053169
+CP_129443c6d721,Household Cleaning,redmart_00055399
+CP_17d086b1c98c,Household Cleaning,fairprice_00052952
+CP_17d086b1c98c,Household Cleaning,redmart_00097530
+CP_1936181b1448,Household Cleaning,fairprice_00053519
+CP_1936181b1448,Household Cleaning,redmart_00055990
+CP_2ee87cc85e8b,Household Cleaning,fairprice_00042610
+CP_2ee87cc85e8b,Household Cleaning,redmart_00093928
+CP_410ae2bef1ab,Household Cleaning,fairprice_00042304
+CP_410ae2bef1ab,Household Cleaning,redmart_00094031
+CP_491adbd5a23d,Household Cleaning,fairprice_00056062
+CP_491adbd5a23d,Household Cleaning,redmart_00006528
+CP_4b0a989f3569,Household Cleaning,fairprice_00056023
+CP_4b0a989f3569,Household Cleaning,redmart_00061892
+CP_4da289447982,Household Cleaning,fairprice_00052938
+CP_4da289447982,Household Cleaning,redmart_00097427
+CP_531618b9d86f,Household Cleaning,fairprice_00042665
+CP_531618b9d86f,Household Cleaning,redmart_00093807
+CP_535d1b94fedb,Household Cleaning,fairprice_00053515
+CP_535d1b94fedb,Household Cleaning,redmart_00055989
+CP_5bbc6f7c64d3,Household Cleaning,fairprice_00042321
+CP_5bbc6f7c64d3,Household Cleaning,redmart_00094058
+CP_5ce8df965a94,Household Cleaning,fairprice_00053533
+CP_5ce8df965a94,Household Cleaning,redmart_00056001
+CP_622075e2a876,Household Cleaning,fairprice_00042311
+CP_622075e2a876,Household Cleaning,redmart_00054556
+CP_64ea76ace570,Household Cleaning,fairprice_00042602
+CP_64ea76ace570,Household Cleaning,redmart_00054557
+CP_7540c470a650,Household Cleaning,fairprice_00052861
+CP_7540c470a650,Household Cleaning,redmart_00097292
+CP_7b00ffb2625d,Household Cleaning,fairprice_00053536
+CP_7b00ffb2625d,Household Cleaning,redmart_00056022
+CP_7f549552b7c7,Household Cleaning,fairprice_00053547
+CP_7f549552b7c7,Household Cleaning,redmart_00056014
+CP_870d6eddcb35,Household Cleaning,fairprice_00053542
+CP_870d6eddcb35,Household Cleaning,redmart_00055999
+CP_91c1bb43b494,Household Cleaning,fairprice_00053619
+CP_91c1bb43b494,Household Cleaning,redmart_00055296
+CP_93db0ce2de33,Household Cleaning,fairprice_00053544
+CP_93db0ce2de33,Household Cleaning,redmart_00056031
+CP_98b9f8b6c061,Household Cleaning,fairprice_00053610
+CP_98b9f8b6c061,Household Cleaning,redmart_00055280
+CP_a23e9b5b8490,Household Cleaning,fairprice_00053188
+CP_a23e9b5b8490,Household Cleaning,redmart_00056038
+CP_a5c6ab28d5d0,Household Cleaning,fairprice_00052824
+CP_a5c6ab28d5d0,Household Cleaning,redmart_00097621
+CP_b69cc470c126,Household Cleaning,fairprice_00056058
+CP_b69cc470c126,Household Cleaning,redmart_00006523
+CP_c4678f21f1f8,Household Cleaning,coldstorage_00006050
+CP_c4678f21f1f8,Household Cleaning,fairprice_00053656
+CP_ccf8bec6ab4f,Household Cleaning,fairprice_00053186
+CP_ccf8bec6ab4f,Household Cleaning,redmart_00055404
+CP_cd7288539983,Household Cleaning,fairprice_00042613
+CP_cd7288539983,Household Cleaning,redmart_00093943
+CP_d0b678e3c35c,Household Cleaning,fairprice_00052880
+CP_d0b678e3c35c,Household Cleaning,redmart_00097384
+CP_db8fee274f23,Household Cleaning,fairprice_00042583
+CP_db8fee274f23,Household Cleaning,redmart_00093952
+CP_df0d2f37e3da,Household Cleaning,fairprice_00052897
+CP_df0d2f37e3da,Household Cleaning,redmart_00097369
+CP_df7218080f97,Household Cleaning,fairprice_00052883
+CP_df7218080f97,Household Cleaning,redmart_00097293
+CP_ece48967186a,Household Cleaning,fairprice_00042603
+CP_ece48967186a,Household Cleaning,redmart_00055227
+CP_eda5f7888267,Household Cleaning,fairprice_00042312
+CP_eda5f7888267,Household Cleaning,redmart_00054591
+CP_f06c27afce37,Household Cleaning,fairprice_00053671
+CP_f06c27afce37,Household Cleaning,redmart_00055281
+CP_f1719d3af120,Household Cleaning,fairprice_00053642
+CP_f1719d3af120,Household Cleaning,redmart_00055357
+CP_f7fd35bba61f,Household Cleaning,fairprice_00052917
+CP_f7fd35bba61f,Household Cleaning,redmart_00097324
+CP_05966f5303e1,Rice & Noodles,fairprice_00000094
+CP_05966f5303e1,Rice & Noodles,redmart_00083993
+CP_0621a26ca599,Rice & Noodles,fairprice_00001824
+CP_0621a26ca599,Rice & Noodles,redmart_00082767
+CP_12a4d46fa428,Rice & Noodles,fairprice_00001931
+CP_12a4d46fa428,Rice & Noodles,redmart_00084452
+CP_2036e0ad27e8,Rice & Noodles,coldstorage_00007599
+CP_2036e0ad27e8,Rice & Noodles,fairprice_00067044
+CP_2332cf5ddb10,Rice & Noodles,fairprice_00000085
+CP_2332cf5ddb10,Rice & Noodles,redmart_00084450
+CP_23d1700e31b4,Rice & Noodles,coldstorage_00007272
+CP_23d1700e31b4,Rice & Noodles,fairprice_00062564
+CP_2451a16547ed,Rice & Noodles,fairprice_00067047
+CP_2451a16547ed,Rice & Noodles,redmart_00084532
+CP_28b4d6a3e584,Rice & Noodles,coldstorage_00007559
+CP_28b4d6a3e584,Rice & Noodles,redmart_00084453
+CP_2f916a9f2e89,Rice & Noodles,coldstorage_00007589
+CP_2f916a9f2e89,Rice & Noodles,fairprice_00067126
+CP_3be6e8e2f281,Rice & Noodles,fairprice_00062322
+CP_3be6e8e2f281,Rice & Noodles,redmart_00082750
+CP_44214accba61,Rice & Noodles,fairprice_00067064
+CP_44214accba61,Rice & Noodles,redmart_00084538
+CP_4e262632e4bb,Rice & Noodles,fairprice_00067062
+CP_4e262632e4bb,Rice & Noodles,redmart_00084346
+CP_51d5523e2346,Rice & Noodles,coldstorage_00007588
+CP_51d5523e2346,Rice & Noodles,fairprice_00067134
+CP_56f8788dae4e,Rice & Noodles,coldstorage_00007596
+CP_56f8788dae4e,Rice & Noodles,fairprice_00000088
+CP_56f8788dae4e,Rice & Noodles,redmart_00084343
+CP_62cf720c571f,Rice & Noodles,coldstorage_00007597
+CP_62cf720c571f,Rice & Noodles,fairprice_00000126
+CP_62cf720c571f,Rice & Noodles,redmart_00084369
+CP_67fe774795b9,Rice & Noodles,fairprice_00062329
+CP_67fe774795b9,Rice & Noodles,redmart_00082796
+CP_687437424439,Rice & Noodles,coldstorage_00007579
+CP_687437424439,Rice & Noodles,fairprice_00067172
+CP_876d2bf0bb61,Rice & Noodles,coldstorage_00010435
+CP_876d2bf0bb61,Rice & Noodles,redmart_00082772
+CP_a12f486bd320,Rice & Noodles,fairprice_00067099
+CP_a12f486bd320,Rice & Noodles,redmart_00084001
+CP_a50b5e8c69a6,Rice & Noodles,coldstorage_00007580
+CP_a50b5e8c69a6,Rice & Noodles,fairprice_00067224
+CP_ab20d2339d6f,Rice & Noodles,coldstorage_00006227
+CP_ab20d2339d6f,Rice & Noodles,redmart_00081937
+CP_ac7a4067172a,Rice & Noodles,coldstorage_00007569
+CP_ac7a4067172a,Rice & Noodles,fairprice_00066976
+CP_ac7a4067172a,Rice & Noodles,redmart_00084514
+CP_acc9967e7d33,Rice & Noodles,fairprice_00067157
+CP_acc9967e7d33,Rice & Noodles,redmart_00084041
+CP_b07511514bb7,Rice & Noodles,fairprice_00067058
+CP_b07511514bb7,Rice & Noodles,redmart_00084535
+CP_b1e395c5ade2,Rice & Noodles,fairprice_00001823
+CP_b1e395c5ade2,Rice & Noodles,redmart_00009002
+CP_b7350cf88a45,Rice & Noodles,fairprice_00067146
+CP_b7350cf88a45,Rice & Noodles,redmart_00084044
+CP_bb6879d53f7a,Rice & Noodles,coldstorage_00007602
+CP_bb6879d53f7a,Rice & Noodles,fairprice_00067039
+CP_bb6879d53f7a,Rice & Noodles,redmart_00084354
+CP_c429bc91f77d,Rice & Noodles,coldstorage_00007271
+CP_c429bc91f77d,Rice & Noodles,fairprice_00062571
+CP_cd796097a481,Rice & Noodles,fairprice_00002032
+CP_cd796097a481,Rice & Noodles,redmart_00082937
+CP_cf9ff0ab6998,Rice & Noodles,fairprice_00067038
+CP_cf9ff0ab6998,Rice & Noodles,redmart_00084531
+CP_d31fa5ced224,Rice & Noodles,coldstorage_00006212
+CP_d31fa5ced224,Rice & Noodles,fairprice_00009924
+CP_ddddb5aa883e,Rice & Noodles,fairprice_00062332
+CP_ddddb5aa883e,Rice & Noodles,redmart_00082879
+CP_e4f7a58efd69,Rice & Noodles,fairprice_00002190
+CP_e4f7a58efd69,Rice & Noodles,redmart_00082919
+CP_eabc8279a2be,Rice & Noodles,fairprice_00067188
+CP_eabc8279a2be,Rice & Noodles,redmart_00084032
+CP_f3f11b8a1666,Rice & Noodles,fairprice_00067179
+CP_f3f11b8a1666,Rice & Noodles,redmart_00084042
+CP_fad42261ba67,Rice & Noodles,fairprice_00067110
+CP_fad42261ba67,Rice & Noodles,redmart_00084341
+CP_fc6e1cf3bafe,Rice & Noodles,fairprice_00000135
+CP_fc6e1cf3bafe,Rice & Noodles,redmart_00083419
+CP_064b9cf08ed7,Snacks,coldstorage_00008271
+CP_064b9cf08ed7,Snacks,fairprice_00012325
+CP_0918b038b079,Snacks,coldstorage_00008568
+CP_0918b038b079,Snacks,fairprice_00013874
+CP_28ee7e7d27db,Snacks,coldstorage_00008599
+CP_28ee7e7d27db,Snacks,fairprice_00014298
+CP_28ee7e7d27db,Snacks,redmart_00013256
+CP_28f0bfc4916c,Snacks,coldstorage_00008562
+CP_28f0bfc4916c,Snacks,fairprice_00013882
+CP_2b8a0f6a70ac,Snacks,coldstorage_00008624
+CP_2b8a0f6a70ac,Snacks,fairprice_00013925
+CP_2b8a0f6a70ac,Snacks,redmart_00012608
+CP_2d2615ca0a0b,Snacks,coldstorage_00008627
+CP_2d2615ca0a0b,Snacks,fairprice_00013912
+CP_2d2615ca0a0b,Snacks,redmart_00012703
+CP_318d36b6b026,Snacks,coldstorage_00007661
+CP_318d36b6b026,Snacks,fairprice_00001437
+CP_318d36b6b026,Snacks,redmart_00016081
+CP_3b7adab3ef2e,Snacks,coldstorage_00006799
+CP_3b7adab3ef2e,Snacks,fairprice_00058780
+CP_3c0265dcb36d,Snacks,coldstorage_00008661
+CP_3c0265dcb36d,Snacks,fairprice_00013860
+CP_3c0265dcb36d,Snacks,redmart_00012563
+CP_498ecd6c0c60,Snacks,coldstorage_00008464
+CP_498ecd6c0c60,Snacks,fairprice_00013028
+CP_4c7f2b4a0fc6,Snacks,coldstorage_00008803
+CP_4c7f2b4a0fc6,Snacks,fairprice_00013766
+CP_52ab61a7c76b,Snacks,coldstorage_00008121
+CP_52ab61a7c76b,Snacks,fairprice_00011955
+CP_59c78fe668a1,Snacks,coldstorage_00008717
+CP_59c78fe668a1,Snacks,fairprice_00013477
+CP_59c78fe668a1,Snacks,redmart_00015348
+CP_6066fb4b1a0f,Snacks,coldstorage_00008000
+CP_6066fb4b1a0f,Snacks,fairprice_00012273
+CP_6066fb4b1a0f,Snacks,redmart_00018534
+CP_7604abd998a9,Snacks,fairprice_00011934
+CP_7604abd998a9,Snacks,redmart_00019236
+CP_84c55eaba7c5,Snacks,coldstorage_00008463
+CP_84c55eaba7c5,Snacks,fairprice_00013825
+CP_84f92cf12564,Snacks,fairprice_00012338
+CP_84f92cf12564,Snacks,redmart_00018314
+CP_8ab064790490,Snacks,coldstorage_00008570
+CP_8ab064790490,Snacks,fairprice_00013862
+CP_8ab064790490,Snacks,redmart_00012590
+CP_8d38db3c09be,Snacks,coldstorage_00008658
+CP_8d38db3c09be,Snacks,fairprice_00013869
+CP_8f83faf713ea,Snacks,coldstorage_00008068
+CP_8f83faf713ea,Snacks,fairprice_00012360
+CP_92a89d5a30b4,Snacks,coldstorage_00007844
+CP_92a89d5a30b4,Snacks,fairprice_00058769
+CP_93d234580e43,Snacks,coldstorage_00008266
+CP_93d234580e43,Snacks,fairprice_00012322
+CP_99ac2bdfa636,Snacks,coldstorage_00008660
+CP_99ac2bdfa636,Snacks,fairprice_00013866
+CP_a16914db91c8,Snacks,coldstorage_00006796
+CP_a16914db91c8,Snacks,fairprice_00058789
+CP_a22429731d3e,Snacks,coldstorage_00007948
+CP_a22429731d3e,Snacks,fairprice_00012330
+CP_a3a74775942c,Snacks,coldstorage_00008718
+CP_a3a74775942c,Snacks,fairprice_00001334
+CP_a3a74775942c,Snacks,redmart_00015319
+CP_a661c529cc00,Snacks,coldstorage_00007662
+CP_a661c529cc00,Snacks,fairprice_00001409
+CP_a661c529cc00,Snacks,redmart_00016082
+CP_b27ad728fc89,Snacks,coldstorage_00006785
+CP_b27ad728fc89,Snacks,fairprice_00058796
+CP_b47bcdf961dd,Snacks,coldstorage_00008628
+CP_b47bcdf961dd,Snacks,fairprice_00013927
+CP_d22be462f47e,Snacks,coldstorage_00008626
+CP_d22be462f47e,Snacks,fairprice_00013940
+CP_d25c61f25af0,Snacks,coldstorage_00008625
+CP_d25c61f25af0,Snacks,fairprice_00013910
+CP_d25c61f25af0,Snacks,redmart_00012791
+CP_d81019c1c03d,Snacks,coldstorage_00008716
+CP_d81019c1c03d,Snacks,fairprice_00001480
+CP_d81019c1c03d,Snacks,redmart_00015371
+CP_e2553cb5d3c9,Snacks,coldstorage_00008629
+CP_e2553cb5d3c9,Snacks,fairprice_00013919
+CP_e98a2ed9d82d,Snacks,coldstorage_00008567
+CP_e98a2ed9d82d,Snacks,fairprice_00013885
+CP_e98a2ed9d82d,Snacks,redmart_00012606
+CP_ea276c75f795,Snacks,coldstorage_00008569
+CP_ea276c75f795,Snacks,fairprice_00013926
+CP_ea276c75f795,Snacks,redmart_00012633
+CP_efbaec350621,Snacks,coldstorage_00008173
+CP_efbaec350621,Snacks,fairprice_00011964
+CP_f0c38c5bc191,Snacks,coldstorage_00008611
+CP_f0c38c5bc191,Snacks,fairprice_00013918
+CP_07c1216b0313,Toiletries & Personal Care,coldstorage_00009436
+CP_07c1216b0313,Toiletries & Personal Care,fairprice_00022217
+CP_0c8e6311b09a,Toiletries & Personal Care,fairprice_00018787
+CP_0c8e6311b09a,Toiletries & Personal Care,redmart_00072872
+CP_0cd20fcb9106,Toiletries & Personal Care,coldstorage_00009435
+CP_0cd20fcb9106,Toiletries & Personal Care,fairprice_00021661
+CP_17d42d472877,Toiletries & Personal Care,coldstorage_00009590
+CP_17d42d472877,Toiletries & Personal Care,fairprice_00016834
+CP_1809c6b14d05,Toiletries & Personal Care,coldstorage_00007131
+CP_1809c6b14d05,Toiletries & Personal Care,fairprice_00016869
+CP_1afa67e7d6c7,Toiletries & Personal Care,fairprice_00017023
+CP_1afa67e7d6c7,Toiletries & Personal Care,redmart_00063645
+CP_269e611666d2,Toiletries & Personal Care,coldstorage_00009593
+CP_269e611666d2,Toiletries & Personal Care,fairprice_00016854
+CP_2dd8f18b3de5,Toiletries & Personal Care,coldstorage_00009545
+CP_2dd8f18b3de5,Toiletries & Personal Care,fairprice_00016785
+CP_3252035b601c,Toiletries & Personal Care,fairprice_00018550
+CP_3252035b601c,Toiletries & Personal Care,redmart_00072864
+CP_33a121a62c92,Toiletries & Personal Care,coldstorage_00007145
+CP_33a121a62c92,Toiletries & Personal Care,fairprice_00021669
+CP_3ba20f2f3c9b,Toiletries & Personal Care,coldstorage_00009444
+CP_3ba20f2f3c9b,Toiletries & Personal Care,fairprice_00021754
+CP_46f5002a2f69,Toiletries & Personal Care,coldstorage_00007130
+CP_46f5002a2f69,Toiletries & Personal Care,fairprice_00016890
+CP_5632165ba35b,Toiletries & Personal Care,coldstorage_00009564
+CP_5632165ba35b,Toiletries & Personal Care,fairprice_00016710
+CP_5a94b0921d72,Toiletries & Personal Care,coldstorage_00009316
+CP_5a94b0921d72,Toiletries & Personal Care,fairprice_00018215
+CP_5c94e5a7b2df,Toiletries & Personal Care,coldstorage_00009538
+CP_5c94e5a7b2df,Toiletries & Personal Care,fairprice_00016700
+CP_6aef3d290934,Toiletries & Personal Care,coldstorage_00009419
+CP_6aef3d290934,Toiletries & Personal Care,fairprice_00021872
+CP_79a06ba4bcc5,Toiletries & Personal Care,coldstorage_00009543
+CP_79a06ba4bcc5,Toiletries & Personal Care,fairprice_00016720
+CP_7b971fe4ca74,Toiletries & Personal Care,fairprice_00018548
+CP_7b971fe4ca74,Toiletries & Personal Care,redmart_00072770
+CP_86a043d0f040,Toiletries & Personal Care,coldstorage_00009306
+CP_86a043d0f040,Toiletries & Personal Care,fairprice_00018268
+CP_9207ef5013ac,Toiletries & Personal Care,coldstorage_00009528
+CP_9207ef5013ac,Toiletries & Personal Care,fairprice_00016807
+CP_961d048f1e7f,Toiletries & Personal Care,fairprice_00018483
+CP_961d048f1e7f,Toiletries & Personal Care,redmart_00072715
+CP_a148572b1a12,Toiletries & Personal Care,fairprice_00017036
+CP_a148572b1a12,Toiletries & Personal Care,redmart_00063688
+CP_a328dc88dfae,Toiletries & Personal Care,coldstorage_00007135
+CP_a328dc88dfae,Toiletries & Personal Care,fairprice_00016876
+CP_b008cc87c0e5,Toiletries & Personal Care,coldstorage_00009551
+CP_b008cc87c0e5,Toiletries & Personal Care,fairprice_00016721
+CP_b6f7a270e955,Toiletries & Personal Care,fairprice_00018478
+CP_b6f7a270e955,Toiletries & Personal Care,redmart_00072739
+CP_bb6905795b8c,Toiletries & Personal Care,coldstorage_00009315
+CP_bb6905795b8c,Toiletries & Personal Care,fairprice_00018204
+CP_be62bc0b8f40,Toiletries & Personal Care,coldstorage_00009437
+CP_be62bc0b8f40,Toiletries & Personal Care,fairprice_00021659
+CP_c4675569b755,Toiletries & Personal Care,coldstorage_00007151
+CP_c4675569b755,Toiletries & Personal Care,fairprice_00021684
+CP_c4c1c00f8375,Toiletries & Personal Care,fairprice_00018470
+CP_c4c1c00f8375,Toiletries & Personal Care,redmart_00072742
+CP_cd569cf5287c,Toiletries & Personal Care,fairprice_00017002
+CP_cd569cf5287c,Toiletries & Personal Care,redmart_00063541
+CP_d62a12040344,Toiletries & Personal Care,coldstorage_00009540
+CP_d62a12040344,Toiletries & Personal Care,fairprice_00016729
+CP_df84400af13b,Toiletries & Personal Care,fairprice_00018646
+CP_df84400af13b,Toiletries & Personal Care,redmart_00072704
+CP_e075f405ce6b,Toiletries & Personal Care,fairprice_00018576
+CP_e075f405ce6b,Toiletries & Personal Care,redmart_00072727
+CP_e889b2b16f19,Toiletries & Personal Care,coldstorage_00009443
+CP_e889b2b16f19,Toiletries & Personal Care,fairprice_00022160
+CP_ec47b1cb28b3,Toiletries & Personal Care,fairprice_00018465
+CP_ec47b1cb28b3,Toiletries & Personal Care,redmart_00072702
+CP_f51d50efdcef,Toiletries & Personal Care,coldstorage_00009598
+CP_f51d50efdcef,Toiletries & Personal Care,fairprice_00016727
+CP_f678f85ad35d,Toiletries & Personal Care,coldstorage_00009592
+CP_f678f85ad35d,Toiletries & Personal Care,fairprice_00016788
