@@ -145,14 +145,16 @@ export const RetailerOptionSchema = Type.Union([CompleteOptionSchema, Unavailabl
 export type RetailerOption = Static<typeof RetailerOptionSchema>;
 
 /** One option per retailer: complete options first, cheapest first, then
- * unavailable ones. The API orders them; schemas cannot compare totals. */
+ * unavailable ones. Ties between equal totals, and the order of unavailable
+ * options, follow retailer ID in code-point order ("cold-storage" <
+ * "fairprice" < "redmart"). The API orders them; schemas cannot compare totals. */
 const options = (item: typeof RetailerOptionSchema | typeof UnavailableOptionSchema) =>
   Type.Array(item, { minItems: 1, maxItems: 3 });
 
 export const BasketCompareResponseSchema = Type.Union([
   /** At least one retailer can supply the complete basket. The recommendation is
-   * the cheapest complete option; equal totals are broken in a stable, documented
-   * retailer order, so it is always the first option. */
+   * the cheapest complete option, with ties broken by retailer ID, so it is always
+   * the first option. */
   closedObject({
     status: Type.Literal("recommended"),
     recommendedRetailerId: RetailerIdSchema,

@@ -194,24 +194,24 @@ export const oneRetailerCompleteExample = {
   recommendedRetailerId: "redmart",
   options: [
     redmartComplete,
+    coldStorageUnverified,
     {
       status: "unavailable",
       retailerId: "fairprice",
       reasons: [{ code: "missing_products", productIds: ["fixture-drink"] }],
     },
-    coldStorageUnverified,
   ],
 } satisfies BasketCompareResponse;
 
 /** FairPrice's 650-cent order is below its fee's 1,000-cent waiver threshold, and the
- * 160-cent fee makes both totals equal, so the tie is broken in the documented
- * retailer order, which puts RedMart first. */
+ * 160-cent fee makes both totals equal, so the tie is broken by retailer ID, which
+ * puts FairPrice before RedMart. */
 export const tieExample = {
   status: "recommended",
-  recommendedRetailerId: "redmart",
+  recommendedRetailerId: "fairprice",
   options: [
-    redmartComplete,
     complete("fairprice", [drinkAtFairprice, riceAtFairprice], 0, [serviceFee(160, 1000, false)]),
+    redmartComplete,
     coldStorageUnverified,
   ],
 } satisfies BasketCompareResponse;
@@ -220,17 +220,17 @@ export const tieExample = {
 export const noFeasiblePlanExample = {
   status: "no_feasible_plan",
   options: [
-    {
-      status: "unavailable",
-      retailerId: "redmart",
-      reasons: [{ code: "missing_products", productIds: ["fixture-rice"] }],
-    },
+    coldStorageUnverified,
     {
       status: "unavailable",
       retailerId: "fairprice",
       reasons: [{ code: "below_minimum_order", minimumOrderCents: 1500, spendCents: 650 }],
     },
-    coldStorageUnverified,
+    {
+      status: "unavailable",
+      retailerId: "redmart",
+      reasons: [{ code: "missing_products", productIds: ["fixture-rice"] }],
+    },
   ],
 } satisfies BasketCompareResponse;
 

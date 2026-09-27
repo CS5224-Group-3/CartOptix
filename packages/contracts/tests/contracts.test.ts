@@ -98,8 +98,13 @@ describe("contract rules", () => {
     const firstUnavailable = result.options.findIndex((o) => o.status === "unavailable");
     const complete = completeOptions(result);
     if (firstUnavailable >= 0) expect(firstUnavailable).toBe(complete.length);
-    const totals = complete.map((option) => option.totalCents);
-    expect(totals).toEqual([...totals].sort((a, b) => a - b));
+    const byTotalThenId = [...complete].sort(
+      (a, b) => a.totalCents - b.totalCents || (a.retailerId < b.retailerId ? -1 : 1),
+    );
+    expect(complete).toEqual(byTotalThenId);
+    const unavailable = result.options.filter((o) => o.status === "unavailable");
+    const ids = unavailable.map((o) => o.retailerId);
+    expect(ids).toEqual([...ids].sort());
   });
 
   it.each(comparisons)("%s: complete options cover the whole basket", (_name, result) => {
@@ -239,7 +244,7 @@ describe("rejected values", () => {
 });
 
 describe("tie-break", () => {
-  it("the tie fixture really ties, so the documented retailer order is exercised", () => {
+  it("the tie fixture really ties, so the retailer-ID order is exercised", () => {
     const [first, second] = completeOptions(fixtures.tieExample);
     expect(first?.totalCents).toBe(second?.totalCents);
     expect(fixtures.tieExample.recommendedRetailerId).toBe(first?.retailerId);

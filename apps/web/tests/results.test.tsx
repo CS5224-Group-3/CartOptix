@@ -65,7 +65,7 @@ describe("comparison outcomes on the results page", () => {
 
   it("breaks a tie in the order the API returns", async () => {
     await compareWith(tieExample);
-    expect(screen.getByRole("heading", { name: "Buy it all at RedMart" })).toBeDefined();
+    expect(screen.getByRole("heading", { name: "Buy it all at FairPrice" })).toBeDefined();
   });
 
   it("says no feasible plan exists and gives each retailer's reason", async () => {

@@ -23,8 +23,9 @@ import {
   placeholderRules,
 } from "./dataset.ts";
 
-/** Retailer order used to break ties between equal totals. */
-const RETAILER_ORDER: readonly RetailerId[] = ["redmart", "fairprice", "cold-storage"];
+/** Ties between equal totals, and unavailable retailers, go by retailer ID. */
+const byRetailerId = (a: { retailerId: RetailerId }, b: { retailerId: RetailerId }) =>
+  a.retailerId < b.retailerId ? -1 : a.retailerId > b.retailerId ? 1 : 0;
 
 export class UnknownProductsError extends Error {
   readonly productIds: string[];
@@ -129,19 +130,14 @@ export function compareBasket(
     line,
     listings: byId.get(line.productId)?.listings ?? [],
   }));
-  const all = RETAILER_ORDER.map((retailerId) =>
-    retailerOption(retailerId, lines, rules[retailerId]),
-  );
+  const retailers = Object.keys(rules) as RetailerId[];
+  const all = retailers.map((retailerId) => retailerOption(retailerId, lines, rules[retailerId]));
   const complete = all
     .filter((option): option is CompleteOption => option.status === "complete")
-    .sort(
-      (a, b) =>
-        a.totalCents - b.totalCents ||
-        RETAILER_ORDER.indexOf(a.retailerId) - RETAILER_ORDER.indexOf(b.retailerId),
-    );
-  const unavailable = all.filter(
-    (option): option is UnavailableOption => option.status === "unavailable",
-  );
+    .sort((a, b) => a.totalCents - b.totalCents || byRetailerId(a, b));
+  const unavailable = all
+    .filter((option): option is UnavailableOption => option.status === "unavailable")
+    .sort(byRetailerId);
 
   const [cheapest] = complete;
   if (!cheapest) return { status: "no_feasible_plan", options: unavailable };
