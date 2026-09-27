@@ -1,6 +1,6 @@
 # CartOptix
 
-Intelligent Multi-Retailer Grocery Basket Optimisation
+Complete-basket grocery price comparison across Singapore retailers
 
 ## Specifications
 

@@ -2,31 +2,30 @@
 
 **Status:** Agreed product requirements from the preliminary-report review and subsequent design and data interviews. Implementation has not yet been verified against these requirements.
 
-This document and the [technical implementation specification](technical-implementation-spec.md) supersede `mvp-implementation-plan.md`. This document defines the product contract; the technical specification defines the delivery plan. Later interview decisions take precedence over the preliminary report, particularly for availability, collection dates, optimisation guarantees and evaluation targets.
+This document and the [technical implementation specification](technical-implementation-spec.md) supersede `mvp-implementation-plan.md`. This document defines the product contract; the technical specification defines the delivery plan. Later decisions take precedence over the preliminary report, particularly for availability, collection dates and evaluation targets.
 
 ## 1. Purpose and product promise
 
-CartOptix helps Singapore grocery shoppers compare the estimated cost of an entire basket across RedMart, FairPrice and Cold Storage, including supported promotions and delivery charges. Shoppers can compare buying from one supermarket with splitting different products across supermarkets.
+CartOptix helps Singapore grocery shoppers compare the estimated cost of buying their entire basket from each of RedMart, FairPrice and Cold Storage, including supported promotions and delivery charges.
 
 The MVP is free for shoppers. No subscription or shopper payment is required to use CartOptix; shoppers pay for their groceries on retailer websites.
 
-The MVP must deliver a usable comparison service on AWS, demonstrate its performance and scaling behaviour under an explicit first-year traffic scenario, and gather shopper feedback. It does not need to prove that every recommendation is mathematically optimal.
+The MVP must deliver a usable comparison service on AWS, demonstrate its performance and scaling behaviour under an explicit first-year traffic scenario, and gather shopper feedback. It compares all three single-retailer options exactly.
 
-The promise is **the best valid plan found under the supported pricing rules, recorded dataset and shopper's retailer limit**. When a complete single-retailer option exists, the recommendation must cost no more than the cheapest such option under the same rules. Some baskets will have no benefit from splitting; that is a valid result.
+The promise is **the cheapest feasible complete-basket retailer option under the supported pricing rules and recorded dataset**. Every retailer is evaluated, and an unavailable option is shown with its reason rather than priced as a complete basket.
 
-Transparency governs the interface: distinguish estimated costs from current checkout prices, observed data from assumptions, and unsuccessful search from proven impossibility. Retailer payments never influence eligibility or ranking.
+Transparency governs the interface: distinguish estimated costs from current checkout prices, observed data from assumptions, and unavailable retailer options from service failures. Retailer payments never influence eligibility or ranking.
 
 ## 2. Users, scope and terminology
 
-Primary users are people who buy groceries online in Singapore and want to know whether potential savings justify additional orders and delivery arrangements.
+Primary users are people who buy groceries online in Singapore and want to compare the cost of buying their complete basket from different retailers.
 
 | Term | Meaning |
 | --- | --- |
 | Canonical product | A verified product identity shared by eligible retailer listings: same brand, variant, pack size and pack count, or equivalent identifying attributes for a non-food item. |
 | Retailer listing | A particular retailer's purchasable listing, linked to a canonical product. |
 | Basket line | One canonical product and the requested number of whole packs. |
-| Complete plan | Every requested line is assigned in full to an eligible retailer, with all modelled order constraints met. This does not guarantee current stock or fulfilment. |
-| Single-retailer baseline | The cheapest feasible complete plan using one retailer, calculated with the same dataset and pricing rules as split plans. |
+| Retailer option | The complete basket priced at one retailer when every line has an eligible offer, its delivery rule is verified and the order meets its minimum; otherwise unavailable with a reason. A feasible option does not guarantee current stock or fulfilment. |
 | Eligible offer | A listing approved for the curated dataset with usable pricing, direct supermarket fulfilment and an in-stock source flag. A listing counts as directly fulfilled unless evidence shows otherwise (PR-02). |
 | BAU | The prospective business-as-usual service. Its demand and cost estimates are planning assumptions, not demonstrated adoption. |
 
@@ -61,32 +60,30 @@ These journeys define required steps, on-screen content, states and a small set 
 
 Names, pack information and prices must be clear enough to avoid confusing unit prices with the amount payable for the requested packs. Image failure must not prevent product selection.
 
-### J2 — Build a basket and set purchasing preferences
+### J2 — Build a basket
 
 1. Add, remove or change basket lines.
-2. Choose a maximum of one, two or three retailers.
-3. Review the declared delivery scenario and snapshot disclaimer.
-4. Request a comparison.
+2. Review the declared delivery scenario and snapshot disclaimer.
+3. Request a comparison.
 
-The normal evaluation basket has 20 distinct lines. The supported maximum is **50 distinct lines**, with **1–20 whole packs per line**. Changing the basket or retailer limit makes an earlier comparison stale; the interface must request a new calculation before presenting it as current.
+The normal evaluation basket has 20 distinct lines. The supported maximum is **50 distinct lines**, with **1–20 whole packs per line**. Changing the basket makes an earlier comparison stale; the interface must request a new calculation before presenting it as current.
 
-### J3 — Compare purchasing plans
+### J3 — Compare retailer options
 
-Display the cheapest feasible complete single-retailer plan and the best-found permitted split plan when each exists. Highlight the overall best-found plan. If splitting provides no improvement, recommend a single retailer. Do not invent a split option or savings when none was found.
+Display an option for each of the three retailers. A retailer is feasible only when it has an eligible offer for every line, its delivery rule is verified and its order meets the minimum. Show other options as unavailable with reasons such as missing products, an unmet minimum or an unverified delivery rule. Recommend the cheapest feasible option; never rank a partial basket against a complete one.
 
-Each plan shows:
+Each feasible option shows:
 
-- Products, quantities and the retailer assigned to each line.
+- Products and quantities at that retailer.
 - Product subtotals, supported promotions and omitted-promotion notices.
 - Delivery charges and other modelled mandatory charges, itemised separately.
-- Estimated total, number of retailer orders and calculation status.
-- Estimated savings against the single-retailer baseline, when that baseline exists.
+- Estimated total; other feasible options may show how much more they cost than the recommendation.
 
-Tie-break equal totals by fewer retailers, followed by a stable ordering. Users choose between plans; the MVP imposes no minimum-saving threshold for another order.
+Break ties between equal totals in a stable, documented retailer order. Users choose which feasible option to follow.
 
 ### J4 — Follow the purchase plan
 
-The shopper opens product links, rebuilds the retailer baskets and completes checkout on retailer websites. CartOptix does not transfer carts, accept payments, reserve stock or coordinate delivery slots.
+The shopper opens product links, rebuilds the chosen retailer's basket and completes checkout on its website. CartOptix does not transfer carts, accept payments, reserve stock or coordinate delivery slots.
 
 Record lightweight outbound-click events for usage evaluation. A tracking failure must not block navigation. Clicks are not commercial billing or purchase-conversion events.
 
@@ -95,19 +92,17 @@ Record lightweight outbound-click events for usage evaluation. A tracking failur
 | Situation | Required behaviour |
 | --- | --- |
 | Empty basket or invalid input | Explain what must change; do not run a misleading comparison. |
-| No complete single-retailer option | Show a valid split plan if found; mark the single-retailer baseline and savings as unavailable. |
-| Proven impossible under the supported model | Explain the established blocker without omitting products or changing preferences. |
-| Search finds no valid plan within its limits | Say **“No valid plan found”**; do not claim impossibility. |
-| Search limit reached with a valid candidate | Show **“Best plan found”** with its status and full breakdown. |
+| Some retailers unavailable | Show each unavailable retailer and its reason alongside any feasible complete-basket options. |
+| No retailer can fulfil the complete basket | Show **“No feasible purchasing plan available”** with each retailer's reason; the shopper changes the basket themselves. |
 | Calculation or service failure | Show a retryable error distinct from a valid business outcome. |
 
-Partial baskets must not compete with complete baskets on price. Changing the retailer limit or basket is always the shopper's decision.
+Never price a partial basket as complete or rank it against complete options. Changing the basket is the shopper's decision.
 
 ## 4. Product rules and constraints
 
 ### PR-01 — Exact products and quantities
 
-Each line goes entirely to one retailer. Do not divide its quantity across retailers, substitute brands or pack configurations, add products, or buy extra units to reach a promotion or delivery threshold. Similar names and equivalent total volume alone do not establish an exact match.
+Each complete-basket option places every line with the same retailer. Do not divide a line's quantity across retailers, substitute brands or pack configurations, add products, or buy extra units to reach a promotion or delivery threshold. Similar names and equivalent total volume alone do not establish an exact match.
 
 ### PR-02 — Curated eligibility and availability
 
@@ -133,13 +128,13 @@ Use one documented Singapore delivery scenario: a declared serviceable location,
 
 Maintain each retailer's delivery fee, free-delivery threshold, minimum-order value, threshold spending basis and relevant mandatory charges. Apply actual verified rules for the selected scenario; do not assume every retailer uses the same pre-/post-discount basis. Record verification evidence internally.
 
-BCRS container deposits are not modelled in the MVP. The same 10¢ per container applies at every retailer, so it cannot change which plan wins; `[BCRS]` listings stay eligible, and the comparison notes that totals exclude the refundable deposit. If a mandatory charge is modelled later, itemise it without double-counting a charge already included in the recorded price, and exclude affected listings while its treatment remains unresolved. Unknown delivery charges must never silently become zero or support a complete-total savings claim.
+BCRS container deposits are not modelled in the MVP. The same 10¢ per container applies at every retailer, so it cannot change which option wins; `[BCRS]` listings stay eligible, and the comparison notes that totals exclude the refundable deposit. If a mandatory charge is modelled later, itemise it without double-counting a charge already included in the recorded price, and exclude affected listings while its treatment remains unresolved. An unverified delivery rule makes the retailer unavailable; unknown delivery charges must never silently become zero.
 
 ### PR-05 — Recommendation integrity
 
-All monetary calculations use integer SGD cents. Evaluate complete single-retailer candidates independently, retain the cheapest feasible baseline, and never recommend a more expensive plan when it exists. Estimated savings equal the baseline total minus the recommended total; savings are unavailable when there is no baseline.
+All monetary calculations use integer SGD cents. Use the shared pricing module to calculate the complete basket independently at each retailer, including product costs, supported promotions, delivery fees and thresholds, minimum orders and mandatory order charges. Recommend the cheapest feasible option, with ties resolved as in J3.
 
-The optimiser may use a heuristic. It must validate every returned assignment and distinguish a proven blocker from failure to discover a solution. Retailer participation, commissions and click revenue do not influence recommendations.
+Validate every returned complete option and explain each unavailable retailer. Retailer participation, commissions and click revenue do not influence recommendations.
 
 ### PR-06 — Snapshot disclosure and seed versioning
 
@@ -159,23 +154,23 @@ Collect outbound-click events with retailer, listing/product, timestamp and data
 | --- | --- | --- |
 | SC-01 | Shoppers can complete J1–J5 on the deployed service. | End-to-end checks covering valid and unsuccessful journeys; usable mobile layout and keyboard controls. |
 | SC-02 | Published data follows PR-01–PR-04 and the seed-versioning requirements of PR-06. | Curation records, import validation, catalogue size and overlap report, and recorded seed revision/checksum. |
-| SC-03 | Returned plans obey quantities, retailer limits, prices and order constraints. | Reference calculations, boundary tests and assignment validation; no recommendation worse than an available baseline. |
-| SC-04 | The heuristic finds useful savings in constructed cases and its limitations are measured. | Known splitting/no-splitting cases; small exhaustive-search references with missed-savings and cost-gap results. No blanket optimum claim. |
+| SC-03 | Returned options obey quantities, prices and order constraints. | Reference calculations, boundary tests and complete-basket validation; the recommendation is the cheapest feasible option. |
+| SC-04 | Comparison results and unavailability reasons are correct for all three retailers. | Constructed and real-seed baskets checking exact totals, recommendation, ties and each retailer's reason when unavailable. |
 | SC-05 | Catalogue/search p99 is below 1 second and basket comparison p99 below 2 seconds at declared normal and surge loads. | Endpoint and mixed-workload results, with separate 20-line and 50-line basket results and test configuration. Product-offer latency is reported; no separate numeric target was agreed for it. |
 | SC-06 | Unexpected failures are at most 0.1% at the declared normal and surge loads. | Request outcomes including timeouts, connection failures, server errors and capacity-related rejections. Correctly rejected invalid inputs are excluded. |
 | SC-07 | AWS elasticity and application-instance fault tolerance are demonstrated. | Automatic scale-out and continued service after terminating one application instance; observations and recovery behaviour reported. |
-| SC-08 | Shopper evaluation tests understanding and perceived usefulness. | Findings on comparison comprehension, assumptions and whether savings justify rebuilding carts and placing multiple orders, including negative feedback. |
+| SC-08 | Shopper evaluation tests understanding and perceived usefulness. | Findings on comparison comprehension, assumptions and whether price differences justify rebuilding a retailer cart, including negative feedback. |
 | SC-09 | The project documents its costs and closes resources on schedule. | Project spend, separate BAU estimate, cloud/on-premise comparison and teardown record. |
 
 Performance is distinct from availability. The prospective BAU **request-success SLO is 99.9% per day**, not a contractual SLA or a time-based uptime guarantee. A short load test does not establish long-term availability. Report observed prototype request success separately; report deliberate overload and fault injection separately from normal/surge acceptance runs.
 
-For requirement traceability, SC-03/SC-04 verify PR-05 recommendation integrity. SC-01/SC-02 verify PR-06 disclosures and versioned-data evidence. SC-01 includes PR-07 click recording and navigation when tracking fails.
+For requirement traceability, SC-03/SC-04 verify PR-05 comparison correctness and recommendation integrity. SC-01/SC-02 verify PR-06 disclosures and versioned-data evidence. SC-01 includes PR-07 click recording and navigation when tracking fails.
 
 ### Shopper study
 
 Retain the preliminary report's target of **10–15 people who regularly shop for groceries online**. Use realistic basket-comparison tasks and interviews/questionnaires to assess ease of use, clarity, trust, usefulness and willingness to use the app. Include the effort of rebuilding retailer carts in the discussion or task. Gather open-ended feedback and record whether assumptions are understood.
 
-The study validates the idea and informs small MVP adjustments and longer-term recommendations. It does not substantially redefine the deliverables. Reported interest is not demonstrated adoption. Select representative evaluation baskets independently of the products yielding the greatest savings; report zero-saving outcomes and coverage gaps.
+The study validates the idea and informs small MVP adjustments and longer-term recommendations. It does not substantially redefine the deliverables. Reported interest is not demonstrated adoption. Select representative evaluation baskets independently of those yielding the largest price differences; report equal-cost outcomes and coverage gaps.
 
 ## 6. Deployment and planning constraints
 
@@ -191,7 +186,7 @@ The first-year planning scenario is 1,000 daily active shoppers, two sessions pe
 
 ## 7. Outside the MVP
 
-Live price/availability checks, scheduled refresh, partner APIs, stock reservations, substitutions, alternative pack-size fulfilment, cross-product promotions, splitting one line across retailers, extra purchases to qualify for discounts, accounts, cross-device saved baskets and integrated checkout are outside scope.
+Live price/availability checks, scheduled refresh, partner APIs, stock reservations, substitutions, alternative pack-size fulfilment, cross-product promotions, splitting a basket across retailers, splitting one line across retailers, extra purchases to qualify for discounts, accounts, cross-device saved baskets and integrated checkout are outside scope.
 
 Pay-per-click partnerships, affiliate conversion tracking and cashback remain commercial hypotheses or future work. Lightweight click recording is included; commercial billing, attribution and fraud controls are not. Database failover and a demonstrated long-term BAU SLO are not claims of the Single-AZ prototype.
 
@@ -199,4 +194,4 @@ The intended commercial progression is to explore retailer-funded pay-per-click 
 
 ## 8. Evidence still required
 
-The raw files have been profiled, but listing eligibility, exact matches and promotion terms have not been fully verified. The project must still establish a reliable curated catalogue, price the complete AWS configuration and measure heuristic quality and system capacity. Record shortfalls and revisit affected decisions instead of presenting these targets as achieved results.
+The raw files have been profiled, but listing eligibility, exact matches and promotion terms have not been fully verified. The project must still establish a reliable curated catalogue, price the complete AWS configuration and measure comparison correctness and system capacity. Record shortfalls and revisit affected decisions instead of presenting these targets as achieved results.
