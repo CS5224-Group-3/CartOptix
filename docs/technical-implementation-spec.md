@@ -118,11 +118,11 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 2. Normalise field names, money, units, pack counts and stable retailer listing identifiers. Preserve raw values alongside transformations in provenance records.
 3. Restrict candidates to the eight product categories. Treat `Keyword` as source discovery metadata, not the canonical category taxonomy.
 4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
-5. Propose matches, which may use AI. A person reviews every disagreement with the name rules, and someone who did not produce the matches checks a random sample of published mappings, reporting its size and error rate. Quarantine contradictions and record corrections with evidence.
+5. Propose matches, which may use AI. Publish only high-confidence AI matches that agree with the name rules and exclude the rest; manual match review is out of scope for the proof of concept.
 6. Verify one delivery scenario per retailer. The MVP publishes verified ordinary and unconditional sale prices only, recording other promotions as excluded; do not infer unsupported rules.
 7. Publish clean, schema-validated seed data with version, coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
 
-Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. An independent reviewer checks a sample of final mappings (step 5). Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
+Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
 
 ### Logical data model
 
@@ -308,10 +308,10 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 - **Work:** Record source checksums/row references, reproduce basic profiling, map source fields and categories, and document malformed prices, stock flags and ambiguous packs.
 - **Acceptance:** A repeatable report reproduces or explains differences from the supplied-file counts; raw values remain unchanged and findings are traceable to source rows.
 
-#### B2 — Curate and independently review a pilot catalogue
+#### B2 — Curate a pilot catalogue
 - **Blocked by:** A2, B1.
 - **Work:** Prepare a small cross-category sample in the final seed format; decide exact matches (AI-assisted matching is allowed), check stock eligibility and prices, and remove listings the evidence shows are not directly fulfilled. Quarantine unresolved rows and record corrections.
-- **Acceptance:** Every published pilot offer is in stock with a reliable positive price; a person has reviewed every disagreement between proposed matches and the name rules; known title/specification contradictions are resolved or excluded; an independent reviewer checks a random sample and its size and error rate are reported; pilot coverage and gaps are reported.
+- **Acceptance:** Every published pilot offer is in stock with a reliable positive price; only high-confidence matches that agree with the name rules are published; known title/specification contradictions are excluded; pilot coverage and gaps are reported.
 
 #### B3 — Verify delivery scenarios and supported prices
 - **Blocked by:** A2, B1.
@@ -325,8 +325,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.
-- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit clean seed/provenance and document versioning, exclusions and review procedure. Document how to rerun curation (order, working directory, pinned dependencies), and commit notebooks, review decisions and final outputs rather than large intermediates.
-- **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across dataset versions and product links checked against retailer domains at import; the seed imports reproducibly and has a recorded revision/checksum.
+- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed with its provenance, and the scripts that build it. Rerun documentation and clearing out intermediates are out of scope for the proof of concept.
+- **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across dataset versions and product links checked against retailer domains at import; the seed imports repeatably and has a recorded revision/checksum.
 
 ### WS-C — Pricing and recommendation engine
 
