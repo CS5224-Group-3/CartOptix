@@ -32,6 +32,7 @@ export type {
   Cents,
   DeliveryCharge,
   LinePricingResult,
+  OrderCharge,
   OrderInfeasibility,
   PackPricing,
   PricedLine,
@@ -49,5 +50,6 @@ export type {
   ExcludedPromotionRule,
   MandatoryChargeRule,
   OfferRule,
+  OrderChargeRule,
   ThresholdBasis,
 } from "./rules.ts";

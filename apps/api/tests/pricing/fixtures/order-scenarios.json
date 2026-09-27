@@ -40,7 +40,8 @@
         {
           "label": "Packaging fee",
           "amount": 50,
-          "includedInPrice": false
+          "includedInPrice": false,
+          "waivedFrom": null
         }
       ]
     },
@@ -79,7 +80,8 @@
         {
           "label": "Bag levy",
           "amount": null,
-          "includedInPrice": false
+          "includedInPrice": false,
+          "waivedFrom": null
         }
       ]
     },
@@ -253,7 +255,7 @@
           "amount": 599,
           "free": false
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 3799,
         "disclosureCodes": []
       }
@@ -270,6 +272,8 @@
       "expect": {
         "status": "infeasible",
         "code": "minimum-order-not-met",
+        "minimumOrder": 2000,
+        "measuredAmount": 1600,
         "shortfall": 400
       }
     },
@@ -290,7 +294,7 @@
           "amount": 599,
           "free": false
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 2599,
         "disclosureCodes": []
       }
@@ -316,7 +320,7 @@
           "amount": 599,
           "free": false
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 6597,
         "disclosureCodes": []
       }
@@ -342,7 +346,7 @@
           "amount": 0,
           "free": true
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 5999,
         "disclosureCodes": []
       }
@@ -364,7 +368,7 @@
           "amount": 0,
           "free": true
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 6000,
         "disclosureCodes": []
       }
@@ -390,7 +394,7 @@
           "amount": 599,
           "free": false
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 4399,
         "disclosureCodes": []
       }
@@ -412,11 +416,12 @@
           "amount": 350,
           "free": false
         },
-        "appliedCharges": [
+        "orderCharges": [
           {
             "label": "Packaging fee",
-            "perPack": null,
-            "amount": 50
+            "amount": 50,
+            "waivedFrom": null,
+            "waived": false
           }
         ],
         "total": 1900,
@@ -448,7 +453,7 @@
           "amount": 599,
           "free": false
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 4419,
         "disclosureCodes": ["charge-included-in-price"]
       }
@@ -512,7 +517,7 @@
           "amount": 0,
           "free": true
         },
-        "appliedCharges": [],
+        "orderCharges": [],
         "total": 3000,
         "disclosureCodes": []
       }
