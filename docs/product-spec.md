@@ -113,7 +113,7 @@ Each line goes entirely to one retailer. Do not divide its quantity across retai
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Product mappings may be decided with AI assistance. A person reviews every case where the proposed match disagrees with the name rules, and someone who did not produce the matches checks a random sample of published mappings; report the sample size and error rate. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
+Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
 
 ### PR-03 — Supported pricing and promotions
 
@@ -158,7 +158,7 @@ Collect outbound-click events with retailer, listing/product, timestamp and data
 | ID | Criterion | Required evidence |
 | --- | --- | --- |
 | SC-01 | Shoppers can complete J1–J5 on the deployed service. | End-to-end checks covering valid and unsuccessful journeys; usable mobile layout and keyboard controls. |
-| SC-02 | Published data follows PR-01–PR-04 and the seed-versioning requirements of PR-06. | Curation records, import validation, independently checked mapping sample, catalogue size and overlap report, and recorded seed revision/checksum. |
+| SC-02 | Published data follows PR-01–PR-04 and the seed-versioning requirements of PR-06. | Curation records, import validation, catalogue size and overlap report, and recorded seed revision/checksum. |
 | SC-03 | Returned plans obey quantities, retailer limits, prices and order constraints. | Reference calculations, boundary tests and assignment validation; no recommendation worse than an available baseline. |
 | SC-04 | The heuristic finds useful savings in constructed cases and its limitations are measured. | Known splitting/no-splitting cases; small exhaustive-search references with missed-savings and cost-gap results. No blanket optimum claim. |
 | SC-05 | Catalogue/search p99 is below 1 second and basket comparison p99 below 2 seconds at declared normal and surge loads. | Endpoint and mixed-workload results, with separate 20-line and 50-line basket results and test configuration. Product-offer latency is reported; no separate numeric target was agreed for it. |
