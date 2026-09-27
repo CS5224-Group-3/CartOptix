@@ -132,7 +132,7 @@ BCRS container deposits are not modelled in the MVP. The same 10¢ per container
 
 ### PR-05 — Recommendation integrity
 
-All monetary calculations use integer SGD cents. Use the shared pricing module to calculate the complete basket independently at each retailer, including product costs, supported promotions, delivery fees and thresholds, minimum orders and mandatory order charges. Recommend the cheapest feasible option, with ties resolved as in J3.
+All monetary calculations use integer SGD cents. Calculate the complete basket independently at each retailer, with the same pricing rules as product comparison, including product costs, supported promotions, delivery fees and thresholds, minimum orders and mandatory order charges. Recommend the cheapest feasible option, with ties resolved as in J3.
 
 Validate every returned complete option and explain each unavailable retailer. Retailer participation, commissions and click revenue do not influence recommendations.
 

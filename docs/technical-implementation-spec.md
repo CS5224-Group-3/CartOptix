@@ -163,7 +163,7 @@ The MVP pricing kernel omits multibuy execution, because B3 approves only ordina
 
 ### Comparison procedure
 
-1. Validate and canonicalise input; merge duplicate product IDs before enforcing line and quantity limits, or reject duplicates consistently in the contract.
+1. Validate input, rejecting duplicate product IDs as the contract requires (section 5).
 2. Load one consistent dataset and price the complete basket independently at each of the three retailers through the shared pricing module.
 3. For each retailer, require eligible offers for every line, a verified delivery rule and an order that meets its minimum. Otherwise mark that option unavailable with its reason; do not price a partial basket as complete.
 4. Validate each feasible option and its itemised product costs, supported promotions, excluded-promotion notices, delivery and other mandatory order charges, and estimated total.
@@ -334,7 +334,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 - **Acceptance:** Invalid or partial baskets cannot be returned as complete; totals match references; quantities are preserved; missing offers, unverified delivery rules and unmet minimums make the affected retailer unavailable; ties follow the documented order.
 
 #### C3–C4 — Deferred split-basket search
-- **Blocked by:** Future scope decision; not part of the MVP dependency chain.
+- **Status:** Deferred; no issue is planned for the MVP, and nothing depends on it.
 - **Work:** Splitting a basket across retailers, including its search and time limits, is future work. IDs C3 and C4 are retained for traceability.
 
 #### C5 — Evaluate comparison correctness
