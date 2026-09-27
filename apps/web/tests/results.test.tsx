@@ -49,6 +49,14 @@ describe("comparison outcomes on the results page", () => {
     expect(screen.getByText(/Delivery charges could not be verified/)).toBeDefined();
   });
 
+  it("shows a waived order charge without adding it", async () => {
+    await compareWith(recommendedExample);
+    expect(
+      screen.getByText(/Synthetic service fee S\$3.99 waived on orders from S\$6.00/),
+    ).toBeDefined();
+    expect(screen.getAllByText("S$6.50").length).toBeGreaterThan(0);
+  });
+
   it("names the missing product for an unavailable retailer", async () => {
     await compareWith(oneRetailerCompleteExample);
     expect(screen.getByRole("heading", { name: "Buy it all at RedMart" })).toBeDefined();

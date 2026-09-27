@@ -43,6 +43,7 @@ import {
   categoryVisual,
   excludedPromotionNotes,
   formatSgd,
+  orderChargeLabel,
   orderChargesCents,
   orderSubtotalCents,
   RETAILER_DISPLAY,
@@ -1143,7 +1144,7 @@ function OrderCard({
             Mandatory charges{" "}
             <small>
               {order.orderCharges.length
-                ? order.orderCharges.map((charge) => charge.label).join(", ")
+                ? order.orderCharges.map(orderChargeLabel).join(", ")
                 : "No mandatory charge"}
             </small>
           </span>

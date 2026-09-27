@@ -72,11 +72,21 @@ export const ItemChargeSchema = closedObject({
   includedInPrice: Type.Boolean(),
 });
 
-/** A fixed charge on a whole retailer order, e.g. a bag fee. */
+/**
+ * A fixed charge on a whole retailer order, e.g. a service fee. A waived charge is
+ * shown but not added to the order total, so the breakdown still reconciles.
+ */
 export const OrderChargeSchema = closedObject({
   label: Type.String({ minLength: 1 }),
+  /** The charge's normal amount, even when waived. */
   amountCents: CentsSchema,
+  /** Qualifying spend at or above which the charge is waived; null if never waived. */
+  waivedFromCents: nullable(CentsSchema),
+  /** Whether this order reached the waiver threshold. The API decides, because the
+   * qualifying-spend basis is a pricing rule, not a display rule. */
+  waived: Type.Boolean(),
 });
+export type OrderCharge = Static<typeof OrderChargeSchema>;
 
 /** Cost of the requested packs at one retailer, before delivery. */
 const lineCost = {

@@ -107,7 +107,9 @@ describe("contract rules", () => {
     for (const option of completeOptions(result)) {
       expect(option.lines.map((l) => l.productId).sort()).toEqual(basket);
       const lines = option.lines.reduce((sum, l) => sum + l.lineTotalCents, 0);
-      const charges = option.orderCharges.reduce((sum, c) => sum + c.amountCents, 0);
+      const charges = option.orderCharges
+        .filter((c) => !c.waived)
+        .reduce((sum, c) => sum + c.amountCents, 0);
       expect(option.totalCents).toBe(lines + charges + option.deliveryCents);
     }
   });
@@ -120,6 +122,27 @@ describe("contract rules", () => {
     const [first] = result.options;
     expect(first?.status).toBe("complete");
     expect(first?.retailerId).toBe(result.recommendedRetailerId);
+  });
+});
+
+describe("order charges", () => {
+  const charges = comparisons.flatMap(([, result]) =>
+    completeOptions(result).flatMap((option) => option.orderCharges),
+  );
+
+  it("fixtures include both a waived and a charged fee", () => {
+    expect([...new Set(charges.map((c) => c.waived))].sort()).toEqual([false, true]);
+  });
+
+  it("a waived charge always has a waiver threshold", () => {
+    for (const charge of charges) if (charge.waived) expect(charge.waivedFromCents).not.toBeNull();
+  });
+
+  it("rejects a charge without its waiver fields", () => {
+    const [fairprice, ...rest] = fixtures.recommendedExample.options;
+    const bare = { ...fairprice, orderCharges: [{ label: "Fee", amountCents: 399 }] };
+    const result = { ...fixtures.recommendedExample, options: [bare, ...rest] };
+    expect(Value.Check(BasketCompareResponseSchema, result)).toBe(false);
   });
 });
 

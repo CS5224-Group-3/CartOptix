@@ -95,12 +95,18 @@ function retailerOption(
     };
   }
   const deliveryCents = subtotalCents >= rule.freeDeliveryFromCents ? 0 : rule.deliveryFeeCents;
-  const chargesCents = rule.orderCharges.reduce((sum, charge) => sum + charge.amountCents, 0);
+  // Placeholder charges are never waived.
+  const orderCharges = rule.orderCharges.map((charge) => ({
+    ...charge,
+    waivedFromCents: null,
+    waived: false,
+  }));
+  const chargesCents = orderCharges.reduce((sum, charge) => sum + charge.amountCents, 0);
   return {
     status: "complete",
     retailerId,
     lines: planLines,
-    orderCharges: rule.orderCharges,
+    orderCharges,
     deliveryCents,
     totalCents: subtotalCents + deliveryCents + chargesCents,
   };

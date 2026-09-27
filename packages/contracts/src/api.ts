@@ -121,7 +121,7 @@ const orderFields = {
   lines: Type.Array(PlanLineSchema, { minItems: 1 }),
   orderCharges: Type.Array(OrderChargeSchema),
   deliveryCents: CentsSchema,
-  /** Line totals, plus order charges and delivery. */
+  /** Line totals, plus charges that are not waived, plus delivery. */
   totalCents: CentsSchema,
 };
 

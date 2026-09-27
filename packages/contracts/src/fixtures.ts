@@ -14,7 +14,7 @@ import type {
   ProductsResponse,
   UnavailableOption,
 } from "./api.ts";
-import type { PlanLine, Product, RetailerId } from "./common.ts";
+import type { OrderCharge, PlanLine, Product, RetailerId } from "./common.ts";
 
 export const riceProduct = {
   productId: "fixture-rice",
@@ -92,13 +92,28 @@ const complete = (
   retailerId: RetailerId,
   lines: PlanLine[],
   deliveryCents = 0,
+  orderCharges: OrderCharge[] = [],
 ): CompleteOption => ({
   status: "complete",
   retailerId,
   lines,
-  orderCharges: [],
+  orderCharges,
   deliveryCents,
-  totalCents: lines.reduce((sum, { lineTotalCents }) => sum + lineTotalCents, deliveryCents),
+  totalCents:
+    lines.reduce((sum, { lineTotalCents }) => sum + lineTotalCents, deliveryCents) +
+    orderCharges.reduce((sum, charge) => (charge.waived ? sum : sum + charge.amountCents), 0),
+});
+
+/** A synthetic service fee, waived once an order's qualifying spend reaches the threshold. */
+const serviceFee = (
+  amountCents: number,
+  waivedFromCents: number,
+  waived: boolean,
+): OrderCharge => ({
+  label: "Synthetic service fee",
+  amountCents,
+  waivedFromCents,
+  waived,
 });
 
 const coldStorageUnverified: UnavailableOption = {
@@ -161,12 +176,13 @@ export const basketRequestExample = {
 
 const redmartComplete = complete("redmart", [drinkAtRedmart, riceAtRedmart]);
 
-/** FairPrice is cheapest; Cold Storage cannot be priced without a verified delivery rule. */
+/** FairPrice is cheapest, and its 650-cent order reaches the 600-cent threshold that
+ * waives its service fee. Cold Storage cannot be priced without a verified delivery rule. */
 export const recommendedExample = {
   status: "recommended",
   recommendedRetailerId: "fairprice",
   options: [
-    complete("fairprice", [drinkAtFairprice, riceAtFairprice]),
+    complete("fairprice", [drinkAtFairprice, riceAtFairprice], 0, [serviceFee(399, 600, true)]),
     redmartComplete,
     coldStorageUnverified,
   ],
@@ -187,14 +203,15 @@ export const oneRetailerCompleteExample = {
   ],
 } satisfies BasketCompareResponse;
 
-/** A 160-cent FairPrice delivery fee makes both totals equal, so the tie is broken
- * in the documented retailer order, which puts RedMart first. */
+/** FairPrice's 650-cent order is below its fee's 1,000-cent waiver threshold, and the
+ * 160-cent fee makes both totals equal, so the tie is broken in the documented
+ * retailer order, which puts RedMart first. */
 export const tieExample = {
   status: "recommended",
   recommendedRetailerId: "redmart",
   options: [
     redmartComplete,
-    complete("fairprice", [drinkAtFairprice, riceAtFairprice], 160),
+    complete("fairprice", [drinkAtFairprice, riceAtFairprice], 0, [serviceFee(160, 1000, false)]),
     coldStorageUnverified,
   ],
 } satisfies BasketCompareResponse;
