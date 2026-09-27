@@ -26,13 +26,13 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Web | React, Vite, React Router, TanStack Query; browser tab-session basket storage; no account system. |
 | API | Node.js 24 LTS and Fastify; TypeBox contracts and generated OpenAPI. |
 | Persistence | PostgreSQL, Drizzle ORM with drizzle-kit migrations, and bounded `node-postgres` pools. |
-| Optimisation | Pure TypeScript pricing/search modules; bounded worker-thread execution to protect the API event loop. HiGHS is not an initial dependency. |
+| Optimisation | Pure TypeScript pricing/search modules, run in process under a search time budget. HiGHS is not an initial dependency. |
 | Packaging | Immutable ARM64-compatible application container; local containerised PostgreSQL. |
 | Infrastructure | AWS CDK in TypeScript, with explicit development and presentation profiles. |
-| Delivery | GitHub Actions checks, OIDC-based AWS deployment, ECR images and explicit migration execution. |
+| Delivery | GitHub Actions checks, AWS deployment of identifiable builds and explicit migration execution. OIDC is optional for the POC; credentials are never committed. |
 | Verification | Vitest, API/PostgreSQL integration tests, Playwright journeys and an arrival-rate load tool such as k6. |
 
-Specific package versions, frontend styling, instance sizes for the ASG, origin networking, scaling thresholds, worker limits and search time budgets are engineering choices to validate in the tasks below. They must satisfy the product contract; the old three-second solver limit and five-second watchdog are not retained.
+Specific package versions, frontend styling, instance sizes for the ASG, origin networking, scaling thresholds and search time budgets are engineering choices to validate in the tasks below. They must satisfy the product contract; the old three-second solver limit and five-second watchdog are not retained.
 
 ### Adopted and validated in the workspace foundation
 
@@ -69,7 +69,7 @@ Use one backend application with catalogue, pricing, optimisation, import and cl
 Development POC
 Browser -> EC2 t4g.micro [web/API + PostgreSQL on persistent storage]
 
-Presentation (CloudFront/S3 frontend approach proposed, subject to costing)
+Presentation (CloudFront/S3 frontend optional, subject to costing)
 Browser -> CloudFront -> private S3 frontend assets
                      -> ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
                                 desired/min 2, max 3      db.t4g.micro, Single-AZ
@@ -77,9 +77,9 @@ Browser -> CloudFront -> private S3 frontend assets
 Offline data preparation -> validated versioned seed -> explicit database import
 ```
 
-CloudFront/S3 retain the preliminary architecture's frontend approach. Final origin connectivity and networking must be costed before provisioning. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
+A CloudFront/S3 frontend is optional; the application may serve the frontend instead. Final origin connectivity and networking must be costed before provisioning. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
 
-Serve browser traffic over HTTPS. Keep S3 private, restrict application ingress to its intended proxy/load balancer, and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles. Select an administration/outbound-access arrangement in the costed infrastructure design rather than adding an unbudgeted NAT gateway by default.
+Serve browser traffic over HTTPS. Keep any S3 bucket private, restrict application ingress to its intended proxy/load balancer, and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles. Select an administration/outbound-access arrangement in the costed infrastructure design rather than adding an unbudgeted NAT gateway by default.
 
 ### Import and serving separation
 
@@ -171,9 +171,9 @@ The MVP pricing kernel omits multibuy execution, because B3 approves only ordina
 6. Retain only validated feasible candidates. Rank by total, then retailer count, then stable retailer/product ordering.
 7. Return the best candidate, baseline and best permitted split candidate if found, with itemised totals and status.
 
-An initially invalid allocation may need constraint-repair moves before it becomes feasible. Specify deterministic move ordering and a bounded repair strategy in the algorithm task. Single-line local search can miss improvements or feasible assignments requiring coordinated moves. Evaluate that limitation before adding complexity or reconsidering an exact solver.
+An initially invalid allocation may need constraint-repair moves before it becomes feasible. The algorithm task chooses and documents its repair strategy. Single-line local search can miss improvements or feasible assignments requiring coordinated moves. Evaluate that limitation before adding complexity or reconsidering an exact solver.
 
-Keep the event loop responsive with bounded workers and queues. Establish a search budget below the end-to-end two-second basket target, leaving room for queueing, database access and response processing. On search-budget exhaustion, return the best validated candidate, including the baseline when available. Capacity rejection or an internal crash is an operational failure, not a valid “no plan found” response.
+Run search in process under a time budget below the end-to-end two-second basket target, leaving room for database access and response processing, so it cannot block other requests. On search-budget exhaustion, return the best validated candidate, including the baseline when available. An internal failure is an operational failure, not a valid “no plan found” response.
 
 ### Result semantics
 
@@ -184,7 +184,7 @@ Proposed API statuses:
 | `best_found` | A validated plan was found; optimality is not claimed. Include whether a search limit was reached. |
 | `proven_infeasible` | An explicit check establishes impossibility, such as a requested line with no eligible offer. Return the reason. |
 | `no_plan_found` | Bounded search found no valid allocation but did not prove impossibility. |
-| Operational error | Invalid data, worker failure, database failure or capacity rejection. Use a distinct error response. |
+| Operational error | Invalid data, an internal failure or a database failure. Use a distinct error response. |
 
 Missing single-retailer baseline means nullable savings, not zero or a fabricated comparison. Never return a partial basket as a complete result. Record no-plan rates and algorithm quality separately so quick but unhelpful responses cannot masquerade as product success.
 
@@ -243,17 +243,17 @@ Provision reusable infrastructure, then verify teardown by 13 November 2026. Inc
 
 ### Delivery and scaling
 
-PR checks run format, types, relevant tests and builds. Deploy immutable images/assets with GitHub OIDC. Apply database migrations once through a designated task, not concurrently on every ASG instance. Retain a known-good application release and use backward-compatible schema changes for rollback.
+PR checks run format, types, relevant tests and builds. Deploy identifiable builds; OIDC is optional for the POC, and credentials are never committed. Apply database migrations once through a designated task, not concurrently on every ASG instance. Retain a known-good application release and use backward-compatible schema changes for rollback.
 
 Use automatic ASG scaling policies, with a costed maximum of three. Select and document a metric, threshold, warm-up and cooldown from baseline measurements. CPU or ALB requests per target are candidate metrics; the choice is not yet settled. Show scale-out and scale-in under bounded load. The forecast surge may fit baseline capacity, so the trigger demonstration can use a separately labelled higher load.
 
-For burstable instances, record CPU credits/throttling and surplus-credit charges where applicable. Limit aggregate worker and database connections across the maximum instance count so application scaling does not exhaust the micro RDS instance.
+For burstable instances, record CPU credits/throttling and surplus-credit charges where applicable. Limit database connections across the maximum instance count so application scaling does not exhaust the micro RDS instance.
 
 ### Metrics and evidence
 
-Collect per-endpoint request counts, status/outcome, latency distributions, connection/timeout failures from the load generator, search duration, queue pressure, no-plan rates, worker utilisation, DB connections and infrastructure resource metrics. Use bounded log retention and spending alerts.
+Collect per-endpoint request counts, status/outcome, latency distributions, connection/timeout failures from the load generator, search duration, no-plan rates, DB connections and infrastructure resource metrics. Use bounded log retention and spending alerts.
 
-Proposed daily SLO boundary: midnight-to-midnight Asia/Singapore. Define eligible shopper API requests and report request success as `1 - unexpected_failures / eligible_requests`. Exclude correctly rejected invalid input and health probes. A valid business outcome is successful operation; server errors, capacity rejections, connection failures and timeouts are failures. Zero-traffic days have no observed request-success result. Latency remains a separate metric. Report deliberate overload/fault experiments separately from acceptance runs, without concealing them in the deployment history.
+Proposed daily SLO boundary: midnight-to-midnight Asia/Singapore. Define eligible shopper API requests and report request success as `1 - unexpected_failures / eligible_requests`. Exclude correctly rejected invalid input and health probes. A valid business outcome is successful operation; server errors, capacity rejections, connection failures and timeouts are failures. Zero-traffic days have no observed request-success result. Latency remains a separate metric. Report the deliberate resilience experiment separately from acceptance runs, without concealing them in the deployment history.
 
 ## 7. Evaluation plan
 
@@ -275,7 +275,7 @@ Run isolated endpoint tests, then all four endpoints simultaneously at the decla
 
 Acceptance targets are p99 below 1 second for catalogue/search, p99 below 2 seconds for basket comparison, and at most 0.1% unexpected failures. Product-offer latency must be reported; no separate numeric target was agreed for that endpoint. Measure shopper-facing API latency from a documented load-generator location through the deployed ingress, with server-side timings for diagnosis. Report failures separately rather than excluding them silently from success claims.
 
-Choose run durations and sample sizes before execution. Low-RPS endpoints need sufficient samples for a meaningful p99 and failure-rate report; include sample counts and avoid implying statistical certainty from a short run. Rehearse locally, then conduct the main cloud exercise in the allocated day. Measure overload, scale-out/scale-in and one-instance termination separately. A short experiment cannot establish long-term 99.9% daily request success.
+Choose run durations and sample sizes before execution. Low-RPS endpoints need sufficient samples for a meaningful p99 and failure-rate report; include sample counts and avoid implying statistical certainty from a short run. Rehearse locally, then conduct the main cloud exercise in the allocated day. Measure scale-out/scale-in and one-instance termination separately from the acceptance runs. A short experiment cannot establish long-term 99.9% daily request success.
 
 ### Correctness, quality and user evidence
 
@@ -345,14 +345,14 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 - **Work:** Enumerate retailer subsets, generate starts, implement bounded constraint repair and whole-line local moves, retain baseline/best candidates and expose honest statuses.
 - **Acceptance:** Known splitting wins are found; no result is worse than an existing baseline. A starting allocation that violates minimum orders is either repaired within bounds or excluded as an unproven candidate, never used to claim impossibility for the whole basket. Coordinated-move limitations are documented; search failure is not labelled proven infeasibility.
 
-#### C4 — Isolate search execution and control capacity
+#### C4 — Bound search time
 - **Blocked by:** A1, C3.
-- **Work:** Add bounded worker execution, queue limits, cancellation/deadline handling and operational metrics. Set configurable budgets compatible with the two-second target.
-- **Acceptance:** Search cannot block catalogue requests indefinitely; budget exhaustion returns a validated candidate when available; worker crashes/capacity rejections remain operational errors; queues do not grow without bound.
+- **Work:** Enforce a configurable search time budget compatible with the two-second target. A worker pool and queue are not required for the POC.
+- **Acceptance:** Search cannot block catalogue requests; budget exhaustion returns a validated candidate when available; internal failures remain operational errors.
 
 #### C5 — Evaluate recommendation correctness and quality
 - **Blocked by:** B5, C4.
-- **Work:** Add small exhaustive-search references and real-seed basket cases; measure cost gaps, missed feasible plans and savings distributions.
+- **Work:** Compare against exhaustive search on a few small cases and check real-seed baskets; report cost gaps, missed savings and savings distributions.
 - **Acceptance:** Returned plans pass independent arithmetic/constraint checks; known positive and zero-saving cases pass; limitations and any required algorithm changes are recorded without an unsupported optimum claim.
 
 ### WS-D — Shopper API and web experience
@@ -377,7 +377,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 - **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, plus a server-recorded timestamp and dataset ID. Collect no user identity for this feature.
 - **Acceptance:** Known-listing validation prevents arbitrary redirects/events; navigation works when tracking fails; stored events are labelled usage rather than conversions or billable clicks.
 
-#### D5 — Verify complete shopper journeys
+#### D5 — Verify complete shopper journeys (tracked with the system evaluation)
 - **Blocked by:** B5, D3, D4, E2, E3.
 - **Work:** Release the current application and curated seed to the development AWS deployment, then run mobile, keyboard and end-to-end checks for J1–J5; include stale results, service errors and unsupported-promotion notices. Local checks may run earlier but do not close this task.
 - **Acceptance:** Each journey has recorded evidence from the deployed service; explanations match backend totals; current-price/availability or optimality claims do not exceed the model. Repeat deployed smoke checks after moving to the presentation configuration.
@@ -396,18 +396,18 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### E3 — Establish CI and repeatable release delivery
 - **Blocked by:** A1, B4, E1.
-- **Work:** Add PR checks, immutable image/asset publishing, OIDC, explicit migration/seed tasks and rollback procedures.
+- **Work:** Add PR checks, identifiable build publishing, explicit migration/seed tasks and a documented rollback. OIDC is optional for the POC.
 - **Acceptance:** Checks block a broken build; no long-lived AWS credentials are committed; migrations run once; a prior application release can be restored without destructive schema rollback.
 
 #### E4 — Provision the presentation architecture
 - **Blocked by:** E2, E3.
-- **Work:** Deploy CloudFront/S3, ALB, stateless EC2 ASG and private Single-AZ RDS with approved sizing; migrate/import the seed and configure readiness/draining.
+- **Work:** Deploy an ALB, a stateless EC2 ASG (minimum 2, maximum 3) and private Single-AZ RDS with approved sizing, serving the frontend from CloudFront/S3 or the application; migrate/import the seed and configure readiness/draining.
 - **Acceptance:** Requests work through HTTPS ingress; either application instance serves the same dataset; database access is restricted; the deployed cost assumptions and topology are recorded.
 
 #### E5 — Configure observability and automatic scaling
 - **Blocked by:** E4.
-- **Work:** Add request/search/queue/DB/resource metrics, bounded logs, spending alerts and configurable scale-out/scale-in policies. Calibrate thresholds through a controlled shakedown.
-- **Acceptance:** Scaling metric, bounds, warm-up and cooldown are documented; maximum capacity is three; DB pools/worker limits account for all instances; request failures and search outcomes are distinguishable.
+- **Work:** Add request, outcome, latency, DB and resource metrics, bounded logs, a spending alert and a configurable scale-out/scale-in policy. Calibrate thresholds through a controlled shakedown.
+- **Acceptance:** Scaling metric, bounds, warm-up and cooldown are documented; maximum capacity is three; DB connection limits account for all instances; request failures and search outcomes are distinguishable.
 
 #### E6 — Execute and verify project teardown
 - **Blocked by:** F5.
@@ -418,7 +418,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### F1 — Build the endpoint load-test harness
 - **Blocked by:** A2.
-- **Work:** Implement the four-endpoint arrival-rate workload, varied inputs, separate isolated/mixed/overload scenarios and result collection. Define run duration, sample counts, generator location and metric denominators.
+- **Work:** Implement the four-endpoint arrival-rate workload, varied inputs, isolated and mixed scenarios and result collection. Define run duration, sample counts, generator location and metric denominators.
 - **Acceptance:** Offered load does not fall silently when responses slow; 2.4/12 RPS profiles are reproducible; 20-/50-line baskets are covered; health/click traffic is accounted for separately. Scripts can be prepared against fixtures.
 
 #### F2 — Run normal/surge performance acceptance tests
