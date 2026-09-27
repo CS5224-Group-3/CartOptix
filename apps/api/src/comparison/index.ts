@@ -25,10 +25,13 @@ import {
  */
 
 /**
- * The documented order that breaks ties between equal totals, and the order of
- * unavailable retailers. It follows the contract's retailer enumeration.
+ * Stable tie-break between retailers: code-point order of their IDs, so it
+ * needs no hard-coded list and does not vary with locale. Retailer IDs stay
+ * the same across dataset versions, so the order does too.
  */
-export const RETAILER_ORDER: readonly RetailerId[] = ["redmart", "fairprice", "cold-storage"];
+export function compareRetailerIds(a: RetailerId, b: RetailerId): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
 
 export interface BasketLine {
   productId: string;
@@ -43,8 +46,8 @@ export interface CompareBasketInput {
   offers: readonly OfferRule[];
   /** Each retailer's delivery rule; a retailer without one is unverified. */
   deliveryRules: readonly DeliveryRule[];
-  /** Retailers to compare; defaults to every retailer, in `RETAILER_ORDER`. */
-  retailers?: readonly RetailerId[];
+  /** Every retailer in the dataset; each gets an option. */
+  retailers: readonly RetailerId[];
 }
 
 /** Why one retailer cannot supply the complete basket. */
@@ -59,7 +62,7 @@ export type RetailerOption =
 
 /**
  * `options` holds one entry per compared retailer: complete options, cheapest
- * first with ties in `RETAILER_ORDER`, then unavailable ones in that order. A
+ * first with ties by `compareRetailerIds`, then unavailable ones in that order. A
  * recommendation is always the first option.
  */
 export type BasketComparison =
@@ -77,19 +80,16 @@ export class ComparisonDataError extends Error {
 }
 
 export function compareBasket(input: CompareBasketInput): BasketComparison {
-  const retailers = input.retailers ?? RETAILER_ORDER;
-  const options = retailers.map((retailerId) => priceRetailer(input, retailerId));
+  const options = input.retailers.map((retailerId) => priceRetailer(input, retailerId));
 
   const complete = options
     .filter((option) => option.status === "complete")
     .sort(
-      (a, b) =>
-        a.order.total - b.order.total ||
-        RETAILER_ORDER.indexOf(a.retailerId) - RETAILER_ORDER.indexOf(b.retailerId),
+      (a, b) => a.order.total - b.order.total || compareRetailerIds(a.retailerId, b.retailerId),
     );
   const unavailable = options
     .filter((option) => option.status === "unavailable")
-    .sort((a, b) => RETAILER_ORDER.indexOf(a.retailerId) - RETAILER_ORDER.indexOf(b.retailerId));
+    .sort((a, b) => compareRetailerIds(a.retailerId, b.retailerId));
 
   const [cheapest] = complete;
   const result: BasketComparison = cheapest

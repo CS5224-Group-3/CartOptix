@@ -4,7 +4,7 @@ import {
   type BasketLine,
   ComparisonDataError,
   compareBasket,
-  RETAILER_ORDER,
+  compareRetailerIds,
 } from "../../src/comparison/index.ts";
 import type { DeliveryRule, OfferRule } from "../../src/pricing/index.ts";
 
@@ -42,7 +42,8 @@ const rule = (retailerId: RetailerId, overrides: Partial<DeliveryRule> = {}): De
   ...overrides,
 });
 
-const rules = [rule("redmart"), rule("fairprice"), rule("cold-storage")];
+const retailers: RetailerId[] = ["redmart", "fairprice", "cold-storage"];
+const rules = retailers.map((retailerId) => rule(retailerId));
 
 const basket: BasketLine[] = [
   { productId: "rice", quantity: 2 },
@@ -60,7 +61,14 @@ const offers = [
 ];
 
 const compare = (overrides: Partial<Parameters<typeof compareBasket>[0]> = {}) =>
-  compareBasket({ datasetId, lines: basket, offers, deliveryRules: rules, ...overrides });
+  compareBasket({
+    datasetId,
+    lines: basket,
+    offers,
+    deliveryRules: rules,
+    retailers,
+    ...overrides,
+  });
 
 describe("compareBasket", () => {
   it("prices every retailer's complete basket and recommends the cheapest", () => {
@@ -92,25 +100,26 @@ describe("compareBasket", () => {
     }
   });
 
-  it("breaks a tie in the documented retailer order", () => {
-    const tied = compare({
-      offers: [
-        offer("redmart", "rice", 900),
-        offer("redmart", "milk", 300),
-        offer("fairprice", "rice", 900),
-        offer("fairprice", "milk", 300),
-      ],
-    });
-    expect(RETAILER_ORDER.indexOf("redmart")).toBeLessThan(RETAILER_ORDER.indexOf("fairprice"));
-    expect(tied).toMatchObject({
-      status: "recommended",
-      recommendedRetailerId: "redmart",
-      options: [
-        { retailerId: "redmart", status: "complete" },
-        { retailerId: "fairprice", status: "complete" },
-        { retailerId: "cold-storage", status: "unavailable" },
-      ],
-    });
+  it("breaks a tie by retailer ID, whatever order the retailers are given in", () => {
+    const tiedOffers = [
+      offer("redmart", "rice", 900),
+      offer("redmart", "milk", 300),
+      offer("fairprice", "rice", 900),
+      offer("fairprice", "milk", 300),
+    ];
+    for (const order of [retailers, [...retailers].reverse()]) {
+      expect(compare({ offers: tiedOffers, retailers: order })).toMatchObject({
+        status: "recommended",
+        recommendedRetailerId: "fairprice",
+        options: [
+          { retailerId: "fairprice", status: "complete" },
+          { retailerId: "redmart", status: "complete" },
+          { retailerId: "cold-storage", status: "unavailable" },
+        ],
+      });
+    }
+    expect(compareRetailerIds("cold-storage", "fairprice")).toBeLessThan(0);
+    expect(compareRetailerIds("redmart", "fairprice")).toBeGreaterThan(0);
   });
 
   it("lets delivery change the winner", () => {
@@ -145,7 +154,7 @@ describe("compareBasket", () => {
     const result = compare({
       deliveryRules: [rule("redmart", { verified: false }), rule("fairprice", { fee: null })],
     });
-    for (const retailerId of RETAILER_ORDER) {
+    for (const retailerId of retailers) {
       expect(result.options.find((option) => option.retailerId === retailerId)).toEqual({
         status: "unavailable",
         retailerId,
