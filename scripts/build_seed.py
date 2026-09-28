@@ -19,11 +19,11 @@ reuses the ID already recorded for any of its listings, and a new group gets a
 new ID from its name. Listing IDs come from the retailer's product URL.
 
 Run from the repository root:
-    python scripts/build_seed.py <selection.csv> <dataset-id>
-It writes data/seed/<dataset-id>.json; format it with
+    python scripts/build_seed.py data/seed/selection.csv
+It writes data/seed/seed.json; format it with
     pnpm exec biome format --write data/seed
 then import it with:
-    pnpm --filter @cartoptix/api seed:import data/seed/<dataset-id>.json
+    pnpm --filter @cartoptix/api seed:import data/seed/seed.json
 """
 
 import csv
@@ -37,6 +37,7 @@ from derive_offer_prices import derive_offer, load_workbooks, source_row
 
 ROOT = Path(__file__).resolve().parent.parent
 SEED_DIR = ROOT / "data" / "seed"
+SEED = SEED_DIR / "seed.json"
 REGISTRY = SEED_DIR / "product_ids.csv"
 DELIVERY_RULES = ROOT / "data" / "curated" / "delivery_rules.json"
 
@@ -79,7 +80,7 @@ def load_registry() -> dict[str, str]:
         return {row["listing_id"]: row["product_id"] for row in csv.DictReader(f)}
 
 
-def main(selection_path: str, dataset_id: str) -> None:
+def main(selection_path: str) -> None:
     raw = load_workbooks()
     registry = load_registry()
     with open(DELIVERY_RULES, encoding="utf-8") as f:
@@ -151,15 +152,12 @@ def main(selection_path: str, dataset_id: str) -> None:
 
     seed = {
         "schemaVersion": 1,
-        "datasetId": dataset_id,
-        "dataKind": "curated",
         "retailers": [
             {"retailerId": rid, "name": name, "productUrlHosts": hosts}
             for rid, name, hosts in RETAILERS.values()
         ],
         "categories": [{"categoryId": slug(c), "name": c} for c in CATEGORIES],
         "delivery": {
-            "scenario": delivery["scenario"],
             "rules": [
                 {k: v for k, v in rule.items() if k not in ("evidence", "caveats")}
                 for rule in delivery["rules"]
@@ -170,16 +168,15 @@ def main(selection_path: str, dataset_id: str) -> None:
     }
 
     SEED_DIR.mkdir(parents=True, exist_ok=True)
-    out = SEED_DIR / f"{dataset_id}.json"
-    out.write_text(json.dumps(seed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    SEED.write_text(json.dumps(seed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     with open(REGISTRY, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["listing_id", "product_id"])
         writer.writerows(sorted(registry.items()))
-    print(f"Wrote {len(products)} products and {len(listings)} listings to {out.relative_to(ROOT)}")
+    print(f"Wrote {len(products)} products and {len(listings)} listings to {SEED.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        raise SystemExit("Usage: python scripts/build_seed.py <selection.csv> <dataset-id>")
-    main(sys.argv[1], sys.argv[2])
+    if len(sys.argv) != 2:
+        raise SystemExit("Usage: python scripts/build_seed.py <selection.csv>")
+    main(sys.argv[1])

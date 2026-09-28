@@ -19,11 +19,11 @@ try {
   const result = await importSeed(client, await readFile(path));
   if (result.status === "invalid") {
     process.stderr.write(
-      `Seed rejected; the active dataset is unchanged:\n- ${result.errors.join("\n- ")}\n`,
+      `Seed rejected; the loaded data is unchanged:\n- ${result.errors.join("\n- ")}\n`,
     );
     process.exitCode = 1;
   } else {
-    process.stdout.write(`${result.datasetId}: ${result.status} (sha256 ${result.checksum})\n`);
+    process.stdout.write(`Seed ${result.status}.\n`);
   }
 } finally {
   await client.end();

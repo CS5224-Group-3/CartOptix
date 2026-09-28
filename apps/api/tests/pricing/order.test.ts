@@ -27,7 +27,6 @@ describe("priceRetailerOrder", () => {
         retailerId: delivery.retailerId,
         lines: priceLines(scenario),
         delivery,
-        datasetId: fixture.datasetId,
       });
 
       const expected = scenario.expect;
@@ -72,13 +71,12 @@ describe("priceRetailerOrder", () => {
     });
   }
 
-  it("refuses a rule belonging to another dataset rather than applying it", () => {
-    const delivery = lookup(fixture.retailers, "alpha", "retailer");
+  it("refuses a rule belonging to another retailer rather than applying it", () => {
+    const delivery = lookup(fixture.retailers, "beta", "retailer");
     const result = priceRetailerOrder({
       retailerId: "redmart",
       lines: priceLines({ lines: [{ offer: "milk", packs: 10 }] }),
       delivery,
-      datasetId: "a-different-seed",
     });
 
     expect(result.status).toBe("unavailable");
@@ -100,7 +98,6 @@ describe("priceRetailerOrder", () => {
           retailerId: "redmart",
           lines: [],
           delivery,
-          datasetId: fixture.datasetId,
         }),
       ).toThrow(PricingContractError);
     });
@@ -111,7 +108,6 @@ describe("priceRetailerOrder", () => {
           retailerId: "redmart",
           lines: priceLines({ lines: [{ offer: "betaMilk", packs: 5 }] }),
           delivery,
-          datasetId: fixture.datasetId,
         }),
       ).toThrow(PricingContractError);
     });
@@ -128,7 +124,6 @@ describe("priceRetailerOrder", () => {
 
     const base = {
       retailerId: "redmart" as const,
-      datasetId: fixture.datasetId,
       verified: true,
       fee: 599,
       freeDeliveryThreshold: 4000,
@@ -140,13 +135,11 @@ describe("priceRetailerOrder", () => {
       retailerId: "redmart",
       lines,
       delivery: { ...base, thresholdBasis: { includesMandatoryCharges: false } },
-      datasetId: fixture.datasetId,
     });
     const includingCharges = priceRetailerOrder({
       retailerId: "redmart",
       lines,
       delivery: { ...base, thresholdBasis: { includesMandatoryCharges: true } },
-      datasetId: fixture.datasetId,
     });
 
     if (excludingCharges.status !== "priced" || includingCharges.status !== "priced") {

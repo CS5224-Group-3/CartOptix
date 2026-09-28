@@ -35,7 +35,6 @@ function priceEverything(): unknown {
       retailerId: delivery.retailerId,
       lines: priced,
       delivery,
-      datasetId: orderFixture.datasetId,
     });
   });
 

@@ -16,8 +16,6 @@ import type {
 } from "./api.ts";
 import type { PlanLine, Product, RetailerId } from "./common.ts";
 
-export const fixtureDatasetId = "fixture-v1";
-
 export const riceProduct = {
   productId: "fixture-rice",
   categoryId: "rice-noodles",
@@ -35,7 +33,6 @@ export const drinkProduct = {
 } satisfies Product;
 
 export const catalogueExample = {
-  dataset: { datasetId: fixtureDatasetId, dataKind: "synthetic" },
   retailers: [
     { retailerId: "cold-storage", name: "Cold Storage" },
     { retailerId: "fairprice", name: "FairPrice" },
@@ -46,7 +43,6 @@ export const catalogueExample = {
     { categoryId: "rice-noodles", name: "Rice & Noodles" },
   ],
   delivery: {
-    scenario: "Synthetic Singapore address, standard delivery, non-member pricing.",
     rules: [
       { retailerId: "cold-storage", status: "unavailable" },
       {

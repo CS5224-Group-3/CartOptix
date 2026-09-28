@@ -13,6 +13,9 @@ import { importSeed } from "../../src/seed/import.ts";
 const connectionString = process.env.DATABASE_URL;
 const fixturePath = resolve(import.meta.dirname, "fixture-seed.json");
 const fixtureBytes = readFileSync(fixturePath);
+const fixture = JSON.parse(fixtureBytes.toString("utf8"));
+const listingId: string = fixture.listings[0].listingId;
+const originalPrice: number = fixture.listings[0].unitPriceCents;
 
 function seedBytes(mutate: (seed: ReturnType<typeof JSON.parse>) => void): Buffer {
   const seed = JSON.parse(fixtureBytes.toString("utf8"));
@@ -25,8 +28,10 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
   const admin = new pg.Client({ connectionString });
   let client: pg.Client;
 
-  const loaded = async () =>
-    (await client.query("SELECT dataset_id FROM dataset")).rows.map((row) => row.dataset_id);
+  /** The first listing's price, which the mutated seeds below change. */
+  const firstPrice = async () =>
+    (await client.query("SELECT unit_price_cents FROM listings WHERE listing_id = $1", [listingId]))
+      .rows[0]?.unit_price_cents;
   const count = async (table: string) =>
     Number((await client.query(`SELECT count(*) FROM ${table}`)).rows[0].count);
 
@@ -51,15 +56,20 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
 
   it("migrates a fresh database, and a second run changes nothing", async () => {
     await runMigrations(client);
+    const applied = await count("drizzle.__drizzle_migrations");
     await runMigrations(client);
-    expect(await count("drizzle.__drizzle_migrations")).toBe(1);
+
+    // Compare the count against itself rather than hardcoding how many
+    // migrations exist, so adding one does not fail this test.
+    expect(applied).toBeGreaterThan(0);
+    expect(await count("drizzle.__drizzle_migrations")).toBe(applied);
     expect(await count("listings")).toBe(0);
   });
 
   it("imports a seed", async () => {
     const result = await importSeed(client, fixtureBytes);
-    expect(result).toMatchObject({ status: "imported", datasetId: "fixture-seed-v1" });
-    expect(await loaded()).toEqual(["fixture-seed-v1"]);
+    expect(result).toEqual({ status: "imported" });
+    expect(await firstPrice()).toBe(originalPrice);
     expect(await count("products")).toBe(3);
     expect(await count("listings")).toBe(4);
     expect(await count("order_charges")).toBe(1);
@@ -71,56 +81,46 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
     expect(rule.rows[0]).toEqual({ status: "unverified", delivery_fee_cents: null });
   });
 
-  it("treats a repeated import as a no-op", async () => {
-    expect(await importSeed(client, fixtureBytes)).toMatchObject({ status: "unchanged" });
-    expect(await count("dataset")).toBe(1);
+  it("leaves the same data after importing the same seed again", async () => {
+    expect(await importSeed(client, fixtureBytes)).toEqual({ status: "imported" });
+    expect(await count("products")).toBe(3);
     expect(await count("listings")).toBe(4);
-  });
-
-  it("refuses to reuse a dataset ID for different contents", async () => {
-    const changed = seedBytes((seed) => {
-      seed.listings[0].unitPriceCents = 999;
-    });
-    const result = await importSeed(client, changed);
-    expect(result.status).toBe("invalid");
-    expect(await loaded()).toEqual(["fixture-seed-v1"]);
+    expect(await firstPrice()).toBe(originalPrice);
   });
 
   it("leaves the loaded data unchanged when a seed is invalid", async () => {
     const invalid = seedBytes((seed) => {
-      seed.datasetId = "fixture-seed-v2";
+      seed.listings[0].unitPriceCents = 999;
       seed.listings[0].productUrl = "https://evil.example/x";
     });
     expect((await importSeed(client, invalid)).status).toBe("invalid");
-    expect(await loaded()).toEqual(["fixture-seed-v1"]);
-    expect(await count("dataset")).toBe(1);
+    expect(await firstPrice()).toBe(originalPrice);
   });
 
   it("rolls back a load that fails partway, keeping the loaded data", async () => {
     // Valid JSON and a valid seed, but PostgreSQL rejects NUL characters, so the
     // listings insert fails after the earlier tables have loaded.
     const failing = seedBytes((seed) => {
-      seed.datasetId = "fixture-seed-v3";
+      seed.listings[0].unitPriceCents = 999;
       seed.listings[0].name = "Broken \u0000 name";
     });
     await expect(importSeed(client, failing)).rejects.toThrow();
-    expect(await loaded()).toEqual(["fixture-seed-v1"]);
-    expect(await count("dataset")).toBe(1);
+    expect(await firstPrice()).toBe(originalPrice);
     expect(await count("products")).toBe(3);
     expect(await count("listings")).toBe(4);
   });
 
-  it("replaces the data with a new version, and rolls back by reimporting", async () => {
-    const v2 = seedBytes((seed) => {
-      seed.datasetId = "fixture-seed-v2";
+  it("replaces the data with an edited seed, and rolls back by reimporting", async () => {
+    const edited = seedBytes((seed) => {
+      seed.listings[0].unitPriceCents = 999;
       seed.listings.pop();
       seed.products.pop();
     });
-    expect(await importSeed(client, v2)).toMatchObject({ status: "imported" });
-    expect(await loaded()).toEqual(["fixture-seed-v2"]);
+    expect(await importSeed(client, edited)).toEqual({ status: "imported" });
+    expect(await firstPrice()).toBe(999);
     expect(await count("listings")).toBe(3);
-    expect(await importSeed(client, fixtureBytes)).toMatchObject({ status: "imported" });
-    expect(await loaded()).toEqual(["fixture-seed-v1"]);
+    expect(await importSeed(client, fixtureBytes)).toEqual({ status: "imported" });
+    expect(await firstPrice()).toBe(originalPrice);
     expect(await count("listings")).toBe(4);
   });
 

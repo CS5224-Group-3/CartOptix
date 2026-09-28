@@ -1,7 +1,7 @@
 /**
  * The curated seed file: the input to `importSeed`, not an HTTP payload.
  *
- * It holds what technical spec section 5 requires each dataset to supply, and
+ * It holds what technical spec section 5 requires the seed to supply, and
  * reuses the contract's ID, URL and money schemas so seed values are valid API
  * values. Checks JSON Schema cannot express (references, uniqueness, link hosts)
  * are in `validate.ts`.
@@ -53,8 +53,6 @@ const UnverifiedDeliveryRule = closed({
 
 export const SeedSchema = closed({
   schemaVersion: Type.Literal(SEED_SCHEMA_VERSION),
-  datasetId: IdSchema,
-  dataKind: Type.Union([Type.Literal("curated"), Type.Literal("synthetic")]),
   retailers: Type.Array(
     closed({
       retailerId: RetailerIdSchema,
@@ -65,7 +63,6 @@ export const SeedSchema = closed({
   ),
   categories: Type.Array(closed({ categoryId: IdSchema, name: text })),
   delivery: closed({
-    scenario: text,
     rules: Type.Array(Type.Union([VerifiedDeliveryRule, UnverifiedDeliveryRule])),
   }),
   products: Type.Array(

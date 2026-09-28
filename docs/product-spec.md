@@ -63,7 +63,7 @@ Names, pack information and prices must be clear enough to avoid confusing unit 
 ### J2 — Build a basket
 
 1. Add, remove or change basket lines.
-2. Review the declared delivery scenario and snapshot disclaimer.
+2. Review the snapshot disclaimer and each retailer's delivery rule.
 3. Request a comparison.
 
 The normal evaluation basket has 20 distinct lines. The supported maximum is **50 distinct lines**, with **1–20 whole packs per line**. Changing the basket makes an earlier comparison stale; the interface must request a new calculation before presenting it as current.
@@ -108,7 +108,7 @@ Each complete-basket option places every line with the same retailer. Do not div
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. If synthetic fixtures are used for development or demonstrations, distinguish them from the real curated dataset.
+Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. Synthetic fixtures are for development and tests only; never present them as retailer data.
 
 ### PR-03 — Supported pricing and promotions
 
@@ -120,7 +120,7 @@ Raw promotion descriptions are evidence, not executable rules. Do not automatica
 
 When promotion conditions are unresolved, use a verified ordinary price if available and disclose that an additional promotion is excluded. If no reliable applicable price exists, exclude the offer. Cross-product promotions, memberships, vouchers, payment-method discounts and gifts are outside the calculation scope.
 
-Approved promotion rules are fixed within each seed version. Calculations do not re-evaluate them against the current date, so the same basket and seed retain the same pricing rules as the calendar advances. Curate dated promotions only when evidence establishes that they belong in the recorded scenario; otherwise exclude the promotion and apply the reliable-price fallback above. Preserve captured validity terms internally without inventing a collection date. Changes to approved rules require a new seed version. The fixed-dataset disclaimer applies to these promotions as well as prices and availability.
+Approved promotion rules are fixed in the committed seed. Calculations do not re-evaluate them against the current date, so the same basket and seed retain the same pricing rules as the calendar advances. Curate dated promotions only when evidence establishes that they belong in the recorded scenario; otherwise exclude the promotion and apply the reliable-price fallback above. Preserve captured validity terms internally without inventing a collection date. Changes to approved rules are made by editing the seed. The fixed-dataset disclaimer applies to these promotions as well as prices and availability.
 
 ### PR-04 — Delivery and mandatory charges
 
@@ -136,24 +136,24 @@ All monetary calculations use integer SGD cents. Calculate the complete basket i
 
 Validate every returned complete option and explain each unavailable retailer. Retailer participation, commissions and click revenue do not influence recommendations.
 
-### PR-06 — Snapshot disclosure and seed versioning
+### PR-06 — Snapshot disclosure and seed data
 
 Do **not** display collection dates on the website. Display this notice near comparisons:
 
 > Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
 
-Keep a cleaned, version-controlled seed dataset in the repository. Internal dataset identifiers and source provenance support repeatable calculations; they are not presented as collection dates. Freeze evaluation data on a best-effort basis. Record the seed version used for reported evaluations and rerun affected checks where practical after material corrections.
+Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Source provenance supports repeatable calculations and is not presented as collection dates. Freeze evaluation data on a best-effort basis.
 
 ### PR-07 — Usage measurement
 
-Collect outbound-click events with retailer, listing/product, timestamp and dataset identifier, without collecting user identities for this feature. These events measure use of links, not fulfilled purchases, unique buyers or billable clicks.
+Collect outbound-click events with retailer, listing/product and timestamp, without collecting user identities for this feature. These events measure use of links, not fulfilled purchases, unique buyers or billable clicks.
 
 ## 5. Success criteria
 
 | ID | Criterion | Required evidence |
 | --- | --- | --- |
 | SC-01 | Shoppers can complete J1–J5 on the deployed service. | End-to-end checks covering valid and unsuccessful journeys; usable mobile layout and keyboard controls. |
-| SC-02 | Published data follows PR-01–PR-04 and the seed-versioning requirements of PR-06. | Curation records, import validation, catalogue size and overlap report, and recorded seed revision/checksum. |
+| SC-02 | Published data follows PR-01–PR-04 and the seed requirements of PR-06. | Curation records, import validation, and catalogue size and overlap report. |
 | SC-03 | Returned options obey quantities, prices and order constraints. | Reference calculations, boundary tests and complete-basket validation; the recommendation is the cheapest feasible option. |
 | SC-04 | Comparison results and unavailability reasons are correct for all three retailers. | Constructed and real-seed baskets checking exact totals, recommendation, ties and each retailer's reason when unavailable. |
 | SC-05 | Catalogue/search p99 is below 1 second and basket comparison p99 below 2 seconds at declared normal and surge loads. | Endpoint and mixed-workload results, with separate 20-line and 50-line basket results and test configuration. Product-offer latency is reported; no separate numeric target was agreed for it. |

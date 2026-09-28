@@ -34,13 +34,6 @@ export const DeliveryRuleSchema = Type.Union([
 export type DeliveryRule = Static<typeof DeliveryRuleSchema>;
 
 export const CatalogueResponseSchema = closedObject({
-  /** The active seed version, for disclosure and evaluation records. Clients do
-   * not send it back: the server prices every request from the active dataset. */
-  dataset: closedObject({
-    datasetId: IdSchema,
-    /** Synthetic fixtures must be distinguishable from the curated seed (PR-02). */
-    dataKind: Type.Union([Type.Literal("curated"), Type.Literal("synthetic")]),
-  }),
   retailers: Type.Array(
     closedObject({ retailerId: RetailerIdSchema, name: Type.String({ minLength: 1 }) }),
   ),
@@ -48,8 +41,6 @@ export const CatalogueResponseSchema = closedObject({
     closedObject({ categoryId: IdSchema, name: Type.String({ minLength: 1 }) }),
   ),
   delivery: closedObject({
-    /** The single declared scenario, e.g. location, standard service, non-member. */
-    scenario: Type.String({ minLength: 1 }),
     rules: Type.Array(DeliveryRuleSchema),
   }),
 });
