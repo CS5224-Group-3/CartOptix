@@ -165,7 +165,7 @@ The MVP pricing kernel omits multibuy execution, because B3 approves only ordina
 2. Read the seed data from one consistent snapshot and price the complete basket independently at each of the three retailers through the shared pricing module.
 3. For each retailer, require eligible offers for every line, a verified delivery rule and an order that meets its minimum. Otherwise mark that option unavailable with its reason; do not price a partial basket as complete.
 4. Validate each feasible option and its itemised product costs, supported promotions, excluded-promotion notices, delivery and other mandatory order charges, and estimated total.
-5. Recommend the cheapest feasible option, breaking ties in a stable, documented retailer order. Return every retailer's option, including unavailability reasons.
+5. Recommend the cheapest feasible option, breaking ties by retailer ID in code-point order. Return every retailer's option, including unavailability reasons.
 
 All three options are computed exactly; there is no search budget or optimality caveat. Keep end-to-end basket comparison p99 below two seconds at the declared loads. An internal failure is an operational error, not an unavailable retailer option.
 
@@ -199,7 +199,7 @@ Contract decisions (#5):
 - **Money and limits.** Integer SGD cents; 1–50 distinct lines and 1–20 whole packs per line.
 - **Seed data.** The database holds the one committed seed, which evolves in Git; Git history is its version record. There are no dataset IDs or versions: neither requests nor responses identify a seed, and a correction is an edit to the seed file.
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
-- **Comparison results.** The existing shared contract still has a retailer-limit request field and split-plan response shape. Issue #13 replaces these with a single-retailer contract: an option for each retailer, either a priced complete basket with itemised breakdown or unavailable with a reason; the recommended cheapest feasible option; or no feasible plan with every retailer's reason. Ties follow the product specification's stable retailer order. Other feasible options may show the difference from the recommendation.
+- **Comparison results.** The request carries only basket lines. The response is either `recommended`, with the recommended retailer, or `no_feasible_plan`. Both return an option for each retailer: a priced complete basket with an itemised breakdown, or unavailable with its reasons (missing products, below the minimum order, or an unverified delivery rule). Complete options come first, cheapest first, then unavailable ones, so a recommendation is always the first option. Ties, and the order of unavailable options, follow retailer ID in code-point order. Other feasible options may show the difference from the recommendation.
 - **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
 - **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised. A line total is unit price × quantity plus charges with `includedInPrice: false`; charges already in the price are shown but not added, so nothing is counted twice or dropped. An order charge with a waiver threshold (such as FairPrice's service fee) carries the threshold and whether the order reached it; a waived charge is shown but not added to the total. Prices are positive. An unknown delivery rule is `unavailable`, never a zero fee. BCRS container deposits are not modelled in the MVP: the same 10¢ per container applies at every retailer, so it cannot change which option wins, and the client shows the exported `DEPOSIT_NOTICE` instead. Item charges stay in the contract so deposits can be modelled later. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
 - **Pricing outcomes at the boundary.** The pricing module's outcomes reach shoppers as follows:
@@ -289,7 +289,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### A2 — Define the seed schema and public API contracts
 - **Blocked by:** A1.
 - **Work:** Define seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling.
-- **Acceptance:** Valid and invalid examples are executable contract fixtures; money uses integer cents; no collection-date UI contract is introduced. Issue #13 updates the existing split-plan fixtures and contract to distinguish complete, unavailable and service-error outcomes.
+- **Acceptance:** Valid and invalid examples are executable contract fixtures; money uses integer cents; no collection-date UI contract is introduced. The comparison fixtures distinguish complete, unavailable and no-feasible-plan outcomes, separate from service errors.
 
 ### WS-B — Data curation and persistence
 
@@ -327,7 +327,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### C2 — Price every retailer's complete basket and validate plans
 - **Blocked by:** C1.
-- **Work:** Price each retailer's complete basket using the shared module, validate all feasible options, record unavailability reasons and recommend the cheapest using the stable retailer order.
+- **Work:** Price each retailer's complete basket using the shared module, validate all feasible options, record unavailability reasons and recommend the cheapest, breaking ties by retailer ID.
 - **Acceptance:** Invalid or partial baskets cannot be returned as complete; totals match references; quantities are preserved; missing offers, unverified delivery rules and unmet minimums make the affected retailer unavailable; ties follow the documented order.
 
 #### C3–C4 — Deferred split-basket search
@@ -353,7 +353,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### D3 — Deliver basket comparison and outcome presentation
 - **Blocked by:** D2, C2.
-- **Work:** Replace the earlier split-plan contract in #13 and integrate the comparison API with per-retailer options, itemised breakdowns, recommendation, unavailability reasons and all business/error states.
+- **Work:** Integrate the comparison API with per-retailer options, itemised breakdowns, recommendation, unavailability reasons and all business/error states.
 - **Acceptance:** All three retailers appear as complete or unavailable; the cheapest feasible option is recommended with the documented tie-break; no feasible plan and retryable service failures are distinct.
 
 #### D4 — Add purchase links and non-blocking click recording

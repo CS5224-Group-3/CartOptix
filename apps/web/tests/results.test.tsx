@@ -74,6 +74,8 @@ describe("comparison outcomes on the results page", () => {
       screen.getByRole("heading", { name: "No feasible purchasing plan available" }),
     ).toBeDefined();
     expect(screen.getByText(/below the S\$15.00 minimum/)).toBeDefined();
+    expect(await screen.findByText(/No eligible offer for Fixture White Rice/)).toBeDefined();
+    expect(screen.getByText(/Delivery charges could not be verified/)).toBeDefined();
     expect(screen.queryByRole("heading", { name: /Buy it all at/ })).toBeNull();
   });
 });

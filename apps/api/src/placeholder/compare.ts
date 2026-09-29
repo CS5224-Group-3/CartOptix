@@ -5,6 +5,11 @@
  *
  * Each retailer's complete basket is priced on its own. A retailer missing a
  * product, or whose order falls below its minimum, is unavailable with a reason.
+ *
+ * The synthetic dataset has only verified delivery rules and no waivable charges,
+ * so this never returns `delivery_rule_unverified` or a waived charge. Those paths
+ * belong to the real comparison (#11, #13); the contract fixtures cover them for
+ * the web client.
  */
 import type {
   BasketCompareRequest,

@@ -115,7 +115,8 @@ export const UnavailableReasonSchema = Type.Union([
 ]);
 export type UnavailableReason = Static<typeof UnavailableReasonSchema>;
 
-/** The complete basket as one retailer order. */
+/** The complete basket as one retailer order. `Order` is the breakdown shared by
+ * every complete option; `CompleteOption` adds its status. */
 const orderFields = {
   retailerId: RetailerIdSchema,
   lines: Type.Array(PlanLineSchema, { minItems: 1 }),
