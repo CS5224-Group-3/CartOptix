@@ -2,13 +2,11 @@
 import type { BasketCompareRequest } from "@cartoptix/contracts";
 
 export type BasketLine = BasketCompareRequest["lines"][number];
-export type RetailerLimit = 1 | 2 | 3;
 
 export interface DemoScenario {
   label: string;
   description: string;
   lines: BasketLine[];
-  retailerLimit: RetailerLimit;
 }
 
 const lines = (...entries: [string, number][]): BasketLine[] =>
@@ -39,52 +37,39 @@ export const DEMO_BASKET: BasketLine[] = [
 ].map((productId, index) => ({ productId, quantity: index % 3 === 0 ? 2 : 1 }));
 
 export const DEMO_SCENARIOS: Record<string, DemoScenario> = {
-  "split-saves": {
-    label: "Split saves money",
-    description: "A mixed pantry basket where FairPrice and RedMart each have strong prices.",
+  "mixed-pantry": {
+    label: "Mixed pantry basket",
+    description: "Every retailer stocks the whole basket, so all three totals are compared.",
     lines: lines(["r1", 2], ["da1", 1], ["b1", 1], ["h2", 1], ["s3", 1], ["t1", 2]),
-    retailerLimit: 2,
   },
   "single-cheapest": {
-    label: "One retailer wins",
-    description: "A complete basket where delivery fees and minimums make a single order clearer.",
+    label: "Delivery fees decide",
+    description: "Delivery fees and minimums change which complete basket is cheapest.",
     lines: lines(["r2", 2], ["c1", 2], ["s1", 2], ["t2", 1]),
-    retailerLimit: 2,
   },
-  "no-split-help": {
-    label: "Splitting does not help",
-    description: "A basket that stays cheaper as one complete order.",
-    lines: lines(["d1", 1], ["d2", 1], ["c2", 1], ["h1", 1], ["t3", 1]),
-    retailerLimit: 3,
+  "one-retailer-only": {
+    label: "Only one retailer has everything",
+    description: "A retailer-exclusive product leaves the other retailers unavailable.",
+    lines: lines(["ex1", 1], ["r1", 2], ["r2", 3], ["c1", 2], ["s1", 2]),
   },
-  "no-baseline": {
-    label: "No single-retailer baseline",
-    description: "Two retailer-exclusive products; only a split plan can complete the basket.",
-    lines: lines(["ex1", 1], ["ex2", 1], ["r1", 2], ["r2", 3]),
-    retailerLimit: 2,
-  },
-  "proven-infeasible": {
-    label: "Impossible basket",
-    description: "A product with no eligible offer at any retailer, so no plan can exist.",
+  "no-feasible-plan": {
+    label: "No feasible plan",
+    description: "A product with no eligible offer at any retailer, so no complete basket exists.",
     lines: lines(["dead1", 1], ["r1", 1]),
-    retailerLimit: 3,
   },
   unavailable: {
     label: "Unavailable product",
-    description: "Shows items with retailer-level stock gaps.",
+    description: "Shows retailers that are unavailable because of stock gaps.",
     lines: lines(["s2", 1], ["h3", 1]),
-    retailerLimit: 3,
   },
   "excluded-promo": {
     label: "Excluded promotion",
     description: "Member or unverified promotions remain visible but do not affect totals.",
     lines: lines(["c1", 2], ["h2", 1]),
-    retailerLimit: 3,
   },
   "delivery-minimum": {
-    label: "Delivery + minimums",
-    description: "Order-size constraints shape whether a split is feasible.",
-    lines: lines(["r1", 2], ["r2", 2]),
-    retailerLimit: 3,
+    label: "Below minimum order",
+    description: "A small basket that falls below every retailer's minimum order.",
+    lines: lines(["r2", 1]),
   },
 };

@@ -81,7 +81,7 @@ Each feasible option shows:
 - Delivery charges and other modelled mandatory charges, itemised separately.
 - Estimated total; other feasible options may show how much more they cost than the recommendation.
 
-Break ties between equal totals in a stable, documented retailer order. Users choose which feasible option to follow.
+Break ties between equal totals in a stable, documented retailer order (the technical specification uses retailer ID). Users choose which feasible option to follow.
 
 ### J4 — Follow the purchase plan
 

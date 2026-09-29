@@ -8,7 +8,6 @@ import {
   MIN_PACKS_PER_LINE,
   type Offer,
   type Order,
-  type Plan,
   type Product,
   type RetailerId,
   SNAPSHOT_DISCLAIMER,
@@ -31,7 +30,7 @@ import { toast } from "sonner";
 import { Link, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { type BasketLine, DEMO_SCENARIOS, type RetailerLimit } from "./demo";
+import { type BasketLine, DEMO_SCENARIOS } from "./demo";
 import {
   ApiError,
   useCatalogue,
@@ -44,6 +43,7 @@ import {
   categoryVisual,
   excludedPromotionNotes,
   formatSgd,
+  orderChargeLabel,
   orderChargesCents,
   orderSubtotalCents,
   RETAILER_DISPLAY,
@@ -56,23 +56,20 @@ const clampPacks = (quantity: number) =>
 
 type BasketContextValue = {
   basket: BasketLine[];
-  retailerLimit: RetailerLimit;
   comparison: BasketCompareResponse | null;
   isStale: boolean;
   basketCount: number;
   addToBasket: (productId: string, quantity: number) => void;
   setQuantity: (productId: string, quantity: number) => void;
   removeFromBasket: (productId: string) => void;
-  setRetailerLimit: (limit: RetailerLimit) => void;
   setComparison: (result: BasketCompareResponse) => void;
-  loadScenario: (lines: BasketLine[], retailerLimit: RetailerLimit) => void;
+  loadScenario: (lines: BasketLine[]) => void;
 };
 
 const BasketContext = createContext<BasketContextValue | null>(null);
 
 function BasketProvider({ children }: { children: ReactNode }) {
   const [basket, setBasket] = useState<BasketLine[]>([]);
-  const [retailerLimit, setRetailerLimitState] = useState<RetailerLimit>(2);
   const [comparison, setComparisonState] = useState<BasketCompareResponse | null>(null);
   const [basketRevision, setBasketRevision] = useState(0);
   const [comparedRevision, setComparedRevision] = useState(-1);
@@ -85,7 +82,6 @@ function BasketProvider({ children }: { children: ReactNode }) {
   const value = useMemo<BasketContextValue>(
     () => ({
       basket,
-      retailerLimit,
       comparison,
       isStale: Boolean(comparison && comparedRevision !== basketRevision),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
@@ -116,23 +112,18 @@ function BasketProvider({ children }: { children: ReactNode }) {
       },
       removeFromBasket: (productId) =>
         changed(basket.filter((line) => line.productId !== productId)),
-      setRetailerLimit: (limit) => {
-        setRetailerLimitState(limit);
-        setBasketRevision((revision) => revision + 1);
-      },
       setComparison: (result) => {
         setComparisonState(result);
         setComparedRevision(basketRevision);
       },
-      loadScenario: (lines, limit) => {
+      loadScenario: (lines) => {
         setBasket(lines);
-        setRetailerLimitState(limit);
         setComparisonState(null);
         setBasketRevision((revision) => revision + 1);
         setComparedRevision(-1);
       },
     }),
-    [basket, retailerLimit, comparison, basketRevision, comparedRevision, changed],
+    [basket, comparison, basketRevision, comparedRevision, changed],
   );
 
   return <BasketContext.Provider value={value}>{children}</BasketContext.Provider>;
@@ -634,12 +625,10 @@ function UnavailableOfferRow({ retailerId }: { retailerId: RetailerId }) {
 export function BasketPage() {
   const {
     basket,
-    retailerLimit,
     comparison,
     isStale,
     setQuantity,
     removeFromBasket,
-    setRetailerLimit,
     setComparison,
     loadScenario,
   } = useBasket();
@@ -650,7 +639,7 @@ export function BasketPage() {
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
   const runComparison = () => {
     compareMutation.mutate(
-      { lines: basket, maxRetailers: retailerLimit },
+      { lines: basket },
       {
         onSuccess: (result) => {
           setComparison(result);
@@ -671,7 +660,7 @@ export function BasketPage() {
       <PageIntro
         eyebrow="Your basket"
         title="Compare the basket, not partial items."
-        description="CartOptix assigns every basket line to one retailer at a time. Choose the maximum number of orders, then run a fresh estimate."
+        description="CartOptix prices your complete basket at each retailer. Run a fresh estimate whenever the basket changes."
       >
         <div className="data-pill">
           <ShoppingBasket size={14} /> {basket.length} distinct lines · {totalPacks} whole packs
@@ -748,7 +737,7 @@ export function BasketPage() {
                   key={key}
                   className="demo-button"
                   onClick={() => {
-                    loadScenario(scenario.lines, scenario.retailerLimit);
+                    loadScenario(scenario.lines);
                     toast.success("Demo scenario loaded", { description: scenario.label });
                   }}
                 >
@@ -762,23 +751,11 @@ export function BasketPage() {
         <aside className="basket-sidebar">
           <div className="basket-summary-card">
             <p className="eyebrow">Comparison setup</p>
-            <h2>How many retailer orders?</h2>
+            <h2>Compare the complete basket</h2>
             <p className="muted">
-              CartOptix checks single-retailer plans and permitted split plans up to this limit.
+              CartOptix prices every line at each retailer and recommends the cheapest retailer that
+              can supply the whole basket.
             </p>
-            <div className="limit-options">
-              {([1, 2, 3] as const).map((limit) => (
-                <button
-                  type="button"
-                  key={limit}
-                  className={retailerLimit === limit ? "is-selected" : ""}
-                  onClick={() => setRetailerLimit(limit)}
-                >
-                  <strong>{limit}</strong>
-                  <span>{limit === 1 ? "One order" : `Up to ${limit} orders`}</span>
-                </button>
-              ))}
-            </div>
             <div className="scenario-box">
               <div>
                 <Check size={15} /> Singapore serviceable location
@@ -873,29 +850,23 @@ function BasketRow({
   );
 }
 
-type BestFound = Extract<BasketCompareResponse, { status: "best_found" }>;
+type Comparison = BasketCompareResponse;
+type Option = Comparison["options"][number];
+type UnavailableOption = Extract<Option, { status: "unavailable" }>;
+type CompleteOption = Extract<Option, { status: "complete" }>;
 
-function calculationStatus(result: BestFound): string {
-  return result.searchLimitReached
-    ? "Best plan found — the search stopped at its limit, so a cheaper plan may exist."
-    : "Best plan found within the permitted retailer limit.";
-}
-
-function explanation(result: BestFound): string {
-  if (result.baseline === null)
-    return "No single retailer can supply the whole basket, so there is no baseline to measure savings against.";
-  if (result.recommended === "split")
-    return "Splitting the basket produced a lower estimated total under the current dataset and delivery assumptions.";
-  if (result.bestSplit === null)
-    return "No permitted split plan was found, so the single-retailer baseline is the only plan.";
-  return "Splitting your basket did not produce a lower estimated total under the current dataset and delivery assumptions.";
-}
-
-function savingsLabel(result: BestFound): string {
-  if (result.savingsCents === null) return "Savings unavailable — no single-retailer baseline";
-  if (result.savingsCents > 0) return `Save ${formatSgd(result.savingsCents)}`;
-  if (result.bestSplit === null) return "No split plan to compare";
-  return "No lower split total";
+function reasonText(
+  reason: UnavailableOption["reasons"][number],
+  productName: (productId: string) => string,
+): string {
+  switch (reason.code) {
+    case "missing_products":
+      return `No eligible offer for ${reason.productIds.map(productName).join(", ")}.`;
+    case "below_minimum_order":
+      return `Order of ${formatSgd(reason.spendCents)} is below the ${formatSgd(reason.minimumOrderCents)} minimum.`;
+    case "delivery_rule_unverified":
+      return "Delivery charges could not be verified, so a complete total is not shown.";
+  }
 }
 
 export function ResultsPage() {
@@ -915,27 +886,26 @@ export function ResultsPage() {
         </div>
       </main>
     );
-  const recommendedPlan =
-    comparison.status === "best_found"
-      ? comparison.recommended === "split"
-        ? comparison.bestSplit
-        : comparison.baseline
-      : null;
-  const notices = recommendedPlan ? excludedPromotionNotes(recommendedPlan, productName) : [];
+  const recommended =
+    comparison.status === "recommended"
+      ? comparison.options.find(
+          (option): option is CompleteOption =>
+            option.status === "complete" && option.retailerId === comparison.recommendedRetailerId,
+        )
+      : undefined;
+  const notices = recommended ? excludedPromotionNotes(recommended, productName) : [];
   return (
     <main>
       <PageIntro
         eyebrow="Comparison results"
         title="A transparent plan for this basket."
-        description="Every plan below completes the same basket using whole packs. Use the breakdown to make an informed decision before checkout."
+        description="Each retailer is priced for the same complete basket using whole packs. Use the breakdown to make an informed decision before checkout."
       >
         <div className="data-pill">
           <Check size={14} />{" "}
-          {comparison.status === "best_found"
-            ? calculationStatus(comparison)
-            : comparison.status === "proven_infeasible"
-              ? "No plan can complete this basket."
-              : "No valid plan found."}
+          {recommended
+            ? "Cheapest complete basket found across all retailers."
+            : "No retailer can supply the complete basket."}
         </div>
       </PageIntro>
       <section className="container results-page">
@@ -951,70 +921,48 @@ export function ResultsPage() {
             </Link>
           </div>
         )}
-        {comparison.status === "proven_infeasible" ? (
-          <InfeasibleResult productNames={comparison.blocker.productIds.map(productName)} />
-        ) : comparison.status === "no_plan_found" ? (
-          <NoPlanResult searchLimitReached={comparison.searchLimitReached} />
-        ) : (
-          <>
-            <div className="result-hero">
-              <div>
-                <p className="result-hero__label">
-                  <Sparkles size={15} /> Recommended plan
-                </p>
-                <h2>
-                  {comparison.recommended === "split"
-                    ? "Split your basket"
-                    : "Keep it with one retailer"}
-                </h2>
-                <p>{explanation(comparison)}</p>
-              </div>
-              <div className="result-hero__total">
-                <span>Estimated total</span>
-                <strong>{formatSgd(recommendedPlan?.totalCents)}</strong>
-                {comparison.savingsCents !== null && comparison.savingsCents > 0 ? (
-                  <em>{savingsLabel(comparison)}</em>
-                ) : (
-                  <em className="result-hero__neutral">{savingsLabel(comparison)}</em>
-                )}
-              </div>
-            </div>
-            <div className="results-grid">
-              <PlanSummary
-                order={comparison.baseline?.orders[0] ?? null}
-                highlighted={comparison.recommended === "baseline"}
-              />
-              <SplitSummary
-                split={comparison.bestSplit}
-                searchLimitReached={comparison.searchLimitReached}
-                highlighted={comparison.recommended === "split"}
-              />
-            </div>
-            <div className="result-explanation">
-              <CircleHelp size={17} />
+        {recommended ? (
+          <div className="result-hero">
+            <div>
+              <p className="result-hero__label">
+                <Sparkles size={15} /> Recommended retailer
+              </p>
+              <h2>Buy it all at {RETAILER_DISPLAY[recommended.retailerId].name}</h2>
               <p>
-                <strong>Calculation status.</strong> {calculationStatus(comparison)} CartOptix
-                recommends the best valid plan found within the selected limit; it does not claim
-                mathematical optimality.
+                The cheapest complete basket under the current dataset and delivery assumptions.
               </p>
             </div>
+            <div className="result-hero__total">
+              <span>Estimated total</span>
+              <strong>{formatSgd(recommended.totalCents)}</strong>
+            </div>
+          </div>
+        ) : (
+          <NoFeasiblePlanResult />
+        )}
+        <div className="results-grid">
+          {comparison.options.map((option) => (
+            <OptionSummary
+              key={option.retailerId}
+              option={option}
+              highlighted={option.retailerId === recommended?.retailerId}
+              productName={productName}
+            />
+          ))}
+        </div>
+        {recommended && (
+          <>
             <div className="orders-section">
               <div className="section-heading">
                 <div>
                   <p className="eyebrow">Purchase plan</p>
-                  <h2>
-                    {comparison.recommended === "split"
-                      ? "Products by retailer"
-                      : "Complete order breakdown"}
-                  </h2>
+                  <h2>Complete order breakdown</h2>
                 </div>
                 <Link href="/basket" className="button button--outline button--small">
                   Edit basket
                 </Link>
               </div>
-              {(recommendedPlan?.orders ?? []).map((order) => (
-                <OrderCard key={order.retailerId} order={order} productName={productName} />
-              ))}
+              <OrderCard order={recommended} productName={productName} />
             </div>
             {notices.length > 0 && (
               <div className="notice-card notice-card--warning">
@@ -1052,7 +1000,7 @@ export function ResultsPage() {
   );
 }
 
-function NoPlanResult({ searchLimitReached }: { searchLimitReached: boolean }) {
+function NoFeasiblePlanResult() {
   return (
     <div className="no-plan-card">
       <div className="no-plan-card__icon">
@@ -1060,36 +1008,10 @@ function NoPlanResult({ searchLimitReached }: { searchLimitReached: boolean }) {
       </div>
       <div>
         <p className="eyebrow">Calculation status</p>
-        <h2>No valid plan found.</h2>
+        <h2>No feasible purchasing plan available</h2>
         <p>
-          No complete basket plan met the dataset’s stock and order constraints within the selected
-          retailer limit.{" "}
-          {searchLimitReached
-            ? "The search stopped at its limit, so a valid plan may still exist."
-            : "Every permitted combination fell short of a retailer's minimum order or stock."}{" "}
-          Try allowing more retailer orders, or add packs so each order meets its minimum.
-        </p>
-        <Link href="/basket" className="text-link">
-          Edit basket and try again <ArrowRight size={15} />
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function InfeasibleResult({ productNames }: { productNames: string[] }) {
-  return (
-    <div className="no-plan-card">
-      <div className="no-plan-card__icon">
-        <AlertCircle size={24} />
-      </div>
-      <div>
-        <p className="eyebrow">Calculation status</p>
-        <h2>This basket cannot be completed.</h2>
-        <p>
-          No retailer has an eligible offer for {productNames.join(", ")}, so no plan can include
-          every line. Remove {productNames.length > 1 ? "these products" : "this product"} to
-          compare the rest of the basket.
+          No retailer can supply every line of this basket under the dataset’s stock and order
+          rules. Each retailer’s reason is shown below; change the basket to compare again.
         </p>
         <Link href="/basket" className="text-link">
           Edit basket <ArrowRight size={15} />
@@ -1099,84 +1021,44 @@ function InfeasibleResult({ productNames }: { productNames: string[] }) {
   );
 }
 
-function PlanSummary({ order, highlighted }: { order: Order | null; highlighted: boolean }) {
-  return (
-    <div className={`plan-summary ${highlighted ? "plan-summary--highlighted" : ""}`}>
-      <div className="plan-summary__head">
-        <div>
-          <p className="plan-summary__eyebrow">{highlighted ? "Recommended plan" : "Baseline"}</p>
-          <h3>Single-retailer baseline</h3>
-          <span>Cheapest complete one-order plan</span>
-        </div>
-        {order ? (
-          <strong>{formatSgd(order.totalCents)}</strong>
-        ) : (
-          <strong className="muted">Unavailable</strong>
-        )}
-      </div>
-      {order ? (
-        <>
-          <div className="plan-retailer-pill">
-            <span className="retailer-dot retailer-dot--navy" />
-            {RETAILER_DISPLAY[order.retailerId].name}
-            <span>1 order</span>
-          </div>
-          <PlanBreakdown order={order} />
-        </>
-      ) : (
-        <div className="plan-empty">
-          <AlertCircle size={17} /> No complete single-retailer baseline available.
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SplitSummary({
-  split,
-  searchLimitReached,
+function OptionSummary({
+  option,
   highlighted,
+  productName,
 }: {
-  split: Plan | null;
-  searchLimitReached: boolean;
+  option: Option;
   highlighted: boolean;
+  productName: (productId: string) => string;
 }) {
+  const retailer = RETAILER_DISPLAY[option.retailerId];
   return (
     <div className={`plan-summary ${highlighted ? "plan-summary--highlighted" : ""}`}>
       <div className="plan-summary__head">
         <div>
           <p className="plan-summary__eyebrow">
-            {highlighted ? "Recommended plan" : "Alternative"}
+            {highlighted
+              ? "Recommended"
+              : option.status === "complete"
+                ? "Complete"
+                : "Unavailable"}
           </p>
-          <h3>Best split found</h3>
-          <span>Permitted split up to selected limit</span>
+          <h3>{retailer.name}</h3>
+          <span>Complete basket at one retailer</span>
         </div>
-        {split ? (
-          <strong>{formatSgd(split.totalCents)}</strong>
+        {option.status === "complete" ? (
+          <strong>{formatSgd(option.totalCents)}</strong>
         ) : (
-          <strong className="muted">No valid split</strong>
+          <strong className="muted">Unavailable</strong>
         )}
       </div>
-      {split ? (
-        <>
-          <div className="plan-retailer-pill">
-            <span className="retailer-dot retailer-dot--green" />
-            {split.orders.length} retailer orders
-            {searchLimitReached && <span>Search limit reached</span>}
-          </div>
-          <div className="mini-assignment">
-            {split.orders.map((order) => (
-              <div key={order.retailerId}>
-                <span>{RETAILER_DISPLAY[order.retailerId].name}</span>
-                <strong>{formatSgd(order.totalCents)}</strong>
-              </div>
-            ))}
-          </div>
-        </>
+      {option.status === "complete" ? (
+        <PlanBreakdown order={option} />
       ) : (
-        <div className="plan-empty">
-          <AlertCircle size={17} /> No permitted split plan was found.
-        </div>
+        option.reasons.map((reason) => (
+          <div className="plan-empty" key={reason.code}>
+            <AlertCircle size={17} /> {reasonText(reason, productName)}
+          </div>
+        ))
       )}
     </div>
   );
@@ -1262,7 +1144,7 @@ function OrderCard({
             Mandatory charges{" "}
             <small>
               {order.orderCharges.length
-                ? order.orderCharges.map((charge) => charge.label).join(", ")
+                ? order.orderCharges.map(orderChargeLabel).join(", ")
                 : "No mandatory charge"}
             </small>
           </span>
@@ -1298,10 +1180,9 @@ function HowItWorks() {
           </div>
           <div className="step">
             <span>02</span>
-            <h3>Set the order limit</h3>
+            <h3>Compare retailers</h3>
             <p>
-              Compare one retailer against permitted split plans using whole packs and non-member
-              pricing.
+              Price the complete basket at each retailer using whole packs and non-member pricing.
             </p>
           </div>
           <div className="step">

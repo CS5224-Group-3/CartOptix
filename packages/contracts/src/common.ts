@@ -25,8 +25,6 @@ export const HttpsUrlSchema = Type.String({ pattern: "^https://", maxLength: 204
 export const MAX_BASKET_LINES = 50;
 export const MIN_PACKS_PER_LINE = 1;
 export const MAX_PACKS_PER_LINE = 20;
-export const MIN_RETAILER_LIMIT = 1;
-export const MAX_RETAILER_LIMIT = 3;
 
 /** Whole packs of one product. */
 export const QuantitySchema = Type.Integer({
@@ -45,7 +43,7 @@ export const SNAPSHOT_DISCLAIMER =
   "Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.";
 
 /** Shown near every comparison. BCRS container deposits are not modelled in the MVP:
- * the same 10¢ per container applies at every retailer, so it cannot change which plan
+ * the same 10¢ per container applies at every retailer, so it cannot change which retailer
  * wins, but totals would otherwise understate checkout. */
 export const DEPOSIT_NOTICE =
   "Totals exclude the refundable 10¢ container deposit charged at checkout.";
@@ -74,11 +72,21 @@ export const ItemChargeSchema = closedObject({
   includedInPrice: Type.Boolean(),
 });
 
-/** A fixed charge on a whole retailer order, e.g. a bag fee. */
+/**
+ * A fixed charge on a whole retailer order, e.g. a service fee. A waived charge is
+ * shown but not added to the order total, so the breakdown still reconciles.
+ */
 export const OrderChargeSchema = closedObject({
   label: Type.String({ minLength: 1 }),
+  /** The charge's normal amount, even when waived. */
   amountCents: CentsSchema,
+  /** Qualifying spend at or above which the charge is waived; null if never waived. */
+  waivedFromCents: nullable(CentsSchema),
+  /** Whether this order reached the waiver threshold. The API decides, because the
+   * qualifying-spend basis is a pricing rule, not a display rule. */
+  waived: Type.Boolean(),
 });
+export type OrderCharge = Static<typeof OrderChargeSchema>;
 
 /** Cost of the requested packs at one retailer, before delivery. */
 const lineCost = {
