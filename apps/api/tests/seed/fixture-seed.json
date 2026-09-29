@@ -1,7 +1,4 @@
 {
-  "schemaVersion": 1,
-  "datasetId": "fixture-seed-v1",
-  "dataKind": "synthetic",
   "retailers": [
     { "retailerId": "redmart", "name": "RedMart", "productUrlHosts": ["www.lazada.sg"] },
     { "retailerId": "fairprice", "name": "FairPrice", "productUrlHosts": ["www.fairprice.com.sg"] },
@@ -16,7 +13,6 @@
     { "categoryId": "drinks", "name": "Drinks" }
   ],
   "delivery": {
-    "scenario": "Synthetic Singapore address, standard delivery, non-member pricing.",
     "rules": [
       {
         "retailerId": "redmart",

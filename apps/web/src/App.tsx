@@ -153,7 +153,7 @@ function useCategoryNames() {
   );
 }
 
-/** The delivery-rule note for a retailer, from the catalogue's declared scenario. */
+/** The delivery-rule note for a retailer, from the catalogue. */
 function useDeliveryNotes() {
   const { data } = useCatalogue();
   return useMemo(() => {
@@ -355,14 +355,9 @@ export function CataloguePage() {
         title="Build a basket from exact products."
         description="Search the demo catalogue, inspect retailer offers, then add whole packs to your basket. Product identity and pack size stay fixed throughout the comparison."
       >
-        {catalogue.data && (
-          <div className="data-pill">
-            <Sparkles size={14} />{" "}
-            {catalogue.data.dataset.dataKind === "curated"
-              ? "Curated dataset · not live retailer pricing"
-              : "Synthetic demo data · not live retailer pricing"}
-          </div>
-        )}
+        <div className="data-pill">
+          <Sparkles size={14} /> Prototype data · not live retailer pricing
+        </div>
       </PageIntro>
       <section className="container catalogue-section">
         <div className="catalogue-toolbar">
@@ -393,10 +388,7 @@ export function CataloguePage() {
           <p>
             <strong>{data?.total ?? 0}</strong> products shown
           </p>
-          <p>
-            {catalogue.data?.categories.length ?? 0} categories ·{" "}
-            {catalogue.data?.delivery.scenario}
-          </p>
+          <p>{catalogue.data?.categories.length ?? 0} categories</p>
         </div>
         {isLoading ? (
           <div className="loading-state">Loading the catalogue…</div>

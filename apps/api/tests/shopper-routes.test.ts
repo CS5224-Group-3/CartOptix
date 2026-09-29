@@ -36,7 +36,6 @@ describe("placeholder shopper routes", () => {
     expect(response.statusCode).toBe(200);
     const body = response.json();
     expect(Value.Check(CatalogueResponseSchema, body)).toBe(true);
-    expect(body.dataset.dataKind).toBe("synthetic");
   });
 
   it("searches, filters and paginates products", async () => {
@@ -90,7 +89,7 @@ describe("placeholder shopper routes", () => {
     ["an unknown product", { lines: lines(["r1", 1], ["nope", 1]), maxRetailers: 2 }],
     ["a duplicate product", { lines: lines(["r1", 1], ["r1", 2]), maxRetailers: 2 }],
     ["21 packs", { lines: lines(["r1", 21]), maxRetailers: 2 }],
-    ["a client-sent dataset ID", { lines: lines(["r1", 1]), maxRetailers: 2, datasetId: "x" }],
+    ["an unknown field", { lines: lines(["r1", 1]), maxRetailers: 2, extra: "x" }],
   ])("rejects a basket with %s", async (_name, payload) => {
     const response = await start().inject({
       method: "POST",

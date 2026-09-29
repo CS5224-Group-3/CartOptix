@@ -41,7 +41,6 @@ export interface LineScenario {
 }
 
 export interface LineFixture {
-  datasetId: string;
   offers: Record<string, OfferRule>;
   scenarios: LineScenario[];
 }
@@ -70,7 +69,6 @@ export interface OrderScenario {
 }
 
 export interface OrderFixture {
-  datasetId: string;
   retailers: Record<string, DeliveryRule>;
   offers: Record<string, OfferRule>;
   scenarios: OrderScenario[];

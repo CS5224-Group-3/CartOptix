@@ -1,7 +1,4 @@
 {
-  "schemaVersion": 1,
-  "datasetId": "seed-v1",
-  "dataKind": "curated",
   "retailers": [
     {
       "retailerId": "redmart",
@@ -54,7 +51,6 @@
     }
   ],
   "delivery": {
-    "scenario": "A serviceable Singapore address, standard scheduled delivery, non-member pricing and no vouchers.",
     "rules": [
       {
         "retailerId": "redmart",

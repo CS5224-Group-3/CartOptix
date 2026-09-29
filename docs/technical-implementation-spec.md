@@ -55,7 +55,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Contracts (A2 / #5):** `typebox` 1.3.34 defines the shared schemas, with types inferred from them. It is the 1.x line that `@fastify/type-provider-typebox` 6 requires; the older `@sinclair/typebox` 0.34 line was dropped. Tests check that Fastify 5's default validator and serialiser accept the schemas. Generated OpenAPI was evaluated and deferred: both sides share TypeScript types directly, so nothing reads it. Add `@fastify/swagger` if an external consumer appears.
 
-**Seed import (B4 / #4):** the database holds one dataset at a time. An import validates the seed, then replaces every row in one transaction; rolling back means re-importing an older seed from Git. The schema keeps keys, references and uniqueness, and the importer's validation enforces value rules.
+**Seed import (B4 / #4):** the database holds the one committed seed. An import validates the seed, then replaces every row in one transaction; rolling back means re-importing an older seed from Git. The schema keeps keys, references and uniqueness, and the importer's validation enforces value rules.
 
 **Deferred:** React Router, generated OpenAPI, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
@@ -63,7 +63,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 ### Runtime boundaries
 
-Use one backend application with catalogue, pricing, comparison, import and click-event modules. Keep API instances stateless: basket requests contain product IDs and quantities, and the server prices them from the active dataset. Do not rely on instance memory or local files for persistent user state.
+Use one backend application with catalogue, pricing, comparison, import and click-event modules. Keep API instances stateless: basket requests contain product IDs and quantities, and the server prices them from the loaded seed. Do not rely on instance memory or local files for persistent user state.
 
 ```text
 Development POC
@@ -74,7 +74,7 @@ Browser -> CloudFront -> private S3 frontend assets
                      -> ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
                                 desired/min 2, max 3      db.t4g.micro, Single-AZ
 
-Offline data preparation -> validated versioned seed -> explicit database import
+Offline data preparation -> validated committed seed -> explicit database import
 ```
 
 A CloudFront/S3 frontend is optional; the application may serve the frontend instead. Final origin connectivity and networking must be costed before provisioning. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
@@ -85,7 +85,7 @@ Serve browser traffic over HTTPS. Keep any S3 bucket private, restrict applicati
 
 Retailer websites are not runtime dependencies. Import validated seed data through an internal CLI or deployment task, not a public upload endpoint. A live retailer outage does not affect snapshot calculations; relevant serving failures are missing eligible records, invalid imports, database unavailability and application failures.
 
-Imports must be atomic and idempotent. Replace the loaded dataset only after validation and loading succeed, in one transaction. Each request reads the dataset, including its delivery rules, from one consistent database snapshot, so an import during a request cannot mix versions. Clients do not send a dataset version. The browser basket holds only product IDs and quantities, and the server prices every line itself, so there is no stale client pricing to detect. A product removed by a correction is rejected as unknown. Shoppers see one dataset at a time; evaluation data stays frozen on a best-effort basis (section 3).
+Imports must be atomic and idempotent. Replace the loaded data only after validation and loading succeed, in one transaction. Each request reads the data, including delivery rules, from one consistent database snapshot, so an import during a request cannot mix old and new rows. The browser basket holds only product IDs and quantities, and the server prices every line itself, so there is no stale client pricing to detect. A product removed by a correction is rejected as unknown. Evaluation data stays frozen on a best-effort basis (section 3).
 
 ## 3. Data design and curation
 
@@ -114,13 +114,13 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 
 ### Curation pipeline
 
-1. Register original files with checksums and stable file/sheet/row references. Preserve originals outside the clean seed; do not overwrite source observations.
-2. Normalise field names, money, units, pack counts and stable retailer listing identifiers. Preserve raw values alongside transformations in provenance records.
+1. Keep the original exports unchanged outside the clean seed, and give each listing a stable source reference (`source_record_id`).
+2. Normalise field names, money, units, pack counts and stable retailer listing identifiers.
 3. Restrict candidates to the eight product categories. Treat `Keyword` as source discovery metadata, not the canonical category taxonomy.
 4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
 5. Propose matches, which may use AI. Publish only high-confidence AI matches that agree with the name rules and exclude the rest; manual match review is out of scope for the proof of concept.
 6. Verify one delivery scenario per retailer. The MVP publishes verified ordinary and unconditional sale prices only, recording other promotions as excluded; do not infer unsupported rules.
-7. Publish clean, schema-validated seed data with version, coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
+7. Publish clean, schema-validated seed data with a coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
 
 Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
 
@@ -131,17 +131,15 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Retailer | Stable ID, name and allowed product-link domains. |
 | Canonical product | ID, category, brand, variant, pack count, per-pack size/unit or equivalent non-food identity, display name. |
 | Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, direct-fulfilment status and any evidence reference. |
-| Dataset | ID/schema version, seed revision/checksum and import metadata; one dataset is loaded at a time. Import time is not a collection date. |
-| Offer | Dataset/listing IDs, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
-| Supported promotion | Listing/dataset, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed for that seed version. |
-| Delivery scenario/rule | Dataset/retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
+| Offer | Listing ID, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
+| Supported promotion | Listing, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed in the committed seed. |
+| Delivery rule | Retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. Unused in the MVP, which does not model BCRS deposits. |
-| Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
-| Click event | Event ID, retailer/listing/product, and the server-recorded timestamp and active dataset ID; no user identity. |
+| Click event | Event ID, retailer/listing/product and the server-recorded timestamp; no user identity. |
 
 Retain a clean JSON seed and its validation schema in Git (`data/seed/`; schema in `apps/api/src/seed/schema.ts`). Protect referential integrity, positive usable prices, valid quantities, unique stable IDs and consistent pack information. Different listings with similar names are not automatically duplicates. Do not deploy all 177,638 raw rows merely because they were scraped.
 
-Dataset freezing is best-effort. Record seed commit/checksum in evaluation output; record material changes and rerun affected checks where practical. Do not build a collection-date display or invent dates from workbook metadata.
+Freezing evaluation data is best-effort; record material changes and rerun affected checks where practical. Do not build a collection-date display or invent dates from workbook metadata.
 
 ## 4. Pricing and comparison design
 
@@ -157,14 +155,14 @@ One deterministic module calculates product-line costs and retailer-order totals
 
 Unknown necessary delivery rules prevent a valid complete-total calculation for that retailer. Do not substitute zero. An unsupported promotion can be ignored only when a verified usable price remains and the omission is disclosed.
 
-Promotion eligibility comes from the approved seed version, not the runtime clock. Advancing the current date must not expire or activate a promotion during calculation. Keep captured validity terms as internal provenance, not website collection dates or live-validity claims. A correction to approved rules produces a new seed version. Reject a promotion from the curated rules when its applicability to the recorded scenario cannot be established; retain a verified ordinary-price fallback only with the required disclosure.
+Promotion eligibility comes from the committed seed, not the runtime clock. Advancing the current date must not expire or activate a promotion during calculation. Keep captured validity terms as internal provenance, not website collection dates or live-validity claims. Reject a promotion from the curated rules when its applicability to the recorded scenario cannot be established; retain a verified ordinary-price fallback only with the required disclosure.
 
 The MVP pricing kernel omits multibuy execution, because B3 approves only ordinary/unconditional prices. Keep unsupported rules out of the active seed; bundle-specific implementation and acceptance cases apply only when that promotion type is adopted.
 
 ### Comparison procedure
 
 1. Validate input, rejecting duplicate product IDs as the contract requires (section 5).
-2. Load one consistent dataset and price the complete basket independently at each of the three retailers through the shared pricing module.
+2. Read the seed data from one consistent snapshot and price the complete basket independently at each of the three retailers through the shared pricing module.
 3. For each retailer, require eligible offers for every line, a verified delivery rule and an order that meets its minimum. Otherwise mark that option unavailable with its reason; do not price a partial basket as complete.
 4. Validate each feasible option and its itemised product costs, supported promotions, excluded-promotion notices, delivery and other mandatory order charges, and estimated total.
 5. Recommend the cheapest feasible option, breaking ties in a stable, documented retailer order. Return every retailer's option, including unavailability reasons.
@@ -187,19 +185,19 @@ Never return a partial basket as a complete result or compare its price with com
 
 | Endpoint | Responsibility |
 | --- | --- |
-| `GET /api/v1/catalogue` | Dataset ID and kind, retailers, categories and delivery assumptions. No collection-date display field. |
+| `GET /api/v1/catalogue` | Retailers, categories and each retailer's delivery rule. No collection-date display field. |
 | `GET /api/v1/products` | Paginated search/category browse of published products. |
 | `GET /api/v1/products/:id/offers?quantity=...` | Quantity-aware eligible offers and shared pricing explanations. |
 | `POST /api/v1/basket/compare` | Basket lines; complete or unavailable options for all three retailers, itemised breakdowns, a cheapest feasible recommendation or no feasible plan. |
-| `POST /api/v1/events/outbound-click` | Best-effort usage event for a known listing and dataset. |
-| `GET /health/live`, `GET /health/ready` | Process health; database and active-dataset readiness. Not substitutes for measured shopper API success. |
+| `POST /api/v1/events/outbound-click` | Best-effort usage event for a known listing. |
+| `GET /health/live`, `GET /health/ready` | Process health; database readiness. Not substitutes for measured shopper API success. |
 
 Schemas must validate IDs and integer quantities. Client-submitted prices are never trusted. Product links come from approved listing records; avoid an arbitrary redirect service.
 
 Contract decisions (#5):
 
 - **Money and limits.** Integer SGD cents; 1–50 distinct lines and 1–20 whole packs per line.
-- **Datasets.** A dataset ID names one imported version of the curated seed: its products, offers, prices, promotions and delivery rules. It is not a collection date. The server uses it to identify the loaded seed (#4), stamp click events (#19) and record which seed produced evaluation results. Only the catalogue response exposes it, with its `dataKind`; requests do not carry it and there is no dataset-conflict response. A delivery-rule change produces a new dataset ID.
+- **Seed data.** The database holds the one committed seed, which evolves in Git; Git history is its version record. There are no dataset IDs or versions: neither requests nor responses identify a seed, and a correction is an edit to the seed file.
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
 - **Comparison results.** The existing shared contract still has a retailer-limit request field and split-plan response shape. Issue #13 replaces these with a single-retailer contract: an option for each retailer, either a priced complete basket with itemised breakdown or unavailable with a reason; the recommended cheapest feasible option; or no feasible plan with every retailer's reason. Ties follow the product specification's stable retailer order. Other feasible options may show the difference from the recommendation.
 - **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
@@ -210,14 +208,13 @@ Contract decisions (#5):
   - Missing eligible offers make the affected retailer unavailable. An unresolved charge or an ineligible offer incorrectly passed to the pricing module should be stopped by the importer (#4); if it reaches pricing, return `service_error`.
 - **Limits.** `MAX_BASKET_LINES` and the per-line pack range are exported constants, so the web client enforces the same bounds as the API.
 - **Validation.** Fastify defaults: query strings are coerced, unknown fields stripped, and pagination defaults applied. Responses reject undeclared fields, so a collection date cannot be added by accident. The disclaimer and deposit notice are exported constants (`SNAPSHOT_DISCLAIMER`, `DEPOSIT_NOTICE`), not response fields.
-- **Data the seed must supply (#4).** These contracts define what the API needs, and the seed and import supply it, as the A2-before-B2–B4 ordering in section 8 intends. The seed carries whatever curation knows, without pruning, and the API derives display fields when serving. Each published dataset provides at least:
-  - A dataset ID and whether the data is curated or synthetic.
+- **Data the seed must supply (#4).** These contracts define what the API needs, and the seed and import supply it, as the A2-before-B2–B4 ordering in section 8 intends. The seed carries whatever curation knows, without pruning, and the API derives display fields when serving. The seed provides at least:
   - The three retailers with display names, and the eight categories with stable IDs and names.
-  - The declared delivery scenario and, per retailer, either the verified delivery fee, free-delivery threshold and minimum order (each may be absent) with a short note, or an explicit "unverified".
+  - Per retailer, either the verified delivery fee, free-delivery threshold and minimum order (each may be absent) with a short note, or an explicit "unverified".
   - Per product: category, a representative listing name, the specification text of its listings, and an optional image URL. The API derives `name` from the representative name, removing any `[BCRS]` tag, and `packSize` from the specification, with units lower-cased. The import checks only that both inputs exist.
   - Per eligible offer, meaning in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), a positive unit price in integer cents, and notes on excluded promotions. Mandatory item charges, with a label, per-pack amount and whether the price already includes them, are needed only once a charge is modelled; the MVP has none, since BCRS deposits are not modelled.
   - Fixed order-level charges per retailer, and whatever rule inputs the pricing module (#8) needs to compute totals.
-  - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across dataset versions, because browser baskets keep product IDs through a correction.
+  - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across seed edits, because browser baskets keep product IDs through a correction.
   - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
 
 The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, per-retailer availability reasons and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
@@ -291,15 +288,15 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### A2 — Define the seed schema and public API contracts
 - **Blocked by:** A1.
-- **Work:** Define versioned seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling and dataset-version handling.
+- **Work:** Define seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling.
 - **Acceptance:** Valid and invalid examples are executable contract fixtures; money uses integer cents; no collection-date UI contract is introduced. Issue #13 updates the existing split-plan fixtures and contract to distinguish complete, unavailable and service-error outcomes.
 
 ### WS-B — Data curation and persistence
 
 #### B1 — Register and profile source exports
 - **Blocked by:** None.
-- **Work:** Record source checksums/row references, reproduce basic profiling, map source fields and categories, and document malformed prices, stock flags and ambiguous packs.
-- **Acceptance:** A repeatable report reproduces or explains differences from the supplied-file counts; raw values remain unchanged and findings are traceable to source rows.
+- **Work:** Profile the exports, map source fields and categories, and note malformed prices, stock flags and ambiguous packs.
+- **Acceptance:** Raw exports stay unchanged, and each seed listing keeps a reference to its source row.
 
 #### B2 — Curate a pilot catalogue
 - **Blocked by:** A2, B1.
@@ -314,12 +311,12 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### B4 — Implement database migrations and atomic seed import
 - **Blocked by:** A1, A2.
 - **Work:** Implement the logical schema, committed migrations, seed validation and an idempotent, atomic import using fixture seeds first.
-- **Acceptance:** Fresh-database setup and repeated import succeed; invalid imports leave the loaded dataset unchanged; seed validation rejects invalid values and foreign keys keep references intact; dataset identity is queryable.
+- **Acceptance:** Fresh-database setup and repeated import succeed; invalid imports leave the loaded data unchanged; seed validation rejects invalid values and foreign keys keep references intact.
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.
-- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed with its provenance, and the scripts that build it. Rerun documentation and clearing out intermediates are out of scope for the proof of concept.
-- **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across dataset versions and product links checked against retailer domains at import; the seed imports repeatably and has a recorded revision/checksum.
+- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed and the scripts that build it. Rerun documentation and clearing out intermediates are out of scope for the proof of concept.
+- **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across seed edits and product links checked against retailer domains at import; the seed imports repeatably.
 
 ### WS-C — Pricing and recommendation engine
 
@@ -361,7 +358,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### D4 — Add purchase links and non-blocking click recording
 - **Blocked by:** D1, B4.
-- **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, plus a server-recorded timestamp and dataset ID. Collect no user identity for this feature.
+- **Work:** Add approved product links and the lightweight event endpoint with retailer/listing, plus a server-recorded timestamp. Collect no user identity for this feature.
 - **Acceptance:** Known-listing validation prevents arbitrary redirects/events; navigation works when tracking fails; stored events are labelled usage rather than conversions or billable clicks.
 
 #### D5 — Verify complete shopper journeys (tracked with the system evaluation)
@@ -389,7 +386,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### E4 — Provision the presentation architecture
 - **Blocked by:** E2, E3.
 - **Work:** Deploy an ALB, a stateless EC2 ASG (minimum 2, maximum 3) and private Single-AZ RDS with approved sizing, serving the frontend from CloudFront/S3 or the application; migrate/import the seed and configure readiness/draining.
-- **Acceptance:** Requests work through HTTPS ingress; either application instance serves the same dataset; database access is restricted; the deployed cost assumptions and topology are recorded.
+- **Acceptance:** Requests work through HTTPS ingress; either application instance serves the same data; database access is restricted; the deployed cost assumptions and topology are recorded.
 
 #### E5 — Configure observability and automatic scaling
 - **Blocked by:** E4.
@@ -410,7 +407,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### F2 — Run normal/surge performance acceptance tests
 - **Blocked by:** C5, D5, E5, F1.
-- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record code/seed/configuration versions.
+- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record the code and configuration tested.
 - **Acceptance:** Report p99 and sample counts per endpoint and separately for 20-line and 50-line basket requests, thresholds from SC-05/SC-06, offered/achieved throughput, failures and credit/DB pressure. Product-offer latency is reported without inventing a new threshold. Record failures honestly and remediate/retest affected cases; do not change targets silently.
 
 #### F3 — Demonstrate autoscaling and instance-failure behaviour
@@ -426,7 +423,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### F5 — Assemble the final evaluation and cost report
 - **Blocked by:** F2, F3, F4.
 - **Work:** Assemble comparison correctness/coverage results, performance, observed request success, shopper findings, project spend and BAU cloud/on-premise comparison.
-- **Acceptance:** Trace results to versions/configuration; report target shortfalls, equal-cost cases and assumptions; update preliminary-report claims about collection dates, availability and the retailer limit; prepare presentation artefacts before teardown.
+- **Acceptance:** Note the code and configuration behind the results; report target shortfalls, equal-cost cases and assumptions; update preliminary-report claims about collection dates, availability and the retailer limit; prepare presentation artefacts before teardown.
 
 ## 9. Delivery sequence and completion gate
 
@@ -438,4 +435,4 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 Parallel work is possible across data, pricing, frontend and infrastructure after contracts are agreed. Issue dependencies above are the authoritative task ordering; phases describe the overall sequence rather than forcing all workstreams to run serially.
 
-Completion requires a deployed end-to-end comparison service, curated seed/provenance, validated recommendations, reported performance/scaling and shopper evidence, cost reporting and teardown. Catalogue overlap, performance, budget and comparison correctness remain targets until measured. If a target is missed, document the finding and resolve or explicitly accept the shortfall; a report must not turn an unmet target into an achieved claim.
+Completion requires a deployed end-to-end comparison service, curated seed, validated recommendations, reported performance/scaling and shopper evidence, cost reporting and teardown. Catalogue overlap, performance, budget and comparison correctness remain targets until measured. If a target is missed, document the finding and resolve or explicitly accept the shortfall; a report must not turn an unmet target into an achieved claim.
