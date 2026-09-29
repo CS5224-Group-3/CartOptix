@@ -12,6 +12,8 @@ The MVP is free for shoppers. No subscription or shopper payment is required to 
 
 The MVP must deliver a usable comparison service on AWS, demonstrate its performance and scaling behaviour under an explicit first-year traffic scenario, and gather shopper feedback. It compares all three single-retailer options exactly.
 
+This is an MVP built to ship fast: it must be good enough to demonstrate the business idea running on the cloud. Formal assurance, exact reproducibility and traceability beyond what the demonstration and evaluation need are out of scope.
+
 The promise is **the cheapest feasible complete-basket retailer option under the supported pricing rules and recorded dataset**. Every retailer is evaluated, and an unavailable option is shown with its reason rather than priced as a complete basket.
 
 Transparency governs the interface: distinguish estimated costs from current checkout prices, observed data from assumptions, and unavailable retailer options from service failures. Retailer payments never influence eligibility or ranking.
@@ -108,7 +110,7 @@ Each complete-basket option places every line with the same retailer. Do not div
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. Synthetic fixtures are for development and tests only; never present them as retailer data.
+Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. Synthetic data is for development and tests.
 
 ### PR-03 — Supported pricing and promotions
 
@@ -142,7 +144,7 @@ Do **not** display collection dates on the website. Display this notice near com
 
 > Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
 
-Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Source provenance supports repeatable calculations and is not presented as collection dates. Freeze evaluation data on a best-effort basis.
+Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Source provenance supports repeatable calculations and is not presented as collection dates.
 
 ### PR-07 — Usage measurement
 
@@ -164,7 +166,7 @@ Collect outbound-click events with retailer, listing/product and timestamp, with
 
 Performance is distinct from availability. The prospective BAU **request-success SLO is 99.9% per day**, not a contractual SLA or a time-based uptime guarantee. A short load test does not establish long-term availability. Report observed prototype request success separately; report deliberate overload and fault injection separately from normal/surge acceptance runs.
 
-For requirement traceability, SC-03/SC-04 verify PR-05 comparison correctness and recommendation integrity. SC-01/SC-02 verify PR-06 disclosures and versioned-data evidence. SC-01 includes PR-07 click recording and navigation when tracking fails.
+For requirement traceability, SC-03/SC-04 verify PR-05 comparison correctness and recommendation integrity. SC-01/SC-02 verify PR-06 disclosures and the committed seed. SC-01 includes PR-07 click recording and navigation when tracking fails.
 
 ### Shopper study
 

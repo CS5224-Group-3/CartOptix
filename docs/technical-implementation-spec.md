@@ -74,7 +74,7 @@ Browser -> CloudFront -> private S3 frontend assets
                      -> ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
                                 desired/min 2, max 3      db.t4g.micro, Single-AZ
 
-Offline data preparation -> validated versioned seed -> explicit database import
+Offline data preparation -> validated committed seed -> explicit database import
 ```
 
 A CloudFront/S3 frontend is optional; the application may serve the frontend instead. Final origin connectivity and networking must be costed before provisioning. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
@@ -120,7 +120,7 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
 5. Propose matches, which may use AI. Publish only high-confidence AI matches that agree with the name rules and exclude the rest; manual match review is out of scope for the proof of concept.
 6. Verify one delivery scenario per retailer. The MVP publishes verified ordinary and unconditional sale prices only, recording other promotions as excluded; do not infer unsupported rules.
-7. Publish clean, schema-validated seed data with version, coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
+7. Publish clean, schema-validated seed data with a coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
 
 Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
 
@@ -408,7 +408,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### F2 — Run normal/surge performance acceptance tests
 - **Blocked by:** C5, D5, E5, F1.
-- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record code/seed/configuration versions.
+- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record the code and configuration tested.
 - **Acceptance:** Report p99 and sample counts per endpoint and separately for 20-line and 50-line basket requests, thresholds from SC-05/SC-06, offered/achieved throughput, failures and credit/DB pressure. Product-offer latency is reported without inventing a new threshold. Record failures honestly and remediate/retest affected cases; do not change targets silently.
 
 #### F3 — Demonstrate autoscaling and instance-failure behaviour
@@ -424,7 +424,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### F5 — Assemble the final evaluation and cost report
 - **Blocked by:** F2, F3, F4.
 - **Work:** Assemble comparison correctness/coverage results, performance, observed request success, shopper findings, project spend and BAU cloud/on-premise comparison.
-- **Acceptance:** Trace results to versions/configuration; report target shortfalls, equal-cost cases and assumptions; update preliminary-report claims about collection dates, availability and the retailer limit; prepare presentation artefacts before teardown.
+- **Acceptance:** Note the code and configuration behind the results; report target shortfalls, equal-cost cases and assumptions; update preliminary-report claims about collection dates, availability and the retailer limit; prepare presentation artefacts before teardown.
 
 ## 9. Delivery sequence and completion gate
 
