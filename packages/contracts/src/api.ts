@@ -203,19 +203,6 @@ export type ErrorResponse = Static<typeof ErrorResponseSchema>;
 export const OutboundClickRequestSchema = closedObject({ listingId: IdSchema });
 export type OutboundClickRequest = Static<typeof OutboundClickRequestSchema>;
 
-/**
- * Whether the event reached storage.
- *
- * `not_recorded` means the API shed the write to keep capacity for basket
- * comparison, not that anything failed. Clients ignore this: navigation must
- * never depend on it. It exists so usage reporting (#22) can tell a measured
- * click count apart from one that silently lost events under load.
- */
-export const OutboundClickResponseSchema = closedObject({
-  status: Type.Union([Type.Literal("recorded"), Type.Literal("not_recorded")]),
-});
-export type OutboundClickResponse = Static<typeof OutboundClickResponseSchema>;
-
 // Routes
 
 /**
@@ -249,10 +236,15 @@ export const routes = {
     url: `${API_BASE_PATH}/basket/compare`,
     schema: { body: BasketCompareRequestSchema, response: { 200: BasketCompareResponseSchema } },
   },
-  /** 202: the event is accepted for recording, and the body says whether it was. */
+  /**
+   * Always answers 204 with no body, whatever happened, following the GA
+   * Measurement Protocol. A client cannot act on a tracking failure, so there
+   * is nothing useful to tell it; failures are logged server side and reported
+   * from there (#22). This is the one route that does not use `ErrorResponse`.
+   */
   outboundClick: {
     method: "POST",
     url: `${API_BASE_PATH}/events/outbound-click`,
-    schema: { body: OutboundClickRequestSchema, response: { 202: OutboundClickResponseSchema } },
+    schema: { body: OutboundClickRequestSchema, response: { 204: Type.Null() } },
   },
 } as const;

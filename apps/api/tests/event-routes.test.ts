@@ -7,6 +7,10 @@ import { buildServer } from "../src/server.ts";
 /**
  * The outbound-click endpoint's contract behaviour (#19), driven through a
  * stub recorder so these cases do not need a database.
+ *
+ * Every response is 204 with no body, so the status code proves nothing about
+ * whether a request was accepted. Each test therefore asserts what reached the
+ * recorder, which is what actually decides whether an event can be stored.
  */
 
 const database: Database = {
@@ -14,7 +18,8 @@ const database: Database = {
   close: async () => {},
 };
 
-function serverWith(result: ClickRecordResult, seen: string[] = []) {
+function serverWith(result: ClickRecordResult) {
+  const seen: string[] = [];
   const clickRecorder: ClickRecorder = {
     record: async (listingId) => {
       seen.push(listingId);
@@ -30,77 +35,96 @@ function post(body: unknown) {
 }
 
 describe("POST /api/v1/events/outbound-click", () => {
-  it("accepts a click for a known listing and passes only the listing on", async () => {
+  it("records a click for a known listing and passes only the listing on", async () => {
     const { server, seen } = serverWith("recorded");
 
     const response = await server.inject(post({ listingId: "alpha-milk" }));
 
-    expect(response.statusCode).toBe(202);
-    expect(response.json()).toEqual({ status: "recorded" });
+    expect(response.statusCode).toBe(204);
+    expect(response.body).toBe("");
     expect(seen).toEqual(["alpha-milk"]);
     await server.close();
   });
 
-  it("reports an unknown listing as not recorded rather than as a failure", async () => {
-    // A rejected event must not read as a service failure: the shopper has
-    // already navigated, and a 4xx would count against the error budget
-    // (SC-06) without giving anyone anything to act on.
-    const { server } = serverWith("unknown-listing");
+  it("answers the same way when the listing is unknown", async () => {
+    // A caller cannot act on a rejected event, so it learns nothing from the
+    // response. The listing lookup is what stops the event being stored.
+    const { server, seen } = serverWith("unknown-listing");
 
     const response = await server.inject(post({ listingId: "does-not-exist" }));
 
-    expect(response.statusCode).toBe(202);
-    expect(response.json()).toEqual({ status: "not_recorded" });
+    expect(response.statusCode).toBe(204);
+    expect(response.body).toBe("");
+    expect(seen).toEqual(["does-not-exist"]);
     await server.close();
   });
 
-  it("reports a shed or failed write as not recorded", async () => {
+  it("answers the same way when the write is shed or fails", async () => {
     const { server } = serverWith("not_recorded");
 
     const response = await server.inject(post({ listingId: "alpha-milk" }));
 
-    expect(response.statusCode).toBe(202);
-    expect(response.json()).toEqual({ status: "not_recorded" });
+    expect(response.statusCode).toBe(204);
+    expect(response.body).toBe("");
     await server.close();
   });
 
-  it("rejects a body with no listing", async () => {
-    const { server, seen } = serverWith("recorded");
+  describe("invalid requests reach 204 without reaching the recorder", () => {
+    // The status code is identical to a success, so the assertion that matters
+    // is that nothing was handed to the recorder.
+    const invalid: [string, unknown][] = [
+      ["no listing", {}],
+      ["an empty listing ID", { listingId: "" }],
+      ["a user identity", { listingId: "alpha-milk", userId: "someone" }],
+      ["a chosen retailer", { listingId: "alpha-milk", retailerId: "fairprice" }],
+      ["a chosen time", { listingId: "alpha-milk", occurredAt: "2020-01-01T00:00:00Z" }],
+    ];
 
-    const response = await server.inject(post({}));
+    for (const [name, body] of invalid) {
+      it(`rejects ${name}`, async () => {
+        const { server, seen } = serverWith("recorded");
 
-    expect(response.statusCode).toBe(400);
-    expect(response.json().error.code).toBe("invalid_request");
-    expect(seen).toEqual([]);
-    await server.close();
-  });
+        const response = await server.inject(post(body));
 
-  it("rejects an empty listing ID", async () => {
-    const { server, seen } = serverWith("recorded");
-
-    const response = await server.inject(post({ listingId: "" }));
-
-    expect(response.statusCode).toBe(400);
-    expect(seen).toEqual([]);
-    await server.close();
-  });
-
-  it("rejects any attempt to supply identity or attribution alongside the listing", async () => {
-    // The contract is a closed object, so a caller cannot smuggle in a user,
-    // a retailer of its choosing or a timestamp of its own (PR-07).
-    const { server, seen } = serverWith("recorded");
-
-    for (const extra of [
-      { userId: "someone" },
-      { retailerId: "fairprice" },
-      { occurredAt: "2020-01-01T00:00:00Z" },
-      { datasetId: "another-seed" },
-    ]) {
-      const response = await server.inject(post({ listingId: "alpha-milk", ...extra }));
-      expect(response.statusCode, JSON.stringify(extra)).toBe(400);
+        expect(response.statusCode).toBe(204);
+        expect(response.body).toBe("");
+        expect(seen).toEqual([]);
+        await server.close();
+      });
     }
+  });
 
+  it("answers 204 for a body that is not JSON at all", async () => {
+    // Parse failures happen before route validation, so this only reaches 204
+    // because the route has its own encapsulated error handler. Without it,
+    // Fastify's global handler would answer 400 with an ErrorResponse.
+    const { server, seen } = serverWith("recorded");
+
+    const response = await server.inject({
+      method: "POST",
+      url: routes.outboundClick.url,
+      headers: { "content-type": "application/json" },
+      payload: "not json",
+    });
+
+    expect(response.statusCode).toBe(204);
+    expect(response.body).toBe("");
     expect(seen).toEqual([]);
+    await server.close();
+  });
+
+  it("coerces a non-string listing ID rather than rejecting it, which stores nothing", async () => {
+    // Fastify's Ajv coerces types by default, and the shopper endpoints need
+    // that for numeric query parameters, so it cannot be turned off globally.
+    // A coerced value is harmless here: it is looked up like any other listing
+    // ID, matches nothing, and stores no event. The lookup is the guard, not
+    // the schema.
+    const { server, seen } = serverWith("unknown-listing");
+
+    const response = await server.inject(post({ listingId: 42 }));
+
+    expect(response.statusCode).toBe(204);
+    expect(seen).toEqual(["42"]);
     await server.close();
   });
 

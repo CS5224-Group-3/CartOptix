@@ -137,8 +137,12 @@ describe.skipIf(connectionString === undefined)("outbound click recording", () =
     const before = await count("click_events");
     expect(before).toBeGreaterThan(0);
 
+    // Asserting the exact result, not just "not invalid": since #43 the
+    // importer always deletes and reloads, so anything other than "imported"
+    // means it silently stopped replacing rows and this test would otherwise
+    // keep passing against stale listings.
     const reimported = await importSeed(client, fixtureBytes);
-    expect(reimported.status).not.toBe("invalid");
+    expect(reimported).toEqual({ status: "imported" });
 
     expect(await count("click_events")).toBe(before);
   });

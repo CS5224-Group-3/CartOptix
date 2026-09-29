@@ -57,6 +57,6 @@ This applies inside `apps/api` too. When a module produces a value that reaches 
 
 Keep a contract change and both sides of its usage in the same pull request, so type checking catches a mismatch before review.
 
-Register API endpoints from the contracts' `routes`, so Fastify validates requests and serialises responses with the same schemas the client compiles against. The server rejects unknown fields (`removeAdditional: false`) because the contracts use closed objects; keep that setting. Every error response uses `ErrorResponse`.
+Register API endpoints from the contracts' `routes`, so Fastify validates requests and serialises responses with the same schemas the client compiles against. The server rejects unknown fields (`removeAdditional: false`) because the contracts use closed objects; keep that setting. Every error response uses `ErrorResponse`, with one deliberate exception: `POST /api/v1/events/outbound-click` always answers `204` with no body, whatever happened. It is a fire-and-forget beacon sent as the shopper navigates away, so the caller has already discarded the response and could not act on a failure. Failures are logged server side and reported from there (#22), and the endpoint is excluded from SC-06 because status codes cannot show them.
 
 The web client calls the API only through `apps/web/src/lib/api.ts`.

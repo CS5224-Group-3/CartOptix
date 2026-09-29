@@ -1,7 +1,7 @@
 // The click helper must never be able to stop a shopper reaching the retailer.
 import { routes } from "@cartoptix/contracts";
 import { describe, expect, it, vi } from "vitest";
-import { recordOutboundClick } from "../src/lib/outbound-click.ts";
+import { recordOutboundClick } from "../src/lib/api.ts";
 
 /**
  * Every case here asks the same question: when tracking goes wrong, does the
