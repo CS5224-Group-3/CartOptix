@@ -114,8 +114,8 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 
 ### Curation pipeline
 
-1. Register original files with checksums and stable file/sheet/row references. Preserve originals outside the clean seed; do not overwrite source observations.
-2. Normalise field names, money, units, pack counts and stable retailer listing identifiers. Preserve raw values alongside transformations in provenance records.
+1. Keep the original exports unchanged outside the clean seed, and give each listing a stable source reference (`source_record_id`).
+2. Normalise field names, money, units, pack counts and stable retailer listing identifiers.
 3. Restrict candidates to the eight product categories. Treat `Keyword` as source discovery metadata, not the canonical category taxonomy.
 4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
 5. Propose matches, which may use AI. Publish only high-confidence AI matches that agree with the name rules and exclude the rest; manual match review is out of scope for the proof of concept.
@@ -135,7 +135,6 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Supported promotion | Listing, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed in the committed seed. |
 | Delivery rule | Retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. Unused in the MVP, which does not model BCRS deposits. |
-| Provenance/correction | Source file/sheet/row, original value, correction, reason and verification reference; may live in seed-side records rather than runtime tables. |
 | Click event | Event ID, retailer/listing/product and the server-recorded timestamp; no user identity. |
 
 Retain a clean JSON seed and its validation schema in Git (`data/seed/`; schema in `apps/api/src/seed/schema.ts`). Protect referential integrity, positive usable prices, valid quantities, unique stable IDs and consistent pack information. Different listings with similar names are not automatically duplicates. Do not deploy all 177,638 raw rows merely because they were scraped.
@@ -296,8 +295,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B1 — Register and profile source exports
 - **Blocked by:** None.
-- **Work:** Record source checksums/row references, reproduce basic profiling, map source fields and categories, and document malformed prices, stock flags and ambiguous packs.
-- **Acceptance:** A repeatable report reproduces or explains differences from the supplied-file counts; raw values remain unchanged and findings are traceable to source rows.
+- **Work:** Profile the exports, map source fields and categories, and note malformed prices, stock flags and ambiguous packs.
+- **Acceptance:** Raw exports stay unchanged, and each seed listing keeps a reference to its source row.
 
 #### B2 — Curate a pilot catalogue
 - **Blocked by:** A2, B1.
@@ -316,7 +315,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.
-- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed with its provenance, and the scripts that build it. Rerun documentation and clearing out intermediates are out of scope for the proof of concept.
+- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed and the scripts that build it. Rerun documentation and clearing out intermediates are out of scope for the proof of concept.
 - **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across seed edits and product links checked against retailer domains at import; the seed imports repeatably.
 
 ### WS-C — Pricing and recommendation engine
@@ -436,4 +435,4 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 Parallel work is possible across data, pricing, frontend and infrastructure after contracts are agreed. Issue dependencies above are the authoritative task ordering; phases describe the overall sequence rather than forcing all workstreams to run serially.
 
-Completion requires a deployed end-to-end comparison service, curated seed/provenance, validated recommendations, reported performance/scaling and shopper evidence, cost reporting and teardown. Catalogue overlap, performance, budget and comparison correctness remain targets until measured. If a target is missed, document the finding and resolve or explicitly accept the shortfall; a report must not turn an unmet target into an achieved claim.
+Completion requires a deployed end-to-end comparison service, curated seed, validated recommendations, reported performance/scaling and shopper evidence, cost reporting and teardown. Catalogue overlap, performance, budget and comparison correctness remain targets until measured. If a target is missed, document the finding and resolve or explicitly accept the shortfall; a report must not turn an unmet target into an achieved claim.

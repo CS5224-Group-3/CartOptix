@@ -15,7 +15,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - Support at most 50 distinct lines and 1–20 whole packs per line.
 - Use verified, directly supermarket-fulfilled offers marked in stock. Quarantine ambiguous matches, prices, promotions and mandatory charges.
 - Calculate in integer SGD cents. Recommend the cheapest feasible retailer option; show each unavailable retailer with its reason, and never price a partial basket as complete.
-- Show the fixed-dataset disclaimer, not collection dates. Keep clean seed data version-controlled and preserve provenance.
+- Show the fixed-dataset disclaimer, not collection dates. Keep the clean seed in Git.
 
 ## Working conventions
 

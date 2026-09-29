@@ -144,7 +144,7 @@ Do **not** display collection dates on the website. Display this notice near com
 
 > Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
 
-Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Source provenance supports repeatable calculations and is not presented as collection dates.
+Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Source references are not presented as collection dates.
 
 ### PR-07 — Usage measurement
 
