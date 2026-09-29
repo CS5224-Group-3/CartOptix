@@ -151,7 +151,6 @@ def main(selection_path: str) -> None:
             )
 
     seed = {
-        "schemaVersion": 1,
         "retailers": [
             {"retailerId": rid, "name": name, "productUrlHosts": hosts}
             for rid, name, hosts in RETAILERS.values()

@@ -289,7 +289,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### A2 — Define the seed schema and public API contracts
 - **Blocked by:** A1.
-- **Work:** Define versioned seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling.
+- **Work:** Define seed schemas, canonical identity, pricing explanations, request limits, result/error statuses and OpenAPI routes from sections 3–5. Resolve duplicate-line handling.
 - **Acceptance:** Valid and invalid examples are executable contract fixtures; money uses integer cents; no collection-date UI contract is introduced. Issue #13 updates the existing split-plan fixtures and contract to distinguish complete, unavailable and service-error outcomes.
 
 ### WS-B — Data curation and persistence

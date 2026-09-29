@@ -1,5 +1,4 @@
 {
-  "schemaVersion": 1,
   "retailers": [
     { "retailerId": "redmart", "name": "RedMart", "productUrlHosts": ["www.lazada.sg"] },
     { "retailerId": "fairprice", "name": "FairPrice", "productUrlHosts": ["www.fairprice.com.sg"] },

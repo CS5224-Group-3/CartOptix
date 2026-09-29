@@ -15,8 +15,6 @@ import {
 } from "@cartoptix/contracts";
 import Type, { type Static, type TProperties } from "typebox";
 
-export const SEED_SCHEMA_VERSION = 1;
-
 const closed = <T extends TProperties>(properties: T) =>
   Type.Object(properties, { additionalProperties: false });
 const text = Type.String({ minLength: 1 });
@@ -52,7 +50,6 @@ const UnverifiedDeliveryRule = closed({
 });
 
 export const SeedSchema = closed({
-  schemaVersion: Type.Literal(SEED_SCHEMA_VERSION),
   retailers: Type.Array(
     closed({
       retailerId: RetailerIdSchema,
