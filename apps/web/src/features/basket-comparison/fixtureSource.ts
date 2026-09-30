@@ -12,7 +12,7 @@ export const fixtureScenarios: Record<string, FixtureScenario> = {
     Object.entries(comparisonFixtures).map(([id, fixture]) => [
       id,
       {
-        label: fixture.fixtureLabel,
+        label: fixture.fixtureLabel ?? "Synthetic comparison",
         fixture: id,
         behavior: "success" as const,
       },
