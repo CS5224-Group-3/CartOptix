@@ -171,7 +171,6 @@ describe("priceRetailerOrder", () => {
     // The boundary is probed by moving the threshold around that spend.
     const rule = (waivedFrom: number | null) => ({
       retailerId: "redmart" as const,
-      datasetId: fixture.datasetId,
       verified: true,
       fee: 0,
       freeDeliveryThreshold: null,
@@ -184,7 +183,6 @@ describe("priceRetailerOrder", () => {
         retailerId: "redmart",
         lines: priceLines({ lines: [{ offer: "milk", packs }] }),
         delivery: rule(waivedFrom),
-        datasetId: fixture.datasetId,
       });
       if (result.status !== "priced") throw new Error("Expected the order to price");
       return result.order;
@@ -218,7 +216,6 @@ describe("priceRetailerOrder", () => {
           retailerId: "redmart",
           lines,
           delivery: { ...rule(4000), thresholdBasis: { includesMandatoryCharges } },
-          datasetId: fixture.datasetId,
         });
         if (result.status !== "priced") throw new Error("Expected the order to price");
         return result.order;

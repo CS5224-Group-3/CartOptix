@@ -11,8 +11,6 @@ import type { DeliveryRule, OfferRule } from "../../src/pricing/index.ts";
 // Hand-checked baskets for single-retailer comparison (#11). Every amount is
 // integer cents; retailer rules are invented for testing.
 
-const datasetId = "comparison-fixture-v1";
-
 const offer = (
   retailerId: RetailerId,
   productId: string,
@@ -32,7 +30,6 @@ const offer = (
 
 const rule = (retailerId: RetailerId, overrides: Partial<DeliveryRule> = {}): DeliveryRule => ({
   retailerId,
-  datasetId,
   verified: true,
   fee: 500,
   freeDeliveryThreshold: 6000,
@@ -62,7 +59,6 @@ const offers = [
 
 const compare = (overrides: Partial<Parameters<typeof compareBasket>[0]> = {}) =>
   compareBasket({
-    datasetId,
     lines: basket,
     offers,
     deliveryRules: rules,
@@ -213,11 +209,6 @@ describe("compareBasket", () => {
       { label: "Service fee", amount: 399, waivedFrom: 2700, waived: true },
     ]);
     expect(fairprice.order.total).toBe(3200);
-  });
-
-  it("ignores rules from another dataset", () => {
-    const result = compare({ deliveryRules: rules.map((r) => ({ ...r, datasetId: "old-seed" })) });
-    expect(result.status).toBe("no-feasible-plan");
   });
 
   describe("data the importer should have stopped", () => {

@@ -20,14 +20,14 @@ import {
  * never priced as complete. The cheapest complete option is recommended.
  *
  * Pure and deterministic: no clock, database or environment. The endpoint
- * (#13) loads one dataset, passes its rules in, and maps the result onto the
+ * (#13) loads the seed's rules, passes them in, and maps the result onto the
  * contract.
  */
 
 /**
  * Stable tie-break between retailers: code-point order of their IDs, so it
  * needs no hard-coded list and does not vary with locale. Retailer IDs stay
- * the same across dataset versions, so the order does too.
+ * the same as the seed evolves, so the order does too.
  */
 export function compareRetailerIds(a: RetailerId, b: RetailerId): number {
   return a < b ? -1 : a > b ? 1 : 0;
@@ -40,13 +40,12 @@ export interface BasketLine {
 }
 
 export interface CompareBasketInput {
-  datasetId: string;
   lines: readonly BasketLine[];
   /** Eligible offers for the basket's products, at any retailer. */
   offers: readonly OfferRule[];
   /** Each retailer's delivery rule; a retailer without one is unverified. */
   deliveryRules: readonly DeliveryRule[];
-  /** Every retailer in the dataset; each gets an option. */
+  /** Every retailer in the seed; each gets an option. */
   retailers: readonly RetailerId[];
 }
 
@@ -124,9 +123,7 @@ function priceRetailer(input: CompareBasketInput, retailerId: RetailerId): Retai
   }
   if (missing.length > 0) reasons.push({ code: "missing-products", productIds: missing });
 
-  const delivery = input.deliveryRules.find(
-    (rule) => rule.retailerId === retailerId && rule.datasetId === input.datasetId,
-  );
+  const delivery = input.deliveryRules.find((rule) => rule.retailerId === retailerId);
   if (!delivery?.verified) reasons.push({ code: "delivery-rule-unverified" });
 
   // Both reasons above are reported together, so the shopper sees every one;
@@ -138,7 +135,6 @@ function priceRetailer(input: CompareBasketInput, retailerId: RetailerId): Retai
     retailerId,
     lines,
     delivery,
-    datasetId: input.datasetId,
   });
 
   switch (result.status) {
