@@ -26,7 +26,7 @@ it("keeps basket-to-results navigation with a synthetic fixture and no compariso
   // Existing revision tracking must still distinguish an earlier basket result.
   expect(screen.queryByText(/This comparison belongs to an earlier basket state/)).toBeNull();
   fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
-  fireEvent.click(screen.getByRole("button", { name: "Increase Synthetic White Rice" }));
+  fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
   fireEvent.click(screen.getByRole("link", { name: "View previous" }));
   expect(await screen.findByRole("heading", { name: "Retailer basket comparison" })).toBeDefined();
   expect(screen.getByRole("status").textContent).toContain(
@@ -34,6 +34,6 @@ it("keeps basket-to-results navigation with a synthetic fixture and no compariso
   );
   expect(screen.getByRole("status").textContent).toContain("Recalculate");
   expect(screen.getAllByRole("article")).toHaveLength(3);
-  expect(screen.getAllByText("1 kg bag · Quantity: 2 packs")).toHaveLength(3);
+  expect(screen.getAllByText("1 × 1 kg · Quantity: 1 pack")).toHaveLength(2);
   window.history.replaceState({}, "", "/");
 });

@@ -1,7 +1,40 @@
+import {
+  basketRequestExample,
+  noFeasiblePlanExample,
+  oneRetailerCompleteExample,
+  productsExample,
+  recommendedExample,
+  tieExample,
+} from "@cartoptix/contracts/fixtures";
 import { describe, expect, it } from "vitest";
+import { adaptComparison } from "../src/features/basket-comparison/adapter";
 import { comparisonFixtures, fixtureForBasket } from "../src/features/basket-comparison/fixtures";
 
 describe("synthetic comparison fixtures", () => {
+  it.each([
+    ["complete", recommendedExample],
+    ["unavailable", oneRetailerCompleteExample],
+    ["tie", tieExample],
+    ["infeasible", noFeasiblePlanExample],
+  ] as const)("%s uses the shared contract response through the real adapter", (id, response) => {
+    const fixture = comparisonFixtures[id];
+    if (!fixture) throw new Error("Missing fixture");
+    const basket = {
+      revision: 0,
+      products: basketRequestExample.lines.map((line) => {
+        const product = productsExample.products.find(
+          (product) => product.productId === line.productId,
+        );
+        if (!product) throw new Error("Missing shared product");
+        return { ...line, name: product.name, packDescription: product.packSize };
+      }),
+    };
+    expect(fixture).toEqual({
+      ...adaptComparison(response, basket, fixture.provenance),
+      fixtureLabel: fixture.fixtureLabel,
+    });
+    for (const option of fixture.options) expect(option.retailer).not.toHaveProperty("purchaseUrl");
+  });
   it.each(Object.entries(comparisonFixtures))(
     "%s contains consistent complete baskets and recommendations",
     (_name, result) => {

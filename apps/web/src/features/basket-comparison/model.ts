@@ -16,7 +16,6 @@ export interface BasketSnapshot {
 export interface RetailerPresentation {
   id: string;
   name: string;
-  purchaseUrl?: string;
 }
 
 export interface CompleteRetailerOption {
@@ -25,15 +24,14 @@ export interface CompleteRetailerOption {
   lines: (SubmittedProduct & {
     amountCents: number;
     purchaseUrl: string;
-    /** Optional only for legacy presentation fixtures; API adapters always supply this. */
-    pricing?: Pick<PlanLine, "unitPriceCents" | "priceKind" | "itemCharges" | "excludedPromotions">;
+    pricing: Pick<PlanLine, "unitPriceCents" | "priceKind" | "itemCharges" | "excludedPromotions">;
   })[];
   productSubtotalCents: number;
   /** Additional charges only; amounts already in line prices are not added again. */
   charges: { label: string; amountCents: number }[];
   /** Original API charges, including normal amounts for waived fees. */
-  orderCharges?: OrderCharge[];
-  deliveryCents?: number;
+  orderCharges: OrderCharge[];
+  deliveryCents: number;
   estimatedTotalCents: number;
 }
 

@@ -53,7 +53,7 @@ describe("shared comparison contract adapter", () => {
       expect(result.submittedBasket).not.toBe(basket);
       expect(result.provenance?.kind).toBe("test");
       expect(result.fixtureLabel).toBeUndefined();
-      expect(result.options.every((option) => option.retailer.purchaseUrl === undefined)).toBe(
+      expect(result.options.every((option) => !Object.hasOwn(option.retailer, "purchaseUrl"))).toBe(
         true,
       );
       expect(response).toEqual(before);

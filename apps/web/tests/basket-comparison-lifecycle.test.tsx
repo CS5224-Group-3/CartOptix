@@ -56,19 +56,19 @@ function edit() {
   fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
 }
 function increaseRice() {
-  fireEvent.click(screen.getByRole("button", { name: "Increase Synthetic White Rice" }));
+  fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
 }
 function riceQuantity() {
   return screen
-    .getByRole("button", { name: "Increase Synthetic White Rice" })
+    .getByRole("button", { name: "Increase Fixture White Rice" })
     .parentElement?.querySelector("strong")?.textContent;
 }
 function expectReferenceOnly() {
   expect(screen.queryByText(/^Recommended/)).toBeNull();
   expect(screen.queryByRole("link", { name: /^Visit / })).toBeNull();
-  expect(screen.queryByRole("link", { name: /^View Synthetic / })).toBeNull();
+  expect(screen.queryByRole("link", { name: /^View Fixture / })).toBeNull();
   expect(screen.getAllByRole("article")).toHaveLength(3);
-  expect(screen.getAllByText(/1 kg bag.*Quantity: 2 packs/)).toHaveLength(3);
+  expect(screen.getAllByText(/1 kg.*Quantity: 1 pack/)).toHaveLength(2);
 }
 
 describe("comparison lifecycle", () => {
@@ -150,7 +150,7 @@ describe("comparison lifecycle", () => {
     await control.finish();
     expect(screen.getByRole("alert").textContent).toContain("This is a service failure");
     expect(screen.getByRole("button", { name: "Retry comparison" })).toBeDefined();
-    expect(riceQuantity()).toBe("2");
+    expect(riceQuantity()).toBe("1");
     act(() => {
       window.history.pushState({}, "", "/results");
       window.dispatchEvent(new PopStateEvent("popstate"));
@@ -161,7 +161,7 @@ describe("comparison lifecycle", () => {
     expect(screen.queryByText(/^Recommended/)).toBeNull();
     fireEvent.click(screen.getByRole("link", { name: "Back to basket editing" }));
     expect(screen.getByRole("alert")).toBeDefined();
-    expect(riceQuantity()).toBe("2");
+    expect(riceQuantity()).toBe("1");
   });
 
   it("retries the submitted snapshot once, blocks duplicate retries and succeeds", async () => {
@@ -181,7 +181,7 @@ describe("comparison lifecycle", () => {
     expect(screen.queryByRole("alert")).toBeNull();
     expect(screen.getByText(/^Recommended/)).toBeDefined();
     edit();
-    expect(riceQuantity()).toBe("2");
+    expect(riceQuantity()).toBe("1");
   });
 
   it("keeps an unsuccessful retry as a persistent error", async () => {
@@ -196,7 +196,7 @@ describe("comparison lifecycle", () => {
     expect(screen.getByRole("alert")).toBeDefined();
     expect(screen.getByRole("button", { name: "Retry comparison" })).toBeDefined();
     expect(screen.queryByText(/^Recommended/)).toBeNull();
-    expect(riceQuantity()).toBe("2");
+    expect(riceQuantity()).toBe("1");
   });
 
   it("shows no retry action for a non-retryable failure", async () => {
@@ -208,11 +208,11 @@ describe("comparison lifecycle", () => {
     expect(screen.getByRole("alert")).toBeDefined();
     expect(screen.queryByRole("button", { name: /Retry/ })).toBeNull();
     expect(screen.getByRole("link", { name: "Back to basket editing" })).toBeDefined();
-    expect(riceQuantity()).toBe("2");
+    expect(riceQuantity()).toBe("1");
   });
 
   it.each([
-    [/One unavailable retailer/, "Unavailable"],
+    [/Only one complete retailer/, "Unavailable"],
     [/No feasible purchasing plan/, "No feasible purchasing plan available"],
   ])("keeps %s as a business outcome", async (label, outcome) => {
     const control = controlledSource();
@@ -220,7 +220,7 @@ describe("comparison lifecycle", () => {
     loadScenario(label);
     compare();
     await control.finish();
-    expect(screen.getByText(outcome)).toBeDefined();
+    expect(screen.getAllByText(outcome)[0]).toBeDefined();
     expect(screen.queryByRole("alert")).toBeNull();
     expect(screen.queryByRole("button", { name: /Retry/ })).toBeNull();
   });
@@ -237,7 +237,7 @@ describe("comparison lifecycle", () => {
     expect(screen.getByRole("status").textContent).toContain("earlier basket state");
     expectReferenceOnly();
     edit();
-    expect(riceQuantity()).toBe("3");
+    expect(riceQuantity()).toBe("2");
   });
 
   it("treats the eventual response as stale when the basket is edited while pending", async () => {
@@ -246,14 +246,14 @@ describe("comparison lifecycle", () => {
     loadScenario();
     compare();
     increaseRice();
-    expect(riceQuantity()).toBe("3");
+    expect(riceQuantity()).toBe("2");
     await control.finish();
     expect(window.location.pathname).toBe("/results");
     expect(screen.getByRole("status").textContent).toContain("earlier basket state");
     expectReferenceOnly();
-    expect(control.source.mock.calls[0]?.[0].basket.products[0]?.quantity).toBe(2);
+    expect(control.source.mock.calls[0]?.[0].basket.products[0]?.quantity).toBe(1);
     edit();
-    expect(riceQuantity()).toBe("3");
+    expect(riceQuantity()).toBe("2");
   });
 
   it("a retry after edits neither overwrites the basket nor makes its old snapshot current", async () => {
@@ -272,7 +272,7 @@ describe("comparison lifecycle", () => {
     expect(screen.getByRole("status").textContent).toContain("earlier basket state");
     expect(control.source.mock.calls[1]?.[0]).toEqual(control.source.mock.calls[0]?.[0]);
     edit();
-    expect(riceQuantity()).toBe("3");
+    expect(riceQuantity()).toBe("2");
   });
 
   it("failed retry cannot turn the retained stale success into a current recommendation", async () => {
@@ -294,7 +294,7 @@ describe("comparison lifecycle", () => {
     expect(screen.getByRole("status").textContent).toContain("earlier basket state");
     expectReferenceOnly();
     edit();
-    expect(riceQuantity()).toBe("2");
+    expect(riceQuantity()).toBe("1");
   });
 
   it("a service failure for an unchanged basket does not endorse an earlier success", async () => {
@@ -321,17 +321,17 @@ describe("comparison lifecycle", () => {
     openApp(control.source);
     loadScenario();
     compare();
-    loadScenario(/One unavailable retailer/);
+    loadScenario(/Only one complete retailer/);
     fireEvent.click(screen.getByRole("button", { name: "Comparing..." }));
     await control.finish();
     expect(control.source).toHaveBeenCalledTimes(1);
     expectReferenceOnly();
-    expect(screen.queryByText("Unavailable")).toBeNull();
+    expect(screen.getAllByText("Unavailable")).toHaveLength(1);
     edit();
     compare();
     await control.finish();
     expect(control.source).toHaveBeenCalledTimes(2);
-    expect(screen.getByText("Unavailable")).toBeDefined();
+    expect(screen.getAllByText("Unavailable")).toHaveLength(2);
     expect(screen.queryByText(/earlier basket state/)).toBeNull();
     expect(screen.getByText(/^Recommended/)).toBeDefined();
   });

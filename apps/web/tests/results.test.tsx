@@ -29,23 +29,21 @@ describe("complete retailer comparison", () => {
   it("shows products, exact packs, quantities, individual charges and totals", () => {
     render(<BasketComparisonPage result={scenario("complete")} />);
     const card = within(screen.getByRole("article", { name: "FairPrice" }));
-    expect(card.getByText("Synthetic White Rice")).toBeDefined();
-    expect(card.getByText("Synthetic Milk")).toBeDefined();
-    expect(card.getByText("1 kg bag · Quantity: 2 packs")).toBeDefined();
-    expect(card.getByText("6 × 250 ml cartons · Quantity: 1 pack")).toBeDefined();
+    expect(card.getByText("Fixture White Rice")).toBeDefined();
+    expect(card.getByText("Fixture Plain Drink")).toBeDefined();
+    expect(card.getByText("1 × 1 kg · Quantity: 1 pack")).toBeDefined();
+    expect(card.getByText("1 × 500 ml · Quantity: 1 pack")).toBeDefined();
     for (const text of [
-      "S$6.00",
-      "S$5.00",
-      "Product subtotal",
-      "S$11.00",
-      "Delivery",
       "S$4.00",
-      "Handling",
-      "S$1.00",
+      "S$2.50",
+      "Product subtotal",
+      "S$6.50",
+      "Delivery",
+      "S$0.00",
+      "Synthetic service fee S$3.99 waived on orders from S$6.00",
       "Estimated total",
-      "S$16.00",
     ])
-      expect(card.getByText(text)).toBeDefined();
+      expect(card.getAllByText(text).length).toBeGreaterThan(0);
     expect(card.getByText("Recommended — lowest estimated total")).toBeDefined();
     expect(screen.getAllByText(/^Recommended/)).toHaveLength(1);
     expect(screen.queryByRole("alert")).toBeNull();
@@ -77,7 +75,7 @@ describe("complete retailer comparison", () => {
     ["missing retailer", "complete", "missing"],
     ["unavailable retailer", "unavailable", "cold-storage"],
     ["higher-priced complete retailer", "complete", "redmart"],
-    ["higher-priced retailer when others tie", "tie", "cold-storage"],
+    ["unavailable retailer when others tie", "tie", "cold-storage"],
   ])("rejects a recommendation for a %s without replacing it", (_label, fixture, retailerId) => {
     const result = structuredClone(scenario(fixture));
     result.outcome = { kind: "recommended", retailerId };
@@ -113,7 +111,7 @@ describe("complete retailer comparison", () => {
       const { container } = render(<BasketComparisonPage result={result} />);
       expect(screen.getByRole("alert").textContent).toContain("Comparison data validation failed.");
       expect(screen.queryAllByRole("article")).toHaveLength(0);
-      expect(screen.queryByRole("link", { name: /^Visit |^View Synthetic / })).toBeNull();
+      expect(screen.queryByRole("link", { name: /^Visit |^View Fixture / })).toBeNull();
       expect(container.textContent).not.toMatch(/lowest|joint-lowest|joint lowest/i);
       expect(container.querySelector(".retailer-option--recommended")).toBeNull();
       expect(result).toEqual(before);
@@ -164,7 +162,7 @@ describe("complete retailer comparison", () => {
     const { container } = render(<BasketComparisonPage result={result} />);
     expect(screen.getByRole("alert").textContent).toContain("Comparison data validation failed.");
     expect(screen.queryAllByRole("article")).toHaveLength(0);
-    expect(screen.queryByRole("link", { name: /^Visit |^View Synthetic / })).toBeNull();
+    expect(screen.queryByRole("link", { name: /^Visit |^View Fixture / })).toBeNull();
     expect(screen.queryByText(/^Recommended/)).toBeNull();
     expect(container.textContent).not.toMatch(
       /lowest|joint-lowest|joint lowest|Each complete option/,
@@ -197,7 +195,7 @@ describe("complete retailer comparison", () => {
     const card = within(screen.getByRole("article", { name: "Cold Storage" }));
     expect(card.getByText("Unavailable")).toBeDefined();
     expect(
-      card.getByText("Synthetic Milk has no eligible offer in this fixture dataset."),
+      card.getByText("Delivery charges could not be verified, so a complete total is not shown."),
     ).toBeDefined();
     expect(card.queryByText(/Recommended|S\$|Estimated total/)).toBeNull();
     expect(card.queryByRole("link")).toBeNull();
@@ -212,7 +210,7 @@ describe("complete retailer comparison", () => {
     for (const option of result.options)
       if (option.kind === "unavailable")
         for (const reason of option.reasons) expect(screen.getByText(reason)).toBeDefined();
-    expect(screen.queryByText(/Recommended|S\$/)).toBeNull();
+    expect(screen.queryByText(/Recommended|Estimated total/)).toBeNull();
   });
 
   it("provides purchase links, manual guidance and fixed-dataset disclosure", () => {
@@ -220,12 +218,10 @@ describe("complete retailer comparison", () => {
     const card = within(screen.getByRole("article", { name: "FairPrice" }));
     expect(card.getByText(/complete checkout manually/)).toBeDefined();
     expect(
-      card
-        .getByRole("link", { name: "View Synthetic White Rice at FairPrice" })
-        .getAttribute("href"),
-    ).toBe("https://example.com/fairprice/fixture-rice");
-    const link = card.getByRole("link", { name: "Visit FairPrice" });
-    expect(link.getAttribute("href")).toBe("https://www.fairprice.com.sg/");
+      card.getByRole("link", { name: "View Fixture White Rice at FairPrice" }).getAttribute("href"),
+    ).toBe("https://example.com/fixture-rice-fairprice");
+    expect(screen.queryByRole("link", { name: /^Visit / })).toBeNull();
+    const link = card.getByRole("link", { name: "View Fixture White Rice at FairPrice" });
     expect(link.getAttribute("rel")).toBe("noopener noreferrer");
     expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
     expect(screen.getByText(/Product links are illustrative/)).toBeDefined();

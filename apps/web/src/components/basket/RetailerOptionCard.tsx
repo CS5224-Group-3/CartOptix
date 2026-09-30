@@ -59,29 +59,23 @@ export default function RetailerOptionCard({
                     {line.packDescription} · Quantity: {line.quantity}{" "}
                     {line.quantity === 1 ? "pack" : "packs"}
                   </p>
-                  {line.pricing && (
-                    <>
-                      <p>
-                        Unit price: {formatSgd(line.pricing.unitPriceCents)} / pack
-                        {line.pricing.priceKind === "unconditional_sale" && " (unconditional sale)"}
-                      </p>
-                      <ul>
-                        {detailEntries(line.pricing.itemCharges).map(({ value: charge, key }) => (
-                          <li key={key}>
-                            {charge.label}: {formatSgd(charge.amountCents)} for this line
-                            {charge.includedInPrice
-                              ? " (included in unit price)"
-                              : " (additional charge, already included in line total)"}
-                          </li>
-                        ))}
-                        {detailEntries(line.pricing.excludedPromotions).map(
-                          ({ value: note, key }) => (
-                            <li key={key}>Excluded promotion: {note}</li>
-                          ),
-                        )}
-                      </ul>
-                    </>
-                  )}
+                  <p>
+                    Unit price: {formatSgd(line.pricing.unitPriceCents)} / pack
+                    {line.pricing.priceKind === "unconditional_sale" && " (unconditional sale)"}
+                  </p>
+                  <ul>
+                    {detailEntries(line.pricing.itemCharges).map(({ value: charge, key }) => (
+                      <li key={key}>
+                        {charge.label}: {formatSgd(charge.amountCents)} for this line
+                        {charge.includedInPrice
+                          ? " (included in unit price)"
+                          : " (additional charge, already included in line total)"}
+                      </li>
+                    ))}
+                    {detailEntries(line.pricing.excludedPromotions).map(({ value: note, key }) => (
+                      <li key={key}>Excluded promotion: {note}</li>
+                    ))}
+                  </ul>
                   {purchaseEnabled && (
                     <a
                       className="text-link"
@@ -115,16 +109,6 @@ export default function RetailerOptionCard({
               </dd>
             </div>
           </dl>
-          {purchaseEnabled && option.retailer.purchaseUrl && (
-            <a
-              className="button button--outline"
-              href={option.retailer.purchaseUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Visit {option.retailer.name}
-            </a>
-          )}
           <p>
             Rebuild this basket and complete checkout manually on the retailer’s website. CartOptix
             does not transfer carts or reserve stock.
