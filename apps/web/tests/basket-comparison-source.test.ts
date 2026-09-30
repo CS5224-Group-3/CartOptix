@@ -72,3 +72,23 @@ describe("asynchronous comparison source", () => {
     expect(onSuccess).not.toHaveBeenCalled();
   });
 });
+
+it("a throwing UI success callback cannot convert a successful comparison into a service failure", async () => {
+  const source = vi.fn(createFixtureSource({ wait: async () => {} }));
+  const callbackError = new Error("Navigation failed");
+  const log = vi.spyOn(console, "error").mockImplementation(() => {});
+  const { result } = renderHook(() => useComparison(source));
+  act(() =>
+    result.current.submit(submission(), () => {
+      throw callbackError;
+    }),
+  );
+  await waitFor(() => expect(result.current.request.phase).toBe("success"));
+  expect(result.current.result?.outcome.kind).toBe("recommended");
+  expect(log).toHaveBeenCalledWith(
+    "Comparison succeeded, but its UI callback failed.",
+    callbackError,
+  );
+  act(() => result.current.retry(() => {}));
+  expect(source).toHaveBeenCalledTimes(1);
+});

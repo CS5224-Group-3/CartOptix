@@ -78,7 +78,7 @@ export default function BasketComparisonPage({
       {recommendation.kind === "invalid" && (
         <div className="notice-card notice-card--warning" role="alert">
           <p>
-            Comparison fixture validation failed. The supplied retailer options, basket coverage, or
+            Comparison data validation failed. The supplied retailer options, basket coverage, or
             recommendation are inconsistent. No purchase plan or recommendation is shown.
           </p>
         </div>
@@ -87,8 +87,8 @@ export default function BasketComparisonPage({
         <>
           <p>Each complete option keeps your entire requested basket with one retailer.</p>
           <p className="notice-card">
-            Synthetic demonstration: {result.fixtureLabel}. These are not retailer prices. Product
-            links are illustrative.
+            {result.provenance?.description ??
+              `Synthetic demonstration: ${result.fixtureLabel ?? "Comparison fixture"}. These are not retailer prices. Product links are illustrative.`}
           </p>
           {result.outcome.kind === "no-feasible-plan" && (
             <h2>No feasible purchasing plan available</h2>

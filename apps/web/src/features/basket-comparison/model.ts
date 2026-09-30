@@ -62,7 +62,8 @@ export interface ComparisonProvenance {
 
 /** A frontend request to a presentation-data source, never an HTTP payload. */
 export interface ComparisonSubmission {
-  scenario: string;
+  /** Present only for an explicitly selected synthetic demo. */
+  scenario?: string;
   basket: BasketSnapshot;
 }
 

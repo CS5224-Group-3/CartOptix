@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import type { ComparisonRequestState } from "../../features/basket-comparison/model";
+import { PresentationDataFailure } from "../../features/basket-comparison/model";
 
 export default function ComparisonRequestStatus({
   request,
@@ -33,7 +34,11 @@ export default function ComparisonRequestStatus({
       <div>
         <h2>Could not compare basket</h2>
         <p>{request.failure.message}</p>
-        <p>This is a service failure, not a finding that retailers cannot fulfil your basket.</p>
+        <p>
+          {request.failure instanceof PresentationDataFailure
+            ? "The comparison data or product details could not be verified. Return to basket editing before trying again."
+            : "This is a service failure, not a finding that retailers cannot fulfil your basket."}
+        </p>
         {request.failure.retryable && (
           <>
             <p>

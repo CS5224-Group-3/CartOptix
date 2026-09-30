@@ -1,6 +1,17 @@
 import type { RetailerOption } from "../../features/basket-comparison/model";
 import { formatSgd } from "../../lib/format";
 
+/** The contract has no charge/note IDs and permits repeated labels. Preserve every entry. */
+function detailEntries<T>(values: T[]) {
+  const occurrences = new Map<string, number>();
+  return values.map((value) => {
+    const content = JSON.stringify(value);
+    const occurrence = occurrences.get(content) ?? 0;
+    occurrences.set(content, occurrence + 1);
+    return { value, key: `${content}:${occurrence}` };
+  });
+}
+
 export default function RetailerOptionCard({
   option,
   recommended,
@@ -25,8 +36,8 @@ export default function RetailerOptionCard({
             <strong>Unavailable</strong>
           </p>
           <ul>
-            {option.reasons.map((reason) => (
-              <li key={reason}>{reason}</li>
+            {detailEntries(option.reasons).map(({ value: reason, key }) => (
+              <li key={key}>{reason}</li>
             ))}
           </ul>
         </>
@@ -48,6 +59,29 @@ export default function RetailerOptionCard({
                     {line.packDescription} · Quantity: {line.quantity}{" "}
                     {line.quantity === 1 ? "pack" : "packs"}
                   </p>
+                  {line.pricing && (
+                    <>
+                      <p>
+                        Unit price: {formatSgd(line.pricing.unitPriceCents)} / pack
+                        {line.pricing.priceKind === "unconditional_sale" && " (unconditional sale)"}
+                      </p>
+                      <ul>
+                        {detailEntries(line.pricing.itemCharges).map(({ value: charge, key }) => (
+                          <li key={key}>
+                            {charge.label}: {formatSgd(charge.amountCents)} for this line
+                            {charge.includedInPrice
+                              ? " (included in unit price)"
+                              : " (additional charge, already included in line total)"}
+                          </li>
+                        ))}
+                        {detailEntries(line.pricing.excludedPromotions).map(
+                          ({ value: note, key }) => (
+                            <li key={key}>Excluded promotion: {note}</li>
+                          ),
+                        )}
+                      </ul>
+                    </>
+                  )}
                   {purchaseEnabled && (
                     <a
                       className="text-link"
@@ -68,8 +102,8 @@ export default function RetailerOptionCard({
               <dt>Product subtotal</dt>
               <dd>{formatSgd(option.productSubtotalCents)}</dd>
             </div>
-            {option.charges.map((charge) => (
-              <div key={charge.label}>
+            {detailEntries(option.charges).map(({ value: charge, key }) => (
+              <div key={key}>
                 <dt>{charge.label}</dt>
                 <dd>{formatSgd(charge.amountCents)}</dd>
               </div>
@@ -81,7 +115,7 @@ export default function RetailerOptionCard({
               </dd>
             </div>
           </dl>
-          {purchaseEnabled && (
+          {purchaseEnabled && option.retailer.purchaseUrl && (
             <a
               className="button button--outline"
               href={option.retailer.purchaseUrl}

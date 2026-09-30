@@ -47,7 +47,7 @@ export function createFixtureSource({
   return async (submission) => {
     const submitted = structuredClone(submission);
     await wait();
-    const scenario = fixtureScenarios[submitted.scenario];
+    const scenario = fixtureScenarios[submitted.scenario ?? ""];
     const result =
       scenario &&
       fixtureForBasket(scenario.fixture, submitted.basket.products, submitted.basket.revision);
@@ -78,6 +78,12 @@ export function createFixtureSource({
         true,
       );
     }
-    return result;
+    return {
+      ...result,
+      provenance: {
+        kind: "demo",
+        description: `Synthetic demonstration: ${result.fixtureLabel}. These are not retailer prices. Product links are illustrative.`,
+      },
+    };
   };
 }

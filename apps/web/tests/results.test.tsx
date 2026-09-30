@@ -82,9 +82,7 @@ describe("complete retailer comparison", () => {
     const result = structuredClone(scenario(fixture));
     result.outcome = { kind: "recommended", retailerId };
     const { container } = render(<BasketComparisonPage result={result} />);
-    expect(screen.getByRole("alert").textContent).toContain(
-      "Comparison fixture validation failed.",
-    );
+    expect(screen.getByRole("alert").textContent).toContain("Comparison data validation failed.");
     expect(screen.queryByText(/^Recommended/)).toBeNull();
     expect(container.textContent).not.toMatch(/lowest|joint-lowest|joint lowest/i);
     expect(container.querySelector(".retailer-option--recommended")).toBeNull();
@@ -113,9 +111,7 @@ describe("complete retailer comparison", () => {
       const before = structuredClone(result);
       const errors = vi.spyOn(console, "error").mockImplementation(() => {});
       const { container } = render(<BasketComparisonPage result={result} />);
-      expect(screen.getByRole("alert").textContent).toContain(
-        "Comparison fixture validation failed.",
-      );
+      expect(screen.getByRole("alert").textContent).toContain("Comparison data validation failed.");
       expect(screen.queryAllByRole("article")).toHaveLength(0);
       expect(screen.queryByRole("link", { name: /^Visit |^View Synthetic / })).toBeNull();
       expect(container.textContent).not.toMatch(/lowest|joint-lowest|joint lowest/i);
@@ -166,9 +162,7 @@ describe("complete retailer comparison", () => {
     }
     const before = structuredClone(result);
     const { container } = render(<BasketComparisonPage result={result} />);
-    expect(screen.getByRole("alert").textContent).toContain(
-      "Comparison fixture validation failed.",
-    );
+    expect(screen.getByRole("alert").textContent).toContain("Comparison data validation failed.");
     expect(screen.queryAllByRole("article")).toHaveLength(0);
     expect(screen.queryByRole("link", { name: /^Visit |^View Synthetic / })).toBeNull();
     expect(screen.queryByText(/^Recommended/)).toBeNull();

@@ -5,11 +5,13 @@ import {
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
   type Offer,
+  type OffersResponse,
   type Product,
+  type ProductsResponse,
   type RetailerId,
   SNAPSHOT_DISCLAIMER,
 } from "@cartoptix/contracts";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
   ArrowRight,
@@ -38,12 +40,15 @@ import { Toaster } from "@/components/ui/sonner";
 import ComparisonRequestStatus from "./components/basket/ComparisonRequestStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
 import type { BasketLine } from "./demo";
+import { createApiSource } from "./features/basket-comparison/apiSource";
 import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
 import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
+import { resolveSubmissionMetadata } from "./features/basket-comparison/metadata";
 import type {
   BasketComparisonPresentation,
   ComparisonRequestState,
   ComparisonSource,
+  ComparisonSubmission,
 } from "./features/basket-comparison/model";
 import { useComparison } from "./features/basket-comparison/useComparison";
 import { ApiError, useCatalogue, useOffers, useProductIndex, useProducts } from "./lib/api";
@@ -56,8 +61,10 @@ const clampPacks = (quantity: number) =>
 
 type BasketContextValue = {
   basket: BasketLine[];
+  productMetadata: Map<string, Product>;
   basketRevision: number;
-  fixtureScenario: string;
+  fixtureScenario: string | null;
+  leaveDemo: () => void;
   comparison: BasketComparisonPresentation | null;
   isStale: boolean;
   basketCount: number;
@@ -76,7 +83,37 @@ const BasketContext = createContext<BasketContextValue | null>(null);
 
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>([]);
-  const [fixtureScenario, setFixtureScenario] = useState("complete");
+  const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
+  const products = useProductIndex();
+  const queryClient = useQueryClient();
+  const productMetadata = new Map<string, Product>();
+  for (const [, product] of queryClient.getQueriesData<Product>({
+    queryKey: ["comparison-product"],
+  }))
+    if (product) productMetadata.set(product.productId, product);
+  for (const [id, product] of products) productMetadata.set(id, product);
+  for (const [, data] of queryClient.getQueriesData<ProductsResponse>({ queryKey: ["products"] }))
+    for (const product of data?.products ?? []) productMetadata.set(product.productId, product);
+  for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
+    if (data?.product) productMetadata.set(data.product.productId, data.product);
+  const prepareSubmission = useCallback(
+    async (captured: ComparisonSubmission) => {
+      const draft = structuredClone(captured);
+      for (const line of draft.basket.products) {
+        const cached = queryClient.getQueryData<Product>(["comparison-product", line.productId]);
+        if (cached) {
+          if (!line.name?.trim()) line.name = cached.name;
+          if (!line.packDescription?.trim()) line.packDescription = cached.packSize;
+        }
+      }
+      return resolveSubmissionMetadata(draft, (product) => {
+        // Retain verified metadata for this browser session, including products outside page one.
+        queryClient.setQueryDefaults(["comparison-product"], { gcTime: Infinity });
+        queryClient.setQueryData(["comparison-product", product.productId], product);
+      });
+    },
+    [queryClient],
+  );
   const { result: comparison, request: requestState, submit, retry } = useComparison(source);
   const [location, navigate] = useLocation();
   const currentLocation = useRef(location);
@@ -108,26 +145,84 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   const value = useMemo<BasketContextValue>(
     () => ({
       basket,
+      productMetadata,
       basketRevision,
       fixtureScenario,
       comparison,
       isStale: Boolean(comparison && comparison.submittedBasket.revision !== basketRevision),
       requestState,
-      canCompare: Boolean(
-        fixtureForBasket(fixtureScenarios[fixtureScenario]?.fixture ?? "", basket, basketRevision),
-      ),
+      canCompare:
+        fixtureScenario !== null
+          ? Boolean(
+              fixtureForBasket(
+                fixtureScenarios[fixtureScenario]?.fixture ?? "",
+                basket,
+                basketRevision,
+              ),
+            )
+          : basket.length > 0 && basket.length <= MAX_BASKET_LINES,
       runComparison: () => {
-        const fixture = fixtureForBasket(
-          fixtureScenarios[fixtureScenario]?.fixture ?? "",
-          basket,
-          basketRevision,
+        if (fixtureScenario !== null) {
+          const fixture = fixtureForBasket(
+            fixtureScenarios[fixtureScenario]?.fixture ?? "",
+            basket,
+            basketRevision,
+          );
+          if (fixture)
+            submit(
+              { scenario: fixtureScenario, basket: fixture.submittedBasket },
+              successNavigation(),
+            );
+          return;
+        }
+        if (!basket.length) return;
+        // Freeze available catalogue pages and product details before resolving any missing metadata.
+        const known = new Map<string, Pick<Product, "name" | "packSize">>();
+        // Metadata already resolved for an earlier API attempt is still usable for the same IDs.
+        if (requestState.phase !== "idle" && !requestState.submitted.scenario)
+          for (const product of requestState.submitted.basket.products)
+            if (product.name && product.packDescription)
+              known.set(product.productId, {
+                name: product.name,
+                packSize: product.packDescription,
+              });
+        for (const [id, product] of productMetadata) known.set(id, product);
+        // Read at click time too: another query may populate its cache before React rerenders.
+        for (const [, data] of queryClient.getQueriesData<ProductsResponse>({
+          queryKey: ["products"],
+        }))
+          for (const product of data?.products ?? []) known.set(product.productId, product);
+        for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
+          if (data?.product) known.set(data.product.productId, data.product);
+        submit(
+          {
+            basket: {
+              revision: basketRevision,
+              products: basket.map((line) => ({
+                ...line,
+                name: known.get(line.productId)?.name ?? "",
+                packDescription: known.get(line.productId)?.packSize ?? "",
+              })),
+            },
+          },
+          successNavigation(),
+          false,
+          prepareSubmission,
         );
-        if (!fixture) return;
-        submit({ scenario: fixtureScenario, basket: fixture.submittedBasket }, successNavigation());
+      },
+      leaveDemo: () => {
+        setFixtureScenario(null);
+        changed([]);
       },
       retryComparison: () => retry(successNavigation()),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
+        if (fixtureScenario !== null) {
+          setFixtureScenario(null);
+          changed([{ productId, quantity: clampPacks(quantity) }]);
+          toast.info("Demo basket replaced with your catalogue selection.");
+          return;
+        }
         const current = basket.find((line) => line.productId === productId);
         if (current) {
           changed(
@@ -154,10 +249,10 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       },
       removeFromBasket: (productId) =>
         changed(basket.filter((line) => line.productId !== productId)),
-      // Preserve the existing homepage demo loader; its basket has no comparison fixture.
+      // Homepage baskets use the normal API source.
       loadScenario: (lines) => {
         setBasket(lines);
-        setFixtureScenario("complete");
+        setFixtureScenario(null);
         setBasketRevision((revision) => revision + 1);
       },
       loadComparisonScenario: (scenario) => {
@@ -183,6 +278,9 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       retry,
       successNavigation,
       changed,
+      productMetadata,
+      prepareSubmission,
+      queryClient,
     ],
   );
 
@@ -672,6 +770,7 @@ export function BasketPage() {
     basket,
     basketRevision,
     fixtureScenario,
+    productMetadata,
     comparison,
     isStale,
     setQuantity,
@@ -681,9 +780,9 @@ export function BasketPage() {
     runComparison,
     retryComparison,
     loadComparisonScenario,
+    leaveDemo,
   } = useBasket();
 
-  const products = useProductIndex();
   const categoryNames = useCategoryNames();
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
   return (
@@ -691,7 +790,7 @@ export function BasketPage() {
       <PageIntro
         eyebrow="Your basket"
         title="Compare the basket, not partial items."
-        description="Compare the complete basket independently at each retailer. This demonstration uses labelled synthetic scenarios."
+        description="Compare the complete basket independently at each retailer using prototype data."
       >
         <div className="data-pill">
           <ShoppingBasket size={14} /> {basket.length} distinct lines · {totalPacks} whole packs
@@ -737,9 +836,14 @@ export function BasketPage() {
                 </Link>
               </div>
               {basket.map((line) => {
-                const fixtureProduct = comparisonFixtures[
-                  fixtureScenarios[fixtureScenario]?.fixture ?? ""
-                ]?.submittedBasket.products.find((product) => product.productId === line.productId);
+                const fixtureProduct =
+                  fixtureScenario === null
+                    ? undefined
+                    : comparisonFixtures[
+                        fixtureScenarios[fixtureScenario ?? ""]?.fixture ?? ""
+                      ]?.submittedBasket.products.find(
+                        (product) => product.productId === line.productId,
+                      );
                 const product = fixtureProduct
                   ? {
                       productId: fixtureProduct.productId,
@@ -748,14 +852,42 @@ export function BasketPage() {
                       categoryId: "synthetic",
                       imageUrl: null,
                     }
-                  : products.get(line.productId);
+                  : productMetadata.get(line.productId);
                 if (!product)
                   return (
                     <div className="basket-row" key={line.productId}>
                       <div className="basket-row__identity">
-                        <strong>Loading product…</strong>
+                        <strong>Product details unavailable</strong>
+                        <span>Product ID: {line.productId}</span>
                         <span>{line.quantity} packs</span>
                       </div>
+                      <div className="quantity-control">
+                        <button
+                          type="button"
+                          aria-label={`Decrease ${line.productId}`}
+                          disabled={line.quantity <= MIN_PACKS_PER_LINE}
+                          onClick={() => setQuantity(line.productId, line.quantity - 1)}
+                        >
+                          -
+                        </button>
+                        <strong>{line.quantity}</strong>
+                        <button
+                          type="button"
+                          aria-label={`Increase ${line.productId}`}
+                          disabled={line.quantity >= MAX_PACKS_PER_LINE}
+                          onClick={() => setQuantity(line.productId, line.quantity + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="icon-button"
+                        aria-label={`Remove ${line.productId}`}
+                        onClick={() => removeFromBasket(line.productId)}
+                      >
+                        <X size={16} />
+                      </button>
                     </div>
                   );
                 return (
@@ -800,9 +932,15 @@ export function BasketPage() {
             <p className="eyebrow">Comparison setup</p>
             <h2>Complete retailer baskets</h2>
             <p className="muted">
-              Load a synthetic scenario to preview comparison results. Only the exact demonstration
-              baskets can be compared.
+              {fixtureScenario === null
+                ? "API comparison mode. Compare your basket using the current synthetic prototype dataset."
+                : "Demo mode. Only the exact selected demonstration basket can be compared."}
             </p>
+            {fixtureScenario !== null && (
+              <button type="button" className="button button--outline" onClick={leaveDemo}>
+                Leave demo and start a new basket
+              </button>
+            )}
             <div className="scenario-box">
               <div>
                 <Check size={15} /> Singapore serviceable location
@@ -1010,7 +1148,14 @@ export default function App({
   comparisonSource?: ComparisonSource;
 }) {
   const [client] = useState(() => queryClient ?? new QueryClient());
-  const [source] = useState(() => comparisonSource ?? createFixtureSource());
+  const [source] = useState(() => {
+    if (comparisonSource) return comparisonSource;
+    const api = createApiSource();
+    const demo = createFixtureSource();
+    const selected: ComparisonSource = (submission) =>
+      submission.scenario ? demo(submission) : api(submission);
+    return selected;
+  });
   return (
     <ErrorBoundary>
       <QueryClientProvider client={client}>
