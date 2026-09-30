@@ -21,13 +21,14 @@ describe.skipIf(connectionString === undefined)(
       await database.close();
     });
 
-    it("performs a real query and reports the API as ready", async () => {
+    it("performs a real query against the database", async () => {
       const server = buildServer({ database });
 
       const response = await server.inject({ method: "GET", url: "/health/ready" });
 
-      expect(response.statusCode).toBe(200);
-      expect(response.json()).toEqual({ status: "ok", checks: { database: { status: "ok" } } });
+      // The shared database may have no seed imported, so only the database check is asserted;
+      // readiness with a seed is covered by the comparison integration test.
+      expect(response.json().checks.database).toEqual({ status: "ok" });
       await server.close();
     });
 

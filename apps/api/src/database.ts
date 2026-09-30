@@ -1,16 +1,14 @@
-// Manages the PostgreSQL connection pool and database health lifecycle.
+// Manages the PostgreSQL connection pool, readiness checks and reads for comparison.
 import type { DependencyCheck } from "@cartoptix/contracts";
+import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
-
-/**
- * Minimal PostgreSQL access for the readiness check.
- *
- * Schema, migrations and query modelling belong to the data workstream (#4);
- * this file deliberately holds only what the health endpoints need.
- */
+import { type BasketData, loadBasketData } from "./comparison/store.ts";
 
 export interface Database {
   checkConnection(): Promise<DependencyCheck>;
+  /** Whether a seed has been imported, so comparisons have data to read. */
+  checkSeed(): Promise<DependencyCheck>;
+  loadBasket(productIds: readonly string[]): Promise<BasketData>;
   close(): Promise<void>;
 }
 
@@ -29,20 +27,39 @@ export function createDatabase(connectionString: string): Database {
     console.error("Idle PostgreSQL connection failed:", error.message);
   });
 
+  const db = drizzle(pool);
+
   return {
     async checkConnection(): Promise<DependencyCheck> {
       try {
         await pool.query("SELECT 1");
         return { status: "ok" };
       } catch (error) {
-        return {
-          status: "unavailable",
-          detail: error instanceof Error ? error.message : "Unknown database error",
-        };
+        return unavailable(error);
       }
     },
+    async checkSeed(): Promise<DependencyCheck> {
+      try {
+        const result = await pool.query<{ loaded: boolean }>(
+          "SELECT EXISTS (SELECT 1 FROM retailers) AS loaded",
+        );
+        return result.rows[0]?.loaded
+          ? { status: "ok" }
+          : { status: "unavailable", detail: "No seed has been imported." };
+      } catch (error) {
+        return unavailable(error);
+      }
+    },
+    loadBasket: (productIds) => loadBasketData(db, productIds),
     async close(): Promise<void> {
       await pool.end();
     },
+  };
+}
+
+function unavailable(error: unknown): DependencyCheck {
+  return {
+    status: "unavailable",
+    detail: error instanceof Error ? error.message : "Unknown database error",
   };
 }

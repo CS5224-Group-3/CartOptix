@@ -4,7 +4,13 @@
  * the prototype frontend in #29; none is a verified retailer price or rule.
  * Replace this module when the real data source lands.
  */
-import type { CatalogueResponse, Product, RetailerId } from "@cartoptix/contracts";
+import type {
+  BasketCompareRequest,
+  CatalogueResponse,
+  PlanLine,
+  Product,
+  RetailerId,
+} from "@cartoptix/contracts";
 
 export interface PlaceholderListing {
   retailerId: RetailerId;
@@ -22,8 +28,6 @@ export interface PlaceholderRetailerRule {
   deliveryFeeCents: number;
   freeDeliveryFromCents: number;
   minimumOrderCents: number;
-  /** Fixed charges on every order, e.g. a service charge. */
-  orderCharges: { label: string; amountCents: number }[];
   note: string;
 }
 
@@ -291,21 +295,18 @@ export const placeholderRules: Record<RetailerId, PlaceholderRetailerRule> = {
     deliveryFeeCents: 599,
     freeDeliveryFromCents: 8000,
     minimumOrderCents: 2000,
-    orderCharges: [],
     note: "Synthetic: S$5.99 standard delivery below S$80; S$20 minimum order.",
   },
   fairprice: {
     deliveryFeeCents: 499,
     freeDeliveryFromCents: 6000,
     minimumOrderCents: 1500,
-    orderCharges: [{ label: "Service charge", amountCents: 199 }],
     note: "Synthetic: S$4.99 standard delivery below S$60; S$15 minimum order; S$1.99 service charge.",
   },
   "cold-storage": {
     deliveryFeeCents: 799,
     freeDeliveryFromCents: 10000,
     minimumOrderCents: 3000,
-    orderCharges: [],
     note: "Synthetic: S$7.99 standard delivery below S$100; S$30 minimum order.",
   },
 };
@@ -340,3 +341,21 @@ export const placeholderCatalogue: CatalogueResponse = {
     }),
   },
 };
+
+/** Prices a placeholder listing for the offers route. */
+export function planLine(
+  line: BasketCompareRequest["lines"][number],
+  listing: PlaceholderListing,
+): PlanLine {
+  return {
+    productId: line.productId,
+    quantity: line.quantity,
+    listingId: `${line.productId}-${listing.retailerId}`,
+    productUrl: `https://example.com/cartoptix-placeholder/${listing.retailerId}/${line.productId}`,
+    priceKind: "ordinary",
+    unitPriceCents: listing.unitPriceCents,
+    itemCharges: [],
+    lineTotalCents: listing.unitPriceCents * line.quantity,
+    excludedPromotions: listing.excludedPromotions,
+  };
+}

@@ -3,8 +3,8 @@
  * validates requests and serialises responses with the same schemas the web
  * client compiles against.
  *
- * Handlers read the placeholder dataset until the real catalogue (#9), pricing
- * (#8) and comparison (#13) work replaces them.
+ * Basket comparison reads the imported seed. The catalogue, product and offer
+ * handlers read the placeholder dataset until #9 and #10 replace them.
  */
 import {
   type BasketCompareRequest,
@@ -17,14 +17,16 @@ import {
   routes,
 } from "@cartoptix/contracts";
 import type { FastifyError, FastifyInstance } from "fastify";
-import { compareBasket, planLine, UnknownProductsError } from "./placeholder/compare.ts";
-import { placeholderCatalogue, placeholderProducts } from "./placeholder/dataset.ts";
+import { compareBasket } from "./comparison/index.ts";
+import { toCompareResponse } from "./comparison/response.ts";
+import type { Database } from "./database.ts";
+import { placeholderCatalogue, placeholderProducts, planLine } from "./placeholder/dataset.ts";
 
 function errorBody(code: ErrorResponse["error"]["code"], message: string): ErrorResponse {
   return { error: { code, message } };
 }
 
-export function registerShopperRoutes(server: FastifyInstance): void {
+export function registerShopperRoutes(server: FastifyInstance, database: Database): void {
   server.setErrorHandler((error: FastifyError, request, reply) => {
     // Schema failures and Fastify's own client errors, such as a malformed JSON
     // body, are the caller's to fix; only the rest are retryable service errors.
@@ -93,14 +95,23 @@ export function registerShopperRoutes(server: FastifyInstance): void {
           .code(400)
           .send(errorBody("invalid_request", "Each product may appear only once."));
       }
-      try {
-        return compareBasket(request.body);
-      } catch (error) {
-        if (error instanceof UnknownProductsError) {
-          return reply.code(400).send(errorBody("invalid_request", error.message));
-        }
-        throw error;
+      const productIds = request.body.lines.map((line) => line.productId);
+      // Read failures and bad seed data throw, and the error handler reports them
+      // as a retryable service error, never as an unavailable retailer.
+      const data = await database.loadBasket(productIds);
+      const unknown = productIds.filter((productId) => !data.knownProductIds.has(productId));
+      if (unknown.length > 0) {
+        return reply
+          .code(400)
+          .send(errorBody("invalid_request", `Unknown product IDs: ${unknown.join(", ")}.`));
       }
+      const result = compareBasket({
+        lines: request.body.lines,
+        offers: data.offers,
+        deliveryRules: data.deliveryRules,
+        retailers: data.retailers,
+      });
+      return toCompareResponse(result, data.listings);
     },
   });
 }

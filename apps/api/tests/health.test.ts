@@ -2,9 +2,15 @@ import { describe, expect, it } from "vitest";
 import type { Database } from "../src/database.ts";
 import { buildServer } from "../src/server.ts";
 
-function stubDatabase(result: Awaited<ReturnType<Database["checkConnection"]>>): Database {
+type Check = Awaited<ReturnType<Database["checkConnection"]>>;
+
+function stubDatabase(connection: Check, seed: Check = { status: "ok" }): Database {
   return {
-    checkConnection: async () => result,
+    checkConnection: async () => connection,
+    checkSeed: async () => seed,
+    loadBasket: async () => {
+      throw new Error("Not used by health checks");
+    },
     close: async () => {},
   };
 }
@@ -26,7 +32,25 @@ describe("health endpoints", () => {
     const response = await server.inject({ method: "GET", url: "/health/ready" });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toEqual({ status: "ok", checks: { database: { status: "ok" } } });
+    expect(response.json()).toEqual({
+      status: "ok",
+      checks: { database: { status: "ok" }, seed: { status: "ok" } },
+    });
+    await server.close();
+  });
+
+  it("returns 503 when no seed has been imported", async () => {
+    const server = buildServer({
+      database: stubDatabase({ status: "ok" }, { status: "unavailable", detail: "No seed" }),
+    });
+
+    const response = await server.inject({ method: "GET", url: "/health/ready" });
+
+    expect(response.statusCode).toBe(503);
+    expect(response.json()).toEqual({
+      status: "unavailable",
+      checks: { database: { status: "ok" }, seed: { status: "unavailable", detail: "No seed" } },
+    });
     await server.close();
   });
 
@@ -40,7 +64,10 @@ describe("health endpoints", () => {
     expect(response.statusCode).toBe(503);
     expect(response.json()).toEqual({
       status: "unavailable",
-      checks: { database: { status: "unavailable", detail: "connection refused" } },
+      checks: {
+        database: { status: "unavailable", detail: "connection refused" },
+        seed: { status: "unavailable", detail: "The database is unavailable." },
+      },
     });
     await server.close();
   });
