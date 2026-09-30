@@ -55,9 +55,8 @@ pnpm --filter @cartoptix/api seed:import data/seed/seed.json
 ```
 
 The catalogue, products and offers still use a synthetic placeholder dataset
-until #9 and #10 land. The API health check at
-<http://localhost:3001/health/ready> reports ready once the database is up and a
-seed is imported.
+until #9 and #10 land. The API health check is available at
+<http://localhost:3001/health/ready>.
 
 Never commit real credentials. `.env` is ignored by Git; only `.env.example` is
 tracked, and it holds local placeholders.

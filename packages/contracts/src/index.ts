@@ -20,8 +20,6 @@ export interface ReadinessResponse {
   checks: {
     /** Result of a real query against PostgreSQL, not a connection guess. */
     database: DependencyCheck;
-    /** Whether a seed has been imported, so comparisons have data to read. */
-    seed: DependencyCheck;
   };
 }
 

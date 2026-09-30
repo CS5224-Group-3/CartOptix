@@ -21,7 +21,7 @@ import {
 } from "../support/database.ts";
 
 /**
- * Basket comparison and readiness against throwaway databases: one loaded with
+ * Basket comparison against throwaway databases: one loaded with
  * the hand-checked fixture seed, one with the committed seed. Skipped without
  * DATABASE_URL.
  */
@@ -49,7 +49,6 @@ function apiOverDatabase(prefix: string) {
 
   return {
     importSeed: (bytes: Uint8Array) => importSeed(throwaway.client, bytes),
-    readiness: () => server.inject({ method: "GET", url: "/health/ready" }),
     compare: (lines: Lines) =>
       server.inject({ method: "POST", url: routes.compare.url, payload: { lines } }),
   };
@@ -86,16 +85,8 @@ function expectValidComparison(body: BasketCompareResponse, lines: Lines): void 
 describe.skipIf(connectionString === undefined)("basket comparison on the fixture seed", () => {
   const api = apiOverDatabase("cartoptix_compare");
 
-  it("is not ready until a seed is imported", async () => {
-    const response = await api.readiness();
-    expect(response.statusCode).toBe(503);
-    expect(response.json().checks).toEqual({
-      database: { status: "ok" },
-      seed: { status: "unavailable", detail: "No seed has been imported." },
-    });
-
+  beforeAll(async () => {
     expect(await api.importSeed(fixtureSeedBytes)).toEqual({ status: "imported" });
-    expect((await api.readiness()).statusCode).toBe(200);
   });
 
   it("prices the fixture basket at each retailer", async () => {

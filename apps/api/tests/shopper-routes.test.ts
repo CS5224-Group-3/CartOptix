@@ -63,7 +63,6 @@ const defaultLoadBasket = loadBasket;
 
 const database: Database = {
   checkConnection: async () => ({ status: "ok" }),
-  checkSeed: async () => ({ status: "ok" }),
   loadBasket: (productIds) => loadBasket(productIds),
   close: async () => {},
 };

@@ -1,4 +1,4 @@
-// Manages the PostgreSQL connection pool, readiness checks and reads for comparison.
+// Manages the PostgreSQL connection pool, the readiness check and reads for comparison.
 import type { DependencyCheck } from "@cartoptix/contracts";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
@@ -6,8 +6,6 @@ import { type BasketData, loadBasketData } from "./comparison/store.ts";
 
 export interface Database {
   checkConnection(): Promise<DependencyCheck>;
-  /** Whether a seed has been imported, so comparisons have data to read. */
-  checkSeed(): Promise<DependencyCheck>;
   loadBasket(productIds: readonly string[]): Promise<BasketData>;
   close(): Promise<void>;
 }
@@ -34,18 +32,6 @@ export function createDatabase(connectionString: string): Database {
       try {
         await pool.query("SELECT 1");
         return { status: "ok" };
-      } catch (error) {
-        return unavailable(error);
-      }
-    },
-    async checkSeed(): Promise<DependencyCheck> {
-      try {
-        const result = await pool.query<{ loaded: boolean }>(
-          "SELECT EXISTS (SELECT 1 FROM retailers) AS loaded",
-        );
-        return result.rows[0]?.loaded
-          ? { status: "ok" }
-          : { status: "unavailable", detail: "No seed has been imported." };
       } catch (error) {
         return unavailable(error);
       }

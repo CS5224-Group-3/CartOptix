@@ -33,13 +33,9 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
 
   server.get("/health/ready", async (_request, reply): Promise<ReadinessResponse> => {
     const database_ = await database.checkConnection();
-    const seed =
-      database_.status === "ok"
-        ? await database.checkSeed()
-        : { status: "unavailable" as const, detail: "The database is unavailable." };
     const body: ReadinessResponse = {
-      status: database_.status === "ok" && seed.status === "ok" ? "ok" : "unavailable",
-      checks: { database: database_, seed },
+      status: database_.status === "ok" ? "ok" : "unavailable",
+      checks: { database: database_ },
     };
 
     // Readiness failure must be observable by a load balancer, not just in the body.
