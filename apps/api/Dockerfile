@@ -42,6 +42,8 @@ COPY --from=build /app/packages/contracts/dist ./packages/contracts/dist
 COPY --from=build /app/apps/api/package.json ./apps/api/
 COPY --from=build /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=build /app/apps/api/dist ./apps/api/dist
+# SQL migrations are read at runtime by dist/db/migrate-cli.js.
+COPY --from=build /app/apps/api/migrations ./apps/api/migrations
 
 # node:24-slim provides an unprivileged "node" user; never run the API as root.
 USER node

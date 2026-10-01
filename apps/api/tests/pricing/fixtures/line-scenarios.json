@@ -13,7 +13,6 @@
     "Retailer IDs are the contract's real IDs; every price is still invented.",
     "rice uses an unconditional sale price, to show priceKind passes through."
   ],
-  "datasetId": "pricing-fixture-v1",
 
   "offers": {
     "milk": {

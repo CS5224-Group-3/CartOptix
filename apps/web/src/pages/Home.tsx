@@ -7,9 +7,9 @@ import {
   ChevronRight,
   CircleHelp,
   Leaf,
+  Scale,
   ShieldCheck,
   Sparkles,
-  Split,
   Truck,
   WalletCards,
 } from "lucide-react";
@@ -65,26 +65,26 @@ export default function Home() {
                 </span>
               </div>
               <div className="basket-art__total">
-                <small>Estimated plan</small>
+                <small>Cheapest complete basket</small>
                 <strong>S$62.48</strong>
-                <span>2 retailer orders · S$4.60 saved</span>
+                <span>FairPrice · 13 products</span>
               </div>
               <div className="basket-art__plan">
                 <div className="art-row">
                   <span className="art-icon art-icon--red">R</span>
                   <div>
                     <strong>RedMart</strong>
-                    <small>8 products</small>
+                    <small>13 products</small>
                   </div>
-                  <b>S$36.90</b>
+                  <b>S$65.10</b>
                 </div>
                 <div className="art-row">
                   <span className="art-icon art-icon--green">F</span>
                   <div>
                     <strong>FairPrice</strong>
-                    <small>5 products</small>
+                    <small>13 products</small>
                   </div>
-                  <b>S$25.58</b>
+                  <b>S$62.48</b>
                 </div>
               </div>
               <div className="basket-art__footer">
@@ -92,10 +92,10 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-float hero-float--top">
-              <Split size={18} />
+              <Scale size={18} />
               <div>
-                <strong>Single vs split</strong>
-                <span>Complete basket plans</span>
+                <strong>Retailer vs retailer</strong>
+                <span>Complete basket totals</span>
               </div>
             </div>
             <div className="hero-float hero-float--bottom">
@@ -135,16 +135,16 @@ export default function Home() {
               <h2>Clarity for the part before checkout.</h2>
             </div>
             <p>
-              Build a complete basket once. CartOptix does the arithmetic across one, two or three
-              retailer orders — without moving carts or making promises it cannot verify.
+              Build a complete basket once. CartOptix does the arithmetic at every retailer —
+              without moving carts or making promises it cannot verify.
             </p>
           </div>
           <div className="value-grid">
             <ValueCard
-              icon={<Split />}
+              icon={<Scale />}
               number="01"
-              title="Compare one vs split"
-              text="See the cheapest complete single-retailer baseline beside the best permitted split plan."
+              title="Compare every retailer"
+              text="See the complete basket priced at each retailer, with the cheapest one recommended."
             />
             <ValueCard
               icon={<Truck />}
@@ -174,7 +174,7 @@ export default function Home() {
             type="button"
             className="button button--dark button--large"
             onClick={() => {
-              loadScenario(DEMO_BASKET, 2);
+              loadScenario(DEMO_BASKET);
               toast.success("20-line demo basket loaded");
               navigate("/basket");
             }}

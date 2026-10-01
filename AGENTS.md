@@ -11,12 +11,11 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 
 ## Core constraints
 
-- Match exact products and pack configurations. Allocate each line entirely to one retailer; do not substitute products or add quantities.
-- Support at most 50 distinct lines, 1–20 whole packs per line and a user-selected maximum of 1–3 retailers.
+- Match exact products and pack configurations. Compare the complete basket at each retailer; do not split a basket across retailers, substitute products or add quantities.
+- Support at most 50 distinct lines and 1–20 whole packs per line.
 - Use verified, directly supermarket-fulfilled offers marked in stock. Quarantine ambiguous matches, prices, promotions and mandatory charges.
-- Calculate in integer SGD cents. Retain the cheapest feasible single-retailer baseline; recommendations must never cost more than it under the same rules.
-- Describe heuristic results as best-found plans. Distinguish unsuccessful search from proven infeasibility; savings are unavailable without a baseline.
-- Show the fixed-dataset disclaimer, not collection dates. Keep clean seed data version-controlled and preserve provenance.
+- Calculate in integer SGD cents. Recommend the cheapest feasible retailer option; show each unavailable retailer with its reason, and never price a partial basket as complete.
+- Show the fixed-dataset disclaimer, not collection dates. Keep the clean seed in Git.
 
 ## Working conventions
 
@@ -35,6 +34,7 @@ Run `pnpm check` before proposing changes; it runs the same format, lint, type a
 
 - `@cartoptix/contracts` is consumed from its compiled `dist/`. `pnpm check` and `pnpm dev` build it first; after editing contracts, run `tsc --build` before running `pnpm test` or Vitest on their own, or they will use stale output.
 - The API runs TypeScript directly with Node's type stripping (`node src/main.ts`). Use `.ts` extensions in relative imports, and avoid syntax that needs compilation: enums, namespaces and constructor parameter properties.
+- The database schema lives in `apps/api/src/db/schema.ts`. After changing it, run `pnpm --filter @cartoptix/api db:generate --name <change>` and commit the generated migration; never edit an applied migration.
 - Only `apps/web` type-checks its tests; API and contracts tests are not covered by `tsc --build`. Keep them type-correct by hand.
 
 ## Shared API contracts

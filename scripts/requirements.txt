@@ -1,0 +1,4 @@
+# Python dependencies for the curation scripts and notebooks in scripts/.
+# Install: python -m pip install -r scripts/requirements.txt
+openpyxl==3.1.5
+pandas==3.0.6

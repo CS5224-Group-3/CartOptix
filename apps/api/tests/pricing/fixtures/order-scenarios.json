@@ -15,11 +15,9 @@
     "zeta has an unresolved fee but a free-delivery threshold, to show that reaching",
     "the threshold prices the order while falling short still blocks it."
   ],
-  "datasetId": "pricing-fixture-v1",
   "retailers": {
     "alpha": {
       "retailerId": "redmart",
-      "datasetId": "pricing-fixture-v1",
       "verified": true,
       "fee": 599,
       "freeDeliveryThreshold": 5999,
@@ -31,7 +29,6 @@
     },
     "beta": {
       "retailerId": "fairprice",
-      "datasetId": "pricing-fixture-v1",
       "verified": true,
       "fee": 350,
       "freeDeliveryThreshold": null,
@@ -49,7 +46,6 @@
     },
     "gamma": {
       "retailerId": "cold-storage",
-      "datasetId": "pricing-fixture-v1",
       "verified": false,
       "fee": 400,
       "freeDeliveryThreshold": 5000,
@@ -61,7 +57,6 @@
     },
     "delta": {
       "retailerId": "fairprice",
-      "datasetId": "pricing-fixture-v1",
       "verified": true,
       "fee": null,
       "freeDeliveryThreshold": null,
@@ -73,7 +68,6 @@
     },
     "epsilon": {
       "retailerId": "cold-storage",
-      "datasetId": "pricing-fixture-v1",
       "verified": true,
       "fee": 500,
       "freeDeliveryThreshold": null,
@@ -91,7 +85,6 @@
     },
     "zeta": {
       "retailerId": "redmart",
-      "datasetId": "pricing-fixture-v1",
       "verified": true,
       "fee": null,
       "freeDeliveryThreshold": 3000,

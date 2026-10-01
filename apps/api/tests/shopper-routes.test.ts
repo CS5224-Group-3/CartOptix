@@ -36,7 +36,6 @@ describe("placeholder shopper routes", () => {
     expect(response.statusCode).toBe(200);
     const body = response.json();
     expect(Value.Check(CatalogueResponseSchema, body)).toBe(true);
-    expect(body.dataset.dataKind).toBe("synthetic");
   });
 
   it("searches, filters and paginates products", async () => {
@@ -87,10 +86,11 @@ describe("placeholder shopper routes", () => {
   });
 
   it.each([
-    ["an unknown product", { lines: lines(["r1", 1], ["nope", 1]), maxRetailers: 2 }],
-    ["a duplicate product", { lines: lines(["r1", 1], ["r1", 2]), maxRetailers: 2 }],
-    ["21 packs", { lines: lines(["r1", 21]), maxRetailers: 2 }],
-    ["a client-sent dataset ID", { lines: lines(["r1", 1]), maxRetailers: 2, datasetId: "x" }],
+    ["an unknown product", { lines: lines(["r1", 1], ["nope", 1]) }],
+    ["a duplicate product", { lines: lines(["r1", 1], ["r1", 2]) }],
+    ["21 packs", { lines: lines(["r1", 21]) }],
+    ["an unknown field", { lines: lines(["r1", 1]), extra: "x" }],
+    ["a retailer limit", { lines: lines(["r1", 1]), maxRetailers: 2 }],
   ])("rejects a basket with %s", async (_name, payload) => {
     const response = await start().inject({
       method: "POST",
@@ -131,7 +131,7 @@ describe("placeholder shopper routes", () => {
     const response = await start().inject({
       method: "POST",
       url: routes.compare.url,
-      payload: { lines: lines(["r1", 2], ["da1", 1], ["b1", 1]), maxRetailers: 2 },
+      payload: { lines: lines(["r1", 2], ["da1", 1], ["b1", 1]) },
     });
     expect(response.statusCode).toBe(200);
     expect(Value.Check(BasketCompareResponseSchema, response.json())).toBe(true);
@@ -139,114 +139,66 @@ describe("placeholder shopper routes", () => {
 });
 
 describe("placeholder comparison", () => {
-  const compare = (entries: [string, number][], maxRetailers: number) =>
-    compareBasket({ lines: lines(...entries), maxRetailers });
+  const compare = (...entries: [string, number][]) => compareBasket({ lines: lines(...entries) });
+  const mixed: [string, number][] = [
+    ["r1", 2],
+    ["da1", 1],
+    ["b1", 1],
+    ["h2", 1],
+    ["s3", 1],
+    ["t1", 2],
+  ];
 
-  it("recommends a split when it is cheaper than the baseline", () => {
-    const result = compare(
-      [
-        ["r1", 2],
-        ["da1", 1],
-        ["b1", 1],
-        ["h2", 1],
-        ["s3", 1],
-        ["t1", 2],
-      ],
-      2,
+  it("prices every retailer and recommends the cheapest complete option", () => {
+    const result = compare(...mixed);
+    if (result.status !== "recommended") throw new Error(result.status);
+    const complete = result.options.filter((option) => option.status === "complete");
+    expect(complete.length).toBeGreaterThan(0);
+    expect(result.options[0]?.retailerId).toBe(result.recommendedRetailerId);
+    const totals = complete.map((option) => option.totalCents);
+    expect(totals).toEqual([...totals].sort((a, b) => a - b));
+    expect(new Set(result.options.map((option) => option.retailerId)).size).toBe(3);
+  });
+
+  it("marks a retailer unavailable when it lacks a product, and still recommends another", () => {
+    const result = compare(["ex1", 1], ["r1", 2], ["r2", 3], ["c1", 2], ["s1", 2]);
+    expect(result).toMatchObject({ status: "recommended", recommendedRetailerId: "redmart" });
+    const missing = result.options.filter(
+      (option) =>
+        option.status === "unavailable" &&
+        option.reasons.some((reason) => reason.code === "missing_products"),
     );
-    expect(result).toMatchObject({ status: "best_found", recommended: "split" });
-    if (result.status !== "best_found" || !result.baseline || !result.bestSplit) throw new Error();
-    expect(result.savingsCents).toBe(result.baseline.totalCents - result.bestSplit.totalCents);
-    expect(result.savingsCents).toBeGreaterThan(0);
+    expect(missing.length).toBeGreaterThan(0);
+    for (const option of result.options) {
+      if (option.status === "complete") {
+        expect(option.lines.map((line) => line.productId)).toContain("ex1");
+      }
+    }
   });
 
-  it("keeps the baseline and zero savings when splitting does not help", () => {
-    const result = compare(
-      [
-        ["d1", 1],
-        ["d2", 1],
-        ["c2", 1],
-        ["h1", 1],
-        ["t3", 1],
-      ],
-      3,
-    );
-    expect(result).toMatchObject({
-      status: "best_found",
-      recommended: "baseline",
-      savingsCents: 0,
-    });
+  it("reports no feasible plan, with every retailer's reason, for a product nobody stocks", () => {
+    const result = compare(["dead1", 1], ["r1", 1]);
+    expect(result.status).toBe("no_feasible_plan");
+    for (const option of result.options) {
+      expect(option).toMatchObject({
+        status: "unavailable",
+        reasons: [{ code: "missing_products", productIds: ["dead1"] }],
+      });
+    }
   });
 
-  it("reports unavailable savings when no single retailer has every product", () => {
-    const result = compare(
-      [
-        ["ex1", 1],
-        ["ex2", 1],
-        ["r1", 2],
-        ["r2", 3],
-      ],
-      2,
-    );
-    expect(result).toMatchObject({
-      status: "best_found",
-      baseline: null,
-      recommended: "split",
-      savingsCents: null,
-    });
+  it("marks retailers below their minimum order unavailable", () => {
+    const result = compare(["r2", 1]);
+    expect(result.status).toBe("no_feasible_plan");
+    for (const option of result.options) {
+      expect(option).toMatchObject({
+        status: "unavailable",
+        reasons: [{ code: "below_minimum_order" }],
+      });
+    }
   });
 
-  it("proves infeasibility when a product has no eligible offer", () => {
-    expect(
-      compare(
-        [
-          ["dead1", 1],
-          ["r1", 1],
-        ],
-        3,
-      ),
-    ).toEqual({
-      status: "proven_infeasible",
-      blocker: { code: "no_eligible_offer", productIds: ["dead1"] },
-    });
-  });
-
-  it("finds no plan, without claiming impossibility, when minimums block every order", () => {
-    expect(compare([["r2", 1]], 3)).toEqual({ status: "no_plan_found", searchLimitReached: false });
-  });
-
-  it("considers only the baseline when one retailer is allowed", () => {
-    const result = compare(
-      [
-        ["r1", 2],
-        ["da1", 1],
-        ["b1", 1],
-        ["h2", 1],
-        ["s3", 1],
-        ["t1", 2],
-      ],
-      1,
-    );
-    expect(result).toMatchObject({
-      status: "best_found",
-      bestSplit: null,
-      recommended: "baseline",
-    });
-  });
-
-  it("reports the search limit only when the search stops early", () => {
-    const basket: [string, number][] = placeholderProducts
-      .filter(({ listings }) => listings.length === 3)
-      .map(({ product }) => [product.productId, 2]);
-    expect(compare(basket.slice(0, 4), 3)).toMatchObject({ searchLimitReached: false });
-    const limited = compareBasket(
-      { lines: lines(...basket), maxRetailers: 3 },
-      { candidateLimit: 50 },
-    );
-    expect(limited).toMatchObject({ status: "best_found", searchLimitReached: true });
-  });
-
-  it("never recommends a plan that costs more than the baseline", () => {
+  it("always returns a valid result with the cheapest complete option first", () => {
     const ids = placeholderProducts.map(({ product }) => product.productId);
     let seed = 7;
     const random = (n: number) => {
@@ -259,17 +211,22 @@ describe("placeholder comparison", () => {
       while (picked.size < size) picked.add(ids[random(ids.length)] ?? "r1");
       const result: BasketCompareResponse = compareBasket({
         lines: [...picked].map((productId) => ({ productId, quantity: 1 + random(20) })),
-        maxRetailers: 1 + random(3),
       });
       expect(Value.Check(BasketCompareResponseSchema, result)).toBe(true);
-      if (result.status === "best_found" && result.baseline) {
-        const recommended = result.recommended === "split" ? result.bestSplit : result.baseline;
-        expect(recommended?.totalCents).toBeLessThanOrEqual(result.baseline.totalCents);
+      const complete = result.options.filter((option) => option.status === "complete");
+      if (result.status === "recommended") {
+        const cheapest = Math.min(...complete.map((option) => option.totalCents));
+        expect(result.options[0]).toMatchObject({
+          retailerId: result.recommendedRetailerId,
+          totalCents: cheapest,
+        });
+      } else {
+        expect(complete).toEqual([]);
       }
     }
   });
 
   it("throws for unknown products so the route can reject them", () => {
-    expect(() => compare([["nope", 1]], 2)).toThrow(UnknownProductsError);
+    expect(() => compare(["nope", 1])).toThrow(UnknownProductsError);
   });
 });

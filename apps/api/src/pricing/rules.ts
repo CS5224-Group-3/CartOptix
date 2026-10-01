@@ -15,7 +15,7 @@ import type { Cents, PriceKind } from "./results.ts";
  * and force an unavailable result rather than a zero.
  */
 
-/** A retailer's listing of one canonical product, priced for this dataset. */
+/** A retailer's listing of one canonical product, priced in the loaded seed. */
 export interface OfferRule {
   listingId: string;
   productId: string;
@@ -70,7 +70,6 @@ export interface ExcludedPromotionRule {
  */
 export interface DeliveryRule {
   retailerId: RetailerId;
-  datasetId: string;
   /**
    * False when the rule for this scenario is not verified.
    *

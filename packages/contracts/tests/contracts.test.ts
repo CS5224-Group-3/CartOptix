@@ -16,15 +16,15 @@ import {
   ProductsResponseSchema,
 } from "../src/index.ts";
 
-type BestFound = Extract<BasketCompareResponse, { status: "best_found" }>;
-
-const comparisons: [string, BestFound][] = [
-  ["split wins", fixtures.splitWinsExample],
-  ["single retailer wins", fixtures.singleRetailerWinsExample],
+const comparisons: [string, BasketCompareResponse][] = [
+  ["recommended", fixtures.recommendedExample],
+  ["one retailer complete", fixtures.oneRetailerCompleteExample],
   ["tie", fixtures.tieExample],
-  ["baseline only", fixtures.baselineOnlyExample],
-  ["missing baseline", fixtures.missingBaselineExample],
+  ["no feasible plan", fixtures.noFeasiblePlanExample],
 ];
+
+const completeOptions = (result: BasketCompareResponse) =>
+  result.options.filter((option) => option.status === "complete");
 
 describe("fixtures match their schemas", () => {
   const cases: [string, TSchema, unknown][] = [
@@ -33,13 +33,11 @@ describe("fixtures match their schemas", () => {
     ["empty products", ProductsResponseSchema, fixtures.emptyProductsExample],
     ["offers", OffersResponseSchema, fixtures.offersExample],
     ["basket request", BasketCompareRequestSchema, fixtures.basketRequestExample],
-    ["split wins", BasketCompareResponseSchema, fixtures.splitWinsExample],
-    ["single retailer wins", BasketCompareResponseSchema, fixtures.singleRetailerWinsExample],
-    ["tie", BasketCompareResponseSchema, fixtures.tieExample],
-    ["baseline only", BasketCompareResponseSchema, fixtures.baselineOnlyExample],
-    ["missing baseline", BasketCompareResponseSchema, fixtures.missingBaselineExample],
-    ["no plan found", BasketCompareResponseSchema, fixtures.noPlanFoundExample],
-    ["proven infeasible", BasketCompareResponseSchema, fixtures.provenInfeasibleExample],
+    ...comparisons.map(([name, value]): [string, TSchema, unknown] => [
+      name,
+      BasketCompareResponseSchema,
+      value,
+    ]),
     ["duplicate lines", ErrorResponseSchema, fixtures.duplicateLinesExample],
     ["service error", ErrorResponseSchema, fixtures.serviceErrorExample],
   ];
@@ -50,10 +48,9 @@ describe("fixtures match their schemas", () => {
 });
 
 describe("request limits", () => {
-  it("accepts 50 lines of 20 packs with 3 retailers", () => {
+  it("accepts 50 lines of 20 packs", () => {
     const request = {
       lines: Array.from({ length: 50 }, (_, i) => ({ productId: `product-${i}`, quantity: 20 })),
-      maxRetailers: 3,
     };
     expect(Value.Check(BasketCompareRequestSchema, request)).toBe(true);
   });
@@ -95,33 +92,62 @@ describe("contract rules", () => {
     expect(Value.Check(ProductsResponseSchema, fixtures.serviceErrorExample)).toBe(false);
   });
 
-  it.each(comparisons)("%s: totals, savings and recommendation agree", (_name, result) => {
-    const recommended = result.recommended === "split" ? result.bestSplit : result.baseline;
-    expect(recommended).not.toBeNull();
+  it.each(comparisons)("%s: one option per retailer, in recommendation order", (_name, result) => {
+    const retailers = result.options.map((option) => option.retailerId);
+    expect(new Set(retailers).size).toBe(retailers.length);
+    const firstUnavailable = result.options.findIndex((o) => o.status === "unavailable");
+    const complete = completeOptions(result);
+    if (firstUnavailable >= 0) expect(firstUnavailable).toBe(complete.length);
+    const byTotalThenId = [...complete].sort(
+      (a, b) => a.totalCents - b.totalCents || (a.retailerId < b.retailerId ? -1 : 1),
+    );
+    expect(complete).toEqual(byTotalThenId);
+    const unavailable = result.options.filter((o) => o.status === "unavailable");
+    const ids = unavailable.map((o) => o.retailerId);
+    expect(ids).toEqual([...ids].sort());
+  });
 
-    for (const plan of [result.baseline, result.bestSplit]) {
-      if (!plan) continue;
-      expect(plan.totalCents).toBe(plan.orders.reduce((sum, o) => sum + o.totalCents, 0));
-      for (const order of plan.orders) {
-        const lines = order.lines.reduce((sum, l) => sum + l.lineTotalCents, 0);
-        const charges = order.orderCharges.reduce((sum, c) => sum + c.amountCents, 0);
-        expect(order.totalCents).toBe(lines + charges + order.deliveryCents);
-      }
-      const productIds = plan.orders.flatMap((o) => o.lines.map((l) => l.productId)).sort();
-      expect(productIds).toEqual(["fixture-drink", "fixture-rice"]);
+  it.each(comparisons)("%s: complete options cover the whole basket", (_name, result) => {
+    const basket = fixtures.basketRequestExample.lines.map((l) => l.productId).sort();
+    for (const option of completeOptions(result)) {
+      expect(option.lines.map((l) => l.productId).sort()).toEqual(basket);
+      const lines = option.lines.reduce((sum, l) => sum + l.lineTotalCents, 0);
+      const charges = option.orderCharges
+        .filter((c) => !c.waived)
+        .reduce((sum, c) => sum + c.amountCents, 0);
+      expect(option.totalCents).toBe(lines + charges + option.deliveryCents);
     }
+  });
 
-    if (result.baseline) expect(result.baseline.orders).toHaveLength(1);
-    if (result.bestSplit) expect(result.bestSplit.orders.length).toBeGreaterThanOrEqual(2);
-    if (result.baseline && result.bestSplit?.totalCents === result.baseline.totalCents) {
-      expect(result.recommended).toBe("baseline");
+  it.each(comparisons)("%s: the recommendation is the first, cheapest option", (_name, result) => {
+    if (result.status === "no_feasible_plan") {
+      expect(completeOptions(result)).toEqual([]);
+      return;
     }
-    if (result.baseline && recommended) {
-      expect(recommended.totalCents).toBeLessThanOrEqual(result.baseline.totalCents);
-      expect(result.savingsCents).toBe(result.baseline.totalCents - recommended.totalCents);
-    } else {
-      expect(result.savingsCents).toBeNull();
-    }
+    const [first] = result.options;
+    expect(first?.status).toBe("complete");
+    expect(first?.retailerId).toBe(result.recommendedRetailerId);
+  });
+});
+
+describe("order charges", () => {
+  const charges = comparisons.flatMap(([, result]) =>
+    completeOptions(result).flatMap((option) => option.orderCharges),
+  );
+
+  it("fixtures include both a waived and a charged fee", () => {
+    expect([...new Set(charges.map((c) => c.waived))].sort()).toEqual([false, true]);
+  });
+
+  it("a waived charge always has a waiver threshold", () => {
+    for (const charge of charges) if (charge.waived) expect(charge.waivedFromCents).not.toBeNull();
+  });
+
+  it("rejects a charge without its waiver fields", () => {
+    const [fairprice, ...rest] = fixtures.recommendedExample.options;
+    const bare = { ...fairprice, orderCharges: [{ label: "Fee", amountCents: 399 }] };
+    const result = { ...fixtures.recommendedExample, options: [bare, ...rest] };
+    expect(Value.Check(BasketCompareResponseSchema, result)).toBe(false);
   });
 });
 
@@ -132,9 +158,7 @@ describe("line totals", () => {
       quantity: fixtures.offersExample.quantity,
     })),
     ...comparisons.flatMap(([, result]) =>
-      [result.baseline, result.bestSplit].flatMap((plan) =>
-        (plan?.orders ?? []).flatMap((order) => order.lines),
-      ),
+      completeOptions(result).flatMap((option) => option.lines),
     ),
   ];
 
@@ -154,17 +178,43 @@ describe("line totals", () => {
 describe("rejected values", () => {
   const [offer] = fixtures.offersExample.offers;
 
-  it.each([
-    ["no plan", { baseline: null, bestSplit: null, recommended: "split", savingsCents: null }],
-    ["recommends a missing split", { bestSplit: null, recommended: "split", savingsCents: 0 }],
-    ["savings without a baseline", { baseline: null, savingsCents: 0 }],
-    [
-      "non-zero savings when only the baseline exists",
-      { bestSplit: null, recommended: "baseline", savingsCents: 5 },
-    ],
-  ])("best_found with %s", (_name, change) => {
-    const result = { ...fixtures.splitWinsExample, ...change };
+  it("the earlier split-plan shape", () => {
+    const split = {
+      status: "best_found",
+      searchLimitReached: false,
+      baseline: null,
+      bestSplit: null,
+      recommended: "split",
+      savingsCents: null,
+    };
+    expect(Value.Check(BasketCompareResponseSchema, split)).toBe(false);
+  });
+
+  it("a complete option in a no-feasible-plan result", () => {
+    const [option] = fixtures.recommendedExample.options;
+    const result = { ...fixtures.noFeasiblePlanExample, options: [option] };
     expect(Value.Check(BasketCompareResponseSchema, result)).toBe(false);
+  });
+
+  it("a recommendation without a retailer, or an unavailable option without a reason", () => {
+    const { recommendedRetailerId: _, ...unnamed } = fixtures.recommendedExample;
+    expect(Value.Check(BasketCompareResponseSchema, unnamed)).toBe(false);
+    const noReason = {
+      ...fixtures.noFeasiblePlanExample,
+      options: [{ status: "unavailable", retailerId: "redmart", reasons: [] }],
+    };
+    expect(Value.Check(BasketCompareResponseSchema, noReason)).toBe(false);
+    const noProducts = {
+      ...fixtures.noFeasiblePlanExample,
+      options: [
+        {
+          status: "unavailable",
+          retailerId: "redmart",
+          reasons: [{ code: "missing_products", productIds: [] }],
+        },
+      ],
+    };
+    expect(Value.Check(BasketCompareResponseSchema, noProducts)).toBe(false);
   });
 
   it.each(["javascript:alert(1)", "http://example.com/x", "/relative"])(
@@ -194,10 +244,9 @@ describe("rejected values", () => {
 });
 
 describe("tie-break", () => {
-  it("the tie fixture really ties, so the fewer-orders rule is exercised", () => {
-    const { baseline, bestSplit, recommended } = fixtures.tieExample;
-    expect(bestSplit.totalCents).toBe(baseline.totalCents);
-    expect(bestSplit.orders.length).toBeGreaterThan(baseline.orders.length);
-    expect(recommended).toBe("baseline");
+  it("the tie fixture really ties, so the retailer-ID order is exercised", () => {
+    const [first, second] = completeOptions(fixtures.tieExample);
+    expect(first?.totalCents).toBe(second?.totalCents);
+    expect(fixtures.tieExample.recommendedRetailerId).toBe(first?.retailerId);
   });
 });

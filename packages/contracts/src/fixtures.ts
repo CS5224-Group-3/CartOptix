@@ -8,15 +8,13 @@ import type {
   BasketCompareRequest,
   BasketCompareResponse,
   CatalogueResponse,
+  CompleteOption,
   ErrorResponse,
   OffersResponse,
-  Order,
-  Plan,
   ProductsResponse,
+  UnavailableOption,
 } from "./api.ts";
-import type { PlanLine, Product, RetailerId } from "./common.ts";
-
-export const fixtureDatasetId = "fixture-v1";
+import type { OrderCharge, PlanLine, Product, RetailerId } from "./common.ts";
 
 export const riceProduct = {
   productId: "fixture-rice",
@@ -35,7 +33,6 @@ export const drinkProduct = {
 } satisfies Product;
 
 export const catalogueExample = {
-  dataset: { datasetId: fixtureDatasetId, dataKind: "synthetic" },
   retailers: [
     { retailerId: "cold-storage", name: "Cold Storage" },
     { retailerId: "fairprice", name: "FairPrice" },
@@ -46,7 +43,6 @@ export const catalogueExample = {
     { categoryId: "rice-noodles", name: "Rice & Noodles" },
   ],
   delivery: {
-    scenario: "Synthetic Singapore address, standard delivery, non-member pricing.",
     rules: [
       { retailerId: "cold-storage", status: "unavailable" },
       {
@@ -92,20 +88,42 @@ const line = (productId: string, retailerId: RetailerId, cents: number): PlanLin
   excludedPromotions: [],
 });
 
-const order = (retailerId: RetailerId, lines: PlanLine[], deliveryCents = 0): Order => ({
+const complete = (
+  retailerId: RetailerId,
+  lines: PlanLine[],
+  deliveryCents = 0,
+  orderCharges: OrderCharge[] = [],
+): CompleteOption => ({
+  status: "complete",
   retailerId,
   lines,
-  orderCharges: [],
+  orderCharges,
   deliveryCents,
-  totalCents: lines.reduce((sum, { lineTotalCents }) => sum + lineTotalCents, deliveryCents),
+  totalCents:
+    lines.reduce((sum, { lineTotalCents }) => sum + lineTotalCents, deliveryCents) +
+    orderCharges.reduce((sum, charge) => (charge.waived ? sum : sum + charge.amountCents), 0),
 });
 
-const plan = (...orders: Order[]): Plan => ({
-  orders,
-  totalCents: orders.reduce((sum, { totalCents }) => sum + totalCents, 0),
+/** A synthetic service fee, waived once an order's qualifying spend reaches the threshold. */
+const serviceFee = (
+  amountCents: number,
+  waivedFromCents: number,
+  waived: boolean,
+): OrderCharge => ({
+  label: "Synthetic service fee",
+  amountCents,
+  waivedFromCents,
+  waived,
 });
+
+const coldStorageUnverified: UnavailableOption = {
+  status: "unavailable",
+  retailerId: "cold-storage",
+  reasons: [{ code: "delivery_rule_unverified" }],
+};
 
 const riceAtFairprice = line("fixture-rice", "fairprice", 400);
+const drinkAtFairprice = line("fixture-drink", "fairprice", 250);
 const riceAtRedmart = line("fixture-rice", "redmart", 600);
 /** A 10-cent container deposit added on top of the 200-cent price. */
 const drinkAtRedmart: PlanLine = {
@@ -154,70 +172,66 @@ export const basketRequestExample = {
     { productId: "fixture-drink", quantity: 1 },
     { productId: "fixture-rice", quantity: 1 },
   ],
-  maxRetailers: 2,
 } satisfies BasketCompareRequest;
 
-const redmartBaseline = plan(order("redmart", [drinkAtRedmart, riceAtRedmart]));
+const redmartComplete = complete("redmart", [drinkAtRedmart, riceAtRedmart]);
 
-/** Splitting saves 200 cents against the single-retailer baseline. */
-export const splitWinsExample = {
-  status: "best_found",
-  searchLimitReached: false,
-  baseline: redmartBaseline,
-  bestSplit: plan(order("fairprice", [riceAtFairprice]), order("redmart", [drinkAtRedmart])),
-  recommended: "split",
-  savingsCents: 200,
+/** FairPrice is cheapest, and its 650-cent order reaches the 600-cent threshold that
+ * waives its service fee. Cold Storage cannot be priced without a verified delivery rule. */
+export const recommendedExample = {
+  status: "recommended",
+  recommendedRetailerId: "fairprice",
+  options: [
+    complete("fairprice", [drinkAtFairprice, riceAtFairprice], 0, [serviceFee(399, 600, true)]),
+    redmartComplete,
+    coldStorageUnverified,
+  ],
 } satisfies BasketCompareResponse;
 
-/** A split exists but a 500-cent delivery fee makes it dearer, so one retailer wins. */
-export const singleRetailerWinsExample = {
-  status: "best_found",
-  searchLimitReached: false,
-  baseline: redmartBaseline,
-  bestSplit: plan(order("fairprice", [riceAtFairprice], 500), order("redmart", [drinkAtRedmart])),
-  recommended: "baseline",
-  savingsCents: 0,
+/** Only RedMart stocks both products; FairPrice lacks the drink. */
+export const oneRetailerCompleteExample = {
+  status: "recommended",
+  recommendedRetailerId: "redmart",
+  options: [
+    redmartComplete,
+    coldStorageUnverified,
+    {
+      status: "unavailable",
+      retailerId: "fairprice",
+      reasons: [{ code: "missing_products", productIds: ["fixture-drink"] }],
+    },
+  ],
 } satisfies BasketCompareResponse;
 
-/** The split costs exactly what the baseline does, so the baseline wins because it
- * needs fewer orders (J3). */
+/** FairPrice's 650-cent order is below its fee's 1,000-cent waiver threshold, and the
+ * 160-cent fee makes both totals equal, so the tie is broken by retailer ID, which
+ * puts FairPrice before RedMart. */
 export const tieExample = {
-  status: "best_found",
-  searchLimitReached: false,
-  baseline: redmartBaseline,
-  bestSplit: plan(order("fairprice", [riceAtFairprice], 200), order("redmart", [drinkAtRedmart])),
-  recommended: "baseline",
-  savingsCents: 0,
+  status: "recommended",
+  recommendedRetailerId: "fairprice",
+  options: [
+    complete("fairprice", [drinkAtFairprice, riceAtFairprice], 0, [serviceFee(160, 1000, false)]),
+    redmartComplete,
+    coldStorageUnverified,
+  ],
 } satisfies BasketCompareResponse;
 
-/** With a one-retailer limit no split is permitted, so the baseline is the only plan. */
-export const baselineOnlyExample = {
-  status: "best_found",
-  searchLimitReached: false,
-  baseline: redmartBaseline,
-  bestSplit: null,
-  recommended: "baseline",
-  savingsCents: 0,
-} satisfies BasketCompareResponse;
-
-/** No retailer stocks both products, so savings are unavailable, not zero. */
-export const missingBaselineExample = {
-  status: "best_found",
-  searchLimitReached: false,
-  baseline: null,
-  bestSplit: plan(order("fairprice", [riceAtFairprice]), order("redmart", [drinkAtRedmart])),
-  recommended: "split",
-  savingsCents: null,
-} satisfies BasketCompareResponse;
-
-export const noPlanFoundExample = {
-  status: "no_plan_found",
-  searchLimitReached: true,
-} satisfies BasketCompareResponse;
-
-export const provenInfeasibleExample = {
-  status: "proven_infeasible",
-  blocker: { code: "no_eligible_offer", productIds: ["fixture-rice"] },
+/** No retailer can supply the whole basket, each for its own reason. */
+export const noFeasiblePlanExample = {
+  status: "no_feasible_plan",
+  options: [
+    coldStorageUnverified,
+    {
+      status: "unavailable",
+      retailerId: "fairprice",
+      reasons: [{ code: "below_minimum_order", minimumOrderCents: 1500, spendCents: 650 }],
+    },
+    {
+      status: "unavailable",
+      retailerId: "redmart",
+      reasons: [{ code: "missing_products", productIds: ["fixture-rice"] }],
+    },
+  ],
 } satisfies BasketCompareResponse;
 
 /** 400: sent instead of merging a product listed twice. */
@@ -244,11 +258,8 @@ export const invalidBasketRequests: { name: string; value: unknown }[] = [
     name: `quantity ${quantity}`,
     value: { ...basketRequestExample, lines: [{ productId: "fixture-rice", quantity }] },
   })),
-  ...[0, 4].map((maxRetailers) => ({
-    name: `maxRetailers ${maxRetailers}`,
-    value: { ...basketRequestExample, maxRetailers },
-  })),
-  { name: "missing maxRetailers", value: { lines: basketRequestExample.lines } },
+  /** The retailer limit was removed with split plans (#13). */
+  { name: "a retailer limit", value: { ...basketRequestExample, maxRetailers: 2 } },
 ];
 
 export const duplicateLinesRequest = {

@@ -27,8 +27,6 @@ export interface PriceRetailerOrderInput {
   /** Lines already priced by `priceLine`, all belonging to this retailer. */
   lines: readonly PricedLine[];
   delivery: DeliveryRule;
-  /** The active dataset, so a rule approved for another seed is not applied. */
-  datasetId: string;
 }
 
 /**
@@ -42,7 +40,7 @@ export interface PriceRetailerOrderInput {
 const FREE_DELIVERY_BOUNDARY_IS_INCLUSIVE = true;
 
 export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrderPricingResult {
-  const { retailerId, lines, delivery, datasetId } = input;
+  const { retailerId, lines, delivery } = input;
 
   // Both checks below catch a caller assembling an order wrongly, which no
   // shopper request can produce on its own, so they throw rather than
@@ -58,12 +56,12 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
     );
   }
 
-  if (delivery.retailerId !== retailerId || delivery.datasetId !== datasetId) {
+  if (delivery.retailerId !== retailerId) {
     return {
       status: "unavailable",
       reason: {
         code: "delivery-rule-unverified",
-        detail: `No delivery rule for retailer ${retailerId} in dataset ${datasetId}`,
+        detail: `No delivery rule for retailer ${retailerId}`,
       },
     };
   }

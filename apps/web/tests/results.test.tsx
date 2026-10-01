@@ -1,14 +1,12 @@
 // Regression tests for how each comparison outcome from the contract reaches the results page.
-// They pin the headline and savings wording only; the full breakdown belongs to #16 and #17.
+// They pin the headline and reason wording only; the full breakdown belongs to #16.
 import { type BasketCompareResponse, routes } from "@cartoptix/contracts";
 import {
-  baselineOnlyExample,
   catalogueExample,
-  missingBaselineExample,
-  noPlanFoundExample,
+  noFeasiblePlanExample,
+  oneRetailerCompleteExample,
   productsExample,
-  provenInfeasibleExample,
-  splitWinsExample,
+  recommendedExample,
   tieExample,
 } from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
@@ -39,51 +37,45 @@ async function compareWith(comparison: BasketCompareResponse) {
   window.history.pushState({}, "", "/basket");
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   render(<App queryClient={queryClient} />);
-  fireEvent.click(screen.getByRole("button", { name: /Split saves money/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Mixed pantry basket/ }));
   fireEvent.click(screen.getByRole("button", { name: /Compare basket/ }));
   await screen.findByRole("heading", { name: "A transparent plan for this basket." });
 }
 
 describe("comparison outcomes on the results page", () => {
-  it("shows the saving when a split beats the baseline", async () => {
-    await compareWith(splitWinsExample);
-    expect(screen.getByRole("heading", { name: "Split your basket" })).toBeDefined();
-    expect(screen.getByText("Save S$2.00")).toBeDefined();
+  it("recommends the cheapest complete retailer", async () => {
+    await compareWith(recommendedExample);
+    expect(screen.getByRole("heading", { name: "Buy it all at FairPrice" })).toBeDefined();
+    expect(screen.getByText(/Delivery charges could not be verified/)).toBeDefined();
   });
 
-  it("marks savings unavailable when there is no single-retailer baseline", async () => {
-    await compareWith(missingBaselineExample);
-    expect(screen.getByRole("heading", { name: "Split your basket" })).toBeDefined();
-    expect(screen.getByText("Savings unavailable — no single-retailer baseline")).toBeDefined();
-    expect(screen.queryByText(/^Save S\$/)).toBeNull();
+  it("shows a waived order charge without adding it", async () => {
+    await compareWith(recommendedExample);
+    expect(
+      screen.getByText(/Synthetic service fee S\$3.99 waived on orders from S\$6.00/),
+    ).toBeDefined();
+    expect(screen.getAllByText("S$6.50").length).toBeGreaterThan(0);
   });
 
-  it("keeps one retailer when no split plan exists", async () => {
-    await compareWith(baselineOnlyExample);
-    expect(screen.getByRole("heading", { name: "Keep it with one retailer" })).toBeDefined();
-    expect(screen.getByText("No split plan to compare")).toBeDefined();
+  it("names the missing product for an unavailable retailer", async () => {
+    await compareWith(oneRetailerCompleteExample);
+    expect(screen.getByRole("heading", { name: "Buy it all at RedMart" })).toBeDefined();
+    expect(await screen.findByText(/No eligible offer for Fixture Plain Drink/)).toBeDefined();
   });
 
-  it("keeps one retailer when the split only ties", async () => {
+  it("breaks a tie in the order the API returns", async () => {
     await compareWith(tieExample);
-    expect(screen.getByRole("heading", { name: "Keep it with one retailer" })).toBeDefined();
-    expect(screen.getByText("No lower split total")).toBeDefined();
+    expect(screen.getByRole("heading", { name: "Buy it all at FairPrice" })).toBeDefined();
   });
 
-  it("does not claim impossibility when the search stopped at its limit", async () => {
-    await compareWith(noPlanFoundExample);
-    expect(screen.getByRole("heading", { name: "No valid plan found." })).toBeDefined();
+  it("says no feasible plan exists and gives each retailer's reason", async () => {
+    await compareWith(noFeasiblePlanExample);
     expect(
-      screen.getByText(/search stopped at its limit, so a valid plan may still exist/),
+      screen.getByRole("heading", { name: "No feasible purchasing plan available" }),
     ).toBeDefined();
-    expect(screen.queryByRole("heading", { name: "This basket cannot be completed." })).toBeNull();
-  });
-
-  it("names the blocking product when the basket is proven impossible", async () => {
-    await compareWith(provenInfeasibleExample);
-    expect(screen.getByRole("heading", { name: "This basket cannot be completed." })).toBeDefined();
-    expect(
-      await screen.findByText(/No retailer has an eligible offer for Fixture White Rice/),
-    ).toBeDefined();
+    expect(screen.getByText(/below the S\$15.00 minimum/)).toBeDefined();
+    expect(await screen.findByText(/No eligible offer for Fixture White Rice/)).toBeDefined();
+    expect(screen.getByText(/Delivery charges could not be verified/)).toBeDefined();
+    expect(screen.queryByRole("heading", { name: /Buy it all at/ })).toBeNull();
   });
 });

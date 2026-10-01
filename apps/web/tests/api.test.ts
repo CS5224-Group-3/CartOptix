@@ -1,6 +1,6 @@
 // Verifies the web API client builds requests from the shared routes and maps errors.
 import { type ErrorResponse, routes } from "@cartoptix/contracts";
-import { basketRequestExample, splitWinsExample } from "@cartoptix/contracts/fixtures";
+import { basketRequestExample, recommendedExample } from "@cartoptix/contracts/fixtures";
 import { describe, expect, it, vi } from "vitest";
 import {
   ApiError,
@@ -42,8 +42,8 @@ describe("API client", () => {
   });
 
   it("posts the basket as JSON and returns the comparison", async () => {
-    const fetchMock = stubFetch(json(splitWinsExample));
-    await expect(compareBasket(basketRequestExample)).resolves.toEqual(splitWinsExample);
+    const fetchMock = stubFetch(json(recommendedExample));
+    await expect(compareBasket(basketRequestExample)).resolves.toEqual(recommendedExample);
     const [url, init] = fetchMock.mock.calls[0] ?? [];
     expect(url).toBe(routes.compare.url);
     expect(init?.method).toBe("POST");

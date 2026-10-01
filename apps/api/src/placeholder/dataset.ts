@@ -27,8 +27,6 @@ export interface PlaceholderRetailerRule {
   note: string;
 }
 
-export const placeholderDatasetId = "placeholder-prototype-v1";
-
 const image = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=720&q=80`;
 
 const product = (
@@ -313,7 +311,6 @@ export const placeholderRules: Record<RetailerId, PlaceholderRetailerRule> = {
 };
 
 export const placeholderCatalogue: CatalogueResponse = {
-  dataset: { datasetId: placeholderDatasetId, dataKind: "synthetic" },
   retailers: [
     { retailerId: "redmart", name: "RedMart" },
     { retailerId: "fairprice", name: "FairPrice" },
@@ -330,7 +327,6 @@ export const placeholderCatalogue: CatalogueResponse = {
     { categoryId: "toiletries-and-personal-care", name: "Toiletries & Personal Care" },
   ],
   delivery: {
-    scenario: "Synthetic Singapore address, standard delivery, non-member pricing.",
     rules: (["redmart", "fairprice", "cold-storage"] as const).map((retailerId) => {
       const rule = placeholderRules[retailerId];
       return {

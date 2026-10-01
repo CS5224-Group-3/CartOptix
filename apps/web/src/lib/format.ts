@@ -1,5 +1,5 @@
 // Display helpers: money formatting and visual treatment for retailers and categories.
-import type { Order, Plan, RetailerId } from "@cartoptix/contracts";
+import type { Order, RetailerId } from "@cartoptix/contracts";
 
 export function formatSgd(cents: number | null | undefined): string {
   if (cents === null || cents === undefined) return "Unavailable";
@@ -54,18 +54,30 @@ export function orderSubtotalCents(order: Order): number {
   return order.lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
 }
 
+/** Order charges added to the total; waived charges are shown but not added. */
 export function orderChargesCents(order: Order): number {
-  return order.orderCharges.reduce((sum, charge) => sum + charge.amountCents, 0);
+  return order.orderCharges.reduce(
+    (sum, charge) => (charge.waived ? sum : sum + charge.amountCents),
+    0,
+  );
 }
 
-/** Excluded-promotion notes across a plan, prefixed with where they apply. */
-export function excludedPromotionNotes(plan: Plan, productName: (id: string) => string): string[] {
-  return plan.orders.flatMap((order) =>
-    order.lines.flatMap((line) =>
-      line.excludedPromotions.map(
-        (note) =>
-          `${RETAILER_DISPLAY[order.retailerId].name}: ${productName(line.productId)} — ${note}`,
-      ),
+/** How an order charge is described in a breakdown, including any waiver. */
+export function orderChargeLabel(charge: Order["orderCharges"][number]): string {
+  if (charge.waived && charge.waivedFromCents !== null)
+    return `${charge.label} ${formatSgd(charge.amountCents)} waived on orders from ${formatSgd(charge.waivedFromCents)}`;
+  return charge.label;
+}
+
+/** Excluded-promotion notes on an order, prefixed with where they apply. */
+export function excludedPromotionNotes(
+  order: Order,
+  productName: (id: string) => string,
+): string[] {
+  return order.lines.flatMap((line) =>
+    line.excludedPromotions.map(
+      (note) =>
+        `${RETAILER_DISPLAY[order.retailerId].name}: ${productName(line.productId)} — ${note}`,
     ),
   );
 }
