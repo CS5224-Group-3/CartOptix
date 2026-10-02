@@ -29,7 +29,6 @@ function errorBody(code: ErrorResponse["error"]["code"], message: string): Error
 }
 
 export function registerShopperRoutes(server: FastifyInstance, databaseUrl?: string): void {
-  const connectionString = databaseUrl ?? process.env.DATABASE_URL;
   server.setErrorHandler((error: FastifyError, request, reply) => {
     // Schema failures and Fastify's own client errors, such as a malformed JSON
     // body, are the caller's to fix; only the rest are retryable service errors.
@@ -49,9 +48,9 @@ export function registerShopperRoutes(server: FastifyInstance, databaseUrl?: str
     reply.code(404).send(errorBody("not_found", "No such endpoint.")),
   );
 
-  if (connectionString !== undefined) {
-    registerCatalogueRoutes(server, createDatabaseCatalogueStore(connectionString));
-    registerProductsRoutes(server, createDatabaseProductsStore(connectionString));
+  if (databaseUrl !== undefined) {
+    registerCatalogueRoutes(server, createDatabaseCatalogueStore(databaseUrl));
+    registerProductsRoutes(server, createDatabaseProductsStore(databaseUrl));
   } else {
     server.route({ ...routes.catalogue, handler: async () => placeholderCatalogue });
 

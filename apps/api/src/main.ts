@@ -6,6 +6,7 @@ const config = loadConfig();
 const database = createDatabase(config.databaseUrl);
 const server = buildServer({
   database,
+  databaseUrl: config.databaseUrl,
   webOrigin: process.env.WEB_ORIGIN ?? "http://localhost:5173",
 });
 
