@@ -1,8 +1,8 @@
 import { CatalogueResponseSchema, routes } from "@cartoptix/contracts";
 import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import Fastify from "fastify";
-import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
+import { Value } from "typebox/value";
 import { createFixtureCatalogueStore, registerCatalogueRoutes } from "../src/catalogue/index.ts";
 
 describe("catalogue API", () => {
@@ -12,23 +12,21 @@ describe("catalogue API", () => {
     servers.length = 0;
   });
 
-  function start() {
+  it("returns the fixture catalogue matching the contract", async () => {
     const server = Fastify({ logger: false });
     registerCatalogueRoutes(server, createFixtureCatalogueStore());
     servers.push(server);
-    return server;
-  }
-
-  it("returns the current fixture catalogue matching the contract", async () => {
-    const response = await start().inject({ method: "GET", url: routes.catalogue.url });
+    const response = await server.inject({ method: "GET", url: routes.catalogue.url });
     expect(response.statusCode).toBe(200);
     expect(response.json()).toEqual(catalogueExample);
     expect(Value.Check(CatalogueResponseSchema, response.json())).toBe(true);
   });
 
   it("does not expose collection dates", async () => {
-    const response = await start().inject({ method: "GET", url: routes.catalogue.url });
+    const server = Fastify({ logger: false });
+    registerCatalogueRoutes(server, createFixtureCatalogueStore());
+    servers.push(server);
+    const response = await server.inject({ method: "GET", url: routes.catalogue.url });
     expect(response.json()).not.toHaveProperty("collectionDate");
-    expect(response.json().dataset).toEqual({ datasetId: "fixture-v1", dataKind: "synthetic" });
   });
 });

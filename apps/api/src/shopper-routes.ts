@@ -17,6 +17,10 @@ import {
   routes,
 } from "@cartoptix/contracts";
 import type { FastifyError, FastifyInstance } from "fastify";
+import { registerCatalogueRoutes } from "./catalogue/routes.ts";
+import { createDatabaseCatalogueStore } from "./catalogue/store.ts";
+import { registerProductsRoutes } from "./products/routes.ts";
+import { createDatabaseProductsStore } from "./products/store.ts";
 import { compareBasket, planLine, UnknownProductsError } from "./placeholder/compare.ts";
 import { placeholderCatalogue, placeholderProducts } from "./placeholder/dataset.ts";
 
@@ -24,7 +28,8 @@ function errorBody(code: ErrorResponse["error"]["code"], message: string): Error
   return { error: { code, message } };
 }
 
-export function registerShopperRoutes(server: FastifyInstance): void {
+export function registerShopperRoutes(server: FastifyInstance, databaseUrl?: string): void {
+  const connectionString = databaseUrl ?? process.env.DATABASE_URL;
   server.setErrorHandler((error: FastifyError, request, reply) => {
     // Schema failures and Fastify's own client errors, such as a malformed JSON
     // body, are the caller's to fix; only the rest are retryable service errors.
@@ -44,7 +49,11 @@ export function registerShopperRoutes(server: FastifyInstance): void {
     reply.code(404).send(errorBody("not_found", "No such endpoint.")),
   );
 
-  server.route({ ...routes.catalogue, handler: async () => placeholderCatalogue });
+  if (connectionString !== undefined) {
+    registerCatalogueRoutes(server, createDatabaseCatalogueStore(connectionString));
+    registerProductsRoutes(server, createDatabaseProductsStore(connectionString));
+  } else {
+    server.route({ ...routes.catalogue, handler: async () => placeholderCatalogue });
 
   server.route<{ Querystring: ProductsQuery }>({
     ...routes.products,
@@ -84,6 +93,8 @@ export function registerShopperRoutes(server: FastifyInstance): void {
       return { product: entry.product, quantity, offers };
     },
   });
+
+  }
 
   server.route<{ Body: BasketCompareRequest }>({
     ...routes.compare,
