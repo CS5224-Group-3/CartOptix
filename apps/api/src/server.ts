@@ -14,7 +14,11 @@ export interface BuildServerOptions {
  * Builds the Fastify instance without starting it, so tests can drive the
  * server in-process using `.inject()`.
  */
-export function buildServer({ database, databaseUrl, webOrigin }: BuildServerOptions): FastifyInstance {
+export function buildServer({
+  database,
+  databaseUrl,
+  webOrigin,
+}: BuildServerOptions): FastifyInstance {
   const server = Fastify({
     logger: false,
     // The contracts use closed objects; reject unknown fields instead of
