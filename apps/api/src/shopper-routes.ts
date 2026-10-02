@@ -19,10 +19,10 @@ import {
 import type { FastifyError, FastifyInstance } from "fastify";
 import { registerCatalogueRoutes } from "./catalogue/routes.ts";
 import { createDatabaseCatalogueStore } from "./catalogue/store.ts";
-import { registerProductsRoutes } from "./products/routes.ts";
-import { createDatabaseProductsStore } from "./products/store.ts";
 import { compareBasket, planLine, UnknownProductsError } from "./placeholder/compare.ts";
 import { placeholderCatalogue, placeholderProducts } from "./placeholder/dataset.ts";
+import { registerProductsRoutes } from "./products/routes.ts";
+import { createDatabaseProductsStore } from "./products/store.ts";
 
 function errorBody(code: ErrorResponse["error"]["code"], message: string): ErrorResponse {
   return { error: { code, message } };
@@ -55,45 +55,44 @@ export function registerShopperRoutes(server: FastifyInstance, databaseUrl?: str
   } else {
     server.route({ ...routes.catalogue, handler: async () => placeholderCatalogue });
 
-  server.route<{ Querystring: ProductsQuery }>({
-    ...routes.products,
-    handler: async (request) => {
-      const { q, categoryId, page = 1, pageSize = 20 } = request.query;
-      const needle = q?.trim().toLowerCase();
-      const matches = placeholderProducts
-        .map(({ product }) => product)
-        .filter(
-          (product) =>
-            (!needle || product.name.toLowerCase().includes(needle)) &&
-            (!categoryId || product.categoryId === categoryId),
+    server.route<{ Querystring: ProductsQuery }>({
+      ...routes.products,
+      handler: async (request) => {
+        const { q, categoryId, page = 1, pageSize = 20 } = request.query;
+        const needle = q?.trim().toLowerCase();
+        const matches = placeholderProducts
+          .map(({ product }) => product)
+          .filter(
+            (product) =>
+              (!needle || product.name.toLowerCase().includes(needle)) &&
+              (!categoryId || product.categoryId === categoryId),
+          );
+        const start = (page - 1) * pageSize;
+        return { products: matches.slice(start, start + pageSize), total: matches.length };
+      },
+    });
+
+    server.route<{ Params: OffersParams; Querystring: OffersQuery }>({
+      ...routes.offers,
+      handler: async (request, reply) => {
+        const entry = placeholderProducts.find(
+          ({ product }) => product.productId === request.params.id,
         );
-      const start = (page - 1) * pageSize;
-      return { products: matches.slice(start, start + pageSize), total: matches.length };
-    },
-  });
-
-  server.route<{ Params: OffersParams; Querystring: OffersQuery }>({
-    ...routes.offers,
-    handler: async (request, reply) => {
-      const entry = placeholderProducts.find(
-        ({ product }) => product.productId === request.params.id,
-      );
-      if (!entry) return reply.code(404).send(errorBody("not_found", "No such product."));
-      const { quantity } = request.query;
-      const offers: Offer[] = entry.listings
-        .map((listing) => {
-          const {
-            productId: _productId,
-            quantity: _quantity,
-            ...cost
-          } = planLine({ productId: entry.product.productId, quantity }, listing);
-          return { retailerId: listing.retailerId, ...cost };
-        })
-        .sort((a, b) => a.lineTotalCents - b.lineTotalCents);
-      return { product: entry.product, quantity, offers };
-    },
-  });
-
+        if (!entry) return reply.code(404).send(errorBody("not_found", "No such product."));
+        const { quantity } = request.query;
+        const offers: Offer[] = entry.listings
+          .map((listing) => {
+            const {
+              productId: _productId,
+              quantity: _quantity,
+              ...cost
+            } = planLine({ productId: entry.product.productId, quantity }, listing);
+            return { retailerId: listing.retailerId, ...cost };
+          })
+          .sort((a, b) => a.lineTotalCents - b.lineTotalCents);
+        return { product: entry.product, quantity, offers };
+      },
+    });
   }
 
   server.route<{ Body: BasketCompareRequest }>({

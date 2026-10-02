@@ -1,8 +1,8 @@
 import type { OffersResponse, Product } from "@cartoptix/contracts";
 import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
+import pg from "pg";
 import { priceOffer } from "./offers.ts";
 import { type ProductSearchQuery, searchProducts } from "./search.ts";
-import pg from "pg";
 
 export interface ProductsStore {
   products(query: ProductSearchQuery): Promise<{ products: Product[]; total: number }>;
@@ -86,19 +86,27 @@ export function createDatabaseProductsStore(connectionString: string): ProductsS
         priceKind: "ordinary" | "unconditional_sale";
         unitPriceCents: number;
         excludedPromotions: string[];
-      }>(`SELECT retailer_id AS "retailerId", listing_id AS "listingId",
+      }>(
+        `SELECT retailer_id AS "retailerId", listing_id AS "listingId",
            product_url AS "productUrl", price_kind AS "priceKind",
            unit_price_cents AS "unitPriceCents", excluded_promotions AS "excludedPromotions"
-         FROM listings WHERE product_id = $1 ORDER BY unit_price_cents, retailer_id`, [productId]);
+         FROM listings WHERE product_id = $1 ORDER BY unit_price_cents, retailer_id`,
+        [productId],
+      );
       return {
         product: product.rows[0],
         quantity,
-        offers: listings.rows.map((offer) => priceOffer({
-          ...offer,
-          retailerId: offer.retailerId as "redmart" | "fairprice" | "cold-storage",
-          itemCharges: [],
-          lineTotalCents: offer.unitPriceCents,
-        }, quantity)),
+        offers: listings.rows.map((offer) =>
+          priceOffer(
+            {
+              ...offer,
+              retailerId: offer.retailerId as "redmart" | "fairprice" | "cold-storage",
+              itemCharges: [],
+              lineTotalCents: offer.unitPriceCents,
+            },
+            quantity,
+          ),
+        ),
       };
     },
     async close() {
@@ -106,4 +114,3 @@ export function createDatabaseProductsStore(connectionString: string): ProductsS
     },
   };
 }
-

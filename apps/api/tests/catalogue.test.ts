@@ -1,8 +1,8 @@
 import { CatalogueResponseSchema, routes } from "@cartoptix/contracts";
 import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import Fastify from "fastify";
-import { afterEach, describe, expect, it } from "vitest";
 import { Value } from "typebox/value";
+import { afterEach, describe, expect, it } from "vitest";
 import { createFixtureCatalogueStore, registerCatalogueRoutes } from "../src/catalogue/index.ts";
 
 describe("catalogue API", () => {

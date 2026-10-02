@@ -423,9 +423,31 @@ export function CataloguePage() {
               ))}
             </div>
             <nav className="catalogue-pagination" aria-label="Catalogue pages">
-              <button type="button" className="button button--outline" disabled={page === 1} onClick={() => { setPage((current) => current - 1); setPageInput(String(page - 1)); }}>Previous</button>
-              <span>Page {page} of {totalPages}</span>
-              <button type="button" className="button button--outline" disabled={page >= totalPages} onClick={() => { setPage((current) => current + 1); setPageInput(String(page + 1)); }}>Next</button>
+              <button
+                type="button"
+                className="button button--outline"
+                disabled={page === 1}
+                onClick={() => {
+                  setPage((current) => current - 1);
+                  setPageInput(String(page - 1));
+                }}
+              >
+                Previous
+              </button>
+              <span>
+                Page {page} of {totalPages}
+              </span>
+              <button
+                type="button"
+                className="button button--outline"
+                disabled={page >= totalPages}
+                onClick={() => {
+                  setPage((current) => current + 1);
+                  setPageInput(String(page + 1));
+                }}
+              >
+                Next
+              </button>
               <label className="page-size-control">
                 <span>Go to page</span>
                 <input
@@ -438,7 +460,9 @@ export function CataloguePage() {
                     if (event.key === "Enter") jumpToPage();
                   }}
                 />
-                <button type="button" className="button button--outline" onClick={jumpToPage}>Go</button>
+                <button type="button" className="button button--outline" onClick={jumpToPage}>
+                  Go
+                </button>
               </label>
             </nav>
           </>

@@ -21,14 +21,15 @@ export function createDatabaseCatalogueStore(connectionString: string): Catalogu
   return {
     async catalogue() {
       const [retailers, categories, delivery] = await Promise.all([
-        pool.query<{ retailerId: string; name: string }>(
-          'SELECT retailer_id AS "retailerId", name FROM retailers ORDER BY retailer_id',
-        ),
+        pool.query<{
+          retailerId: CatalogueResponse["retailers"][number]["retailerId"];
+          name: string;
+        }>('SELECT retailer_id AS "retailerId", name FROM retailers ORDER BY retailer_id'),
         pool.query<{ categoryId: string; name: string }>(
           'SELECT category_id AS "categoryId", name FROM categories ORDER BY category_id',
         ),
         pool.query<{
-          retailerId: string;
+          retailerId: CatalogueResponse["retailers"][number]["retailerId"];
           status: "verified" | "unverified";
           deliveryFeeCents: number | null;
           freeDeliveryFromCents: number | null;
@@ -47,14 +48,19 @@ export function createDatabaseCatalogueStore(connectionString: string): Catalogu
           rules: delivery.rows.map((rule) =>
             rule.status === "verified"
               ? {
-                  retailerId: rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"],
+                  retailerId:
+                    rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"],
                   status: "verified",
                   deliveryFeeCents: rule.deliveryFeeCents!,
                   freeDeliveryFromCents: rule.freeDeliveryFromCents,
                   minimumOrderCents: rule.minimumOrderCents,
                   note: rule.note ?? "Verified delivery rule",
                 }
-              : { retailerId: rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"], status: "unavailable" },
+              : {
+                  retailerId:
+                    rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"],
+                  status: "unavailable",
+                },
           ),
         },
       };
@@ -64,4 +70,3 @@ export function createDatabaseCatalogueStore(connectionString: string): Catalogu
     },
   };
 }
-
