@@ -46,12 +46,12 @@ export function createDatabaseCatalogueStore(connectionString: string): Catalogu
         categories: categories.rows,
         delivery: {
           rules: delivery.rows.map((rule) =>
-            rule.status === "verified"
+            rule.status === "verified" && rule.deliveryFeeCents !== null
               ? {
                   retailerId:
                     rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"],
                   status: "verified",
-                  deliveryFeeCents: rule.deliveryFeeCents!,
+                  deliveryFeeCents: rule.deliveryFeeCents,
                   freeDeliveryFromCents: rule.freeDeliveryFromCents,
                   minimumOrderCents: rule.minimumOrderCents,
                   note: rule.note ?? "Verified delivery rule",
