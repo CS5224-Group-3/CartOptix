@@ -43,6 +43,8 @@ This repository is a monorepo so that the web client and backend evolve together
 
 **Types exchanged between `apps/web` and `apps/api` are declared once in `packages/contracts`.** Define the request and response types there first, then import them on both sides. Neither side redefines a shape the other owns, and no endpoint is consumed by the client through a locally declared type.
 
+This applies inside `apps/api` too. When a module produces a value that reaches the wire, such as a status, reason code or field name, it uses the contract's type directly. It does not define a parallel internal spelling (`"no-feasible-plan"` for `"no_feasible_plan"`) that a mapper then translates. Internal-only values that never reach a response, such as the pricing module's result codes, may have their own names. For named constants, use `as const` objects or the contract's literal unions, not `enum`.
+
 Keep a contract change and both sides of its usage in the same pull request, so type checking catches a mismatch before review.
 
 Register API endpoints from the contracts' `routes`, so Fastify validates requests and serialises responses with the same schemas the client compiles against. The server rejects unknown fields (`removeAdditional: false`) because the contracts use closed objects; keep that setting. Every error response uses `ErrorResponse`.

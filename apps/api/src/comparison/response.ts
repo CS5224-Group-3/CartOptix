@@ -4,38 +4,26 @@
 import type {
   BasketCompareResponse,
   RetailerOption as ContractOption,
-  UnavailableReason as ContractReason,
   PlanLine,
 } from "@cartoptix/contracts";
 import type { PricedLine } from "../pricing/index.ts";
-import type { BasketComparison, RetailerOption, UnavailableReason } from "./index.ts";
+import type { BasketComparison, RetailerOption } from "./index.ts";
 import type { ListingDetails } from "./store.ts";
 
+/** Unavailable options are already contract values; only priced orders need mapping. */
 export function toCompareResponse(
   result: BasketComparison,
   listings: ReadonlyMap<string, ListingDetails>,
 ): BasketCompareResponse {
-  if (result.status === "no-feasible-plan") {
-    return {
-      status: "no_feasible_plan",
-      options: result.options.map((option) => {
-        if (option.status !== "unavailable") throw new Error("A complete option has no plan");
-        return unavailable(option);
-      }),
-    };
-  }
-  return {
-    status: "recommended",
-    recommendedRetailerId: result.recommendedRetailerId,
-    options: result.options.map((option) => toOption(option, listings)),
-  };
+  if (result.status === "no_feasible_plan") return result;
+  return { ...result, options: result.options.map((option) => toOption(option, listings)) };
 }
 
 function toOption(
   option: RetailerOption,
   listings: ReadonlyMap<string, ListingDetails>,
 ): ContractOption {
-  if (option.status === "unavailable") return unavailable(option);
+  if (option.status === "unavailable") return option;
   const { order } = option;
   return {
     status: "complete",
@@ -50,29 +38,6 @@ function toOption(
     deliveryCents: order.delivery.amount,
     totalCents: order.total,
   };
-}
-
-function unavailable(option: Extract<RetailerOption, { status: "unavailable" }>) {
-  return {
-    status: "unavailable" as const,
-    retailerId: option.retailerId,
-    reasons: option.reasons.map(toReason),
-  };
-}
-
-function toReason(reason: UnavailableReason): ContractReason {
-  switch (reason.code) {
-    case "missing-products":
-      return { code: "missing_products", productIds: reason.productIds };
-    case "below-minimum-order":
-      return {
-        code: "below_minimum_order",
-        minimumOrderCents: reason.minimumOrder,
-        spendCents: reason.measuredAmount,
-      };
-    case "delivery-rule-unverified":
-      return { code: "delivery_rule_unverified" };
-  }
 }
 
 function toPlanLine(line: PricedLine, listings: ReadonlyMap<string, ListingDetails>): PlanLine {

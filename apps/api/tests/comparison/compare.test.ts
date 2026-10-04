@@ -141,7 +141,7 @@ describe("compareBasket", () => {
     expect(result.options.find((option) => option.retailerId === "redmart")).toEqual({
       status: "unavailable",
       retailerId: "redmart",
-      reasons: [{ code: "missing-products", productIds: ["milk"] }],
+      reasons: [{ code: "missing_products", productIds: ["milk"] }],
     });
     expect(result.status).toBe("recommended");
   });
@@ -154,10 +154,10 @@ describe("compareBasket", () => {
       expect(result.options.find((option) => option.retailerId === retailerId)).toEqual({
         status: "unavailable",
         retailerId,
-        reasons: [{ code: "delivery-rule-unverified" }],
+        reasons: [{ code: "delivery_rule_unverified" }],
       });
     }
-    expect(result.status).toBe("no-feasible-plan");
+    expect(result.status).toBe("no_feasible_plan");
   });
 
   it("reports every reason at once", () => {
@@ -171,8 +171,8 @@ describe("compareBasket", () => {
     });
     expect(result.options.find((option) => option.retailerId === "redmart")).toMatchObject({
       reasons: [
-        { code: "missing-products", productIds: ["milk"] },
-        { code: "delivery-rule-unverified" },
+        { code: "missing_products", productIds: ["milk"] },
+        { code: "delivery_rule_unverified" },
       ],
     });
   });
@@ -181,11 +181,11 @@ describe("compareBasket", () => {
     const result = compare({
       deliveryRules: rules.map((r) => ({ ...r, minimumOrder: 4000 })),
     });
-    expect(result.status).toBe("no-feasible-plan");
+    expect(result.status).toBe("no_feasible_plan");
     expect(result.options.find((option) => option.retailerId === "fairprice")).toEqual({
       status: "unavailable",
       retailerId: "fairprice",
-      reasons: [{ code: "below-minimum-order", minimumOrder: 4000, measuredAmount: 2700 }],
+      reasons: [{ code: "below_minimum_order", minimumOrderCents: 4000, spendCents: 2700 }],
     });
   });
 

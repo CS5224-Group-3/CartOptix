@@ -1,6 +1,10 @@
-import type { RetailerId } from "@cartoptix/contracts";
+import type {
+  BasketCompareResponse,
+  RetailerId,
+  UnavailableOption,
+  UnavailableReason,
+} from "@cartoptix/contracts";
 import {
-  type Cents,
   type DeliveryRule,
   type OfferRule,
   type PricedLine,
@@ -49,15 +53,17 @@ export interface CompareBasketInput {
   retailers: readonly RetailerId[];
 }
 
-/** Why one retailer cannot supply the complete basket. */
-export type UnavailableReason =
-  | { code: "missing-products"; productIds: string[] }
-  | { code: "below-minimum-order"; minimumOrder: Cents; measuredAmount: Cents }
-  | { code: "delivery-rule-unverified" };
-
-export type RetailerOption =
-  | { status: "complete"; retailerId: RetailerId; order: PricedRetailerOrder }
-  | { status: "unavailable"; retailerId: RetailerId; reasons: UnavailableReason[] };
+/**
+ * A complete option carries the priced order, which `response.ts` maps onto the
+ * contract. Unavailable options and their reasons are already contract values,
+ * so they pass straight through.
+ */
+export type CompleteOption = {
+  status: "complete";
+  retailerId: RetailerId;
+  order: PricedRetailerOrder;
+};
+export type RetailerOption = CompleteOption | UnavailableOption;
 
 /**
  * `options` holds one entry per compared retailer: complete options, cheapest
@@ -65,8 +71,15 @@ export type RetailerOption =
  * recommendation is always the first option.
  */
 export type BasketComparison =
-  | { status: "recommended"; recommendedRetailerId: RetailerId; options: RetailerOption[] }
-  | { status: "no-feasible-plan"; options: RetailerOption[] };
+  | {
+      status: Extract<BasketCompareResponse["status"], "recommended">;
+      recommendedRetailerId: RetailerId;
+      options: RetailerOption[];
+    }
+  | {
+      status: Extract<BasketCompareResponse["status"], "no_feasible_plan">;
+      options: UnavailableOption[];
+    };
 
 /**
  * The data broke an invariant the importer (#4) is meant to guarantee, such as
@@ -97,7 +110,7 @@ export function compareBasket(input: CompareBasketInput): BasketComparison {
         recommendedRetailerId: cheapest.retailerId,
         options: [...complete, ...unavailable],
       }
-    : { status: "no-feasible-plan", options: unavailable };
+    : { status: "no_feasible_plan", options: unavailable };
 
   validateComparison(input.lines, result);
   return result;
@@ -121,10 +134,10 @@ function priceRetailer(input: CompareBasketInput, retailerId: RetailerId): Retai
     if (offer) offers.push({ offer, quantity: line.quantity });
     else missing.push(line.productId);
   }
-  if (missing.length > 0) reasons.push({ code: "missing-products", productIds: missing });
+  if (missing.length > 0) reasons.push({ code: "missing_products", productIds: missing });
 
   const delivery = input.deliveryRules.find((rule) => rule.retailerId === retailerId);
-  if (!delivery?.verified) reasons.push({ code: "delivery-rule-unverified" });
+  if (!delivery?.verified) reasons.push({ code: "delivery_rule_unverified" });
 
   // Both reasons above are reported together, so the shopper sees every one;
   // pricing the order is only meaningful once the basket is whole.
@@ -146,16 +159,20 @@ function priceRetailer(input: CompareBasketInput, retailerId: RetailerId): Retai
         retailerId,
         reasons: [
           {
-            code: "below-minimum-order",
-            minimumOrder: result.reason.minimumOrder,
-            measuredAmount: result.reason.measuredAmount,
+            code: "below_minimum_order",
+            minimumOrderCents: result.reason.minimumOrder,
+            spendCents: result.reason.measuredAmount,
           },
         ],
       };
     case "unavailable":
       // An unresolved fee is an unverified rule; any other gap is bad data.
       if (result.reason.code === "delivery-rule-unverified") {
-        return { status: "unavailable", retailerId, reasons: [{ code: result.reason.code }] };
+        return {
+          status: "unavailable",
+          retailerId,
+          reasons: [{ code: "delivery_rule_unverified" }],
+        };
       }
       throw new ComparisonDataError(result.reason.detail);
   }
@@ -176,11 +193,13 @@ function validateComparison(lines: readonly BasketLine[], result: BasketComparis
     throw new Error(`Invalid basket comparison: ${message}`);
   };
 
-  const retailers = result.options.map((option) => option.retailerId);
+  // Widen the union of array types so filtering narrows to complete options.
+  const options: readonly RetailerOption[] = result.options;
+  const retailers = options.map((option) => option.retailerId);
   if (new Set(retailers).size !== retailers.length) fail("a retailer appears twice");
 
-  const complete = result.options.filter((option) => option.status === "complete");
-  const firstUnavailable = result.options.findIndex((option) => option.status === "unavailable");
+  const complete = options.filter((option) => option.status === "complete");
+  const firstUnavailable = options.findIndex((option) => option.status === "unavailable");
   if (firstUnavailable >= 0 && firstUnavailable < complete.length) {
     fail("a complete option follows an unavailable one");
   }
@@ -212,14 +231,14 @@ function validateComparison(lines: readonly BasketLine[], result: BasketComparis
     }
   }
 
-  for (const option of result.options) {
+  for (const option of options) {
     if (option.status === "unavailable" && option.reasons.length === 0) {
       fail(`${option.retailerId} is unavailable without a reason`);
     }
   }
 
   if (result.status === "recommended") {
-    if (result.options[0]?.retailerId !== result.recommendedRetailerId) {
+    if (options[0]?.retailerId !== result.recommendedRetailerId) {
       fail("the recommendation is not the first option");
     }
   } else if (complete.length > 0) {
