@@ -43,7 +43,7 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
     return body;
   });
 
-  registerShopperRoutes(server);
+  registerShopperRoutes(server, database);
 
   return server;
 }

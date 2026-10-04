@@ -45,10 +45,18 @@ pnpm dev
 ```
 
 `pnpm dev` starts PostgreSQL, builds the shared contracts, then starts the API
-and web app. Open <http://localhost:5173>. The catalogue, product offers and
-basket comparison are served by the API under <http://localhost:3001/api/v1>,
-using a synthetic placeholder dataset until the curated seed lands. The API
-health check is available at <http://localhost:3001/health/ready>.
+and web app. Open <http://localhost:5173>. The shopper endpoints are served under
+<http://localhost:3001/api/v1>. Basket comparison reads the imported seed, so
+load it once:
+
+```sh
+pnpm --filter @cartoptix/api db:migrate
+pnpm --filter @cartoptix/api seed:import data/seed/seed.json
+```
+
+The catalogue, products and offers still use a synthetic placeholder dataset
+until #9 and #10 land. The API health check is available at
+<http://localhost:3001/health/ready>.
 
 Never commit real credentials. `.env` is ignored by Git; only `.env.example` is
 tracked, and it holds local placeholders.

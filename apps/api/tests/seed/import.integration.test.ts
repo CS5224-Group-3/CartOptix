@@ -1,18 +1,19 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import pg from "pg";
+import type pg from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { runMigrations } from "../../src/db/migrate.ts";
 import { importSeed } from "../../src/seed/import.ts";
+import {
+  connectionString,
+  createThrowawayDatabase,
+  fixtureSeedBytes as fixtureBytes,
+  type ThrowawayDatabase,
+} from "../support/database.ts";
 
 /**
  * Migrations and import against a throwaway database on the local or CI
  * PostgreSQL, created and dropped by this file. Skipped without DATABASE_URL.
  */
 
-const connectionString = process.env.DATABASE_URL;
-const fixturePath = resolve(import.meta.dirname, "fixture-seed.json");
-const fixtureBytes = readFileSync(fixturePath);
 const fixture = JSON.parse(fixtureBytes.toString("utf8"));
 const listingId: string = fixture.listings[0].listingId;
 const originalPrice: number = fixture.listings[0].unitPriceCents;
@@ -24,8 +25,7 @@ function seedBytes(mutate: (seed: ReturnType<typeof JSON.parse>) => void): Buffe
 }
 
 describe.skipIf(connectionString === undefined)("seed import against PostgreSQL", () => {
-  const databaseName = `cartoptix_test_${process.pid}_${Date.now()}`;
-  const admin = new pg.Client({ connectionString });
+  let database: ThrowawayDatabase;
   let client: pg.Client;
 
   /** The first listing's price, which the mutated seeds below change. */
@@ -36,18 +36,12 @@ describe.skipIf(connectionString === undefined)("seed import against PostgreSQL"
     Number((await client.query(`SELECT count(*) FROM ${table}`)).rows[0].count);
 
   beforeAll(async () => {
-    await admin.connect();
-    await admin.query(`CREATE DATABASE ${databaseName}`);
-    const url = new URL(connectionString ?? "");
-    url.pathname = `/${databaseName}`;
-    client = new pg.Client({ connectionString: url.toString() });
-    await client.connect();
+    database = await createThrowawayDatabase("cartoptix_test");
+    client = database.client;
   });
 
   afterAll(async () => {
-    await client?.end();
-    await admin.query(`DROP DATABASE IF EXISTS ${databaseName} WITH (FORCE)`);
-    await admin.end();
+    await database?.drop();
   });
 
   it("refuses to import before the schema exists", async () => {

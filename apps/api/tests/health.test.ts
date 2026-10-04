@@ -5,6 +5,9 @@ import { buildServer } from "../src/server.ts";
 function stubDatabase(result: Awaited<ReturnType<Database["checkConnection"]>>): Database {
   return {
     checkConnection: async () => result,
+    loadBasket: async () => {
+      throw new Error("Not used by health checks");
+    },
     close: async () => {},
   };
 }
