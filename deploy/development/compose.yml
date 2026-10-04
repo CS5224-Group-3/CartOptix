@@ -1,0 +1,83 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: cartoptix-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - cartoptix-postgres-data:/var/lib/postgresql
+    networks:
+      - cartoptix-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+    image: cartoptix-api:issue6
+    container_name: cartoptix-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      API_PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    networks:
+      - cartoptix-net
+
+  web:
+    build:
+      context: ../..
+      dockerfile: deploy/development/web.Dockerfile
+    image: cartoptix-web:issue6
+    container_name: cartoptix-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+    networks:
+      - cartoptix-net
+
+  migrate:
+    image: cartoptix-api:issue6
+    profiles: ["ops"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    command: ["node", "apps/api/dist/db/migrate-cli.js"]
+    networks:
+      - cartoptix-net
+
+  seed:
+    image: cartoptix-api:issue6
+    profiles: ["ops"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    command:
+      ["node", "apps/api/dist/seed/import-cli.js", "/seed/seed.json"]
+    volumes:
+      - ../../data/seed/seed.json:/seed/seed.json:ro
+    networks:
+      - cartoptix-net
+
+volumes:
+  cartoptix-postgres-data:
+    external: true
+
+networks:
+  cartoptix-net:
+    external: true
