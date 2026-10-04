@@ -9,7 +9,7 @@ import {
   type ProductsResponse,
   routes,
 } from "@cartoptix/contracts";
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 /** A non-2xx response, carrying the contract's error code when the API sent one. */
@@ -99,8 +99,4 @@ export function useOffers(productId: string, quantity: number) {
       previous?.product.productId === productId ? previous : undefined,
     retry: (count, error) => !(error instanceof ApiError && error.status === 404) && count < 2,
   });
-}
-
-export function useCompareBasket() {
-  return useMutation({ mutationFn: compareBasket });
 }
