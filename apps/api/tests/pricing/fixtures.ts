@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import type {
   AppliedCharge,
   Cents,
+  OrderCharge,
   PackPricing,
   PricingDisclosureCode,
   PricingUnavailableCode,
@@ -48,6 +49,8 @@ export interface LineFixture {
 export interface InfeasibleExpectation {
   status: "infeasible";
   code: "minimum-order-not-met";
+  minimumOrder: Cents;
+  measuredAmount: Cents;
   shortfall: Cents;
 }
 
@@ -56,7 +59,7 @@ export interface PricedOrderExpectation {
   itemsTotal: Cents;
   measuredAmount: Cents;
   delivery: { amount: Cents; free: boolean };
-  appliedCharges: AppliedCharge[];
+  orderCharges: OrderCharge[];
   total: Cents;
   disclosureCodes: PricingDisclosureCode[];
 }

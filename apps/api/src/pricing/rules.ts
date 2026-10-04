@@ -58,6 +58,18 @@ export interface MandatoryChargeRule {
   includedInPrice: boolean;
 }
 
+/**
+ * A charge levied once per order, such as a service fee, which some retailers
+ * waive once an order is large enough.
+ */
+export interface OrderChargeRule extends MandatoryChargeRule {
+  /**
+   * Qualifying spend at or above which the charge is waived, measured on the
+   * same basis as the free-delivery threshold. Null when it is never waived.
+   */
+  waivedFrom: Cents | null;
+}
+
 export interface ExcludedPromotionRule {
   /** Curation's shopper-facing reason, for example "multibuy terms unverified". */
   detail: string;
@@ -86,7 +98,7 @@ export interface DeliveryRule {
   /** Which amount the retailer measures against its thresholds. */
   thresholdBasis: ThresholdBasis;
   /** Verified order-level charges that are not the delivery fee. */
-  orderCharges: MandatoryChargeRule[];
+  orderCharges: OrderChargeRule[];
 }
 
 /**

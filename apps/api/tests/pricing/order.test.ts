@@ -48,6 +48,11 @@ describe("priceRetailerOrder", () => {
         expect(result.reason.code).toBe(expected.code);
         expect(result.reason.shortfall).toBe(expected.shortfall);
         expect(result.reason.shortfall).toBeGreaterThan(0);
+        expect(result.reason.minimumOrder).toBe(expected.minimumOrder);
+        expect(result.reason.measuredAmount).toBe(expected.measuredAmount);
+        expect(result.reason.minimumOrder - result.reason.measuredAmount).toBe(
+          result.reason.shortfall,
+        );
         return;
       }
 
@@ -59,13 +64,15 @@ describe("priceRetailerOrder", () => {
       expect(order.delivery.measuredAmount).toBe(expected.measuredAmount);
       expect(order.delivery.amount).toBe(expected.delivery.amount);
       expect(order.delivery.free).toBe(expected.delivery.free);
-      expect(order.appliedCharges).toEqual(expected.appliedCharges);
+      expect(order.orderCharges).toEqual(expected.orderCharges);
       expect(order.total).toBe(expected.total);
       expect(order.disclosures.map((disclosure) => disclosure.code)).toEqual(
         expected.disclosureCodes,
       );
 
-      const charges = order.appliedCharges.reduce((sum, charge) => sum + charge.amount, 0);
+      const charges = order.orderCharges
+        .filter((charge) => !charge.waived)
+        .reduce((sum, charge) => sum + charge.amount, 0);
       expect(order.itemsTotal + order.delivery.amount + charges).toBe(order.total);
       expect(Number.isSafeInteger(order.total)).toBe(true);
     });
@@ -157,5 +164,64 @@ describe("priceRetailerOrder", () => {
     });
     expect(excludingCharges.order.total).toBe(4599);
     expect(includingCharges.order.total).toBe(4000);
+  });
+
+  describe("order-charge waivers", () => {
+    // Milk is 320 cents a pack, so 7 packs are 2240 cents of qualifying spend.
+    // The boundary is probed by moving the threshold around that spend.
+    const rule = (waivedFrom: number | null) => ({
+      retailerId: "redmart" as const,
+      verified: true,
+      fee: 0,
+      freeDeliveryThreshold: null,
+      minimumOrder: null,
+      thresholdBasis: { includesMandatoryCharges: false },
+      orderCharges: [{ label: "Service fee", amount: 399, includedInPrice: false, waivedFrom }],
+    });
+    const price = (packs: number, waivedFrom: number | null) => {
+      const result = priceRetailerOrder({
+        retailerId: "redmart",
+        lines: priceLines({ lines: [{ offer: "milk", packs }] }),
+        delivery: rule(waivedFrom),
+      });
+      if (result.status !== "priced") throw new Error("Expected the order to price");
+      return result.order;
+    };
+
+    it.each([
+      ["just below", 2241, false],
+      ["exactly at", 2240, true],
+      ["above", 2239, true],
+    ])("spend %s the waiver threshold", (_name, waivedFrom, waived) => {
+      const order = price(7, waivedFrom);
+      expect(order.itemsTotal).toBe(2240);
+      expect(order.orderCharges).toEqual([
+        { label: "Service fee", amount: 399, waivedFrom, waived },
+      ]);
+      expect(order.total).toBe(2240 + (waived ? 0 : 399));
+    });
+
+    it("never waives a charge without a threshold", () => {
+      const order = price(20, null);
+      expect(order.orderCharges[0]).toMatchObject({ waivedFrom: null, waived: false });
+      expect(order.total).toBe(order.itemsTotal + 399);
+    });
+
+    it("measures the waiver on the retailer's threshold basis", () => {
+      // 20 sodas: 3600 for the packs, 4000 with deposits. A fee waived from 4000
+      // is waived only when the basis counts the deposits.
+      const lines = priceLines({ lines: [{ offer: "soda", packs: 20 }] });
+      const priced = (includesMandatoryCharges: boolean) => {
+        const result = priceRetailerOrder({
+          retailerId: "redmart",
+          lines,
+          delivery: { ...rule(4000), thresholdBasis: { includesMandatoryCharges } },
+        });
+        if (result.status !== "priced") throw new Error("Expected the order to price");
+        return result.order;
+      };
+      expect(priced(false).orderCharges[0]?.waived).toBe(false);
+      expect(priced(true).orderCharges[0]?.waived).toBe(true);
+    });
   });
 });
