@@ -31,6 +31,7 @@ import {
   useContext,
   useLayoutEffect,
   useMemo,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -452,6 +453,7 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
         <button
           type="button"
           className="button button--small button--outline"
+          disabled={!product.available}
           onClick={() => {
             addToBasket(product.productId, 1);
             toast.success("Added to basket", { description: product.name });
@@ -471,8 +473,9 @@ export function CataloguePage() {
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
-  const pageSize = 24;
-  const [pageInput, setPageInput] = useState("1");
+  const pageSize = 100;
+  const [pageInput, setPageInput] = useState(String(page));
+  useEffect(() => setPageInput(String(page)), [page]);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
   const query = useMemo(
@@ -488,9 +491,11 @@ export function CataloguePage() {
   const products = data?.products ?? [];
   const total = data?.total ?? 0;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  useEffect(() => {
+    setPage((current) => Math.min(current, totalPages));
+  }, [totalPages]);
   const jumpToPage = () => {
     const nextPage = Math.min(totalPages, Math.max(1, Number.parseInt(pageInput, 10) || 1));
-    setPageInput(String(nextPage));
     setPage(nextPage);
   };
   return (
@@ -515,7 +520,6 @@ export function CataloguePage() {
               onChange={(event) => {
                 setSearch(event.target.value);
                 setPage(1);
-                setPageInput("1");
               }}
               placeholder="Search by product, brand or variant"
             />
@@ -527,7 +531,6 @@ export function CataloguePage() {
               onChange={(event) => {
                 setCategoryId(event.target.value);
                 setPage(1);
-                setPageInput("1");
               }}
             >
               <option value="">All</option>
@@ -554,7 +557,7 @@ export function CataloguePage() {
             <h2>Could not load products</h2>
             <p>The catalogue service is unavailable. Please try again shortly.</p>
           </div>
-        ) : products.length ? (
+        ) : products.length || total > 0 ? (
           <>
             <div className="product-grid">
               {products.map((product) => (
@@ -572,7 +575,6 @@ export function CataloguePage() {
                 disabled={page === 1}
                 onClick={() => {
                   setPage((current) => current - 1);
-                  setPageInput(String(page - 1));
                 }}
               >
                 Previous
@@ -586,12 +588,11 @@ export function CataloguePage() {
                 disabled={page >= totalPages}
                 onClick={() => {
                   setPage((current) => current + 1);
-                  setPageInput(String(page + 1));
                 }}
               >
                 Next
               </button>
-              <label className="page-size-control">
+              <label className="page-jump-control">
                 <span>Go to page</span>
                 <input
                   type="number"
@@ -752,6 +753,7 @@ export function ProductDetail() {
             <button
               type="button"
               className="button button--primary"
+              disabled={!product.available}
               onClick={() => {
                 addToBasket(product.productId, quantity);
                 toast.success("Added to basket", { description: `${quantity} × ${product.name}` });
@@ -919,6 +921,7 @@ export function BasketPage() {
                       packSize: fixtureProduct.packDescription,
                       categoryId: "synthetic",
                       imageUrl: null,
+                      available: true,
                     }
                   : productMetadata.get(line.productId);
                 if (!product)
