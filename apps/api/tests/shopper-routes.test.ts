@@ -7,10 +7,11 @@ import {
 } from "@cartoptix/contracts";
 import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
+import { createFixtureCatalogueStore } from "../src/catalogue/index.ts";
 import type { BasketData } from "../src/comparison/store.ts";
 import type { Database } from "../src/database.ts";
-import { placeholderProducts } from "../src/placeholder/dataset.ts";
 import type { DeliveryRule, OfferRule } from "../src/pricing/index.ts";
+import { createFixtureProductsStore } from "../src/products/index.ts";
 import { buildServer } from "../src/server.ts";
 
 /** A two-product seed: rice at RedMart and FairPrice, noodles at FairPrice only. */
@@ -64,6 +65,9 @@ const defaultLoadBasket = loadBasket;
 const database: Database = {
   checkConnection: async () => ({ status: "ok" }),
   loadBasket: (productIds) => loadBasket(productIds),
+  loadCatalogue: () => createFixtureCatalogueStore().catalogue(),
+  loadProducts: (query) => createFixtureProductsStore().products(query),
+  loadOffers: (productId, quantity) => createFixtureProductsStore().offers(productId, quantity),
   close: async () => {},
 };
 let server: ReturnType<typeof buildServer> | undefined;
@@ -92,34 +96,41 @@ describe("shopper routes", () => {
     const app = start();
     const search = await app.inject({ method: "GET", url: `${routes.products.url}?q=rice` });
     expect(Value.Check(ProductsResponseSchema, search.json())).toBe(true);
-    expect(search.json().products.map((p: { productId: string }) => p.productId)).toEqual(["r1"]);
+    expect(search.json().products.map((p: { productId: string }) => p.productId)).toEqual([
+      "fixture-rice",
+    ]);
 
     const dairy = await app.inject({
       method: "GET",
-      url: `${routes.products.url}?categoryId=dairy`,
+      url: `${routes.products.url}?categoryId=drinks`,
     });
-    expect(dairy.json().total).toBe(2);
+    expect(dairy.json().total).toBe(1);
 
     const page = await app.inject({
       method: "GET",
-      url: `${routes.products.url}?pageSize=5&page=2`,
+      url: `${routes.products.url}?pageSize=1&page=2`,
     });
-    expect(page.json().products).toHaveLength(5);
-    expect(page.json().total).toBe(placeholderProducts.length);
+    expect(page.json().products).toHaveLength(1);
+    expect(page.json().total).toBe(2);
   });
 
   it("prices offers for the requested quantity, cheapest first", async () => {
     const app = start();
     const response = await app.inject({
       method: "GET",
-      url: `${routes.products.url}/r1/offers?quantity=3`,
+      url: `${routes.products.url}/fixture-rice/offers?quantity=3`,
     });
     expect(response.statusCode).toBe(200);
     const body = response.json();
     expect(Value.Check(OffersResponseSchema, body)).toBe(true);
     const totals = body.offers.map((offer: { lineTotalCents: number }) => offer.lineTotalCents);
     expect(totals).toEqual([...totals].sort((a, b) => a - b));
-    for (const offer of body.offers) expect(offer.lineTotalCents).toBe(offer.unitPriceCents * 3);
+    for (const offer of body.offers) {
+      const addedCharges = offer.itemCharges
+        .filter((charge: { includedInPrice: boolean }) => !charge.includedInPrice)
+        .reduce((total: number, charge: { amountCents: number }) => total + charge.amountCents, 0);
+      expect(offer.lineTotalCents).toBe(offer.unitPriceCents * 3 + addedCharges);
+    }
   });
 
   it("returns not_found for an unknown product and endpoint", async () => {
