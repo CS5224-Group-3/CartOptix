@@ -1,8 +1,19 @@
 import type { OffersResponse, Product } from "@cartoptix/contracts";
 import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
-import pg from "pg";
+import { asc, eq } from "drizzle-orm";
+import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { listings, products } from "../db/schema.ts";
 import { priceOffer } from "./offers.ts";
 import { type ProductSearchQuery, searchProducts } from "./search.ts";
+
+function canonicalPackSize(specifications: readonly (string | null)[]): string {
+  const values = [...new Set(specifications.filter((value): value is string => value !== null))];
+  if (values.length === 0) return "Pack size unavailable";
+  const normalized = new Set(
+    values.map((value) => value.replace(/\s+/g, "").toLocaleLowerCase()),
+  );
+  return normalized.size === 1 ? values[0] : "Pack size unavailable";
+}
 
 export interface ProductsStore {
   products(query: ProductSearchQuery): Promise<{ products: Product[]; total: number }>;
@@ -28,89 +39,97 @@ export function createFixtureProductsStore(): ProductsStore {
   };
 }
 
-export function createDatabaseProductsStore(connectionString: string): ProductsStore {
-  const pool = new pg.Pool({ connectionString, max: 4 });
+export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
   return {
     async products(query) {
-      const values: unknown[] = [];
-      const filters: string[] = [];
-      if (query.q) {
-        values.push(`%${query.q}%`);
-        filters.push(`LOWER(p.representative_name) LIKE LOWER($${values.length})`);
-      }
-      if (query.categoryId) {
-        values.push(query.categoryId);
-        filters.push(`p.category_id = $${values.length}`);
-      }
-      const where = filters.length > 0 ? `WHERE ${filters.join(" AND ")}` : "";
-      const count = await pool.query<{ total: string }>(
-        `SELECT COUNT(*)::text AS total FROM products p ${where}`,
-        values,
+      return db.transaction(
+        async (tx) => {
+          const rows = await tx
+            .select({
+              productId: products.productId,
+              categoryId: products.categoryId,
+              name: products.representativeName,
+              imageUrl: products.imageUrl,
+              specification: listings.specification,
+            })
+            .from(products)
+            .leftJoin(listings, eq(listings.productId, products.productId))
+            .orderBy(asc(products.productId), asc(listings.listingId));
+          const specifications = new Map<string, string[]>();
+          for (const row of rows) {
+            if (row.specification !== null)
+              specifications.set(row.productId, [...(specifications.get(row.productId) ?? []), row.specification]);
+          }
+          const result: Product[] = [];
+          for (const row of rows) {
+            if (result.some((product) => product.productId === row.productId)) continue;
+            result.push({
+              productId: row.productId,
+              categoryId: row.categoryId,
+              name: row.name,
+              packSize: canonicalPackSize(specifications.get(row.productId) ?? []),
+              available: (specifications.get(row.productId)?.length ?? 0) > 0,
+              imageUrl: row.imageUrl,
+            });
+          }
+          return searchProducts(result, query);
+        },
+        { isolationLevel: "repeatable read", accessMode: "read only" },
       );
-      const offset = (query.page - 1) * query.pageSize;
-      const resultValues = [...values, query.pageSize, offset];
-      const result = await pool.query<Product>(
-        `SELECT p.product_id AS "productId", p.category_id AS "categoryId",
-           p.representative_name AS name,
-           COALESCE(l.specification, 'Pack size unavailable') AS "packSize",
-           p.image_url AS "imageUrl"
-         FROM products p
-         LEFT JOIN LATERAL (
-           SELECT specification FROM listings
-           WHERE product_id = p.product_id ORDER BY listing_id LIMIT 1
-         ) l ON true
-         ${where} ORDER BY p.product_id
-         LIMIT $${resultValues.length - 1} OFFSET $${resultValues.length}`,
-        resultValues,
-      );
-      return { products: result.rows, total: Number(count.rows[0]?.total ?? 0) };
     },
     async offers(productId, quantity) {
-      const product = await pool.query<Product>(
-        `SELECT p.product_id AS "productId", p.category_id AS "categoryId",
-           p.representative_name AS name,
-           COALESCE(l.specification, 'Pack size unavailable') AS "packSize",
-           p.image_url AS "imageUrl"
-         FROM products p
-         LEFT JOIN LATERAL (
-           SELECT specification FROM listings
-           WHERE product_id = p.product_id ORDER BY listing_id LIMIT 1
-         ) l ON true WHERE p.product_id = $1`,
-        [productId],
-      );
-      if (!product.rows[0]) return null;
-      const listings = await pool.query<{
-        retailerId: Product["productId"];
-        listingId: string;
-        productUrl: string;
-        priceKind: "ordinary" | "unconditional_sale";
-        unitPriceCents: number;
-        excludedPromotions: string[];
-      }>(
-        `SELECT retailer_id AS "retailerId", listing_id AS "listingId",
-           product_url AS "productUrl", price_kind AS "priceKind",
-           unit_price_cents AS "unitPriceCents", excluded_promotions AS "excludedPromotions"
-         FROM listings WHERE product_id = $1 ORDER BY unit_price_cents, retailer_id`,
-        [productId],
-      );
-      return {
-        product: product.rows[0],
-        quantity,
-        offers: listings.rows.map((offer) =>
-          priceOffer(
-            {
-              ...offer,
-              retailerId: offer.retailerId as "redmart" | "fairprice" | "cold-storage",
-              itemCharges: [],
-              lineTotalCents: offer.unitPriceCents,
+      return db.transaction(
+        async (tx) => {
+          const productRows = await tx
+            .select({
+              productId: products.productId,
+              categoryId: products.categoryId,
+              name: products.representativeName,
+              imageUrl: products.imageUrl,
+              specification: listings.specification,
+            })
+            .from(products)
+            .leftJoin(listings, eq(listings.productId, products.productId))
+            .where(eq(products.productId, productId))
+            .orderBy(asc(listings.listingId));
+          if (!productRows[0]) return null;
+          const offerRows = await tx
+            .select({
+              retailerId: listings.retailerId,
+              listingId: listings.listingId,
+              productUrl: listings.productUrl,
+              priceKind: listings.priceKind,
+              unitPriceCents: listings.unitPriceCents,
+              excludedPromotions: listings.excludedPromotions,
+            })
+            .from(listings)
+            .where(eq(listings.productId, productId))
+            .orderBy(asc(listings.unitPriceCents), asc(listings.retailerId));
+          return {
+            product: {
+              productId: productRows[0].productId,
+              categoryId: productRows[0].categoryId,
+              name: productRows[0].name,
+              packSize: canonicalPackSize(productRows.map((row) => row.specification)),
+              available: productRows.some((row) => row.specification !== null),
+              imageUrl: productRows[0].imageUrl,
             },
             quantity,
-          ),
-        ),
-      };
-    },
-    async close() {
-      await pool.end();
+            offers: offerRows.map((offer) =>
+              priceOffer(
+                {
+                  ...offer,
+                  // BCRS deposits are intentionally not modelled in the MVP; see product spec.
+                  itemCharges: [],
+                  lineTotalCents: offer.unitPriceCents,
+                },
+                quantity,
+              ),
+            ),
+          };
+        },
+        { isolationLevel: "repeatable read", accessMode: "read only" },
+      );
     },
   };
 }

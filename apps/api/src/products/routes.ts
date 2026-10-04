@@ -14,7 +14,7 @@ export function registerProductsRoutes(server: FastifyInstance, store: ProductsS
     async (request) => {
       const query = request.query;
       return store.products({
-        q: query.q?.trim(),
+        q: query.q,
         categoryId: query.categoryId,
         page: query.page ?? 1,
         pageSize: query.pageSize ?? 20,

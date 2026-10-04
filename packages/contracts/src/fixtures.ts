@@ -22,6 +22,7 @@ export const riceProduct = {
   name: "Fixture White Rice",
   packSize: "1 × 1 kg",
   imageUrl: null,
+  available: true,
 } satisfies Product;
 
 export const drinkProduct = {
@@ -30,6 +31,7 @@ export const drinkProduct = {
   name: "Fixture Plain Drink",
   packSize: "1 × 500 ml",
   imageUrl: null,
+  available: true,
 } satisfies Product;
 
 export const catalogueExample = {

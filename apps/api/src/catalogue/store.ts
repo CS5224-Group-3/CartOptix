@@ -1,6 +1,8 @@
 import type { CatalogueResponse } from "@cartoptix/contracts";
 import { catalogueExample } from "@cartoptix/contracts/fixtures";
-import pg from "pg";
+import { asc } from "drizzle-orm";
+import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { categories, deliveryRules, retailers } from "../db/schema.ts";
 
 export interface CatalogueStore {
   catalogue(): Promise<CatalogueResponse>;
@@ -16,57 +18,56 @@ export function createFixtureCatalogueStore(): CatalogueStore {
   };
 }
 
-export function createDatabaseCatalogueStore(connectionString: string): CatalogueStore {
-  const pool = new pg.Pool({ connectionString, max: 4 });
+export function createDatabaseCatalogueStore(db: NodePgDatabase): CatalogueStore {
   return {
     async catalogue() {
-      const [retailers, categories, delivery] = await Promise.all([
-        pool.query<{
-          retailerId: CatalogueResponse["retailers"][number]["retailerId"];
-          name: string;
-        }>('SELECT retailer_id AS "retailerId", name FROM retailers ORDER BY retailer_id'),
-        pool.query<{ categoryId: string; name: string }>(
-          'SELECT category_id AS "categoryId", name FROM categories ORDER BY category_id',
-        ),
-        pool.query<{
-          retailerId: CatalogueResponse["retailers"][number]["retailerId"];
-          status: "verified" | "unverified";
-          deliveryFeeCents: number | null;
-          freeDeliveryFromCents: number | null;
-          minimumOrderCents: number | null;
-          note: string | null;
-        }>(`SELECT retailer_id AS "retailerId", status,
-             delivery_fee_cents AS "deliveryFeeCents",
-             free_delivery_from_cents AS "freeDeliveryFromCents",
-             minimum_order_cents AS "minimumOrderCents", note
-           FROM delivery_rules ORDER BY retailer_id`),
-      ]);
-      return {
-        retailers: retailers.rows,
-        categories: categories.rows,
-        delivery: {
-          rules: delivery.rows.map((rule) =>
-            rule.status === "verified" && rule.deliveryFeeCents !== null
-              ? {
-                  retailerId:
-                    rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"],
-                  status: "verified",
-                  deliveryFeeCents: rule.deliveryFeeCents,
-                  freeDeliveryFromCents: rule.freeDeliveryFromCents,
-                  minimumOrderCents: rule.minimumOrderCents,
-                  note: rule.note ?? "Verified delivery rule",
+      return db.transaction(
+        async (tx) => {
+          const retailerRows = await tx
+            .select({ retailerId: retailers.retailerId, name: retailers.name })
+            .from(retailers)
+            .orderBy(asc(retailers.retailerId));
+          const categoryRows = await tx
+            .select({ categoryId: categories.categoryId, name: categories.name })
+            .from(categories)
+            .orderBy(asc(categories.categoryId));
+          const deliveryRows = await tx
+            .select({
+              retailerId: deliveryRules.retailerId,
+              status: deliveryRules.status,
+              deliveryFeeCents: deliveryRules.deliveryFeeCents,
+              freeDeliveryFromCents: deliveryRules.freeDeliveryFromCents,
+              minimumOrderCents: deliveryRules.minimumOrderCents,
+              note: deliveryRules.note,
+            })
+            .from(deliveryRules)
+            .orderBy(asc(deliveryRules.retailerId));
+
+          return {
+            retailers: retailerRows,
+            categories: categoryRows,
+            delivery: {
+              rules: deliveryRows.map((rule) => {
+                if (rule.status === "verified" && rule.note === null) {
+                  throw new Error(`Verified delivery rule for ${rule.retailerId} has no note`);
                 }
-              : {
-                  retailerId:
-                    rule.retailerId as CatalogueResponse["retailers"][number]["retailerId"],
-                  status: "unavailable",
-                },
-          ),
+                if (rule.status === "verified" && rule.deliveryFeeCents !== null) {
+                  return {
+                    retailerId: rule.retailerId,
+                    status: "verified" as const,
+                    deliveryFeeCents: rule.deliveryFeeCents,
+                    freeDeliveryFromCents: rule.freeDeliveryFromCents,
+                    minimumOrderCents: rule.minimumOrderCents,
+                    note: rule.note,
+                  };
+                }
+                return { retailerId: rule.retailerId, status: "unavailable" as const };
+              }),
+            },
+          } satisfies CatalogueResponse;
         },
-      };
-    },
-    async close() {
-      await pool.end();
+        { isolationLevel: "repeatable read", accessMode: "read only" },
+      );
     },
   };
 }

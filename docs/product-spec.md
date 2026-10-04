@@ -61,6 +61,8 @@ These journeys define required steps, on-screen content, states and a small set 
 5. Add the product and quantity to the basket.
 
 Names, pack information and prices must be clear enough to avoid confusing unit prices with the amount payable for the requested packs. Image failure must not prevent product selection.
+Products retained in the canonical catalogue without a published eligible listing remain visible for discovery, but are marked unavailable and cannot be added to the basket.
+Catalogue search is case-insensitive substring matching across the product name (including brand and variant) and pack size. `%`, `_`, and `\` are ordinary search characters, not wildcards.
 
 ### J2 — Build a basket
 
@@ -128,7 +130,7 @@ Approved promotion rules are fixed in the committed seed. Calculations do not re
 
 Use one documented Singapore delivery scenario: a declared serviceable location, standard delivery assumptions and non-member pricing. There is no shopper postcode or delivery-slot selector in the MVP.
 
-Maintain each retailer's delivery fee, free-delivery threshold, minimum-order value, threshold spending basis and relevant mandatory charges. Apply actual verified rules for the selected scenario; do not assume every retailer uses the same pre-/post-discount basis. Record verification evidence internally.
+Maintain each retailer's delivery fee, free-delivery threshold, minimum-order value, threshold spending basis and relevant mandatory charges. Apply actual verified rules for the selected scenario; do not assume every retailer uses the same pre-/post-discount basis. Record verification evidence internally. A verified rule must include a non-empty explanatory note; missing verification evidence is an unavailable rule.
 
 BCRS container deposits are not modelled in the MVP. The same 10¢ per container applies at every retailer, so it cannot change which option wins; `[BCRS]` listings stay eligible, and the comparison notes that totals exclude the refundable deposit. If a mandatory charge is modelled later, itemise it without double-counting a charge already included in the recorded price, and exclude affected listings while its treatment remains unresolved. An unverified delivery rule makes the retailer unavailable; unknown delivery charges must never silently become zero.
 

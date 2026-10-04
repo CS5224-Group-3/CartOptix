@@ -57,6 +57,8 @@ export const ProductSchema = closedObject({
   /** Exact pack configuration as displayed, e.g. "900 g" or "100 x 2g". The API
    * derives it from the listing's specification text. */
   packSize: Type.String({ minLength: 1 }),
+  /** False when the curated product has no published retailer listing. */
+  available: Type.Boolean(),
   imageUrl: nullable(HttpsUrlSchema),
 });
 export type Product = Static<typeof ProductSchema>;

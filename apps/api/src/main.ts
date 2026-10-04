@@ -6,14 +6,12 @@ const config = loadConfig();
 const database = createDatabase(config.databaseUrl);
 const server = buildServer({
   database,
-  databaseUrl: config.databaseUrl,
   webOrigin: process.env.WEB_ORIGIN ?? "http://localhost:5173",
 });
 
 async function shutdown(signal: string): Promise<void> {
   process.stdout.write(`\nReceived ${signal}, shutting down.\n`);
   await server.close();
-  await database.close();
   process.exit(0);
 }
 
