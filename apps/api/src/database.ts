@@ -1,9 +1,14 @@
 // Manages the PostgreSQL connection pool, the readiness check and reads for comparison.
-import type { CatalogueResponse, DependencyCheck, OffersResponse, Product } from "@cartoptix/contracts";
+import type {
+  CatalogueResponse,
+  DependencyCheck,
+  OffersResponse,
+  Product,
+} from "@cartoptix/contracts";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
-import { type BasketData, loadBasketData } from "./comparison/store.ts";
 import { createDatabaseCatalogueStore } from "./catalogue/store.ts";
+import { type BasketData, loadBasketData } from "./comparison/store.ts";
 import { createDatabaseProductsStore, type ProductSearchQuery } from "./products/store.ts";
 
 export interface Database {

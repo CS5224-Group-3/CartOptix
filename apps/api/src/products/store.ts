@@ -9,9 +9,7 @@ import { type ProductSearchQuery, searchProducts } from "./search.ts";
 function canonicalPackSize(specifications: readonly (string | null)[]): string {
   const values = [...new Set(specifications.filter((value): value is string => value !== null))];
   if (values.length === 0) return "Pack size unavailable";
-  const normalized = new Set(
-    values.map((value) => value.replace(/\s+/g, "").toLocaleLowerCase()),
-  );
+  const normalized = new Set(values.map((value) => value.replace(/\s+/g, "").toLocaleLowerCase()));
   return normalized.size === 1 ? values[0] : "Pack size unavailable";
 }
 
@@ -57,8 +55,11 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             .orderBy(asc(products.productId), asc(listings.listingId));
           const specifications = new Map<string, string[]>();
           for (const row of rows) {
-            if (row.specification !== null)
-              specifications.set(row.productId, [...(specifications.get(row.productId) ?? []), row.specification]);
+              if (row.specification !== null)
+                specifications.set(row.productId, [
+                  ...(specifications.get(row.productId) ?? []),
+                  row.specification,
+                ]);
           }
           const result: Product[] = [];
           for (const row of rows) {
