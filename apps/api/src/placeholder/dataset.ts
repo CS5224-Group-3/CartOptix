@@ -39,7 +39,14 @@ const product = (
   name: string,
   packSize: string,
   imageId: string,
-): Product => ({ productId, categoryId, name, packSize, imageUrl: image(imageId) });
+): Product => ({
+  productId,
+  categoryId,
+  name,
+  packSize,
+  available: true,
+  imageUrl: image(imageId),
+});
 
 const listing = (
   retailerId: RetailerId,

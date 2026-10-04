@@ -48,10 +48,13 @@ export function createDatabaseCatalogueStore(db: NodePgDatabase): CatalogueStore
             categories: categoryRows,
             delivery: {
               rules: deliveryRows.map((rule) => {
-                if (rule.status === "verified" && rule.note === null) {
-                  throw new Error(`Verified delivery rule for ${rule.retailerId} has no note`);
-                }
-                if (rule.status === "verified" && rule.deliveryFeeCents !== null) {
+                if (rule.status === "verified") {
+                  if (rule.note === null) {
+                    throw new Error(`Verified delivery rule for ${rule.retailerId} has no note`);
+                  }
+                  if (rule.deliveryFeeCents === null) {
+                    return { retailerId: rule.retailerId, status: "unavailable" as const };
+                  }
                   return {
                     retailerId: rule.retailerId,
                     status: "verified" as const,
