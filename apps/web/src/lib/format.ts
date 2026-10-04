@@ -50,34 +50,9 @@ export function categoryVisual(categoryId: string): { emoji: string; accent: str
   return CATEGORY_VISUALS[categoryId] ?? { emoji: "🛒", accent: "#e5e9ef" };
 }
 
-export function orderSubtotalCents(order: Order): number {
-  return order.lines.reduce((sum, line) => sum + line.lineTotalCents, 0);
-}
-
-/** Order charges added to the total; waived charges are shown but not added. */
-export function orderChargesCents(order: Order): number {
-  return order.orderCharges.reduce(
-    (sum, charge) => (charge.waived ? sum : sum + charge.amountCents),
-    0,
-  );
-}
-
 /** How an order charge is described in a breakdown, including any waiver. */
 export function orderChargeLabel(charge: Order["orderCharges"][number]): string {
   if (charge.waived && charge.waivedFromCents !== null)
     return `${charge.label} ${formatSgd(charge.amountCents)} waived on orders from ${formatSgd(charge.waivedFromCents)}`;
   return charge.label;
-}
-
-/** Excluded-promotion notes on an order, prefixed with where they apply. */
-export function excludedPromotionNotes(
-  order: Order,
-  productName: (id: string) => string,
-): string[] {
-  return order.lines.flatMap((line) =>
-    line.excludedPromotions.map(
-      (note) =>
-        `${RETAILER_DISPLAY[order.retailerId].name}: ${productName(line.productId)} — ${note}`,
-    ),
-  );
 }

@@ -4,10 +4,10 @@ import type { Offer, RetailerId } from "@cartoptix/contracts";
  * What the pricing module returns.
  *
  * These live beside the module rather than in `@cartoptix/contracts` because
- * only the optimiser and the endpoints consume them: #10 and #13 map a result
- * onto the wire shapes that #5 owns (`Offer`, `PlanLine`, `Order`). Keeping
- * them here means the module can explain itself in as much detail as the
- * optimiser needs without that detail becoming a public payload.
+ * only basket comparison and the endpoints consume them: #10 and #13 map a
+ * result onto the wire shapes that #5 owns (`Offer`, `PlanLine`, `Order`).
+ * Keeping them here means the module can explain itself in as much detail as
+ * comparison needs without that detail becoming a public payload.
  *
  * Every status here is a *business outcome*. A caller mistake — a quantity
  * outside the supported range, an order with no lines, a line belonging to
@@ -105,6 +105,22 @@ export interface DeliveryCharge {
   measuredAmount: Cents;
 }
 
+/**
+ * An order-level charge the recorded prices exclude, such as a service fee.
+ *
+ * A waived charge stays in the order so the breakdown can show it, but it is
+ * not added to the total.
+ */
+export interface OrderCharge {
+  label: string;
+  /** The charge's normal amount, even when waived. */
+  amount: Cents;
+  /** Qualifying spend that waives the charge; null when it is never waived. */
+  waivedFrom: Cents | null;
+  /** True when this order's qualifying spend reached `waivedFrom`. */
+  waived: boolean;
+}
+
 /** One retailer's complete order: its lines, its charges and its total. */
 export interface PricedRetailerOrder {
   retailerId: RetailerId;
@@ -112,9 +128,9 @@ export interface PricedRetailerOrder {
   /** Sum of every line total. */
   itemsTotal: Cents;
   delivery: DeliveryCharge;
-  /** Verified order-level charges that are not delivery, if any. */
-  appliedCharges: AppliedCharge[];
-  /** `itemsTotal` plus delivery plus order-level charges. */
+  /** Order-level charges other than delivery, waived or not. */
+  orderCharges: OrderCharge[];
+  /** `itemsTotal` plus delivery plus every order charge that is not waived. */
   total: Cents;
   /** Line disclosures merged with any raised by the order's own rules. */
   disclosures: PricingDisclosure[];
@@ -124,12 +140,16 @@ export interface PricedRetailerOrder {
  * Why a retailer cannot fulfil this order as requested.
  *
  * This is a property of the basket, not of the data: the same retailer priced
- * a different basket successfully. It rules out one candidate plan rather than
- * the basket, so the optimiser drops the candidate and keeps searching.
+ * a different basket successfully. It makes this retailer unavailable for the
+ * basket, not the whole comparison.
  */
 export interface OrderInfeasibility {
   code: "minimum-order-not-met";
   detail: string;
+  /** The retailer's minimum order. */
+  minimumOrder: Cents;
+  /** The order's qualifying spend, on the retailer's threshold basis. */
+  measuredAmount: Cents;
   /** Extra spend that would satisfy the retailer's minimum order. */
   shortfall: Cents;
 }

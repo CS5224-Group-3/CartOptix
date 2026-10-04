@@ -1,22 +1,22 @@
 import type { RetailerId } from "@cartoptix/contracts";
 import { isCents, sumCents } from "./money.ts";
 import {
-  type AppliedCharge,
   type Cents,
   type DeliveryCharge,
+  type OrderCharge,
   type PricedLine,
   PricingContractError,
   type PricingDisclosure,
   type RetailerOrderPricingResult,
 } from "./results.ts";
-import type { DeliveryRule, MandatoryChargeRule, ThresholdBasis } from "./rules.ts";
+import type { DeliveryRule, OrderChargeRule, ThresholdBasis } from "./rules.ts";
 
 /**
  * Cost of one retailer's complete order: its priced lines, plus the charges
  * that only exist because the order is placed with that retailer.
  *
- * This is where a split basket becomes more expensive than it looks, so the
- * optimiser must price every candidate order through here rather than summing
+ * Delivery and order charges can change which retailer is cheapest, so basket
+ * comparison prices every retailer's order through here rather than summing
  * line totals.
  *
  * Like `priceLine`, this is pure and never reads the clock.
@@ -90,6 +90,8 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
       reason: {
         code: "minimum-order-not-met",
         detail: `Retailer ${retailerId} requires a minimum order of ${delivery.minimumOrder} cents`,
+        minimumOrder: delivery.minimumOrder,
+        measuredAmount,
         shortfall: delivery.minimumOrder - measuredAmount,
       },
     };
@@ -114,7 +116,7 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
     measuredAmount,
   };
 
-  const orderCharges = applyOrderCharges(retailerId, delivery.orderCharges);
+  const orderCharges = applyOrderCharges(retailerId, delivery.orderCharges, measuredAmount);
   if (orderCharges.status === "unavailable") {
     return orderCharges;
   }
@@ -126,11 +128,11 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
       lines: [...lines],
       itemsTotal,
       delivery: deliveryCharge,
-      appliedCharges: orderCharges.applied,
+      orderCharges: orderCharges.charges,
       total:
         itemsTotal +
         deliveryCharge.amount +
-        sumCents(orderCharges.applied.map((charge) => charge.amount)),
+        sumCents(orderCharges.charges.filter((c) => !c.waived).map((charge) => charge.amount)),
       disclosures: mergeDisclosures(lines, orderCharges.disclosures),
     },
   };
@@ -170,23 +172,26 @@ function qualifiesForFreeDelivery(measuredAmount: Cents, threshold: Cents | null
 }
 
 type OrderChargeResult =
-  | { status: "ok"; applied: AppliedCharge[]; disclosures: PricingDisclosure[] }
+  | { status: "ok"; charges: OrderCharge[]; disclosures: PricingDisclosure[] }
   | Extract<RetailerOrderPricingResult, { status: "unavailable" }>;
 
 /**
  * Order-level mandatory charges, levied once rather than per pack.
  *
  * Treated exactly as line charges are: unresolved blocks the total, and one
- * already inside the recorded prices is disclosed but not added.
+ * already inside the recorded prices is disclosed but not added. A charge with
+ * a waiver threshold is waived once the order's qualifying spend reaches it;
+ * like free delivery, the boundary is inclusive.
  */
 function applyOrderCharges(
   retailerId: RetailerId,
-  charges: readonly MandatoryChargeRule[],
+  rules: readonly OrderChargeRule[],
+  measuredAmount: Cents,
 ): OrderChargeResult {
-  const applied: AppliedCharge[] = [];
+  const charges: OrderCharge[] = [];
   const disclosures: PricingDisclosure[] = [];
 
-  for (const charge of charges) {
+  for (const charge of rules) {
     if (charge.amount === null || !isCents(charge.amount) || charge.amount < 0) {
       return {
         status: "unavailable",
@@ -205,10 +210,16 @@ function applyOrderCharges(
       continue;
     }
 
-    applied.push({ label: charge.label, perPack: null, amount: charge.amount });
+    const waivedFrom = charge.waivedFrom;
+    charges.push({
+      label: charge.label,
+      amount: charge.amount,
+      waivedFrom,
+      waived: waivedFrom !== null && measuredAmount >= waivedFrom,
+    });
   }
 
-  return { status: "ok", applied, disclosures };
+  return { status: "ok", charges, disclosures };
 }
 
 /**

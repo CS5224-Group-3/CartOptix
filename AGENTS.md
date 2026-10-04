@@ -23,7 +23,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - Consult actual package scripts and infrastructure configuration as they are added; do not assume proposed tools are already implemented.
 - Record unresolved evidence and measured results accurately. Do not present catalogue coverage, performance or AWS affordability as verified before checking them.
 - AWS deployments are budget-constrained. Consult the spec before provisioning or changing resources; never commit credentials.
-- `apps/api/src/placeholder/` holds a synthetic dataset and comparison that let the UI run end to end until the catalogue, pricing and comparison work (#8, #9, #13) lands. Replace it; do not build features on it or present its figures as retailer data.
+- `apps/api/src/placeholder/` holds a synthetic dataset that serves the catalogue, products and offers until #9 and #10 land; basket comparison already reads the imported seed. Replace it; do not build features on it or present its figures as retailer data.
 - When importing generated or template code, keep only what the app uses. Remove unused components, dependencies, lint or type exceptions, and template infrastructure (auth, ORMs, RPC layers) that the spec does not call for.
 
 ## Local development
@@ -42,6 +42,8 @@ Run `pnpm check` before proposing changes; it runs the same format, lint, type a
 This repository is a monorepo so that the web client and backend evolve together.
 
 **Types exchanged between `apps/web` and `apps/api` are declared once in `packages/contracts`.** Define the request and response types there first, then import them on both sides. Neither side redefines a shape the other owns, and no endpoint is consumed by the client through a locally declared type.
+
+This applies inside `apps/api` too. When a module produces a value that reaches the wire, such as a status, reason code or field name, it uses the contract's type directly. It does not define a parallel internal spelling (`"no-feasible-plan"` for `"no_feasible_plan"`) that a mapper then translates. Internal-only values that never reach a response, such as the pricing module's result codes, may have their own names. For named constants, use `as const` objects or the contract's literal unions, not `enum`.
 
 Keep a contract change and both sides of its usage in the same pull request, so type checking catches a mismatch before review.
 

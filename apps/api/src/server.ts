@@ -48,7 +48,7 @@ export function buildServer({
     return body;
   });
 
-  registerShopperRoutes(server, databaseUrl);
+  registerShopperRoutes(server, database);
 
   return server;
 }

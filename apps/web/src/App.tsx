@@ -1,18 +1,17 @@
 // Defines the top-level web application shell, routing, and shared providers.
 
 import {
-  type BasketCompareResponse,
-  DEPOSIT_NOTICE,
   MAX_BASKET_LINES,
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
   type Offer,
-  type Order,
+  type OffersResponse,
   type Product,
+  type ProductsResponse,
   type RetailerId,
   SNAPSHOT_DISCLAIMER,
 } from "@cartoptix/contracts";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
   ArrowRight,
@@ -25,30 +24,36 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 import { Link, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
+import ComparisonRequestStatus from "./components/basket/ComparisonRequestStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { type BasketLine, DEMO_SCENARIOS } from "./demo";
-import {
-  ApiError,
-  useCatalogue,
-  useCompareBasket,
-  useOffers,
-  useProductIndex,
-  useProducts,
-} from "./lib/api";
-import {
-  categoryVisual,
-  excludedPromotionNotes,
-  formatSgd,
-  orderChargeLabel,
-  orderChargesCents,
-  orderSubtotalCents,
-  RETAILER_DISPLAY,
-  RETAILER_IDS,
-} from "./lib/format";
+import type { BasketLine } from "./demo";
+import { createApiSource } from "./features/basket-comparison/apiSource";
+import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
+import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
+import { resolveSubmissionMetadata } from "./features/basket-comparison/metadata";
+import type {
+  BasketComparisonPresentation,
+  ComparisonRequestState,
+  ComparisonSource,
+  ComparisonSubmission,
+} from "./features/basket-comparison/model";
+import { useComparison } from "./features/basket-comparison/useComparison";
+import { ApiError, useCatalogue, useOffers, useProductIndex, useProducts } from "./lib/api";
+import { categoryVisual, formatSgd, RETAILER_DISPLAY, RETAILER_IDS } from "./lib/format";
+import BasketComparisonPage from "./pages/BasketComparisonPage";
 import Home from "./pages/Home";
 
 const clampPacks = (quantity: number) =>
@@ -56,23 +61,81 @@ const clampPacks = (quantity: number) =>
 
 type BasketContextValue = {
   basket: BasketLine[];
-  comparison: BasketCompareResponse | null;
+  productMetadata: Map<string, Product>;
+  basketRevision: number;
+  fixtureScenario: string | null;
+  leaveDemo: () => void;
+  comparison: BasketComparisonPresentation | null;
   isStale: boolean;
   basketCount: number;
   addToBasket: (productId: string, quantity: number) => void;
   setQuantity: (productId: string, quantity: number) => void;
   removeFromBasket: (productId: string) => void;
-  setComparison: (result: BasketCompareResponse) => void;
+  requestState: ComparisonRequestState;
+  canCompare: boolean;
+  runComparison: () => void;
+  retryComparison: () => void;
   loadScenario: (lines: BasketLine[]) => void;
+  loadComparisonScenario: (scenario: string) => void;
 };
 
 const BasketContext = createContext<BasketContextValue | null>(null);
 
-function BasketProvider({ children }: { children: ReactNode }) {
+function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>([]);
-  const [comparison, setComparisonState] = useState<BasketCompareResponse | null>(null);
+  const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
+  const products = useProductIndex();
+  const queryClient = useQueryClient();
+  const productMetadata = new Map<string, Product>();
+  for (const [, product] of queryClient.getQueriesData<Product>({
+    queryKey: ["comparison-product"],
+  }))
+    if (product) productMetadata.set(product.productId, product);
+  for (const [id, product] of products) productMetadata.set(id, product);
+  for (const [, data] of queryClient.getQueriesData<ProductsResponse>({ queryKey: ["products"] }))
+    for (const product of data?.products ?? []) productMetadata.set(product.productId, product);
+  for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
+    if (data?.product) productMetadata.set(data.product.productId, data.product);
+  const prepareSubmission = useCallback(
+    async (captured: ComparisonSubmission) => {
+      const draft = structuredClone(captured);
+      for (const line of draft.basket.products) {
+        const cached = queryClient.getQueryData<Product>(["comparison-product", line.productId]);
+        if (cached) {
+          if (!line.name?.trim()) line.name = cached.name;
+          if (!line.packDescription?.trim()) line.packDescription = cached.packSize;
+        }
+      }
+      return resolveSubmissionMetadata(draft, (product) => {
+        // Retain verified metadata for this browser session, including products outside page one.
+        queryClient.setQueryDefaults(["comparison-product"], { gcTime: Infinity });
+        queryClient.setQueryData(["comparison-product", product.productId], product);
+      });
+    },
+    [queryClient],
+  );
+  const { result: comparison, request: requestState, submit, retry } = useComparison(source);
+  const [location, navigate] = useLocation();
+  const currentLocation = useRef(location);
+  const departures = useRef(0);
+  useLayoutEffect(() => {
+    currentLocation.current = location;
+    if (location !== "/basket" && location !== "/results") departures.current += 1;
+  }, [location]);
+  const successNavigation = useCallback(() => {
+    const submittedBeforeDeparture = departures.current;
+    return () => {
+      // Leaving the comparison flow revokes automatic navigation for this attempt,
+      // even if the shopper returns before it completes. The result is still stored.
+      if (
+        departures.current === submittedBeforeDeparture &&
+        currentLocation.current === "/basket"
+      ) {
+        navigate("/results");
+      }
+    };
+  }, [navigate]);
   const [basketRevision, setBasketRevision] = useState(0);
-  const [comparedRevision, setComparedRevision] = useState(-1);
 
   const changed = useCallback((next: BasketLine[]) => {
     setBasket(next);
@@ -82,10 +145,84 @@ function BasketProvider({ children }: { children: ReactNode }) {
   const value = useMemo<BasketContextValue>(
     () => ({
       basket,
+      productMetadata,
+      basketRevision,
+      fixtureScenario,
       comparison,
-      isStale: Boolean(comparison && comparedRevision !== basketRevision),
+      isStale: Boolean(comparison && comparison.submittedBasket.revision !== basketRevision),
+      requestState,
+      canCompare:
+        fixtureScenario !== null
+          ? Boolean(
+              fixtureForBasket(
+                fixtureScenarios[fixtureScenario]?.fixture ?? "",
+                basket,
+                basketRevision,
+              ),
+            )
+          : basket.length > 0 && basket.length <= MAX_BASKET_LINES,
+      runComparison: () => {
+        if (fixtureScenario !== null) {
+          const fixture = fixtureForBasket(
+            fixtureScenarios[fixtureScenario]?.fixture ?? "",
+            basket,
+            basketRevision,
+          );
+          if (fixture)
+            submit(
+              { scenario: fixtureScenario, basket: fixture.submittedBasket },
+              successNavigation(),
+            );
+          return;
+        }
+        if (!basket.length) return;
+        // Freeze available catalogue pages and product details before resolving any missing metadata.
+        const known = new Map<string, Pick<Product, "name" | "packSize">>();
+        // Metadata already resolved for an earlier API attempt is still usable for the same IDs.
+        if (requestState.phase !== "idle" && !requestState.submitted.scenario)
+          for (const product of requestState.submitted.basket.products)
+            if (product.name && product.packDescription)
+              known.set(product.productId, {
+                name: product.name,
+                packSize: product.packDescription,
+              });
+        for (const [id, product] of productMetadata) known.set(id, product);
+        // Read at click time too: another query may populate its cache before React rerenders.
+        for (const [, data] of queryClient.getQueriesData<ProductsResponse>({
+          queryKey: ["products"],
+        }))
+          for (const product of data?.products ?? []) known.set(product.productId, product);
+        for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
+          if (data?.product) known.set(data.product.productId, data.product);
+        submit(
+          {
+            basket: {
+              revision: basketRevision,
+              products: basket.map((line) => ({
+                ...line,
+                name: known.get(line.productId)?.name ?? "",
+                packDescription: known.get(line.productId)?.packSize ?? "",
+              })),
+            },
+          },
+          successNavigation(),
+          false,
+          prepareSubmission,
+        );
+      },
+      leaveDemo: () => {
+        setFixtureScenario(null);
+        changed([]);
+      },
+      retryComparison: () => retry(successNavigation()),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
+        if (fixtureScenario !== null) {
+          setFixtureScenario(null);
+          changed([{ productId, quantity: clampPacks(quantity) }]);
+          toast.info("Demo basket replaced with your catalogue selection.");
+          return;
+        }
         const current = basket.find((line) => line.productId === productId);
         if (current) {
           changed(
@@ -112,18 +249,39 @@ function BasketProvider({ children }: { children: ReactNode }) {
       },
       removeFromBasket: (productId) =>
         changed(basket.filter((line) => line.productId !== productId)),
-      setComparison: (result) => {
-        setComparisonState(result);
-        setComparedRevision(basketRevision);
-      },
+      // Homepage baskets use the normal API source.
       loadScenario: (lines) => {
         setBasket(lines);
-        setComparisonState(null);
+        setFixtureScenario(null);
         setBasketRevision((revision) => revision + 1);
-        setComparedRevision(-1);
+      },
+      loadComparisonScenario: (scenario) => {
+        const fixture = comparisonFixtures[fixtureScenarios[scenario]?.fixture ?? ""];
+        if (!fixture) return;
+        setBasket(
+          fixture.submittedBasket.products.map(({ productId, quantity }) => ({
+            productId,
+            quantity,
+          })),
+        );
+        setFixtureScenario(scenario);
+        setBasketRevision((revision) => revision + 1);
       },
     }),
-    [basket, comparison, basketRevision, comparedRevision, changed],
+    [
+      basket,
+      fixtureScenario,
+      comparison,
+      basketRevision,
+      requestState,
+      submit,
+      retry,
+      successNavigation,
+      changed,
+      productMetadata,
+      prepareSubmission,
+      queryClient,
+    ],
   );
 
   return <BasketContext.Provider value={value}>{children}</BasketContext.Provider>;
@@ -142,21 +300,6 @@ function useCategoryNames() {
     () => new Map((data?.categories ?? []).map((category) => [category.categoryId, category.name])),
     [data],
   );
-}
-
-/** The delivery-rule note for a retailer, from the catalogue. */
-function useDeliveryNotes() {
-  const { data } = useCatalogue();
-  return useMemo(() => {
-    const notes = new Map<RetailerId, string>();
-    for (const rule of data?.delivery.rules ?? []) {
-      notes.set(
-        rule.retailerId,
-        rule.status === "verified" ? rule.note : "Delivery rule unavailable",
-      );
-    }
-    return notes;
-  }, [data]);
 }
 
 function AppShell({ children }: { children: ReactNode }) {
@@ -693,42 +836,29 @@ function UnavailableOfferRow({ retailerId }: { retailerId: RetailerId }) {
 export function BasketPage() {
   const {
     basket,
+    basketRevision,
+    fixtureScenario,
+    productMetadata,
     comparison,
     isStale,
     setQuantity,
     removeFromBasket,
-    setComparison,
-    loadScenario,
+    requestState,
+    canCompare,
+    runComparison,
+    retryComparison,
+    loadComparisonScenario,
+    leaveDemo,
   } = useBasket();
-  const [, navigate] = useLocation();
-  const compareMutation = useCompareBasket();
-  const products = useProductIndex();
+
   const categoryNames = useCategoryNames();
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
-  const runComparison = () => {
-    compareMutation.mutate(
-      { lines: basket },
-      {
-        onSuccess: (result) => {
-          setComparison(result);
-          navigate("/results");
-        },
-        onError: (error) =>
-          toast.error(
-            error instanceof ApiError && error.code === "invalid_request"
-              ? "The basket could not be compared"
-              : "Calculation failed — please retry",
-            { description: error.message },
-          ),
-      },
-    );
-  };
   return (
     <main>
       <PageIntro
         eyebrow="Your basket"
         title="Compare the basket, not partial items."
-        description="CartOptix prices your complete basket at each retailer. Run a fresh estimate whenever the basket changes."
+        description="Compare the complete basket independently at each retailer using prototype data."
       >
         <div className="data-pill">
           <ShoppingBasket size={14} /> {basket.length} distinct lines · {totalPacks} whole packs
@@ -736,6 +866,11 @@ export function BasketPage() {
       </PageIntro>
       <section className="container basket-layout">
         <div className="basket-main">
+          <ComparisonRequestStatus
+            request={requestState}
+            currentRevision={basketRevision}
+            onRetry={retryComparison}
+          />
           {isStale && (
             <div className="stale-banner">
               <AlertCircle size={18} />
@@ -769,14 +904,58 @@ export function BasketPage() {
                 </Link>
               </div>
               {basket.map((line) => {
-                const product = products.get(line.productId);
+                const fixtureProduct =
+                  fixtureScenario === null
+                    ? undefined
+                    : comparisonFixtures[
+                        fixtureScenarios[fixtureScenario ?? ""]?.fixture ?? ""
+                      ]?.submittedBasket.products.find(
+                        (product) => product.productId === line.productId,
+                      );
+                const product = fixtureProduct
+                  ? {
+                      productId: fixtureProduct.productId,
+                      name: fixtureProduct.name,
+                      packSize: fixtureProduct.packDescription,
+                      categoryId: "synthetic",
+                      imageUrl: null,
+                    }
+                  : productMetadata.get(line.productId);
                 if (!product)
                   return (
                     <div className="basket-row" key={line.productId}>
                       <div className="basket-row__identity">
-                        <strong>Loading product…</strong>
+                        <strong>Product details unavailable</strong>
+                        <span>Product ID: {line.productId}</span>
                         <span>{line.quantity} packs</span>
                       </div>
+                      <div className="quantity-control">
+                        <button
+                          type="button"
+                          aria-label={`Decrease ${line.productId}`}
+                          disabled={line.quantity <= MIN_PACKS_PER_LINE}
+                          onClick={() => setQuantity(line.productId, line.quantity - 1)}
+                        >
+                          -
+                        </button>
+                        <strong>{line.quantity}</strong>
+                        <button
+                          type="button"
+                          aria-label={`Increase ${line.productId}`}
+                          disabled={line.quantity >= MAX_PACKS_PER_LINE}
+                          onClick={() => setQuantity(line.productId, line.quantity + 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="icon-button"
+                        aria-label={`Remove ${line.productId}`}
+                        onClick={() => removeFromBasket(line.productId)}
+                      >
+                        <X size={16} />
+                      </button>
                     </div>
                   );
                 return (
@@ -799,18 +978,18 @@ export function BasketPage() {
               <p>These controls load fixed baskets for testing comparison outcomes.</p>
             </div>
             <div className="demo-grid">
-              {Object.entries(DEMO_SCENARIOS).map(([key, scenario]) => (
+              {Object.entries(fixtureScenarios).map(([key, scenario]) => (
                 <button
                   type="button"
                   key={key}
                   className="demo-button"
                   onClick={() => {
-                    loadScenario(scenario.lines);
+                    loadComparisonScenario(key);
                     toast.success("Demo scenario loaded", { description: scenario.label });
                   }}
                 >
                   <strong>{scenario.label}</strong>
-                  <span>{scenario.description}</span>
+                  <span>Synthetic data — not retailer prices</span>
                 </button>
               ))}
             </div>
@@ -819,11 +998,17 @@ export function BasketPage() {
         <aside className="basket-sidebar">
           <div className="basket-summary-card">
             <p className="eyebrow">Comparison setup</p>
-            <h2>Compare the complete basket</h2>
+            <h2>Complete retailer baskets</h2>
             <p className="muted">
-              CartOptix prices every line at each retailer and recommends the cheapest retailer that
-              can supply the whole basket.
+              {fixtureScenario === null
+                ? "API comparison mode. Compare your basket using the current synthetic prototype dataset."
+                : "Demo mode. Only the exact selected demonstration basket can be compared."}
             </p>
+            {fixtureScenario !== null && (
+              <button type="button" className="button button--outline" onClick={leaveDemo}>
+                Leave demo and start a new basket
+              </button>
+            )}
             <div className="scenario-box">
               <div>
                 <Check size={15} /> Singapore serviceable location
@@ -845,14 +1030,17 @@ export function BasketPage() {
             <button
               type="button"
               className="button button--primary button--full"
-              disabled={!basket.length || compareMutation.isPending}
+              disabled={!basket.length || !canCompare || requestState.phase === "pending"}
               onClick={runComparison}
             >
-              {compareMutation.isPending ? "Comparing…" : "Compare basket"} <ArrowRight size={17} />
+              {requestState.phase === "pending" ? "Comparing..." : "Compare basket"}{" "}
+              <ArrowRight size={17} />
             </button>
-            {comparison && !isStale && (
+            {comparison && (
               <Link className="button button--text button--full" href="/results">
-                View current results
+                {isStale || requestState.phase !== "success"
+                  ? "View previous results"
+                  : "View current results"}
               </Link>
             )}
           </div>
@@ -918,314 +1106,18 @@ function BasketRow({
   );
 }
 
-type Comparison = BasketCompareResponse;
-type Option = Comparison["options"][number];
-type UnavailableOption = Extract<Option, { status: "unavailable" }>;
-type CompleteOption = Extract<Option, { status: "complete" }>;
-
-function reasonText(
-  reason: UnavailableOption["reasons"][number],
-  productName: (productId: string) => string,
-): string {
-  switch (reason.code) {
-    case "missing_products":
-      return `No eligible offer for ${reason.productIds.map(productName).join(", ")}.`;
-    case "below_minimum_order":
-      return `Order of ${formatSgd(reason.spendCents)} is below the ${formatSgd(reason.minimumOrderCents)} minimum.`;
-    case "delivery_rule_unverified":
-      return "Delivery charges could not be verified, so a complete total is not shown.";
-  }
-}
-
 export function ResultsPage() {
-  const { comparison, isStale } = useBasket();
-  const products = useProductIndex();
-  const productName = (productId: string) => products.get(productId)?.name ?? productId;
-  if (!comparison)
-    return (
-      <main>
-        <div className="container empty-state">
-          <AlertCircle size={28} />
-          <h1>No comparison yet</h1>
-          <p>Build a basket and run a new estimate first.</p>
-          <Link className="button button--primary" href="/basket">
-            Go to basket <ArrowRight size={16} />
-          </Link>
-        </div>
-      </main>
-    );
-  const recommended =
-    comparison.status === "recommended"
-      ? comparison.options.find(
-          (option): option is CompleteOption =>
-            option.status === "complete" && option.retailerId === comparison.recommendedRetailerId,
-        )
-      : undefined;
-  const notices = recommended ? excludedPromotionNotes(recommended, productName) : [];
+  const { comparison, isStale, requestState, basketRevision, retryComparison } = useBasket();
   return (
-    <main>
-      <PageIntro
-        eyebrow="Comparison results"
-        title="A transparent plan for this basket."
-        description="Each retailer is priced for the same complete basket using whole packs. Use the breakdown to make an informed decision before checkout."
-      >
-        <div className="data-pill">
-          <Check size={14} />{" "}
-          {recommended
-            ? "Cheapest complete basket found across all retailers."
-            : "No retailer can supply the complete basket."}
-        </div>
-      </PageIntro>
-      <section className="container results-page">
-        {isStale && (
-          <div className="stale-banner stale-banner--large">
-            <AlertCircle size={18} />
-            <div>
-              <strong>Your basket changed.</strong>
-              <span>Run a new comparison to view current results.</span>
-            </div>
-            <Link href="/basket" className="button button--small button--outline">
-              Edit basket
-            </Link>
-          </div>
-        )}
-        {recommended ? (
-          <div className="result-hero">
-            <div>
-              <p className="result-hero__label">
-                <Sparkles size={15} /> Recommended retailer
-              </p>
-              <h2>Buy it all at {RETAILER_DISPLAY[recommended.retailerId].name}</h2>
-              <p>
-                The cheapest complete basket under the current dataset and delivery assumptions.
-              </p>
-            </div>
-            <div className="result-hero__total">
-              <span>Estimated total</span>
-              <strong>{formatSgd(recommended.totalCents)}</strong>
-            </div>
-          </div>
-        ) : (
-          <NoFeasiblePlanResult />
-        )}
-        <div className="results-grid">
-          {comparison.options.map((option) => (
-            <OptionSummary
-              key={option.retailerId}
-              option={option}
-              highlighted={option.retailerId === recommended?.retailerId}
-              productName={productName}
-            />
-          ))}
-        </div>
-        {recommended && (
-          <>
-            <div className="orders-section">
-              <div className="section-heading">
-                <div>
-                  <p className="eyebrow">Purchase plan</p>
-                  <h2>Complete order breakdown</h2>
-                </div>
-                <Link href="/basket" className="button button--outline button--small">
-                  Edit basket
-                </Link>
-              </div>
-              <OrderCard order={recommended} productName={productName} />
-            </div>
-            {notices.length > 0 && (
-              <div className="notice-card notice-card--warning">
-                <AlertCircle size={18} />
-                <div>
-                  <strong>Excluded-promotion notices</strong>
-                  {notices.map((notice) => (
-                    <p key={notice}>{notice}</p>
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-        <div className="results-disclaimer">
-          <Sparkles size={17} />
-          <div>
-            <strong>Prototype estimate, not live checkout pricing.</strong>
-            <p>
-              {SNAPSHOT_DISCLAIMER} {DEPOSIT_NOTICE} Direct supermarket fulfilment only; third-party
-              sellers excluded. Retailer payments do not influence recommendations.
-            </p>
-          </div>
-        </div>
-        <div className="results-actions">
-          <Link href="/basket" className="button button--primary">
-            Run another comparison <ArrowRight size={17} />
-          </Link>
-          <Link href="/catalogue" className="button button--outline">
-            Browse catalogue
-          </Link>
-        </div>
-      </section>
-    </main>
+    <BasketComparisonPage
+      result={comparison}
+      isStale={isStale}
+      request={requestState}
+      currentRevision={basketRevision}
+      onRetry={retryComparison}
+    />
   );
 }
-
-function NoFeasiblePlanResult() {
-  return (
-    <div className="no-plan-card">
-      <div className="no-plan-card__icon">
-        <AlertCircle size={24} />
-      </div>
-      <div>
-        <p className="eyebrow">Calculation status</p>
-        <h2>No feasible purchasing plan available</h2>
-        <p>
-          No retailer can supply every line of this basket under the dataset’s stock and order
-          rules. Each retailer’s reason is shown below; change the basket to compare again.
-        </p>
-        <Link href="/basket" className="text-link">
-          Edit basket <ArrowRight size={15} />
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function OptionSummary({
-  option,
-  highlighted,
-  productName,
-}: {
-  option: Option;
-  highlighted: boolean;
-  productName: (productId: string) => string;
-}) {
-  const retailer = RETAILER_DISPLAY[option.retailerId];
-  return (
-    <div className={`plan-summary ${highlighted ? "plan-summary--highlighted" : ""}`}>
-      <div className="plan-summary__head">
-        <div>
-          <p className="plan-summary__eyebrow">
-            {highlighted
-              ? "Recommended"
-              : option.status === "complete"
-                ? "Complete"
-                : "Unavailable"}
-          </p>
-          <h3>{retailer.name}</h3>
-          <span>Complete basket at one retailer</span>
-        </div>
-        {option.status === "complete" ? (
-          <strong>{formatSgd(option.totalCents)}</strong>
-        ) : (
-          <strong className="muted">Unavailable</strong>
-        )}
-      </div>
-      {option.status === "complete" ? (
-        <PlanBreakdown order={option} />
-      ) : (
-        option.reasons.map((reason) => (
-          <div className="plan-empty" key={reason.code}>
-            <AlertCircle size={17} /> {reasonText(reason, productName)}
-          </div>
-        ))
-      )}
-    </div>
-  );
-}
-
-function PlanBreakdown({ order }: { order: Order }) {
-  return (
-    <div className="plan-breakdown">
-      <div>
-        <span>Products</span>
-        <strong>{formatSgd(orderSubtotalCents(order))}</strong>
-      </div>
-      <div>
-        <span>Delivery</span>
-        <strong>{formatSgd(order.deliveryCents)}</strong>
-      </div>
-      <div>
-        <span>Mandatory</span>
-        <strong>{formatSgd(orderChargesCents(order))}</strong>
-      </div>
-    </div>
-  );
-}
-
-function OrderCard({
-  order,
-  productName,
-}: {
-  order: Order;
-  productName: (productId: string) => string;
-}) {
-  const products = useProductIndex();
-  const deliveryNotes = useDeliveryNotes();
-  const retailer = RETAILER_DISPLAY[order.retailerId];
-  return (
-    <article className="order-card">
-      <div className="order-card__head">
-        <div>
-          <p className="eyebrow">Retailer order</p>
-          <h3>{retailer.name}</h3>
-        </div>
-        <div className="order-card__total">
-          <span>Estimated order total</span>
-          <strong>{formatSgd(order.totalCents)}</strong>
-        </div>
-      </div>
-      <div className="order-card__lines">
-        {order.lines.map((line) => (
-          <div className="order-line" key={line.productId}>
-            <div>
-              <strong>
-                {line.quantity} × {productName(line.productId)}
-              </strong>
-              <span>
-                {products.get(line.productId)?.packSize} · {formatSgd(line.unitPriceCents)} / pack
-              </span>
-            </div>
-            <strong>{formatSgd(line.lineTotalCents)}</strong>
-            <button
-              type="button"
-              className="icon-button icon-button--subtle"
-              onClick={() => openRetailerLink(line.productUrl)}
-              aria-label={`Open ${productName(line.productId)} at ${retailer.name}`}
-            >
-              <ArrowRight size={16} />
-            </button>
-          </div>
-        ))}
-      </div>
-      <div className="order-card__breakdown">
-        <div>
-          <span>Product subtotal</span>
-          <strong>{formatSgd(orderSubtotalCents(order))}</strong>
-        </div>
-        <div>
-          <span>
-            Delivery fee <small>{deliveryNotes.get(order.retailerId)}</small>
-          </span>
-          <strong>{formatSgd(order.deliveryCents)}</strong>
-        </div>
-        <div>
-          <span>
-            Mandatory charges{" "}
-            <small>
-              {order.orderCharges.length
-                ? order.orderCharges.map(orderChargeLabel).join(", ")
-                : "No mandatory charge"}
-            </small>
-          </span>
-          <strong>{formatSgd(orderChargesCents(order))}</strong>
-        </div>
-      </div>
-      <p className="muted">
-        CartOptix does not transfer carts. Rebuild this order on the retailer’s website.
-      </p>
-    </article>
-  );
-}
-
 function HowItWorks() {
   return (
     <section id="how-it-works" className="how-it-works">
@@ -1316,12 +1208,26 @@ function Router() {
   );
 }
 
-export default function App({ queryClient }: { queryClient?: QueryClient }) {
+export default function App({
+  queryClient,
+  comparisonSource,
+}: {
+  queryClient?: QueryClient;
+  comparisonSource?: ComparisonSource;
+}) {
   const [client] = useState(() => queryClient ?? new QueryClient());
+  const [source] = useState(() => {
+    if (comparisonSource) return comparisonSource;
+    const api = createApiSource();
+    const demo = createFixtureSource();
+    const selected: ComparisonSource = (submission) =>
+      submission.scenario ? demo(submission) : api(submission);
+    return selected;
+  });
   return (
     <ErrorBoundary>
       <QueryClientProvider client={client}>
-        <BasketProvider>
+        <BasketProvider source={source}>
           <Toaster />
           <AppShell>
             <Router />
