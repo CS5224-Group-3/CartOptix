@@ -1,0 +1,226 @@
+# Publishes and deploys a release to the development host for Issue #7.
+#
+# A release is a pair of arm64 images tagged with the Git commit that produced
+# them, so the running release can always be identified from its image tag and
+# an earlier release can be restored without rebuilding anything.
+#
+# Runs automatically when CI succeeds for a push to main: publish builds the
+# commit CI verified, then deploy releases that same commit. A failing check
+# therefore blocks every release. It can also be started by hand with the commit
+# SHA of an earlier release; that run skips publish and is the documented
+# rollback path.
+#
+# The host is reached through AWS Systems Manager, so the workflow needs no SSH
+# key and no inbound administration port. Authentication uses GitHub OIDC, so
+# the repository holds no long-lived AWS credentials.
+name: Release
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Commit SHA of an already published release to deploy
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-southeast-1
+  ECR_REPOSITORY_API: cartoptix-api
+  ECR_REPOSITORY_WEB: cartoptix-web
+  # The commit CI verified, or the release to restore.
+  RELEASE: ${{ inputs.release || github.event.workflow_run.head_sha }}
+
+jobs:
+  publish:
+    name: Build and publish arm64 images
+    # Checks gate every release. Only a successful CI run for a push to main
+    # starts a publish; a pull request can never publish.
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    # Native arm64, so the images are built for Graviton without emulation.
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+
+    steps:
+      - name: Check the required repository variables
+        env:
+          PUBLISH_ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+        run: |
+          if [[ -z "$PUBLISH_ROLE_ARN" ]]; then
+            echo "::error::Repository variable AWS_PUBLISH_ROLE_ARN is not set. See deploy/development/RUNBOOK.md."
+            exit 1
+          fi
+
+      - name: Check out the commit CI verified
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.RELEASE }}
+          # The images are published from the checkout, not pushed back to it.
+          persist-credentials: false
+
+      - name: Assume the publishing role
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Publish the API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          platforms: linux/arm64
+          push: true
+          # Only the commit tag is published. Never a moving tag such as
+          # "latest": the tag must identify exactly one immutable build.
+          tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_API }}:${{ env.RELEASE }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
+
+      - name: Publish the web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/development/web.Dockerfile
+          platforms: linux/arm64
+          push: true
+          tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_WEB }}:${{ env.RELEASE }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,scope=web,mode=max
+
+      - name: Record the release
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          {
+            echo "Published release \`$RELEASE\`"
+            echo
+            echo '```'
+            echo "$REGISTRY/$ECR_REPOSITORY_API:$RELEASE"
+            echo "$REGISTRY/$ECR_REPOSITORY_WEB:$RELEASE"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Deploy the release to the development host
+    needs: publish
+    # Deploy what publish just pushed, or, when started by hand, a release that
+    # was published earlier.
+    if: >-
+      !cancelled() &&
+      (needs.publish.result == 'success' ||
+       (github.event_name == 'workflow_dispatch' && needs.publish.result == 'skipped'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    env:
+      DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+      INSTANCE_ID: ${{ vars.DEV_INSTANCE_ID }}
+      REPOSITORY_DIR: ${{ vars.DEV_REPOSITORY_DIR }}
+
+    steps:
+      - name: Check the required repository variables
+        run: |
+          missing=()
+          [[ -n "$DEPLOY_ROLE_ARN" ]] || missing+=(AWS_DEPLOY_ROLE_ARN)
+          [[ -n "$INSTANCE_ID" ]] || missing+=(DEV_INSTANCE_ID)
+          [[ -n "$REPOSITORY_DIR" ]] || missing+=(DEV_REPOSITORY_DIR)
+          if (( ${#missing[@]} > 0 )); then
+            echo "::error::Missing repository variables: ${missing[*]}. See deploy/development/RUNBOOK.md."
+            exit 1
+          fi
+
+      - name: Check the release commit
+        run: |
+          # The SHA is interpolated into the command the host runs, so accept
+          # nothing but a full commit SHA.
+          if [[ ! "$RELEASE" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Expected a 40-character commit SHA, received '$RELEASE'."
+            exit 1
+          fi
+          echo "Deploying release $RELEASE"
+
+      - name: Assume the deployment role
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Start the release on the host
+        id: send
+        run: |
+          # Check out the exact commit first, so the host runs the release
+          # script and compose file that belong to the release it is deploying.
+          remote_command="set -euo pipefail
+          cd '$REPOSITORY_DIR'
+          git fetch --prune origin
+          git checkout --force '$RELEASE'
+          bash deploy/development/release.sh '$RELEASE'"
+
+          parameters="$(jq -nc --arg cmd "$remote_command" '{commands: [$cmd]}')"
+
+          command_id="$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name AWS-RunShellScript \
+            --comment "CartOptix release $RELEASE" \
+            --timeout-seconds 1800 \
+            --parameters "$parameters" \
+            --query 'Command.CommandId' \
+            --output text)"
+
+          echo "command_id=$command_id" >> "$GITHUB_OUTPUT"
+          echo "Started SSM command $command_id."
+
+      - name: Wait for the release to finish
+        env:
+          COMMAND_ID: ${{ steps.send.outputs.command_id }}
+        run: |
+          invocation() {
+            aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query "$1" \
+              --output text 2>/dev/null || true
+          }
+
+          for attempt in $(seq 1 120); do
+            status="$(invocation 'Status')"
+            status="${status:-Pending}"
+
+            case "$status" in
+              Success)
+                invocation 'StandardOutputContent'
+                echo "Release $RELEASE is deployed and /health/ready returned 200."
+                exit 0
+                ;;
+              Pending|InProgress|Delayed)
+                echo "Attempt $attempt: $status"
+                sleep 10
+                ;;
+              *)
+                echo "::error::Release $RELEASE failed with SSM status $status."
+                invocation 'StandardErrorContent'
+                invocation 'StandardOutputContent'
+                exit 1
+                ;;
+            esac
+          done
+
+          echo "::error::Timed out waiting for release $RELEASE to finish."
+          exit 1

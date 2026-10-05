@@ -1,7 +1,7 @@
 # Pull request checks only.
 #
 # Deployment, image publishing, OIDC, migrations and rollback live in
-# publish.yml and deploy.yml, which run after this workflow succeeds. What this
+# release.yml, which runs after this workflow succeeds. What this
 # workflow does own is actionlint over every workflow file, so a broken release
 # workflow is caught in review rather than on main.
 name: CI

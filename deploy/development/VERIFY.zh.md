@@ -31,8 +31,7 @@ powershell -ExecutionPolicy Bypass -File deploy/development/verify-local.ps1
 | 文件 | 什么时候触发 | 干什么 |
 |---|---|---|
 | `ci.yml` | 每次 PR / push | `pnpm check`、`pnpm build`、actionlint |
-| `publish.yml` | **CI 成功之后** | 构建 arm64 镜像，按 commit SHA 打 tag，推到 ECR |
-| `deploy.yml` | **Publish 成功之后**，或手动触发 | 通过 OIDC + SSM 让主机执行 `release.sh` |
+| `release.yml` | **CI 成功之后**，或手动触发（只部署） | `publish` job 构建 arm64 镜像、按 commit SHA 打 tag、推到 ECR；`deploy` job 通过 OIDC + SSM 让主机执行 `release.sh` |
 
 ---
 
@@ -42,14 +41,14 @@ powershell -ExecutionPolicy Bypass -File deploy/development/verify-local.ps1
 
 | 验收标准（原文） | 证据是什么 | 在哪儿能拿到 |
 |---|---|---|
-| Failing checks block a release | `publish.yml` 用 `workflow_run` 触发，且 `if:` 要求 `conclusion == 'success'` + `event == 'push'` + `head_branch == 'main'`。CI 红了这个 job **根本不会启动** | 静态：读文件 + actionlint PASS |
+| Failing checks block a release | `release.yml` 用 `workflow_run` 触发，且 `if:` 要求 `conclusion == 'success'` + `event == 'push'` + `head_branch == 'main'`。CI 红了这个 job **根本不会启动** | 静态：读文件 + actionlint PASS |
 | No long-lived cloud credentials | 全仓库搜不到 `AKIA…` / `aws_secret_access_key`；工作流里没有任何 `secrets.`；只走 OIDC + repository variables | 静态：全文搜索，已确认零命中 |
-| Each release is an **arm64** image tagged with its Git commit | `publish.yml` 里 `platforms: linux/arm64`，两个镜像的 `tags` 只有 `head_sha`，**没有 `latest`** | 静态：读文件 + actionlint PASS |
+| Each release is an **arm64** image tagged with its Git commit | `release.yml` 里 `platforms: linux/arm64`，两个镜像的 `tags` 只有 `head_sha`，**没有 `latest`** | 静态：读文件 + actionlint PASS |
 | The running release can be identified | 镜像 tag = commit SHA，容器 label `com.cartoptix.release` 也等于它 | **本地可证**：脚本检查 label |
 | Migrations and seed run **once per release** | 它们在 `compose.yml` 里被放进 `ops` profile，由 `release.sh` 显式 `run --rm` 各一次，不从应用启动流程走 | **本地可证**：看 `release.sh` 输出 |
 | Restarts web **after** recreating api | `release.sh` 先 `--force-recreate api` 再 `--force-recreate web`；顺序错了 nginx 会 502 | **本地可证**：`/api/...` 返回 200 |
 | Fails the run unless `/health/ready` returns 200 | `release.sh` 轮询 `/health/ready`，拿不到 200 就 `exit 1` | **本地可证** |
-| A previous release can be restored without a destructive schema rollback | `deploy.yml` 支持手动触发传 SHA；`release.sh` 接受任意 SHA，回滚 = 重跑 | **本地部分可证**（见第 5 节） |
+| A previous release can be restored without a destructive schema rollback | `release.yml` 支持手动触发传 SHA；`release.sh` 接受任意 SHA，回滚 = 重跑 | **本地部分可证**（见第 5 节） |
 | Release / rollback / smoke-check steps are documented | `deploy/development/RUNBOOK.md` | 静态 |
 
 ---
@@ -202,7 +201,7 @@ PostgreSQL 的数据卷会保留，下一次发布直接复用已导入的数据
 actionlint 靠 `.git` 目录来判断项目根在哪。你手上是 ZIP，没有 `.git`，它就报 `no project was found in any parent directories`。显式传路径就绕过了这个依赖。
 
 **② 为什么本地构建用原生架构，不用 `--platform linux/arm64`？**
-本地这套跑的是**部署路径**：迁移只跑一次、api 重建后 web 要重启、ready 非 200 要失败。这些逻辑跟 CPU 架构无关。而架构一致性是 CI 的事——`publish.yml` 在 arm64 runner 上**原生构建**，不经 QEMU。本地再模拟一遍只是让 `pnpm install` + `tsc` 慢十几分钟，什么额外的东西都没证明。
+本地这套跑的是**部署路径**：迁移只跑一次、api 重建后 web 要重启、ready 非 200 要失败。这些逻辑跟 CPU 架构无关。而架构一致性是 CI 的事——`release.yml` 在 arm64 runner 上**原生构建**，不经 QEMU。本地再模拟一遍只是让 `pnpm install` + `tsc` 慢十几分钟，什么额外的东西都没证明。
 
 **③ release label 为什么能证明「running release can be identified」？**
 `docker inspect` 打出来的 `Config.Image` 带 tag，`com.cartoptix.release` 带 label，两者都等于你部署的那个 commit SHA。任何人拿到主机都能一条命令回答"现在跑的是哪个版本"。
@@ -219,7 +218,7 @@ nginx 把 `api` 这个 Docker DNS 名字解析得到的容器 IP 记住了。api
 
 | 证明不了 | 为什么 | 谁来证 |
 |---|---|---|
-| Deploy workflow 真的能跑 | 需要 OIDC role 和真实实例 | CI + reviewer |
+| Release workflow 真的能跑 | 需要 OIDC role 和真实实例 | CI + reviewer |
 | SSM 能连上主机 | 需要 instance profile | reviewer |
 | ECR 能拉取 | 需要 ECR 读权限 | reviewer |
 | 打出来的真的是 arm64 镜像 | 本机是 x86，本地构建走原生架构 | CI（`platforms: linux/arm64`） |

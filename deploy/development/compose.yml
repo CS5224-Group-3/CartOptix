@@ -2,7 +2,7 @@
 #
 # Every service runs a published image. Nothing is built on this host: CI builds
 # and publishes the arm64 images, tagged with the Git commit that produced them
-# (.github/workflows/publish.yml). The host only pulls.
+# (.github/workflows/release.yml). The host only pulls.
 #
 # IMAGE_REGISTRY and RELEASE must be set, normally by deploy/development/.env.
 # RELEASE is the commit SHA of the running release, so the containers identify

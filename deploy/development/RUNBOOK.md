@@ -121,11 +121,11 @@ explicit message instead of an obscure AWS error.
 ### Automatic
 
 1. A pull request merges into `main`.
-2. **CI** runs `pnpm check` and `pnpm build`. A red run stops here: the Publish
-   workflow only starts from a successful CI run for a push to `main`.
-3. **Publish** builds both images for `linux/arm64` and pushes them tagged with
+2. **CI** runs `pnpm check` and `pnpm build`. A red run stops here: the **Release**
+   workflow only publishes from a successful CI run for a push to `main`.
+3. Release's **publish** job builds both images for `linux/arm64` and pushes them tagged with
    the merge commit SHA.
-4. **Deploy** assumes the deployment role and sends an SSM command to the host,
+4. Its **deploy** job assumes the deployment role and sends an SSM command to the host,
    which runs:
 
    ```bash
@@ -181,7 +181,7 @@ leave the counts unchanged.
 Restore a previous release by deploying its commit SHA again. Nothing is rebuilt
 and no schema is rolled back.
 
-**Through GitHub:** Actions → **Deploy** → *Run workflow* → set `release` to the
+**Through GitHub:** Actions → **Release** → *Run workflow* → set `release` to the
 commit SHA of the release to restore.
 
 **On the host:**
@@ -300,7 +300,7 @@ And the workflow check:
 
 ```bash
 docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:1.7.12 \
-  .github/workflows/ci.yml .github/workflows/publish.yml .github/workflows/deploy.yml
+  .github/workflows/ci.yml .github/workflows/release.yml
 ```
 
 Note the tag has no `v` prefix. The GitHub release is `v1.7.12`, but the Docker
@@ -315,7 +315,7 @@ such as a downloaded ZIP, is not detected as one.
 
 The check that matters here is the deploy path, so the images are built for
 whatever machine is running the check. Architecture correctness belongs to CI:
-`publish.yml` builds `linux/arm64` on a native arm64 runner. Emulating arm64
+`release.yml` builds `linux/arm64` on a native arm64 runner. Emulating arm64
 locally through QEMU would only make `pnpm install` and `tsc` slow without
 proving anything extra.
 
@@ -325,7 +325,7 @@ the tag.
 
 ### What local verification cannot show
 
-The Deploy workflow, the SSM command, the ECR pull, the Elastic IP, the arm64
+The Release workflow, the SSM command, the ECR pull, the Elastic IP, the arm64
 images themselves, and whether an older image runs correctly against a newer
 schema. Those need the development instance, and they are the reviewer's checks.
 The rollback check in `verify-local.ps1` exercises the rollback path by
@@ -342,9 +342,9 @@ between two different releases.
 | `release.sh` reports `Docker is not running` | Start Docker on the host. |
 | `/health/ready` returns 503 | The API cannot reach PostgreSQL. Check `docker compose logs postgres` and `docker compose logs api`. |
 | Browser or `curl http://127.0.0.1/api/...` returns 502 | `web` was not recreated after `api`. Recreate it: `docker compose up -d --force-recreate web`. |
-| Deploy workflow fails with `Missing repository variables` | Set the variables listed above. |
-| Deploy workflow fails with an SSM error | The instance profile is missing, or the instance is not registered with Systems Manager. Check `aws ssm describe-instance-information`. |
-| `Publish` never starts | CI did not succeed on `main`. The publish job intentionally does nothing after a failed or pull-request run. |
+| Release workflow fails with `Missing repository variables` | Set the variables listed above. |
+| Release workflow fails with an SSM error | The instance profile is missing, or the instance is not registered with Systems Manager. Check `aws ssm describe-instance-information`. |
+| Release's `publish` job is skipped | CI did not succeed on `main`. The publish job intentionally does nothing after a failed or pull-request run. |
 | `docker: Cannot connect to the Docker daemon` naming `dockerDesktopLinuxEngine` | The engine is not running, or the CLI is on the legacy `default` context. Start Docker Desktop, then `docker context use desktop-linux`, then confirm with `docker info --format "{{.ServerVersion}}"`. |
 | `verify-local.ps1 cannot be loaded because running scripts is disabled` | PowerShell execution policy. Run it as the example shows, with `-ExecutionPolicy Bypass`, which applies to that process only. |
 | `actionlint` reports `no project was found in any parent directories` | The checkout has no `.git` directory. Name the workflow files explicitly, or run `git init`. |

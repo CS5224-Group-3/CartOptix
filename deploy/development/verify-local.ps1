@@ -18,7 +18,7 @@
          release, with no schema rollback.
 
     What this cannot verify, because it needs the real host and the real
-    registry: the Deploy workflow, the SSM command, the ECR pull, the Elastic
+    registry: the Release workflow, the SSM command, the ECR pull, the Elastic
     IP, the arm64 images, and whether an older image is compatible with a newer
     schema. Those are the reviewer's checks on the development instance.
 
@@ -277,8 +277,7 @@ $required = @(
     $ReleaseScript,
     (Join-Path $DeployDir 'web.Dockerfile'),
     (Join-Path $RepoRoot 'apps\api\Dockerfile'),
-    (Join-Path $RepoRoot '.github\workflows\publish.yml'),
-    (Join-Path $RepoRoot '.github\workflows\deploy.yml'),
+    (Join-Path $RepoRoot '.github\workflows\release.yml'),
     (Join-Path $RepoRoot '.github\workflows\ci.yml')
 )
 $missing = @($required | Where-Object { -not (Test-Path -LiteralPath $_) })
@@ -398,7 +397,7 @@ if (-not $actionlintPath) {
 if (-not $actionlintPath -and $engineUp) {
     $dockerLint = Invoke-Tool -Capture -FilePath 'docker' -ArgumentList @(
         'run', '--rm', '-v', "${RepoRoot}:/repo", '--workdir', '/repo', "rhysd/actionlint:$ActionlintVersion",
-        '.github/workflows/ci.yml', '.github/workflows/publish.yml', '.github/workflows/deploy.yml'
+        '.github/workflows/ci.yml', '.github/workflows/release.yml'
     )
     if ($dockerLint.ExitCode -eq 0) {
         Add-Result -Check 'actionlint' -Result 'PASS' -Detail "3 workflows, no findings (rhysd/actionlint:$ActionlintVersion image)"
@@ -440,8 +439,7 @@ if (-not $actionlintPath -and -not $engineUp -and -not $NoDownload) {
 if ($actionlintPath -and (Test-Path -LiteralPath $actionlintPath)) {
     $workflows = @(
         '.github/workflows/ci.yml',
-        '.github/workflows/publish.yml',
-        '.github/workflows/deploy.yml'
+        '.github/workflows/release.yml'
     )
     $lint = Invoke-Tool -Capture -FilePath $actionlintPath -WorkingDirectory $RepoRoot -ArgumentList $workflows
     if ($lint.ExitCode -eq 0) {
