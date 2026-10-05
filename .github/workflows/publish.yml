@@ -1,0 +1,102 @@
+# Publishes the immutable release images for Issue #7.
+#
+# A release is a pair of arm64 images tagged with the Git commit that produced
+# them, so the running release can always be identified from its image tag and
+# an earlier release can be restored without rebuilding anything.
+#
+# This workflow is triggered by the CI workflow finishing, and the publish job
+# only runs when that CI run succeeded on main. A failing check therefore blocks
+# every release. Authentication uses GitHub OIDC, so the repository holds no
+# long-lived AWS credentials.
+name: Publish
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-southeast-1
+  ECR_REPOSITORY_API: cartoptix-api
+  ECR_REPOSITORY_WEB: cartoptix-web
+
+jobs:
+  publish:
+    name: Build and publish arm64 images
+    # Checks gate every release. Only a successful CI run for a push to main
+    # starts a publish; a pull request can never publish.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    # Native arm64, so the images are built for Graviton without emulation.
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+
+    steps:
+      - name: Check the required repository variables
+        env:
+          PUBLISH_ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+        run: |
+          if [[ -z "$PUBLISH_ROLE_ARN" ]]; then
+            echo "::error::Repository variable AWS_PUBLISH_ROLE_ARN is not set. See deploy/development/RUNBOOK.md."
+            exit 1
+          fi
+
+      - name: Check out the commit CI verified
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          # The images are published from the checkout, not pushed back to it.
+          persist-credentials: false
+
+      - name: Assume the publishing role
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Publish the API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          platforms: linux/arm64
+          push: true
+          # Only the commit tag is published. Never a moving tag such as
+          # "latest": the tag must identify exactly one immutable build.
+          tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_API }}:${{ github.event.workflow_run.head_sha }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
+
+      - name: Publish the web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/development/web.Dockerfile
+          platforms: linux/arm64
+          push: true
+          tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_WEB }}:${{ github.event.workflow_run.head_sha }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,scope=web,mode=max
+
+      - name: Record the release
+        run: |
+          {
+            echo "Published release \`${{ github.event.workflow_run.head_sha }}\`"
+            echo
+            echo '```'
+            echo "${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_API }}:${{ github.event.workflow_run.head_sha }}"
+            echo "${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_WEB }}:${{ github.event.workflow_run.head_sha }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -20,5 +20,8 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
+# Local verification tooling downloaded by verify-local.ps1
+.tools/
+
 # Python caches
 __pycache__/

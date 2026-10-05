@@ -1,0 +1,149 @@
+# Deploys a published release to the development host for Issue #7.
+#
+# Runs automatically once Publish succeeds on main, so the host always runs a
+# build whose checks passed. It can also be started by hand with the commit SHA
+# of an earlier release: that manual run is the documented rollback path.
+#
+# The host is reached through AWS Systems Manager, so the workflow needs no SSH
+# key and no inbound administration port. Authentication uses GitHub OIDC.
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [Publish]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Commit SHA of an already published release to deploy
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-southeast-1
+
+jobs:
+  deploy:
+    name: Deploy the release to the development host
+    # An automatic deploy only follows a successful publish of a push to main.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    env:
+      DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+      INSTANCE_ID: ${{ vars.DEV_INSTANCE_ID }}
+      REPOSITORY_DIR: ${{ vars.DEV_REPOSITORY_DIR }}
+
+    steps:
+      - name: Check the required repository variables
+        run: |
+          missing=()
+          [[ -n "$DEPLOY_ROLE_ARN" ]] || missing+=(AWS_DEPLOY_ROLE_ARN)
+          [[ -n "$INSTANCE_ID" ]] || missing+=(DEV_INSTANCE_ID)
+          [[ -n "$REPOSITORY_DIR" ]] || missing+=(DEV_REPOSITORY_DIR)
+          if (( ${#missing[@]} > 0 )); then
+            echo "::error::Missing repository variables: ${missing[*]}. See deploy/development/RUNBOOK.md."
+            exit 1
+          fi
+
+      - name: Resolve the release commit
+        id: release
+        env:
+          DISPATCHED_RELEASE: ${{ inputs.release }}
+          PUBLISHED_RELEASE: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            sha="$DISPATCHED_RELEASE"
+          else
+            sha="$PUBLISHED_RELEASE"
+          fi
+
+          # The SHA is interpolated into the command the host runs, so accept
+          # nothing but a full commit SHA.
+          if [[ ! "$sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Expected a 40-character commit SHA, received '$sha'."
+            exit 1
+          fi
+
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Deploying release $sha"
+
+      - name: Assume the deployment role
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Start the release on the host
+        id: send
+        env:
+          SHA: ${{ steps.release.outputs.sha }}
+        run: |
+          # Check out the exact commit first, so the host runs the release
+          # script and compose file that belong to the release it is deploying.
+          remote_command="set -euo pipefail
+          cd '$REPOSITORY_DIR'
+          git fetch --prune origin
+          git checkout --force '$SHA'
+          bash deploy/development/release.sh '$SHA'"
+
+          parameters="$(jq -nc --arg cmd "$remote_command" '{commands: [$cmd]}')"
+
+          command_id="$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name AWS-RunShellScript \
+            --comment "CartOptix release $SHA" \
+            --timeout-seconds 1800 \
+            --parameters "$parameters" \
+            --query 'Command.CommandId' \
+            --output text)"
+
+          echo "command_id=$command_id" >> "$GITHUB_OUTPUT"
+          echo "Started SSM command $command_id."
+
+      - name: Wait for the release to finish
+        env:
+          SHA: ${{ steps.release.outputs.sha }}
+          COMMAND_ID: ${{ steps.send.outputs.command_id }}
+        run: |
+          invocation() {
+            aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query "$1" \
+              --output text 2>/dev/null || true
+          }
+
+          for attempt in $(seq 1 120); do
+            status="$(invocation 'Status')"
+            status="${status:-Pending}"
+
+            case "$status" in
+              Success)
+                invocation 'StandardOutputContent'
+                echo "Release $SHA is deployed and /health/ready returned 200."
+                exit 0
+                ;;
+              Pending|InProgress|Delayed)
+                echo "Attempt $attempt: $status"
+                sleep 10
+                ;;
+              *)
+                echo "::error::Release $SHA failed with SSM status $status."
+                invocation 'StandardErrorContent'
+                invocation 'StandardOutputContent'
+                exit 1
+                ;;
+            esac
+          done
+
+          echo "::error::Timed out waiting for release $SHA to finish."
+          exit 1

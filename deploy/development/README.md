@@ -3,6 +3,10 @@
 This directory contains the repeatable deployment configuration for the CartOptix
 development proof of concept used for Issue #6.
 
+Releasing, rolling back and verifying a deployed build is covered by
+[RUNBOOK.md](RUNBOOK.md), which Issue #7 adds. This file describes the
+infrastructure and the first-time setup.
+
 ## Architecture
 
 The development POC runs on a single AWS EC2 `t4g.micro` ARM64 instance.
@@ -37,8 +41,11 @@ The EC2 host requires:
 - ARM64 / aarch64 Linux
 - Docker
 - Docker Compose
-- Docker Buildx
 - Git
+- curl, for the smoke checks
+- AWS CLI, to authenticate to the registry before pulling
+
+Docker Buildx is not required: the host pulls published images and does not build.
 
 The tested development POC uses Amazon Linux 2023 on a `t4g.micro`.
 
@@ -47,8 +54,9 @@ Verify:
     uname -m
     docker --version
     docker compose version
-    docker buildx version
     git --version
+    curl --version
+    aws --version
 
 `uname -m` should report `aarch64`.
 
@@ -76,19 +84,31 @@ Create the deployment environment file from the template:
 
 Set:
 
+    IMAGE_REGISTRY
+    RELEASE
     POSTGRES_DB
     POSTGRES_USER
     POSTGRES_PASSWORD
 
+`IMAGE_REGISTRY` is the registry holding the published release images.
+`RELEASE` is the Git commit SHA of the release to run; `release.sh` sets it from
+its argument, so the value here only matters when you run `docker compose`
+directly.
+
 Do not commit `.env`.
 
-## Build
+## Images
 
-From `deploy/development`:
+The host does not build. CI publishes both application images for `linux/arm64`,
+tagged with the Git commit that produced them, and the host pulls them by tag.
+Pulling a private registry needs a login token even though the instance profile
+grants the permission:
 
-    docker compose build api web
+    aws ecr get-login-password --region <region> \
+      | docker login --username AWS --password-stdin "$IMAGE_REGISTRY"
 
-Both application images are built natively for the ARM64 EC2 host.
+See [RUNBOOK.md](RUNBOOK.md) for the release, rollback and smoke-check
+procedures.
 
 ## Start the application
 
@@ -239,7 +259,9 @@ Current limitations include:
 - database persistence relies on the EC2-attached Docker volume;
 - HTTP is used for this development smoke deployment;
 - HTTPS termination is not configured here;
-- no automated CI/CD deployment is included in Issue #6;
+- releases are automated and reversible (see [RUNBOOK.md](RUNBOOK.md)), but the
+  single instance makes a release a brief interruption rather than a rolling
+  update;
 - no high-availability database or automatic database failover;
 - `t4g.micro` has limited CPU and memory capacity;
 - the current shopper routes still use the repository placeholder shopper
