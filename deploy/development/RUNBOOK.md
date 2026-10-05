@@ -193,13 +193,17 @@ git checkout --force <previous-sha>
 bash deploy/development/release.sh <previous-sha>
 ```
 
-Only re-run the migration task if the restored release predates migrations that
-have already been applied, and only when those migrations are backward
-compatible. The technical specification requires backward-compatible schema
-changes for exactly this reason: Drizzle migrations are forward-only, so the way
-to make a rollback safe is to keep every migration safe for the previous
-release to run against. Add columns as nullable or with defaults, and drop
-columns in a later release rather than the one that stops using them.
+`release.sh` always runs the migration and seed tasks from the restored image.
+Its migration task is a no-op, because Drizzle migrations are forward-only and
+the newer ones are already applied. Its seed import replaces the catalogue with
+the restored release's seed, in one transaction.
+
+Rollback only works when the restored release's API and seed import still run
+against the current schema. We don't keep migrations backward compatible, so a
+rollback across a breaking migration fails: at the seed import, which rolls back
+and leaves the current release running, or at the readiness check, which leaves
+the host down. In either case, fix forward with a new release. A commit from
+before Issue #7 cannot be restored this way, because it has no `release.sh`.
 
 To find a previous release:
 
