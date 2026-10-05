@@ -284,28 +284,7 @@ docker compose -f deploy/development/compose.yml ps
 Two things have to pass before this is offered for review: the workflow files
 pass `actionlint`, and `release.sh` completes against a local Compose stack.
 
-### On Windows
-
-```powershell
-powershell -ExecutionPolicy Bypass -File deploy/development/verify-local.ps1
-```
-
-That script runs every check that needs no cloud access, prints one line per
-check, and exits non-zero if any of them failed. Useful flags:
-
-| Flag | Effect |
-| --- | --- |
-| `-SkipBuild` | reuse images already tagged locally, for a fast second run |
-| `-SkipRollback` | do not run the rollback check |
-| `-SkipStack` | run only the checks that need no Docker engine |
-| `-WebPort 8080` | publish the stack on a spare port when 80 is taken |
-| `-NoDownload` | never download `actionlint`; fail the check if it is absent |
-
-`actionlint` is looked for on `PATH` and in `.tools`, then in the
-`rhysd/actionlint` image, and only then downloaded into `.tools` with its
-published SHA-256 checksum verified. `.tools/` is ignored by Git.
-
-### On Linux or macOS, or by hand
+On Windows, run these from Git Bash with `bash -l`, or from WSL.
 
 ```bash
 cd "$REPO_ROOT"
@@ -350,9 +329,6 @@ the tag.
 The Release workflow, the SSM command, the ECR pull, the Elastic IP, the arm64
 images themselves, and whether an older image runs correctly against a newer
 schema. Those need the development instance, and they are the reviewer's checks.
-The rollback check in `verify-local.ps1` exercises the rollback path by
-retagging one local build, which is not the same as proving compatibility
-between two different releases.
 
 ## Troubleshooting
 
@@ -368,11 +344,9 @@ between two different releases.
 | Release workflow fails with an SSM error | The instance profile is missing, or the instance is not registered with Systems Manager. Check `aws ssm describe-instance-information`. |
 | Release's `publish` job is skipped | CI did not succeed on `main`. The publish job intentionally does nothing after a failed or pull-request run. |
 | `docker: Cannot connect to the Docker daemon` naming `dockerDesktopLinuxEngine` | The engine is not running, or the CLI is on the legacy `default` context. Start Docker Desktop, then `docker context use desktop-linux`, then confirm with `docker info --format "{{.ServerVersion}}"`. |
-| `verify-local.ps1 cannot be loaded because running scripts is disabled` | PowerShell execution policy. Run it as the example shows, with `-ExecutionPolicy Bypass`, which applies to that process only. |
 | `actionlint` reports `no project was found in any parent directories` | The checkout has no `.git` directory. Name the workflow files explicitly, or run `git init`. |
-| `verify-local.ps1` reports `.env has no IMAGE_REGISTRY` | A pre-#7 `.env`. Add `IMAGE_REGISTRY` as `.env.example` shows. |
-| `Bind for 0.0.0.0:80 failed: port is already allocated` | Another service holds port 80. Set `WEB_PORT` to a spare port; `release.sh` probes readiness on it. `verify-local.ps1` picks a free port by itself. |
-| `release.sh: line 23: dirname: command not found` (exit 127) | Only on Windows. Git for Windows keeps `dirname`, `sed`, `tail`, `cut` and `seq` in `<git>\usr\bin`, which is added only for a login shell. Run `release.sh` with `bash -l`, or use `verify-local.ps1`, which does. Prepending that directory to `PATH` does not work. |
+| `release.sh` reports `IMAGE_REGISTRY is not set in .env` | A pre-#7 `.env`. Add `IMAGE_REGISTRY` as `.env.example` shows. |
+| `Bind for 0.0.0.0:80 failed: port is already allocated` | Another service holds port 80. Set `WEB_PORT` to a spare port; `release.sh` probes readiness on it. |
+| `release.sh: line 23: dirname: command not found` (exit 127) | Only on Windows. Git for Windows keeps `dirname`, `sed`, `tail`, `cut` and `seq` in `<git>\usr\bin`, which is added only for a login shell. Run `release.sh` with `bash -l`. Prepending that directory to `PATH` does not work. |
 | `template parsing error: function "trimPrefix" not defined` | Docker's template language has no `trimPrefix`. Use `{{slice .Name 1}}` to drop the leading slash. |
-| `template parsing error: function "com" not defined` | Seen when a quoted template such as `{{index .Config.Labels "com.cartoptix.release"}}` is passed to `docker.exe` from PowerShell: the inner double quotes are stripped. Under bash it is fine. From PowerShell use `{{json .Config.Labels}}` and parse the result. |
 | `manifest for rhysd/actionlint:v1.7.12 not found` | The Docker Hub image tag has no `v` prefix (`1.7.12`); only the GitHub release tag does. |
