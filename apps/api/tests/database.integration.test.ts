@@ -1,5 +1,5 @@
 import pg from "pg";
-import { afterAll, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createDatabase } from "../src/database.ts";
 import { buildServer } from "../src/server.ts";
 
@@ -16,10 +16,6 @@ describe.skipIf(connectionString === undefined)(
   "readiness against the local PostgreSQL container",
   () => {
     const database = createDatabase(connectionString ?? "");
-
-    afterAll(async () => {
-      await database.close();
-    });
 
     it("performs a real query and reports the API as ready", async () => {
       const server = buildServer({ database });

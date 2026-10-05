@@ -43,7 +43,6 @@ function apiOverDatabase(prefix: string) {
 
   afterAll(async () => {
     await server?.close();
-    await database?.close();
     await throwaway?.drop();
   });
 
