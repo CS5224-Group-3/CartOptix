@@ -1,6 +1,6 @@
 import type { OffersResponse, Product } from "@cartoptix/contracts";
 import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
-import { and, asc, count, eq, exists, inArray, like, or, sql, type SQLWrapper } from "drizzle-orm";
+import { and, asc, count, eq, exists, inArray, like, or, type SQLWrapper, sql } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { listings, products } from "../db/schema.ts";
 import { priceOffer } from "./offers.ts";
@@ -12,7 +12,9 @@ function canonicalPackSize(specifications: readonly (string | null)[]): string {
   const values = [...new Set(specifications.filter((value): value is string => value !== null))];
   if (values.length === 0) return "Pack size unavailable";
   const normalized = new Set(values.map(normalizePackSize));
-  return normalized.size === 1 ? lowerCaseUnits(values[0] ?? "Pack size unavailable") : "Pack size unavailable";
+  return normalized.size === 1
+    ? lowerCaseUnits(values[0] ?? "Pack size unavailable")
+    : "Pack size unavailable";
 }
 
 function shopperName(value: string): string {
@@ -96,10 +98,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             );
           }
           const where = predicates.length === 0 ? undefined : and(...predicates);
-          const [countRow] = await tx
-            .select({ total: count() })
-            .from(products)
-            .where(where);
+          const [countRow] = await tx.select({ total: count() }).from(products).where(where);
           const total = countRow?.total ?? 0;
           const pageRows = await tx
             .select({
@@ -118,7 +117,12 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
           const specificationRows = await tx
             .select({ productId: listings.productId, specification: listings.specification })
             .from(listings)
-            .where(inArray(listings.productId, pageRows.map((row) => row.productId)))
+            .where(
+              inArray(
+                listings.productId,
+                pageRows.map((row) => row.productId),
+              ),
+            )
             .orderBy(asc(listings.productId), asc(listings.listingId));
           const specifications = new Map<string, string[]>();
           for (const row of specificationRows) {

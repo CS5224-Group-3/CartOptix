@@ -17,7 +17,9 @@ describe("products API", () => {
     const server = buildServer({
       database: {
         checkConnection: async () => ({ status: "ok" }),
-        loadBasket: async () => { throw new Error("not used"); },
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
         loadCatalogue: async () => structuredClone(catalogueExample),
         loadProducts: (query) => products.products(query),
         loadOffers: (productId, quantity) => products.offers(productId, quantity),
@@ -68,9 +70,9 @@ describe("products API", () => {
     });
 
     expect(packSize.statusCode).toBe(200);
-    expect(packSize.json().products.map((product: { productId: string }) => product.productId)).toEqual([
-      "fixture-rice",
-    ]);
+    expect(
+      packSize.json().products.map((product: { productId: string }) => product.productId),
+    ).toEqual(["fixture-rice"]);
     expect(wildcard.statusCode).toBe(200);
     expect(wildcard.json()).toEqual({ products: [], total: 0 });
   });
@@ -103,28 +105,38 @@ describe("products API", () => {
   });
 
   it("distinguishes an empty result from a store failure", async () => {
-    const emptyServer = buildServer({ database: {
-      checkConnection: async () => ({ status: "ok" }),
-      loadBasket: async () => { throw new Error("not used"); },
-      loadCatalogue: async () => structuredClone(catalogueExample),
-      loadProducts: async () => ({ products: [], total: 0 }),
-      loadOffers: async () => null,
-      close: async () => {},
-    }});
+    const emptyServer = buildServer({
+      database: {
+        checkConnection: async () => ({ status: "ok" }),
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
+        loadCatalogue: async () => structuredClone(catalogueExample),
+        loadProducts: async () => ({ products: [], total: 0 }),
+        loadOffers: async () => null,
+        close: async () => {},
+      },
+    });
     const empty = await emptyServer.inject({
       method: "GET",
       url: `${routes.products.url}?page=1&pageSize=1`,
     });
     await emptyServer.close();
 
-    const failingServer = buildServer({ database: {
-      checkConnection: async () => ({ status: "ok" }),
-      loadBasket: async () => { throw new Error("not used"); },
-      loadCatalogue: async () => structuredClone(catalogueExample),
-      loadProducts: async () => { throw new Error("database unavailable"); },
-      loadOffers: async () => null,
-      close: async () => {},
-    }});
+    const failingServer = buildServer({
+      database: {
+        checkConnection: async () => ({ status: "ok" }),
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
+        loadCatalogue: async () => structuredClone(catalogueExample),
+        loadProducts: async () => {
+          throw new Error("database unavailable");
+        },
+        loadOffers: async () => null,
+        close: async () => {},
+      },
+    });
     const failed = await failingServer.inject({
       method: "GET",
       url: `${routes.products.url}?page=1&pageSize=1`,

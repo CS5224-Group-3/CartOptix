@@ -19,7 +19,9 @@ describe("catalogue API", () => {
     const server = buildServer({
       database: {
         checkConnection: async () => ({ status: "ok" }),
-        loadBasket: async () => { throw new Error("not used"); },
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
         loadCatalogue: () => catalogue.catalogue(),
         loadProducts: (query) => products.products(query),
         loadOffers: (productId, quantity) => products.offers(productId, quantity),
@@ -39,7 +41,9 @@ describe("catalogue API", () => {
     const server = buildServer({
       database: {
         checkConnection: async () => ({ status: "ok" }),
-        loadBasket: async () => { throw new Error("not used"); },
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
         loadCatalogue: () => catalogue.catalogue(),
         loadProducts: (query) => products.products(query),
         loadOffers: (productId, quantity) => products.offers(productId, quantity),

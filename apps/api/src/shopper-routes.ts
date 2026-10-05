@@ -65,9 +65,7 @@ export function registerShopperRoutes(server: FastifyInstance, database: Databas
     async (request, reply) => {
       const result = await database.loadOffers(request.params.id, request.query.quantity);
       if (result === null) {
-        return reply
-          .code(404)
-          .send(errorBody("not_found", "Product not found."));
+        return reply.code(404).send(errorBody("not_found", "Product not found."));
       }
       return result;
     },
