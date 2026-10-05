@@ -584,7 +584,6 @@ else {
             RELEASE        = $Release
             WEB_PORT       = [string]$WebPort
             SKIP_PULL      = '1'
-            READY_URL      = "http://127.0.0.1:$WebPort/health/ready"
             READY_ATTEMPTS = '40'
         }
         $releaseRun = Invoke-Tool -FilePath $bashExe -WorkingDirectory $DeployDir -Environment $releaseEnv -ArgumentList @(
@@ -652,7 +651,6 @@ else {
                     RELEASE        = $PreviousRelease
                     WEB_PORT       = [string]$WebPort
                     SKIP_PULL      = '1'
-                    READY_URL      = "http://127.0.0.1:$WebPort/health/ready"
                     READY_ATTEMPTS = '40'
                 }
                 $rollbackRun = Invoke-Tool -FilePath $bashExe -WorkingDirectory $DeployDir -Environment $rollbackEnv -ArgumentList @(

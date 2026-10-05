@@ -345,7 +345,7 @@ between two different releases.
 | `verify-local.ps1 cannot be loaded because running scripts is disabled` | PowerShell execution policy. Run it as the example shows, with `-ExecutionPolicy Bypass`, which applies to that process only. |
 | `actionlint` reports `no project was found in any parent directories` | The checkout has no `.git` directory. Name the workflow files explicitly, or run `git init`. |
 | `verify-local.ps1` reports `.env has no IMAGE_REGISTRY` | A pre-#7 `.env`. Add `IMAGE_REGISTRY` as `.env.example` shows. |
-| `Bind for 0.0.0.0:80 failed: port is already allocated` | Another service holds port 80. Set `WEB_PORT` to a spare port and pass the matching `READY_URL`. `verify-local.ps1` picks a free port by itself. |
+| `Bind for 0.0.0.0:80 failed: port is already allocated` | Another service holds port 80. Set `WEB_PORT` to a spare port; `release.sh` probes readiness on it. `verify-local.ps1` picks a free port by itself. |
 | `release.sh: line 23: dirname: command not found` (exit 127) | Only on Windows. Git for Windows keeps `dirname`, `sed`, `tail`, `cut` and `seq` in `<git>\usr\bin`, which is added only for a login shell. Run `release.sh` with `bash -l`, or use `verify-local.ps1`, which does. Prepending that directory to `PATH` does not work. |
 | `template parsing error: function "trimPrefix" not defined` | Docker's template language has no `trimPrefix`. Use `{{slice .Name 1}}` to drop the leading slash. |
 | `template parsing error: function "com" not defined` | Seen when a quoted template such as `{{index .Config.Labels "com.cartoptix.release"}}` is passed to `docker.exe` from PowerShell: the inner double quotes are stripped. Under bash it is fine. From PowerShell use `{{json .Config.Labels}}` and parse the result. |

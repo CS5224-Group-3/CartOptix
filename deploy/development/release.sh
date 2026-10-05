@@ -25,7 +25,6 @@ cd "$script_dir"
 
 readonly POSTGRES_VOLUME="cartoptix-postgres-data"
 readonly NETWORK="cartoptix-net"
-readonly READY_URL="${READY_URL:-http://127.0.0.1/health/ready}"
 readonly READY_ATTEMPTS="${READY_ATTEMPTS:-30}"
 
 say() { printf '\n==> %s\n' "$*"; }
@@ -46,6 +45,11 @@ export RELEASE="$release"
 # enters this shell's environment.
 image_registry="$(sed -n 's/^IMAGE_REGISTRY=//p' .env | tail -n 1)"
 [[ -n "$image_registry" ]] || fail "IMAGE_REGISTRY is not set in .env; see .env.example."
+
+# Probe the port compose publishes web on, resolved the same way compose does:
+# the environment first, then .env, then the default.
+web_port="${WEB_PORT:-$(sed -n 's/^WEB_PORT=//p' .env | tail -n 1)}"
+readonly READY_URL="http://127.0.0.1:${web_port:-80}/health/ready"
 
 compose() { docker compose "$@"; }
 

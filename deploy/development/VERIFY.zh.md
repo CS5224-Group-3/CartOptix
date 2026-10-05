@@ -238,7 +238,7 @@ nginx 把 `api` 这个 Docker DNS 名字解析得到的容器 IP 记住了。api
 | `verify-local.ps1 cannot be loaded because running scripts is disabled` | 执行策略。按示例加 `-ExecutionPolicy Bypass`，只影响当前那个进程 |
 | actionlint 报 `no project was found in any parent directories` | 没有 `.git`。显式列出 workflow 文件，或 `git init` |
 | `IMAGE_REGISTRY is required` | 主机上已有的 `.env` 是 Issue #7 之前的版本。补上 `IMAGE_REGISTRY` 和 `RELEASE` |
-| `Bind for 0.0.0.0:80 failed` | 80 端口被占。脚本会自己挑一个空闲端口；手工跑就设 `WEB_PORT` 并把 `READY_URL` 改成对应端口 |
+| `Bind for 0.0.0.0:80 failed` | 80 端口被占。脚本会自己挑一个空闲端口；手工跑就设 `WEB_PORT`，`release.sh` 会在同一端口探测就绪 |
 | `unknown flag: --wait` | 主机的 Compose 低于 v2.17，升级 Compose 插件 |
 | `manifest for rhysd/actionlint:v1.7.12 not found` | Docker Hub 的镜像标签**没有 `v` 前缀**（是 `1.7.12`），`v1.7.12` 只存在于 GitHub Release。见 `ci.yml` 里的注释 |
 | `release.sh: line 23: dirname: command not found`（exit 127） | Windows 上用 Git Bash 跑 `release.sh` 时，`/usr/bin` 不在 `PATH` 上。`release.sh` 本身没问题（Linux 主机上永远能找到 coreutils）；脚本已自动用 `bash -l` 调用。**实测把 `<git>\usr\bin` 前插到 `PATH` 是无效的，那条会被丢掉，只有 `-l` 管用。** |
