@@ -26,6 +26,16 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - `apps/api/src/placeholder/` holds a synthetic dataset that serves the catalogue, products and offers until #9 and #10 land; basket comparison already reads the imported seed. Replace it; do not build features on it or present its figures as retailer data.
 - When importing generated or template code, keep only what the app uses. Remove unused components, dependencies, lint or type exceptions, and template infrastructure (auth, ORMs, RPC layers) that the spec does not call for.
 
+## Branching and integration
+
+We use trunk-based development: `main` is the trunk and must always pass CI and stay releasable.
+
+- Never commit directly to `main`. Branch from the latest `main` and merge back through a pull request after CI passes.
+- Keep branches short-lived and pull requests small. Split large work into incremental PRs that each leave `main` working, rather than one long-running branch. Do not create long-lived `develop`, `release` or per-person branches.
+- Name branches `<type>/<short-description>`, adding the issue number where there is one (for example `feat/issue-7-ci-cd-releases`). Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `data`.
+- Write commit messages and PR titles as Conventional Commits, referencing the issue (for example `feat(api): compare complete baskets (#11)`).
+- Rebase on or merge the latest `main` before requesting review if your branch has fallen behind. Merged branches are deleted automatically.
+
 ## Local development
 
 See [README.md](README.md) for prerequisites, setup and commands. Docker must be installed and running, because it provides the local PostgreSQL database.
