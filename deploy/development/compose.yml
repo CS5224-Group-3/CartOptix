@@ -29,7 +29,7 @@ services:
       retries: 20
 
   api:
-    image: ${IMAGE_REGISTRY:?IMAGE_REGISTRY is required}/cartoptix-api:${RELEASE:?RELEASE is required}
+    image: &api-image ${IMAGE_REGISTRY:?IMAGE_REGISTRY is required}/cartoptix-api:${RELEASE:?RELEASE is required}
     container_name: cartoptix-api
     restart: unless-stopped
     depends_on:
@@ -89,7 +89,7 @@ services:
   # on every start. Readiness deliberately does not check the seed, so the
   # import is a release step: see RUNBOOK.md.
   migrate:
-    image: ${IMAGE_REGISTRY:?IMAGE_REGISTRY is required}/cartoptix-api:${RELEASE:?RELEASE is required}
+    image: *api-image
     profiles: ["ops"]
     depends_on:
       postgres:
@@ -101,7 +101,7 @@ services:
       - cartoptix-net
 
   seed:
-    image: ${IMAGE_REGISTRY:?IMAGE_REGISTRY is required}/cartoptix-api:${RELEASE:?RELEASE is required}
+    image: *api-image
     profiles: ["ops"]
     depends_on:
       postgres:
