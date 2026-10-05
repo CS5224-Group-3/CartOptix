@@ -182,7 +182,9 @@ Restore a previous release by deploying its commit SHA again. Nothing is rebuilt
 and no schema is rolled back.
 
 **Through GitHub:** Actions → **Release** → *Run workflow* → set `release` to the
-commit SHA of the release to restore.
+commit SHA of the release to restore. Releases run one at a time; start a
+rollback once no other release is running or waiting, because a newer queued
+release replaces a waiting one.
 
 **On the host:**
 

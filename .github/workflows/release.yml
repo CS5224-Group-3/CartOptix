@@ -30,6 +30,12 @@ permissions:
   contents: read
   id-token: write
 
+# One release at a time, never cancelled half-way. GitHub keeps at most one run
+# waiting and a newer one replaces it, so the host ends on the latest release.
+concurrency:
+  group: release-development
+  cancel-in-progress: false
+
 env:
   AWS_REGION: ap-southeast-1
   ECR_REPOSITORY_API: cartoptix-api
