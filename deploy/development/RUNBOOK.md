@@ -32,9 +32,29 @@ relied on to load it.
 | `AmazonSSMManagedInstanceCore` on the instance profile | lets Systems Manager reach the host at all |
 | `AmazonEC2ContainerRegistryReadOnly` on the instance profile | lets the host pull the release images. **SSM alone is not enough** |
 | Elastic IP associated with the instance | the public address must survive stop/start |
-| Two ECR repositories, `cartoptix-api` and `cartoptix-web`, tag immutability **on** | one tag must never be overwritten |
+| Two ECR repositories, `cartoptix-api` and `cartoptix-web`, tag immutability **on**, with the lifecycle policy below | one tag must never be overwritten; old releases are expired |
 | GitHub OIDC identity provider in IAM | replaces long-lived access keys |
 | Publishing role and deployment role | see below |
+
+Each repository keeps its 10 most recent images: the running release and
+earlier ones to roll back to. Apply the policy once per repository:
+
+```bash
+for repository in cartoptix-api cartoptix-web; do
+  aws ecr put-lifecycle-policy --region ap-southeast-1 \
+    --repository-name "$repository" \
+    --lifecycle-policy-text '{"rules":[{"rulePriority":1,"description":"Keep the 10 most recent releases","selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}'
+done
+```
+
+**Cost** (input for the E1 estimate, not a verified budget). One release is at
+most about 171 MB stored (API about 146 MB, web about 25 MB, compressed, measured
+locally on 5 October 2026); shared base layers make each further release
+smaller. At US$0.10 per GB-month for ECR private storage
+([pricing](https://aws.amazon.com/ecr/pricing/), checked 5 October 2026), the
+lifecycle policy caps storage at about 1.7 GB, under US$0.20 a month. Pulls to
+the instance in the same region are free. Delete both repositories at teardown
+(E6).
 
 The deployment role, allowed to reach this instance only:
 
