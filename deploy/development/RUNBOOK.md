@@ -125,7 +125,7 @@ explicit message instead of an obscure AWS error.
 
 ### Development host (once)
 
-- Docker, Docker Compose, Docker Buildx, git, curl, and the AWS CLI.
+- Docker, Docker Compose, git, curl, and the AWS CLI. No Buildx: the host only pulls.
 - A clone of this repository with read access, at `$DEV_REPOSITORY_DIR`.
 - `deploy/development/.env`, created from `.env.example` and `chmod 600`. It now
   needs `IMAGE_REGISTRY` as well as the three `POSTGRES_*` values. **An `.env`
