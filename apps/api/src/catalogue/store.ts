@@ -49,7 +49,7 @@ export function createDatabaseCatalogueStore(db: NodePgDatabase): CatalogueStore
             delivery: {
               rules: deliveryRows.map((rule) => {
                 if (rule.status === "verified") {
-                  if (rule.note === null) {
+                  if (rule.note === null || rule.note.trim().length === 0) {
                     throw new Error(`Verified delivery rule for ${rule.retailerId} has no note`);
                   }
                   if (rule.deliveryFeeCents === null) {

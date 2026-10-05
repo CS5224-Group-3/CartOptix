@@ -1,6 +1,6 @@
 import type { OffersResponse, Product } from "@cartoptix/contracts";
 import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
-import { asc, eq } from "drizzle-orm";
+import { and, asc, count, eq, exists, inArray, like, or, sql, type SQLWrapper } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { listings, products } from "../db/schema.ts";
 import { priceOffer } from "./offers.ts";
@@ -11,8 +11,36 @@ export type { ProductSearchQuery } from "./search.ts";
 function canonicalPackSize(specifications: readonly (string | null)[]): string {
   const values = [...new Set(specifications.filter((value): value is string => value !== null))];
   if (values.length === 0) return "Pack size unavailable";
-  const normalized = new Set(values.map((value) => value.replace(/\s+/g, "").toLocaleLowerCase()));
-  return normalized.size === 1 ? (values[0] ?? "Pack size unavailable") : "Pack size unavailable";
+  const normalized = new Set(values.map(normalizePackSize));
+  return normalized.size === 1 ? lowerCaseUnits(values[0] ?? "Pack size unavailable") : "Pack size unavailable";
+}
+
+function shopperName(value: string): string {
+  return value.replace(/\s*\[BCRS\]\s*/gi, " ").trim();
+}
+
+function lowerCaseUnits(value: string): string {
+  return value.replace(/(ml|kg|g|l)\b/gi, (unit) => unit.toLocaleLowerCase());
+}
+
+function normalizePackSize(value: string): string {
+  return value
+    .toLocaleLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/×/g, "x")
+    .replace(/(\d+(?:\.\d+)?)kg/g, (_, amount: string) => `${Number(amount) * 1000}g`)
+    .replace(/(\d+(?:\.\d+)?)l/g, (_, amount: string) => `${Number(amount) * 1000}ml`);
+}
+
+function searchLikePattern(value: string): string {
+  // Products search treats SQL wildcard characters as ordinary text.
+  return `%${value.trim().toLocaleLowerCase().replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_").replace(/\s+/g, "")}%`;
+}
+
+function normalizedSearchExpression(column: SQLWrapper) {
+  // PostgreSQL does the same normalization as normalizeSearchText(), while
+  // Drizzle still binds the user input as a query parameter.
+  return sql`regexp_replace(lower(${column}), '\\s+', '', 'g')`;
 }
 
 export interface ProductsStore {
@@ -44,38 +72,72 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
     async products(query) {
       return db.transaction(
         async (tx) => {
-          const rows = await tx
+          const predicates = [];
+          if (query.categoryId !== undefined) {
+            predicates.push(eq(products.categoryId, query.categoryId));
+          }
+          if (query.q !== undefined) {
+            const pattern = searchLikePattern(query.q);
+            predicates.push(
+              or(
+                like(normalizedSearchExpression(products.representativeName), pattern),
+                exists(
+                  tx
+                    .select({ listingId: listings.listingId })
+                    .from(listings)
+                    .where(
+                      and(
+                        eq(listings.productId, products.productId),
+                        like(normalizedSearchExpression(listings.specification), pattern),
+                      ),
+                    ),
+                ),
+              ),
+            );
+          }
+          const where = predicates.length === 0 ? undefined : and(...predicates);
+          const [countRow] = await tx
+            .select({ total: count() })
+            .from(products)
+            .where(where);
+          const total = countRow?.total ?? 0;
+          const pageRows = await tx
             .select({
               productId: products.productId,
               categoryId: products.categoryId,
               name: products.representativeName,
               imageUrl: products.imageUrl,
-              specification: listings.specification,
             })
             .from(products)
-            .leftJoin(listings, eq(listings.productId, products.productId))
-            .orderBy(asc(products.productId), asc(listings.listingId));
+            .where(where)
+            .orderBy(asc(products.productId))
+            .limit(query.pageSize)
+            .offset((query.page - 1) * query.pageSize);
+          if (pageRows.length === 0) return { products: [], total: Number(total) };
+
+          const specificationRows = await tx
+            .select({ productId: listings.productId, specification: listings.specification })
+            .from(listings)
+            .where(inArray(listings.productId, pageRows.map((row) => row.productId)))
+            .orderBy(asc(listings.productId), asc(listings.listingId));
           const specifications = new Map<string, string[]>();
-          for (const row of rows) {
-            if (row.specification !== null)
-              specifications.set(row.productId, [
-                ...(specifications.get(row.productId) ?? []),
-                row.specification,
-              ]);
+          for (const row of specificationRows) {
+            specifications.set(row.productId, [
+              ...(specifications.get(row.productId) ?? []),
+              row.specification,
+            ]);
           }
-          const result: Product[] = [];
-          for (const row of rows) {
-            if (result.some((product) => product.productId === row.productId)) continue;
-            result.push({
+          return {
+            products: pageRows.map((row) => ({
               productId: row.productId,
               categoryId: row.categoryId,
-              name: row.name,
+              name: shopperName(row.name),
               packSize: canonicalPackSize(specifications.get(row.productId) ?? []),
               available: (specifications.get(row.productId)?.length ?? 0) > 0,
               imageUrl: row.imageUrl,
-            });
-          }
-          return searchProducts(result, query);
+            })),
+            total: Number(total),
+          };
         },
         { isolationLevel: "repeatable read", accessMode: "read only" },
       );
@@ -112,7 +174,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             product: {
               productId: productRows[0].productId,
               categoryId: productRows[0].categoryId,
-              name: productRows[0].name,
+              name: shopperName(productRows[0].name),
               packSize: canonicalPackSize(productRows.map((row) => row.specification)),
               available: productRows.some((row) => row.specification !== null),
               imageUrl: productRows[0].imageUrl,

@@ -1,19 +1,29 @@
 import { OffersResponseSchema, ProductsResponseSchema, routes } from "@cartoptix/contracts";
-import Fastify from "fastify";
+import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
-import { createFixtureProductsStore, registerProductsRoutes } from "../src/products/index.ts";
+import { createFixtureProductsStore } from "../../src/products/index.ts";
+import { buildServer } from "../../src/server.ts";
 
 describe("products API", () => {
-  const servers: ReturnType<typeof Fastify>[] = [];
+  const servers: ReturnType<typeof buildServer>[] = [];
   afterEach(async () => {
     await Promise.all(servers.map((server) => server.close()));
     servers.length = 0;
   });
 
   function start() {
-    const server = Fastify({ logger: false });
-    registerProductsRoutes(server, createFixtureProductsStore());
+    const products = createFixtureProductsStore();
+    const server = buildServer({
+      database: {
+        checkConnection: async () => ({ status: "ok" }),
+        loadBasket: async () => { throw new Error("not used"); },
+        loadCatalogue: async () => structuredClone(catalogueExample),
+        loadProducts: (query) => products.products(query),
+        loadOffers: (productId, quantity) => products.offers(productId, quantity),
+        close: async () => {},
+      },
+    });
     servers.push(server);
     return server;
   }
@@ -46,6 +56,25 @@ describe("products API", () => {
     ).toEqual(["fixture-drink"]);
   });
 
+  it("ignores pack-size whitespace but treats wildcard characters literally", async () => {
+    const server = start();
+    const packSize = await server.inject({
+      method: "GET",
+      url: `${routes.products.url}?q=1%20kg`,
+    });
+    const wildcard = await server.inject({
+      method: "GET",
+      url: `${routes.products.url}?q=%25`,
+    });
+
+    expect(packSize.statusCode).toBe(200);
+    expect(packSize.json().products.map((product: { productId: string }) => product.productId)).toEqual([
+      "fixture-rice",
+    ]);
+    expect(wildcard.statusCode).toBe(200);
+    expect(wildcard.json()).toEqual({ products: [], total: 0 });
+  });
+
   it("returns fixture offers with quantity-aware totals", async () => {
     const response = await start().inject({
       method: "GET",
@@ -74,24 +103,28 @@ describe("products API", () => {
   });
 
   it("distinguishes an empty result from a store failure", async () => {
-    const emptyServer = Fastify({ logger: false });
-    registerProductsRoutes(emptyServer, {
-      products: async () => ({ products: [], total: 0 }),
-      offers: async () => null,
-    });
+    const emptyServer = buildServer({ database: {
+      checkConnection: async () => ({ status: "ok" }),
+      loadBasket: async () => { throw new Error("not used"); },
+      loadCatalogue: async () => structuredClone(catalogueExample),
+      loadProducts: async () => ({ products: [], total: 0 }),
+      loadOffers: async () => null,
+      close: async () => {},
+    }});
     const empty = await emptyServer.inject({
       method: "GET",
       url: `${routes.products.url}?page=1&pageSize=1`,
     });
     await emptyServer.close();
 
-    const failingServer = Fastify({ logger: false });
-    registerProductsRoutes(failingServer, {
-      products: async () => {
-        throw new Error("database unavailable");
-      },
-      offers: async () => null,
-    });
+    const failingServer = buildServer({ database: {
+      checkConnection: async () => ({ status: "ok" }),
+      loadBasket: async () => { throw new Error("not used"); },
+      loadCatalogue: async () => structuredClone(catalogueExample),
+      loadProducts: async () => { throw new Error("database unavailable"); },
+      loadOffers: async () => null,
+      close: async () => {},
+    }});
     const failed = await failingServer.inject({
       method: "GET",
       url: `${routes.products.url}?page=1&pageSize=1`,

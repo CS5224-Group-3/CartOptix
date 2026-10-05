@@ -3,16 +3,20 @@ import type { Product, ProductsQuery } from "@cartoptix/contracts";
 export type ProductSearchQuery = Required<Pick<ProductsQuery, "page" | "pageSize">> &
   Omit<ProductsQuery, "page" | "pageSize">;
 
+export function normalizeSearchText(value: string): string {
+  return value.trim().toLocaleLowerCase().replace(/\s+/g, "");
+}
+
 export function searchProducts(
   products: readonly Product[],
   query: ProductSearchQuery,
 ): { products: Product[]; total: number } {
-  const term = query.q?.trim().toLocaleLowerCase();
+  const term = query.q === undefined ? undefined : normalizeSearchText(query.q);
   const filtered = products.filter((product) => {
     if (query.categoryId !== undefined && product.categoryId !== query.categoryId) return false;
     if (term === undefined) return true;
     return [product.name, product.packSize].some((value) =>
-      value.toLocaleLowerCase().includes(term),
+      normalizeSearchText(value).includes(term),
     );
   });
   const start = (query.page - 1) * query.pageSize;

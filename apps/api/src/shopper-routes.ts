@@ -43,26 +43,35 @@ export function registerShopperRoutes(server: FastifyInstance, database: Databas
     reply.code(404).send(errorBody("not_found", "No such endpoint.")),
   );
 
-  server.route({ ...routes.catalogue, handler: () => database.loadCatalogue() });
+  server.get(routes.catalogue.url, { schema: routes.catalogue.schema }, async () =>
+    database.loadCatalogue(),
+  );
 
-  server.route<{ Querystring: ProductsQuery }>({
-    ...routes.products,
-    handler: async (request) => {
-      const { q, categoryId, page = 1, pageSize = 20 } = request.query;
-      return database.loadProducts({ q, categoryId, page, pageSize });
-    },
-  });
+  server.get<{ Querystring: ProductsQuery }>(
+    routes.products.url,
+    { schema: routes.products.schema },
+    async (request) =>
+      database.loadProducts({
+        q: request.query.q,
+        categoryId: request.query.categoryId,
+        page: request.query.page ?? 1,
+        pageSize: request.query.pageSize ?? 20,
+      }),
+  );
 
-  server.route<{ Params: OffersParams; Querystring: OffersQuery }>({
-    ...routes.offers,
-    handler: async (request, reply) => {
-      const { quantity } = request.query;
-      const result = await database.loadOffers(request.params.id, quantity);
-      if (result === null)
-        return reply.code(404).send(errorBody("not_found", "Product not found."));
+  server.get<{ Params: OffersParams; Querystring: OffersQuery }>(
+    routes.offers.url,
+    { schema: routes.offers.schema },
+    async (request, reply) => {
+      const result = await database.loadOffers(request.params.id, request.query.quantity);
+      if (result === null) {
+        return reply
+          .code(404)
+          .send(errorBody("not_found", "Product not found."));
+      }
       return result;
     },
-  });
+  );
 
   server.route<{ Body: BasketCompareRequest }>({
     ...routes.compare,

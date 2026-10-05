@@ -55,7 +55,7 @@ export const ProductSchema = closedObject({
    * The API derives it from the seed's representative listing name. */
   name: Type.String({ minLength: 1 }),
   /** Exact pack configuration as displayed, e.g. "900 g" or "100 x 2g". The API
-   * derives it from the listing's specification text. */
+   * derives it from normalized eligible listing specifications. */
   packSize: Type.String({ minLength: 1 }),
   /** False when the curated product has no published retailer listing. */
   available: Type.Boolean(),

@@ -70,4 +70,15 @@ describe("validateSeed", () => {
   it("requires evidence for a verified delivery rule", () => {
     expect(errorsFor((s) => (s.delivery.rules[0].sources = []))).not.toEqual([]);
   });
+
+  it("rejects a blank note on a verified delivery rule", () => {
+    expect(errorsFor((s) => (s.delivery.rules[0].note = "   "))).toContain(
+      "Verified delivery rule for redmart needs a non-empty note",
+    );
+  });
+
+  it("rejects conflicting listing pack specifications", () => {
+    const errors = errorsFor((s) => (s.listings[1].specification = "1 litre"));
+    expect(errors).toContain("Product fixture-rice-5kg has conflicting pack specifications");
+  });
 });

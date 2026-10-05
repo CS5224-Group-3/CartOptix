@@ -44,6 +44,7 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
   });
 
   registerShopperRoutes(server, database);
+  server.addHook("onClose", () => database.close());
 
   return server;
 }

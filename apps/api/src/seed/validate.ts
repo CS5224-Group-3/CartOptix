@@ -13,6 +13,15 @@ const RETAILERS = ["redmart", "fairprice", "cold-storage"] as const;
 /** Largest amount a PostgreSQL `integer` column holds. */
 const MAX_DB_CENTS = 2_147_483_647;
 
+function normalizeSpecification(value: string): string {
+  return value
+    .toLocaleLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/×/g, "x")
+    .replace(/(\d+(?:\.\d+)?)kg/g, (_, amount: string) => `${Number(amount) * 1000}g`)
+    .replace(/(\d+(?:\.\d+)?)l/g, (_, amount: string) => `${Number(amount) * 1000}ml`);
+}
+
 function duplicates(values: readonly string[]): string[] {
   const seen = new Set<string>();
   const repeated = new Set<string>();
@@ -43,6 +52,11 @@ export function validateSeed(input: unknown): SeedValidation {
     const rules = seed.delivery.rules.filter((rule) => rule.retailerId === retailerId);
     if (rules.length !== 1) {
       errors.push(`Retailer ${retailerId} needs exactly one delivery rule, found ${rules.length}`);
+    }
+  }
+  for (const rule of seed.delivery.rules) {
+    if (rule.status === "verified" && rule.note.trim().length === 0) {
+      errors.push(`Verified delivery rule for ${rule.retailerId} needs a non-empty note`);
     }
   }
 
@@ -86,6 +100,11 @@ export function validateSeed(input: unknown): SeedValidation {
   }
   for (const productId of productIds) {
     if (!listed.has(productId)) errors.push(`Product ${productId} has no listing`);
+    const specifications = seed.listings
+      .filter((listing) => listing.productId === productId)
+      .map((listing) => normalizeSpecification(listing.specification));
+    if (new Set(specifications).size > 1)
+      errors.push(`Product ${productId} has conflicting pack specifications`);
   }
 
   return errors.length === 0 ? { ok: true, seed } : { ok: false, errors };

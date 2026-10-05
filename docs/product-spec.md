@@ -132,7 +132,7 @@ Use one documented Singapore delivery scenario: a declared serviceable location,
 
 Maintain each retailer's delivery fee, free-delivery threshold, minimum-order value, threshold spending basis and relevant mandatory charges. Apply actual verified rules for the selected scenario; do not assume every retailer uses the same pre-/post-discount basis. Record verification evidence internally. A verified rule must include a non-empty explanatory note; missing verification evidence is an unavailable rule.
 
-BCRS container deposits are not modelled in the MVP. The same 10¢ per container applies at every retailer, so it cannot change which option wins; `[BCRS]` listings stay eligible, and the comparison notes that totals exclude the refundable deposit. If a mandatory charge is modelled later, itemise it without double-counting a charge already included in the recorded price, and exclude affected listings while its treatment remains unresolved. An unverified delivery rule makes the retailer unavailable; unknown delivery charges must never silently become zero.
+BCRS container deposits are not modelled in the MVP. The same 10¢ per container applies at every retailer, so it cannot change which option wins; `[BCRS]` listings stay eligible, the import removes the marker from shopper-facing product names, and the comparison notes that totals exclude the refundable deposit. If a mandatory charge is modelled later, itemise it without double-counting a charge already included in the recorded price, and exclude affected listings while its treatment remains unresolved. An unverified delivery rule makes the retailer unavailable; unknown delivery charges must never silently become zero.
 
 ### PR-05 — Recommendation integrity
 
