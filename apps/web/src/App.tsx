@@ -447,6 +447,7 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
           <p className="product-card__category">{categoryName}</p>
           <h3>{product.name}</h3>
           <p className="product-card__meta">{product.packSize}</p>
+          {!product.available && <p className="product-card__unavailable">Unavailable</p>}
         </div>
       </Link>
       <div className="product-card__actions">
@@ -696,6 +697,11 @@ export function ProductDetail() {
         <div className="product-detail__content">
           <p className="eyebrow">{categoryName}</p>
           <h1>{product.name}</h1>
+          {!product.available && (
+            <p className="notice-card notice-card--warning">
+              Unavailable: no eligible retailer listing.
+            </p>
+          )}
           <div className="identity-grid">
             <div>
               <span>Pack size</span>
