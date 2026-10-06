@@ -86,7 +86,6 @@ export const SeedSchema = closed({
       unitPriceCents: PositiveCentsSchema,
       excludedPromotions: Type.Array(text),
     }),
-    { minItems: 1 },
   ),
 });
 

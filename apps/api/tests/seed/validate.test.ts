@@ -67,6 +67,10 @@ describe("validateSeed", () => {
     ).toEqual([]);
   });
 
+  it("accepts a seed whose products all have no listing", () => {
+    expect(errorsFor((s) => (s.listings = []))).toEqual([]);
+  });
+
   it("requires every retailer with exactly one delivery rule", () => {
     const errors = errorsFor((s) => {
       s.retailers.pop();
