@@ -748,6 +748,7 @@ export function ProductDetail() {
               <OfferRow
                 key={offer.retailerId}
                 offer={offer}
+                // TODO(#10, #16): call recordOutboundClick(listingId) before opening the link
                 onOpen={() => openRetailerLink(offer.productUrl)}
               />
             ))}

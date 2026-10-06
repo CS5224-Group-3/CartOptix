@@ -187,6 +187,22 @@ export const ErrorResponseSchema = closedObject({
 });
 export type ErrorResponse = Static<typeof ErrorResponseSchema>;
 
+// Outbound clicks
+
+/**
+ * A click through to a retailer's product page (PR-07).
+ *
+ * Only the listing is sent. The server reads the retailer and product from
+ * that listing and stamps its own clock, so a caller cannot attribute a click
+ * to a retailer of its choosing, and an unknown listing cannot create an
+ * event.
+ *
+ * Deliberately carries no user identity, session or device field: this feature
+ * measures link use, not people.
+ */
+export const OutboundClickRequestSchema = closedObject({ listingId: IdSchema });
+export type OutboundClickRequest = Static<typeof OutboundClickRequestSchema>;
+
 // Routes
 
 /**
@@ -219,5 +235,16 @@ export const routes = {
     method: "POST",
     url: `${API_BASE_PATH}/basket/compare`,
     schema: { body: BasketCompareRequestSchema, response: { 200: BasketCompareResponseSchema } },
+  },
+  /**
+   * Always answers 204 with no body, whatever happened, following the GA
+   * Measurement Protocol. A client cannot act on a tracking failure, so there
+   * is nothing useful to tell it; failures are logged server side and reported
+   * from there (#22). This is the one route that does not use `ErrorResponse`.
+   */
+  outboundClick: {
+    method: "POST",
+    url: `${API_BASE_PATH}/events/outbound-click`,
+    schema: { body: OutboundClickRequestSchema, response: { 204: Type.Null() } },
   },
 } as const;

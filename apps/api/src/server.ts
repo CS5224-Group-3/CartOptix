@@ -1,6 +1,8 @@
 import type { LivenessResponse, ReadinessResponse } from "@cartoptix/contracts";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Database } from "./database.ts";
+import { registerEventRoutes } from "./event-routes.ts";
+import type { ClickRecorder } from "./events/outbound-click.ts";
 import { registerShopperRoutes } from "./shopper-routes.ts";
 
 export interface BuildServerOptions {
@@ -8,13 +10,23 @@ export interface BuildServerOptions {
   database: Database;
   /** Allowed browser origin for the local web app during development. */
   webOrigin?: string;
+  /**
+   * Records outbound clicks (#19). When omitted the endpoint is not
+   * registered, so a deployment that forgets to wire it answers 404 rather
+   * than accepting events it silently discards.
+   */
+  clickRecorder?: ClickRecorder;
 }
 
 /**
  * Builds the Fastify instance without starting it, so tests can drive the
  * server in-process using `.inject()`.
  */
-export function buildServer({ database, webOrigin }: BuildServerOptions): FastifyInstance {
+export function buildServer({
+  database,
+  webOrigin,
+  clickRecorder,
+}: BuildServerOptions): FastifyInstance {
   const server = Fastify({
     logger: false,
     // The contracts use closed objects; reject unknown fields instead of
@@ -46,6 +58,9 @@ export function buildServer({ database, webOrigin }: BuildServerOptions): Fastif
 
   registerShopperRoutes(server, database);
   server.addHook("onClose", () => database.close());
+  if (clickRecorder !== undefined) {
+    registerEventRoutes(server, clickRecorder);
+  }
 
   return server;
 }

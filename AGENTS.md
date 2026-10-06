@@ -26,6 +26,16 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - The API catalogue and products routes use the imported seed. Do not build production features on a synthetic API placeholder or present fixture figures as retailer data. Comparison fixtures remain explicitly synthetic for tests and demonstrations.
 - When importing generated or template code, keep only what the app uses. Remove unused components, dependencies, lint or type exceptions, and template infrastructure (auth, ORMs, RPC layers) that the spec does not call for.
 
+## Branching and integration
+
+We use trunk-based development: `main` is the trunk and must always pass CI and stay releasable.
+
+- Never commit directly to `main`. Branch from the latest `main` and merge back through a pull request after CI passes.
+- Keep branches short-lived and pull requests small. Split large work into incremental PRs that each leave `main` working, rather than one long-running branch. Do not create long-lived `develop`, `release` or per-person branches.
+- Name branches `<type>/<short-description>`, adding the issue number where there is one (for example `feat/issue-7-ci-cd-releases`). Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `data`.
+- Write commit messages and PR titles as Conventional Commits, referencing the issue (for example `feat(api): compare complete baskets (#11)`).
+- Rebase on or merge the latest `main` before requesting review if your branch has fallen behind. Merged branches are deleted automatically.
+
 ## Local development
 
 See [README.md](README.md) for prerequisites, setup and commands. Docker must be installed and running, because it provides the local PostgreSQL database.
@@ -47,6 +57,6 @@ This applies inside `apps/api` too. When a module produces a value that reaches 
 
 Keep a contract change and both sides of its usage in the same pull request, so type checking catches a mismatch before review.
 
-Register API endpoints from the contracts' `routes`, so Fastify validates requests and serialises responses with the same schemas the client compiles against. The server rejects unknown fields (`removeAdditional: false`) because the contracts use closed objects; keep that setting. Every error response uses `ErrorResponse`.
+Register API endpoints from the contracts' `routes`, so Fastify validates requests and serialises responses with the same schemas the client compiles against. The server rejects unknown fields (`removeAdditional: false`) because the contracts use closed objects; keep that setting. Every error response uses `ErrorResponse`, with one deliberate exception: `POST /api/v1/events/outbound-click` always answers `204` with no body, whatever happened. It is a fire-and-forget beacon sent as the shopper navigates away, so the caller has already discarded the response and could not act on a failure. Failures are logged server side and reported from there (#22), and the endpoint is excluded from SC-06 because status codes cannot show them.
 
 The web client calls the API only through `apps/web/src/lib/api.ts`.

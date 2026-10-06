@@ -5,6 +5,7 @@ import {
   type CatalogueResponse,
   type ErrorResponse,
   type OffersResponse,
+  type OutboundClickRequest,
   type ProductsQuery,
   type ProductsResponse,
   routes,
@@ -59,6 +60,60 @@ export function compareBasket(body: BasketCompareRequest): Promise<BasketCompare
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
   });
+}
+
+/**
+ * Reports that the shopper followed a link to a retailer's product page
+ * (PR-07).
+ *
+ * Unlike every other call here, this one returns nothing and never throws.
+ * The link must open either way: if tracking is broken, unreachable or
+ * blocked by an extension, the shopper still reaches the retailer and never
+ * learns anything went wrong. Nothing may await it, which is why it hands
+ * back no promise to await.
+ *
+ * `sendBeacon` is preferred because the browser owns the request once it is
+ * queued, so it survives the page being torn down by the navigation that
+ * triggered it; a plain `fetch` would usually be cancelled at exactly that
+ * moment. `keepalive` gives the same guarantee where `sendBeacon` is missing.
+ *
+ * Only the listing is sent. The server supplies the retailer, product and
+ * time, so the client cannot misattribute a click and nothing here can become
+ * a user identity. The API always answers 204 with no body, so there is
+ * nothing to read back.
+ */
+export function recordOutboundClick(listingId: string): void {
+  const body: OutboundClickRequest = { listingId };
+
+  try {
+    const payload = JSON.stringify(body);
+
+    if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
+      // A false return means the browser refused to queue the beacon, which is
+      // not something the shopper can act on.
+      navigator.sendBeacon(
+        routes.outboundClick.url,
+        new Blob([payload], { type: "application/json" }),
+      );
+      return;
+    }
+
+    const attempt = fetch(routes.outboundClick.url, {
+      method: routes.outboundClick.method,
+      headers: { "content-type": "application/json" },
+      body: payload,
+      keepalive: true,
+    });
+
+    // Deliberately not awaited: the caller is navigating away. The handler is
+    // here only so an unreachable API cannot surface as an unhandled rejection
+    // in the shopper's console.
+    attempt.catch(() => undefined);
+  } catch {
+    // Reaching here means the browser refused something basic, such as a Blob
+    // constructor behind a strict policy. Tracking is optional; the click is
+    // not.
+  }
 }
 
 /** The API caps page size at 100; fetch every page for basket metadata. */
