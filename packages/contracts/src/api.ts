@@ -187,6 +187,35 @@ export const ErrorResponseSchema = closedObject({
 });
 export type ErrorResponse = Static<typeof ErrorResponseSchema>;
 
+// Outbound clicks
+
+/**
+ * A click through to a retailer's product page (PR-07).
+ *
+ * Only the listing is sent. The server reads the retailer and product from
+ * that listing and stamps its own clock, so a caller cannot attribute a click
+ * to a retailer of its choosing, and an unknown listing cannot create an
+ * event.
+ *
+ * Deliberately carries no user identity, session or device field: this feature
+ * measures link use, not people.
+ */
+export const OutboundClickRequestSchema = closedObject({ listingId: IdSchema });
+export type OutboundClickRequest = Static<typeof OutboundClickRequestSchema>;
+
+/**
+ * Whether the event reached storage.
+ *
+ * `not_recorded` means the API shed the write to keep capacity for basket
+ * comparison, not that anything failed. Clients ignore this: navigation must
+ * never depend on it. It exists so usage reporting (#22) can tell a measured
+ * click count apart from one that silently lost events under load.
+ */
+export const OutboundClickResponseSchema = closedObject({
+  status: Type.Union([Type.Literal("recorded"), Type.Literal("not_recorded")]),
+});
+export type OutboundClickResponse = Static<typeof OutboundClickResponseSchema>;
+
 // Routes
 
 /**
@@ -219,5 +248,11 @@ export const routes = {
     method: "POST",
     url: `${API_BASE_PATH}/basket/compare`,
     schema: { body: BasketCompareRequestSchema, response: { 200: BasketCompareResponseSchema } },
+  },
+  /** 202: the event is accepted for recording, and the body says whether it was. */
+  outboundClick: {
+    method: "POST",
+    url: `${API_BASE_PATH}/events/outbound-click`,
+    schema: { body: OutboundClickRequestSchema, response: { 202: OutboundClickResponseSchema } },
   },
 } as const;

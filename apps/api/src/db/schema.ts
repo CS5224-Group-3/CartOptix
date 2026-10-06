@@ -12,11 +12,14 @@ import type { RetailerId } from "@cartoptix/contracts";
 import {
   boolean,
   foreignKey,
+  index,
   integer,
   pgTable,
   primaryKey,
   text,
+  timestamp,
   unique,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 export const retailers = pgTable("retailers", {
@@ -91,4 +94,34 @@ export const listings = pgTable(
     foreignKey({ columns: [table.productId], foreignColumns: [products.productId] }),
     foreignKey({ columns: [table.retailerId], foreignColumns: [retailers.retailerId] }),
   ],
+);
+
+/**
+ * Outbound clicks through to a retailer's product page (PR-07, #19).
+ *
+ * Deliberately outside the seed's replace-everything import. The importer
+ * clears `listings` and `products` on every load, so a foreign key to either
+ * would block a reimport or destroy the usage history the table was collected
+ * to measure. The identifying columns are therefore recorded as values.
+ *
+ * Validation happens on the way in instead: the endpoint copies these columns
+ * out of the matching listing row, so an unknown listing records nothing and a
+ * caller cannot attribute a click to a retailer of its choosing.
+ *
+ * There is no user, session, device, address or agent column, and there must
+ * not be one: this measures link use, not people. Rows here are usage records,
+ * never buyers, conversions or billable clicks.
+ */
+export const clickEvents = pgTable(
+  "click_events",
+  {
+    eventId: uuid("event_id").primaryKey().defaultRandom(),
+    listingId: text("listing_id").notNull(),
+    retailerId: text("retailer_id").$type<RetailerId>().notNull(),
+    productId: text("product_id").notNull(),
+    /** Recorded by the server's clock, never supplied by the client. */
+    occurredAt: timestamp("occurred_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  // Usage reporting (#22) reads events in time order.
+  (table) => [index("click_events_occurred_at").on(table.occurredAt)],
 );

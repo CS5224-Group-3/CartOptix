@@ -1,17 +1,21 @@
 import { loadConfig } from "./config.ts";
 import { createDatabase } from "./database.ts";
+import { createClickRecorder } from "./events/outbound-click.ts";
 import { buildServer } from "./server.ts";
 
 const config = loadConfig();
 const database = createDatabase(config.databaseUrl);
+const clickRecorder = createClickRecorder({ connectionString: config.databaseUrl });
 const server = buildServer({
   database,
+  clickRecorder,
   webOrigin: process.env.WEB_ORIGIN ?? "http://localhost:5173",
 });
 
 async function shutdown(signal: string): Promise<void> {
   process.stdout.write(`\nReceived ${signal}, shutting down.\n`);
   await server.close();
+  await clickRecorder.close();
   await database.close();
   process.exit(0);
 }
