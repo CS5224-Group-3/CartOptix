@@ -10,6 +10,19 @@ import type { FastifyError, FastifyInstance } from "fastify";
 import type { ClickRecorder } from "./events/outbound-click.ts";
 
 /**
+ * Logs an event that did not reach storage.
+ *
+ * Deliberately the same channel and prefix the recorder's `onFailure` uses.
+ * The response is 204 whatever happened, so these lines are the only record
+ * that an event was lost, and #22 reports them from one place rather than
+ * reconstructing them from two. Fastify's own logger is off (`server.ts`), so
+ * `request.log` would discard them.
+ */
+function logNotRecorded(reason: string): void {
+  console.warn(`Outbound click not recorded: ${reason}`);
+}
+
+/**
  * Registers the endpoint inside its own plugin scope.
  *
  * The encapsulation is the point: an error handler set here applies to this
@@ -35,15 +48,19 @@ export function registerEventRoutes(server: FastifyInstance, recorder: ClickReco
      * Nothing rejected here reaches storage: the listing lookup in the
      * recorder is what decides that, not the status code.
      */
-    events.setErrorHandler(async (error: FastifyError, request, reply) => {
-      request.log.warn(`Outbound click rejected: ${error.message}`);
+    events.setErrorHandler(async (error: FastifyError, _request, reply) => {
+      logNotRecorded(`rejected request: ${error.message}`);
       return reply.code(204).send();
     });
 
     events.route<{ Body: OutboundClickRequest }>({
       ...routes.outboundClick,
       handler: async (request, reply): Promise<null> => {
-        await recorder.record(request.body.listingId);
+        // A shed write or a database fault is logged by the recorder; an
+        // unknown listing is only visible here, and it is still a lost event.
+        if ((await recorder.record(request.body.listingId)) === "unknown-listing") {
+          logNotRecorded(`unknown listing: ${request.body.listingId}`);
+        }
         reply.code(204);
         return null;
       },

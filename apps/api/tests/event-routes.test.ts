@@ -1,5 +1,5 @@
 import { routes } from "@cartoptix/contracts";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Database } from "../src/database.ts";
 import type { ClickRecorder, ClickRecordResult } from "../src/events/outbound-click.ts";
 import { buildServer } from "../src/server.ts";
@@ -11,12 +11,26 @@ import { buildServer } from "../src/server.ts";
  * Every response is 204 with no body, so the status code proves nothing about
  * whether a request was accepted. Each test therefore asserts what reached the
  * recorder, which is what actually decides whether an event can be stored.
+ *
+ * `console.warn` is stubbed throughout. It is the channel a lost event is
+ * reported on (#22), so silencing it keeps the suite quiet while leaving the
+ * calls assertable.
  */
 
 const database: Database = {
   checkConnection: async () => ({ status: "ok" }),
   close: async () => {},
 };
+
+let warn: ReturnType<typeof vi.spyOn>;
+
+beforeEach(() => {
+  warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  warn.mockRestore();
+});
 
 function serverWith(result: ClickRecordResult) {
   const seen: string[] = [];
@@ -56,6 +70,10 @@ describe("POST /api/v1/events/outbound-click", () => {
     expect(response.statusCode).toBe(204);
     expect(response.body).toBe("");
     expect(seen).toEqual(["does-not-exist"]);
+    // The 204 hides this, so the log line is the only trace #22 can report.
+    expect(warn).toHaveBeenCalledWith(
+      "Outbound click not recorded: unknown listing: does-not-exist",
+    );
     await server.close();
   });
 
@@ -135,5 +153,44 @@ describe("POST /api/v1/events/outbound-click", () => {
 
     expect(response.statusCode).toBe(404);
     await server.close();
+  });
+
+  describe("a lost event is logged, because the response cannot show it", () => {
+    // Fastify's own logger is off, so without an explicit channel a rejected
+    // request would leave no trace at all: the response is 204 either way, and
+    // #22 reports lost events from these lines.
+    it("logs a body that fails the schema", async () => {
+      const { server } = serverWith("recorded");
+
+      await server.inject(post({ listingId: "alpha-milk", userId: "someone" }));
+
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(warn.mock.calls[0]?.[0]).toMatch(/^Outbound click not recorded: rejected request: /);
+      await server.close();
+    });
+
+    it("logs a body that is not JSON, which fails before route validation", async () => {
+      const { server } = serverWith("recorded");
+
+      await server.inject({
+        method: "POST",
+        url: routes.outboundClick.url,
+        headers: { "content-type": "application/json" },
+        payload: "not json",
+      });
+
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(warn.mock.calls[0]?.[0]).toMatch(/^Outbound click not recorded: rejected request: /);
+      await server.close();
+    });
+
+    it("says nothing when the click is recorded", async () => {
+      const { server } = serverWith("recorded");
+
+      await server.inject(post({ listingId: "alpha-milk" }));
+
+      expect(warn).not.toHaveBeenCalled();
+      await server.close();
+    });
   });
 });
