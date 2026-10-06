@@ -644,10 +644,6 @@ export function CataloguePage() {
   );
 }
 
-function openRetailerLink(url: string) {
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-
 export function ProductDetail() {
   const [, params] = useRoute("/product/:id");
   const productId = params?.id ?? "";
@@ -701,7 +697,7 @@ export function ProductDetail() {
         <div className="product-detail__visual">
           <ProductImage product={product} className="product-image--detail" />
           <div className="prototype-note">
-            <Sparkles size={15} /> Exact product identity · demo data
+            <Sparkles size={15} /> Exact product identity · fixed dataset
           </div>
         </div>
         <div className="product-detail__content">
@@ -731,18 +727,20 @@ export function ProductDetail() {
             clearly unconditional sale prices; other promotions are shown as excluded.
           </p>
           <div className="quantity-control">
-            <span>Quantity</span>
+            <span>Quantity (whole packs)</span>
             <button
               type="button"
               aria-label="Decrease quantity"
+              disabled={quantity <= MIN_PACKS_PER_LINE}
               onClick={() => setQuantity(clampPacks(quantity - 1))}
             >
               −
             </button>
-            <strong>{quantity}</strong>
+            <strong aria-live="polite">{quantity}</strong>
             <button
               type="button"
               aria-label="Increase quantity"
+              disabled={quantity >= MAX_PACKS_PER_LINE}
               onClick={() => setQuantity(clampPacks(quantity + 1))}
             >
               +
@@ -752,15 +750,13 @@ export function ProductDetail() {
           <div className="offer-list">
             <div className="offer-list__head">
               <span>Retailer offer</span>
-              <span>Estimated total</span>
+              <span>Product cost</span>
             </div>
+            <p className="offer-list__caption">
+              For {quantity} {quantity === 1 ? "pack" : "packs"}; before delivery and order charges.
+            </p>
             {offers.map((offer) => (
-              <OfferRow
-                key={offer.retailerId}
-                offer={offer}
-                // TODO(#10, #16): call recordOutboundClick(listingId) before opening the link
-                onOpen={() => openRetailerLink(offer.productUrl)}
-              />
+              <OfferRow key={offer.retailerId} offer={offer} quantity={quantity} />
             ))}
             {missingRetailers.map((retailerId) => (
               <UnavailableOfferRow key={retailerId} retailerId={retailerId} />
@@ -799,7 +795,7 @@ export function ProductDetail() {
   );
 }
 
-function OfferRow({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
+function OfferRow({ offer, quantity }: { offer: Offer; quantity: number }) {
   const retailer = RETAILER_DISPLAY[offer.retailerId];
   return (
     <div className="offer-row">
@@ -808,27 +804,34 @@ function OfferRow({ offer, onOpen }: { offer: Offer; onOpen: () => void }) {
         <div>
           <strong>{retailer.name}</strong>
           <span>
-            {formatSgd(offer.unitPriceCents)} / pack ·{" "}
-            {offer.priceKind === "unconditional_sale" ? "Sale price" : "In stock in dataset"}
+            {formatSgd(offer.unitPriceCents)} per pack ·{" "}
+            {offer.priceKind === "unconditional_sale"
+              ? "Unconditional sale price"
+              : "Regular price"}
           </span>
+          {offer.excludedPromotions.map((promotion) => (
+            <span className="offer-row__promotion" key={promotion}>
+              Excluded promotion: {promotion}
+            </span>
+          ))}
         </div>
       </div>
       <div className="offer-row__price">
         <strong>{formatSgd(offer.lineTotalCents)}</strong>
-        {offer.excludedPromotions.length > 0 && (
-          <span className="promo-chip promo-chip--excluded" title={offer.excludedPromotions[0]}>
-            Promotion excluded
-          </span>
-        )}
+        <span>
+          for {quantity} {quantity === 1 ? "pack" : "packs"}
+        </span>
       </div>
-      <button
-        type="button"
+      <a
+        href={offer.productUrl}
+        target="_blank"
+        rel="noopener noreferrer"
         className="icon-button"
-        onClick={onOpen}
-        aria-label={`Open ${retailer.name} product link`}
+        aria-label={`View ${retailer.name} product page`}
+        onClick={() => recordOutboundClick(offer.listingId)}
       >
         <ArrowRight size={18} />
-      </button>
+      </a>
     </div>
   );
 }
