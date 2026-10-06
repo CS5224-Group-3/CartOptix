@@ -15,6 +15,13 @@
       "when": 1790562227757,
       "tag": "0001_drop_dataset",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791271038089,
+      "tag": "0002_click_events",
+      "breakpoints": true
     }
   ]
 }

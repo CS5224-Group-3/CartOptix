@@ -77,6 +77,7 @@ export default function RetailerOptionCard({
                     ))}
                   </ul>
                   {purchaseEnabled && (
+                    // TODO(#10, #16): call recordOutboundClick(listingId) before opening the link
                     <a
                       className="text-link"
                       href={line.purchaseUrl}

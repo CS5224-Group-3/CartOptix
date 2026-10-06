@@ -265,6 +265,8 @@ Run isolated endpoint tests, then all four endpoints simultaneously at the decla
 
 Acceptance targets are p99 below 1 second for catalogue/search, p99 below 2 seconds for basket comparison, and at most 0.1% unexpected failures. Product-offer latency must be reported; no separate numeric target was agreed for that endpoint. Measure shopper-facing API latency from a documented load-generator location through the deployed ingress, with server-side timings for diagnosis. Report failures separately rather than excluding them silently from success claims.
 
+The outbound-click endpoint is **excluded from the SC-06 failure measurement**. It answers `204` for every outcome, following the GA Measurement Protocol, so a rejected or dropped event is indistinguishable from a recorded one by status code, and counting its responses would report a success rate that means nothing. Lost events are visible in the server logs instead, and #22 reports them from there. Its latency and throughput are still reported, separately from the four shopper endpoints.
+
 Choose run durations and sample sizes before execution. Low-RPS endpoints need sufficient samples for a meaningful p99 and failure-rate report; include sample counts and avoid implying statistical certainty from a short run. Rehearse locally, then conduct the main cloud exercise in the allocated day. Measure scale-out/scale-in and one-instance termination separately from the acceptance runs. A short experiment cannot establish long-term 99.9% daily request success.
 
 ### Correctness, quality and user evidence
@@ -407,8 +409,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### F2 — Run normal/surge performance acceptance tests
 - **Blocked by:** C5, D5, E5, F1.
-- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record the code and configuration tested.
-- **Acceptance:** Report p99 and sample counts per endpoint and separately for 20-line and 50-line basket requests, thresholds from SC-05/SC-06, offered/achieved throughput, failures and credit/DB pressure. Product-offer latency is reported without inventing a new threshold. Record failures honestly and remediate/retest affected cases; do not change targets silently.
+- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record the code and configuration tested. Include a mixed outbound-click and basket-comparison case, because the claim that click tracking cannot slow comparison is currently reasoned from a separate connection pool rather than measured; clicks still share the database's connection limit, CPU and I/O.
+- **Acceptance:** Report p99 and sample counts per endpoint and separately for 20-line and 50-line basket requests, thresholds from SC-05/SC-06, offered/achieved throughput, failures and credit/DB pressure. Product-offer latency is reported without inventing a new threshold. Comparison p99 under concurrent click load is reported against its ordinary p99, so any interference is visible rather than assumed absent. Record failures honestly and remediate/retest affected cases; do not change targets silently.
 
 #### F3 — Demonstrate autoscaling and instance-failure behaviour
 - **Blocked by:** E5, F1.
