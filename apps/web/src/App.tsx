@@ -29,6 +29,7 @@ import {
   type ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -446,12 +447,14 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
           <p className="product-card__category">{categoryName}</p>
           <h3>{product.name}</h3>
           <p className="product-card__meta">{product.packSize}</p>
+          {!product.available && <p className="product-card__unavailable">Unavailable</p>}
         </div>
       </Link>
       <div className="product-card__actions">
         <button
           type="button"
           className="button button--small button--outline"
+          disabled={!product.available}
           onClick={() => {
             addToBasket(product.productId, 1);
             toast.success("Added to basket", { description: product.name });
@@ -470,18 +473,33 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
 export function CataloguePage() {
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 100;
+  const [pageInput, setPageInput] = useState(String(page));
+  useEffect(() => setPageInput(String(page)), [page]);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
   const query = useMemo(
     () => ({
       ...(search.trim() ? { q: search.trim() } : {}),
       ...(categoryId ? { categoryId } : {}),
-      pageSize: 100,
+      page,
+      pageSize,
     }),
-    [search, categoryId],
+    [search, categoryId, page],
   );
-  const { data, isLoading, isError } = useProducts(query);
+  const { data, isLoading, isError, isPlaceholderData } = useProducts(query);
   const products = data?.products ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  useEffect(() => {
+    setPage((current) => Math.min(current, totalPages));
+  }, [totalPages]);
+  const jumpToPage = () => {
+    if (isPlaceholderData) return;
+    const nextPage = Math.min(totalPages, Math.max(1, Number.parseInt(pageInput, 10) || 1));
+    setPage(nextPage);
+  };
   return (
     <main>
       <PageIntro
@@ -501,13 +519,22 @@ export function CataloguePage() {
             <input
               value={search}
               maxLength={100}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPage(1);
+              }}
               placeholder="Search by product, brand or variant"
             />
           </label>
           <label className="select-field">
             <span className="sr-only">Filter category</span>
-            <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)}>
+            <select
+              value={categoryId}
+              onChange={(event) => {
+                setCategoryId(event.target.value);
+                setPage(1);
+              }}
+            >
               <option value="">All</option>
               {(catalogue.data?.categories ?? []).map((category) => (
                 <option key={category.categoryId} value={category.categoryId}>
@@ -520,7 +547,7 @@ export function CataloguePage() {
         </div>
         <div className="catalogue-summary">
           <p>
-            <strong>{data?.total ?? 0}</strong> products shown
+            <strong>{total}</strong> products found
           </p>
           <p>{catalogue.data?.categories.length ?? 0} categories</p>
         </div>
@@ -532,16 +559,68 @@ export function CataloguePage() {
             <h2>Could not load products</h2>
             <p>The catalogue service is unavailable. Please try again shortly.</p>
           </div>
-        ) : products.length ? (
-          <div className="product-grid">
-            {products.map((product) => (
-              <ProductCard
-                key={product.productId}
-                product={product}
-                categoryName={categoryNames.get(product.categoryId) ?? ""}
-              />
-            ))}
-          </div>
+        ) : products.length || total > 0 ? (
+          <>
+            <div
+              className={isPlaceholderData ? "product-grid product-grid--pending" : "product-grid"}
+              aria-busy={isPlaceholderData}
+              inert={isPlaceholderData}
+            >
+              {products.map((product) => (
+                <ProductCard
+                  key={product.productId}
+                  product={product}
+                  categoryName={categoryNames.get(product.categoryId) ?? ""}
+                />
+              ))}
+            </div>
+            <nav className="catalogue-pagination" aria-label="Catalogue pages">
+              <button
+                type="button"
+                className="button button--outline"
+                disabled={page === 1 || isPlaceholderData}
+                onClick={() => {
+                  setPage((current) => current - 1);
+                }}
+              >
+                Previous
+              </button>
+              <span>
+                Page {page} of {totalPages}
+              </span>
+              <button
+                type="button"
+                className="button button--outline"
+                disabled={page >= totalPages || isPlaceholderData}
+                onClick={() => {
+                  setPage((current) => current + 1);
+                }}
+              >
+                Next
+              </button>
+              <label className="page-jump-control">
+                <span>Go to page</span>
+                <input
+                  type="number"
+                  min="1"
+                  max={totalPages}
+                  value={pageInput}
+                  onChange={(event) => setPageInput(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") jumpToPage();
+                  }}
+                />
+                <button
+                  type="button"
+                  className="button button--outline"
+                  disabled={isPlaceholderData}
+                  onClick={jumpToPage}
+                >
+                  Go
+                </button>
+              </label>
+            </nav>
+          </>
         ) : (
           <div className="empty-state">
             <CircleHelp size={24} />
@@ -553,6 +632,7 @@ export function CataloguePage() {
               onClick={() => {
                 setSearch("");
                 setCategoryId("");
+                setPage(1);
               }}
             >
               Reset filters
@@ -627,6 +707,11 @@ export function ProductDetail() {
         <div className="product-detail__content">
           <p className="eyebrow">{categoryName}</p>
           <h1>{product.name}</h1>
+          {!product.available && (
+            <p className="notice-card notice-card--warning">
+              Unavailable: no eligible retailer listing.
+            </p>
+          )}
           <div className="identity-grid">
             <div>
               <span>Pack size</span>
@@ -685,6 +770,7 @@ export function ProductDetail() {
             <button
               type="button"
               className="button button--primary"
+              disabled={!product.available}
               onClick={() => {
                 addToBasket(product.productId, quantity);
                 toast.success("Added to basket", { description: `${quantity} × ${product.name}` });
@@ -852,6 +938,7 @@ export function BasketPage() {
                       packSize: fixtureProduct.packDescription,
                       categoryId: "synthetic",
                       imageUrl: null,
+                      available: true,
                     }
                   : productMetadata.get(line.productId);
                 if (!product)

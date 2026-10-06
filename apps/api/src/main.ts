@@ -16,7 +16,6 @@ async function shutdown(signal: string): Promise<void> {
   process.stdout.write(`\nReceived ${signal}, shutting down.\n`);
   await server.close();
   await clickRecorder.close();
-  await database.close();
   process.exit(0);
 }
 

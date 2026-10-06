@@ -66,6 +66,7 @@ async function results() {
 async function clearMetadata(client: QueryClient) {
   await act(async () => {
     client.setQueriesData({ queryKey: ["products"] }, { products: [], total: 0 });
+    client.setQueryData(["product-index"], []);
   });
   await waitFor(() =>
     expect(screen.queryByRole("button", { name: "Increase Fixture White Rice" })).toBeNull(),

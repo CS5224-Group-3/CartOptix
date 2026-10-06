@@ -23,7 +23,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - Consult actual package scripts and infrastructure configuration as they are added; do not assume proposed tools are already implemented.
 - Record unresolved evidence and measured results accurately. Do not present catalogue coverage, performance or AWS affordability as verified before checking them.
 - AWS deployments are budget-constrained. Consult the spec before provisioning or changing resources; never commit credentials.
-- `apps/api/src/placeholder/` holds a synthetic dataset that serves the catalogue, products and offers until #9 and #10 land; basket comparison already reads the imported seed. Replace it; do not build features on it or present its figures as retailer data.
+- The API catalogue and products routes use the imported seed. Do not build production features on a synthetic API placeholder or present fixture figures as retailer data. Comparison fixtures remain explicitly synthetic for tests and demonstrations.
 - When importing generated or template code, keep only what the app uses. Remove unused components, dependencies, lint or type exceptions, and template infrastructure (auth, ORMs, RPC layers) that the spec does not call for.
 
 ## Branching and integration

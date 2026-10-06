@@ -55,7 +55,20 @@ describe("validateSeed", () => {
     expect(errors).toContain(
       "Duplicate product listing at one retailer: fixture-rice-5kg at fairprice",
     );
-    expect(errors).toContain("Product fixture-noodles-400g has no listing");
+  });
+
+  it("accepts a product with no listing, which the catalogue shows as unavailable", () => {
+    expect(
+      errorsFor((s) => {
+        s.listings = s.listings.filter(
+          (l: { productId: string }) => l.productId !== "fixture-noodles-400g",
+        );
+      }),
+    ).toEqual([]);
+  });
+
+  it("accepts a seed whose products all have no listing", () => {
+    expect(errorsFor((s) => (s.listings = []))).toEqual([]);
   });
 
   it("requires every retailer with exactly one delivery rule", () => {
@@ -69,5 +82,16 @@ describe("validateSeed", () => {
 
   it("requires evidence for a verified delivery rule", () => {
     expect(errorsFor((s) => (s.delivery.rules[0].sources = []))).not.toEqual([]);
+  });
+
+  it("rejects a blank note on a verified delivery rule", () => {
+    expect(errorsFor((s) => (s.delivery.rules[0].note = "   "))).toContain(
+      "Verified delivery rule for redmart needs a non-empty note",
+    );
+  });
+
+  it("rejects conflicting listing pack specifications", () => {
+    const errors = errorsFor((s) => (s.listings[1].specification = "1 litre"));
+    expect(errors).toContain("Product fixture-rice-5kg has conflicting pack specifications");
   });
 });

@@ -6,6 +6,7 @@ import type { ClickRecorder } from "./events/outbound-click.ts";
 import { registerShopperRoutes } from "./shopper-routes.ts";
 
 export interface BuildServerOptions {
+  /** Owned by the server: closing the server closes the database. */
   database: Database;
   /** Allowed browser origin for the local web app during development. */
   webOrigin?: string;
@@ -56,6 +57,7 @@ export function buildServer({
   });
 
   registerShopperRoutes(server, database);
+  server.addHook("onClose", () => database.close());
   if (clickRecorder !== undefined) {
     registerEventRoutes(server, clickRecorder);
   }

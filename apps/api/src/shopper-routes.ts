@@ -3,14 +3,12 @@
  * validates requests and serialises responses with the same schemas the web
  * client compiles against.
  *
- * Basket comparison reads the imported seed. The catalogue, product and offer
- * handlers read the placeholder dataset until #9 and #10 replace them.
+ * All shopper reads are served from the imported database seed.
  */
 import {
   type BasketCompareRequest,
   duplicateProductIds,
   type ErrorResponse,
-  type Offer,
   type OffersParams,
   type OffersQuery,
   type ProductsQuery,
@@ -20,7 +18,6 @@ import type { FastifyError, FastifyInstance } from "fastify";
 import { compareBasket } from "./comparison/index.ts";
 import { toCompareResponse } from "./comparison/response.ts";
 import type { Database } from "./database.ts";
-import { placeholderCatalogue, placeholderProducts, planLine } from "./placeholder/dataset.ts";
 
 function errorBody(code: ErrorResponse["error"]["code"], message: string): ErrorResponse {
   return { error: { code, message } };
@@ -46,46 +43,33 @@ export function registerShopperRoutes(server: FastifyInstance, database: Databas
     reply.code(404).send(errorBody("not_found", "No such endpoint.")),
   );
 
-  server.route({ ...routes.catalogue, handler: async () => placeholderCatalogue });
+  server.get(routes.catalogue.url, { schema: routes.catalogue.schema }, async () =>
+    database.loadCatalogue(),
+  );
 
-  server.route<{ Querystring: ProductsQuery }>({
-    ...routes.products,
-    handler: async (request) => {
-      const { q, categoryId, page = 1, pageSize = 20 } = request.query;
-      const needle = q?.trim().toLowerCase();
-      const matches = placeholderProducts
-        .map(({ product }) => product)
-        .filter(
-          (product) =>
-            (!needle || product.name.toLowerCase().includes(needle)) &&
-            (!categoryId || product.categoryId === categoryId),
-        );
-      const start = (page - 1) * pageSize;
-      return { products: matches.slice(start, start + pageSize), total: matches.length };
-    },
-  });
+  server.get<{ Querystring: ProductsQuery }>(
+    routes.products.url,
+    { schema: routes.products.schema },
+    async (request) =>
+      database.loadProducts({
+        q: request.query.q,
+        categoryId: request.query.categoryId,
+        page: request.query.page ?? 1,
+        pageSize: request.query.pageSize ?? 20,
+      }),
+  );
 
-  server.route<{ Params: OffersParams; Querystring: OffersQuery }>({
-    ...routes.offers,
-    handler: async (request, reply) => {
-      const entry = placeholderProducts.find(
-        ({ product }) => product.productId === request.params.id,
-      );
-      if (!entry) return reply.code(404).send(errorBody("not_found", "No such product."));
-      const { quantity } = request.query;
-      const offers: Offer[] = entry.listings
-        .map((listing) => {
-          const {
-            productId: _productId,
-            quantity: _quantity,
-            ...cost
-          } = planLine({ productId: entry.product.productId, quantity }, listing);
-          return { retailerId: listing.retailerId, ...cost };
-        })
-        .sort((a, b) => a.lineTotalCents - b.lineTotalCents);
-      return { product: entry.product, quantity, offers };
+  server.get<{ Params: OffersParams; Querystring: OffersQuery }>(
+    routes.offers.url,
+    { schema: routes.offers.schema },
+    async (request, reply) => {
+      const result = await database.loadOffers(request.params.id, request.query.quantity);
+      if (result === null) {
+        return reply.code(404).send(errorBody("not_found", "Product not found."));
+      }
+      return result;
     },
-  });
+  );
 
   server.route<{ Body: BasketCompareRequest }>({
     ...routes.compare,

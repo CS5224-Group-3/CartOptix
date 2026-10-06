@@ -116,8 +116,8 @@ export function recordOutboundClick(listingId: string): void {
   }
 }
 
-/** The API caps page size at 100, which covers the whole prototype catalogue. */
-const ALL_PRODUCTS: ProductsQuery = { pageSize: 100 };
+/** The API caps page size at 100; fetch every page for basket metadata. */
+const PRODUCT_INDEX_PAGE_SIZE = 100;
 
 export function useCatalogue() {
   return useQuery({ queryKey: ["catalogue"], queryFn: fetchCatalogue, staleTime: Infinity });
@@ -134,12 +134,21 @@ export function useProducts(query: ProductsQuery) {
 /** Every product, for looking up basket and plan lines by ID. */
 export function useProductIndex() {
   const { data } = useQuery({
-    queryKey: ["products", ALL_PRODUCTS],
-    queryFn: () => fetchProducts(ALL_PRODUCTS),
+    queryKey: ["product-index"],
+    queryFn: async () => {
+      const first = await fetchProducts({ page: 1, pageSize: PRODUCT_INDEX_PAGE_SIZE });
+      const pages = await Promise.all(
+        Array.from(
+          { length: Math.max(0, Math.ceil(first.total / PRODUCT_INDEX_PAGE_SIZE) - 1) },
+          (_, index) => fetchProducts({ page: index + 2, pageSize: PRODUCT_INDEX_PAGE_SIZE }),
+        ),
+      );
+      return [first, ...pages].flatMap((page) => page.products);
+    },
     staleTime: Infinity,
   });
   return useMemo(
-    () => new Map((data?.products ?? []).map((product) => [product.productId, product])),
+    () => new Map((data ?? []).map((product) => [product.productId, product])),
     [data],
   );
 }
