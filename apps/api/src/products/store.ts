@@ -84,7 +84,11 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
           }
           const where = predicates.length === 0 ? undefined : and(...predicates);
           const [countRow] = await tx.select({ total: count() }).from(products).where(where);
-          const total = countRow?.total ?? 0;
+          const total = Number(countRow?.total ?? 0);
+          // A page past the last one is empty. Checking here also keeps a huge
+          // `page` from overflowing PostgreSQL's bigint OFFSET.
+          const offset = (query.page - 1) * query.pageSize;
+          if (offset >= total) return { products: [], total };
           const pageRows = await tx
             .select({
               productId: products.productId,
@@ -96,8 +100,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             .where(where)
             .orderBy(asc(products.productId))
             .limit(query.pageSize)
-            .offset((query.page - 1) * query.pageSize);
-          if (pageRows.length === 0) return { products: [], total: Number(total) };
+            .offset(offset);
 
           const specificationRows = await tx
             .select({ productId: listings.productId, specification: listings.specification })
@@ -125,7 +128,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
               available: (specifications.get(row.productId)?.length ?? 0) > 0,
               imageUrl: row.imageUrl,
             })),
-            total: Number(total),
+            total,
           };
         },
         { isolationLevel: "repeatable read", accessMode: "read only" },

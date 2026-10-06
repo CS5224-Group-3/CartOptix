@@ -488,7 +488,7 @@ export function CataloguePage() {
     }),
     [search, categoryId, page],
   );
-  const { data, isLoading, isError } = useProducts(query);
+  const { data, isLoading, isError, isPlaceholderData } = useProducts(query);
   const products = data?.products ?? [];
   const total = data?.total ?? 0;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -496,6 +496,7 @@ export function CataloguePage() {
     setPage((current) => Math.min(current, totalPages));
   }, [totalPages]);
   const jumpToPage = () => {
+    if (isPlaceholderData) return;
     const nextPage = Math.min(totalPages, Math.max(1, Number.parseInt(pageInput, 10) || 1));
     setPage(nextPage);
   };
@@ -546,7 +547,7 @@ export function CataloguePage() {
         </div>
         <div className="catalogue-summary">
           <p>
-            <strong>{total}</strong> products shown
+            <strong>{total}</strong> products found
           </p>
           <p>{catalogue.data?.categories.length ?? 0} categories</p>
         </div>
@@ -560,7 +561,10 @@ export function CataloguePage() {
           </div>
         ) : products.length || total > 0 ? (
           <>
-            <div className="product-grid">
+            <div
+              className={isPlaceholderData ? "product-grid product-grid--pending" : "product-grid"}
+              aria-busy={isPlaceholderData}
+            >
               {products.map((product) => (
                 <ProductCard
                   key={product.productId}
@@ -573,7 +577,7 @@ export function CataloguePage() {
               <button
                 type="button"
                 className="button button--outline"
-                disabled={page === 1}
+                disabled={page === 1 || isPlaceholderData}
                 onClick={() => {
                   setPage((current) => current - 1);
                 }}
@@ -586,7 +590,7 @@ export function CataloguePage() {
               <button
                 type="button"
                 className="button button--outline"
-                disabled={page >= totalPages}
+                disabled={page >= totalPages || isPlaceholderData}
                 onClick={() => {
                   setPage((current) => current + 1);
                 }}
@@ -605,7 +609,12 @@ export function CataloguePage() {
                     if (event.key === "Enter") jumpToPage();
                   }}
                 />
-                <button type="button" className="button button--outline" onClick={jumpToPage}>
+                <button
+                  type="button"
+                  className="button button--outline"
+                  disabled={isPlaceholderData}
+                  onClick={jumpToPage}
+                >
                   Go
                 </button>
               </label>

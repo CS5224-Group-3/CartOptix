@@ -106,6 +106,25 @@ describe.skipIf(connectionString === undefined)(
       ).toBe(true);
     });
 
+    it("returns an empty page, not an error, past the last page", async () => {
+      const beyond = await server.inject({
+        method: "GET",
+        url: `${routes.products.url}?page=100&pageSize=100`,
+      });
+      // (page - 1) * pageSize would overflow PostgreSQL's bigint OFFSET.
+      const huge = await server.inject({
+        method: "GET",
+        url: `${routes.products.url}?page=100000000000000000&pageSize=100`,
+      });
+
+      for (const response of [beyond, huge]) {
+        expect(response.statusCode).toBe(200);
+        expect(Value.Check(ProductsResponseSchema, response.json())).toBe(true);
+        expect(response.json().products).toEqual([]);
+        expect(response.json().total).toBeGreaterThan(0);
+      }
+    });
+
     it("returns quantity-aware offers for a seeded product", async () => {
       const response = await server.inject({
         method: "GET",

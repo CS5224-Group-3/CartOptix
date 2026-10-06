@@ -8,6 +8,15 @@ function stubDatabase(result: Awaited<ReturnType<Database["checkConnection"]>>):
     loadBasket: async () => {
       throw new Error("Not used by health checks");
     },
+    loadCatalogue: async () => {
+      throw new Error("Not used by health checks");
+    },
+    loadProducts: async () => {
+      throw new Error("Not used by health checks");
+    },
+    loadOffers: async () => {
+      throw new Error("Not used by health checks");
+    },
     close: async () => {},
   };
 }
