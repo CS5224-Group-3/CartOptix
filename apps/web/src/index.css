@@ -163,7 +163,7 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .catalogue-pagination { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; }
 .catalogue-pagination span { color: var(--muted); font-size: 12px; }
 .page-jump-control { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
-.product-grid--pending { opacity: .6; pointer-events: none; }
+.product-grid--pending { opacity: .6; }
 .product-card__unavailable { margin: 0 0 8px; color: #886721; font-size: 11px; font-weight: 700; }
 .page-jump-control input { width: 58px; height: 34px; padding: 0 7px; border: 1px solid #dce5e7; border-radius: 8px; color: var(--navy); }
 

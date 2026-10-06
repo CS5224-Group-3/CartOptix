@@ -564,6 +564,7 @@ export function CataloguePage() {
             <div
               className={isPlaceholderData ? "product-grid product-grid--pending" : "product-grid"}
               aria-busy={isPlaceholderData}
+              inert={isPlaceholderData}
             >
               {products.map((product) => (
                 <ProductCard

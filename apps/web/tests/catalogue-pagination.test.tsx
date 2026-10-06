@@ -93,11 +93,14 @@ describe("catalogue pagination", () => {
     expect(button("Previous").disabled).toBe(true);
     expect(button("Go").disabled).toBe(true);
     expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("true");
+    // Inert also stops keyboard activation of the previous page's cards.
+    expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(true);
     expect(screen.getByRole("link", { name: "View Product 1" })).toBeDefined();
 
     gate.release?.();
     expect(await screen.findByRole("link", { name: "View Product 101" })).toBeDefined();
     expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("false");
+    expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(false);
     expect(button("Previous").disabled).toBe(false);
   });
 });
