@@ -196,6 +196,10 @@ describe.skipIf(connectionString === undefined)(
         method: "GET",
         url: `${routes.products.url}?q=unlisted%20test%20product&page=1&pageSize=10`,
       });
+      const offers = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "unlisted-test-product")}?quantity=1`,
+      });
 
       expect(response.statusCode).toBe(200);
       expect(response.json().products).toContainEqual({
@@ -205,6 +209,13 @@ describe.skipIf(connectionString === undefined)(
         packSize: "Pack size unavailable",
         available: false,
         imageUrl: null,
+      });
+      expect(offers.statusCode).toBe(200);
+      expect(Value.Check(OffersResponseSchema, offers.json())).toBe(true);
+      expect(offers.json()).toMatchObject({
+        product: { productId: "unlisted-test-product", available: false },
+        quantity: 1,
+        offers: [],
       });
     });
 

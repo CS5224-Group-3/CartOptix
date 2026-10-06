@@ -120,6 +120,48 @@ describe("products API", () => {
     expect(response.json().error.code).toBe("invalid_request");
   });
 
+  it.each([
+    ["missing quantity", ""],
+    ["non-numeric quantity", "?quantity=many"],
+    ["unknown query field", "?quantity=1&unexpected=true"],
+  ])("rejects an offers request with %s", async (_caseName, query) => {
+    const response = await start().inject({
+      method: "GET",
+      url: `${routes.products.url}/fixture-rice/offers${query}`,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Value.Check(ErrorResponseSchema, response.json())).toBe(true);
+    expect(response.json().error.code).toBe("invalid_request");
+  });
+
+  it("returns a contract error when the offer store is unavailable", async () => {
+    const server = buildServer({
+      database: {
+        checkConnection: async () => ({ status: "ok" }),
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
+        loadCatalogue: async () => structuredClone(catalogueExample),
+        loadProducts: async () => ({ products: [], total: 0 }),
+        loadOffers: async () => {
+          throw new Error("database unavailable");
+        },
+        close: async () => {},
+      },
+    });
+
+    const response = await server.inject({
+      method: "GET",
+      url: `${routes.products.url}/fixture-rice/offers?quantity=1`,
+    });
+    await server.close();
+
+    expect(response.statusCode).toBe(500);
+    expect(Value.Check(ErrorResponseSchema, response.json())).toBe(true);
+    expect(response.json().error.code).toBe("service_error");
+  });
+
   it("rejects invalid pagination and unknown products", async () => {
     const server = start();
     const invalid = await server.inject({

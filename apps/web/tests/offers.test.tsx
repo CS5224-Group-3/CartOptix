@@ -65,5 +65,16 @@ describe("product offer view", () => {
     await waitFor(() => expect(requestedQuantities).toContain(2));
     expect(screen.getByText(/For 2 packs; before delivery and order charges/)).toBeDefined();
     expect(screen.getByText("S$12.30")).toBeDefined();
+
+    const increase = screen.getByRole("button", { name: "Increase quantity" });
+    for (let quantity = 3; quantity <= 20; quantity += 1) fireEvent.click(increase);
+    expect(screen.getByText("20")).toBeDefined();
+    expect(increase).toHaveProperty("disabled", true);
+    expect(requestedQuantities).toContain(20);
+
+    const decrease = screen.getByRole("button", { name: "Decrease quantity" });
+    for (let quantity = 19; quantity >= 1; quantity -= 1) fireEvent.click(decrease);
+    expect(screen.getByText("1")).toBeDefined();
+    expect(decrease).toHaveProperty("disabled", true);
   });
 });
