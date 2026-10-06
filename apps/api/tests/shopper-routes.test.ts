@@ -7,12 +7,14 @@ import {
 } from "@cartoptix/contracts";
 import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
-import { createFixtureCatalogueStore } from "../src/catalogue/index.ts";
 import type { BasketData } from "../src/comparison/store.ts";
 import type { Database } from "../src/database.ts";
 import type { DeliveryRule, OfferRule } from "../src/pricing/index.ts";
-import { createFixtureProductsStore } from "../src/products/index.ts";
 import { buildServer } from "../src/server.ts";
+import {
+  createFixtureCatalogueStore,
+  createFixtureProductsStore,
+} from "./support/fixture-stores.ts";
 
 /** A two-product seed: rice at RedMart and FairPrice, noodles at FairPrice only. */
 const offer = (retailerId: "redmart" | "fairprice", productId: string, unitPrice: number) =>

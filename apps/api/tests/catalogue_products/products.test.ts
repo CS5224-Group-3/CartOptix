@@ -2,8 +2,8 @@ import { OffersResponseSchema, ProductsResponseSchema, routes } from "@cartoptix
 import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
-import { createFixtureProductsStore } from "../../src/products/index.ts";
 import { buildServer } from "../../src/server.ts";
+import { createFixtureProductsStore } from "../support/fixture-stores.ts";
 
 describe("products API", () => {
   const servers: ReturnType<typeof buildServer>[] = [];

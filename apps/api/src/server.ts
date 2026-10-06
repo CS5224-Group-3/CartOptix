@@ -4,6 +4,7 @@ import type { Database } from "./database.ts";
 import { registerShopperRoutes } from "./shopper-routes.ts";
 
 export interface BuildServerOptions {
+  /** Owned by the server: closing the server closes the database. */
   database: Database;
   /** Allowed browser origin for the local web app during development. */
   webOrigin?: string;

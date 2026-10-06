@@ -1,12 +1,11 @@
-import type { OffersResponse, Product } from "@cartoptix/contracts";
-import { offersExample, productsExample } from "@cartoptix/contracts/fixtures";
+import type { OffersResponse, Product, ProductsQuery } from "@cartoptix/contracts";
 import { and, asc, count, eq, exists, inArray, like, or, type SQLWrapper, sql } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { listings, products } from "../db/schema.ts";
 import { priceOffer } from "./offers.ts";
-import { type ProductSearchQuery, searchProducts } from "./search.ts";
 
-export type { ProductSearchQuery } from "./search.ts";
+export type ProductSearchQuery = Required<Pick<ProductsQuery, "page" | "pageSize">> &
+  Omit<ProductsQuery, "page" | "pageSize">;
 
 function canonicalPackSize(specifications: readonly (string | null)[]): string {
   const values = [...new Set(specifications.filter((value): value is string => value !== null))];
@@ -40,33 +39,19 @@ function searchLikePattern(value: string): string {
 }
 
 function normalizedSearchExpression(column: SQLWrapper) {
-  // PostgreSQL does the same normalization as normalizeSearchText(), while
-  // Drizzle still binds the user input as a query parameter.
+  // Lower-cases and strips whitespace, so the bound query matches however the
+  // text is spaced. Drizzle still binds the user input as a query parameter.
   return sql`regexp_replace(lower(${column}), '\\s+', '', 'g')`;
+}
+
+function normalizedNameExpression(column: SQLWrapper) {
+  // The shopper never sees the [BCRS] marker, so search must not match it.
+  return sql`regexp_replace(lower(${column}), '\\[bcrs\\]|\\s+', '', 'g')`;
 }
 
 export interface ProductsStore {
   products(query: ProductSearchQuery): Promise<{ products: Product[]; total: number }>;
   offers(productId: string, quantity: number): Promise<OffersResponse | null>;
-  close?(): Promise<void>;
-}
-
-/** Test-only store for route tests that do not require PostgreSQL. */
-export function createFixtureProductsStore(): ProductsStore {
-  const products = productsExample.products.map((product) => ({ ...product }));
-  return {
-    async products(query) {
-      return searchProducts(products, query);
-    },
-    async offers(productId, quantity) {
-      if (productId !== offersExample.product.productId) return null;
-      return {
-        product: structuredClone(offersExample.product),
-        quantity,
-        offers: offersExample.offers.map((offer) => priceOffer(offer, quantity)),
-      };
-    },
-  };
 }
 
 export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
@@ -82,7 +67,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             const pattern = searchLikePattern(query.q);
             predicates.push(
               or(
-                like(normalizedSearchExpression(products.representativeName), pattern),
+                like(normalizedNameExpression(products.representativeName), pattern),
                 exists(
                   tx
                     .select({ listingId: listings.listingId })

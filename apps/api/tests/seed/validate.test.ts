@@ -55,7 +55,16 @@ describe("validateSeed", () => {
     expect(errors).toContain(
       "Duplicate product listing at one retailer: fixture-rice-5kg at fairprice",
     );
-    expect(errors).toContain("Product fixture-noodles-400g has no listing");
+  });
+
+  it("accepts a product with no listing, which the catalogue shows as unavailable", () => {
+    expect(
+      errorsFor((s) => {
+        s.listings = s.listings.filter(
+          (l: { productId: string }) => l.productId !== "fixture-noodles-400g",
+        );
+      }),
+    ).toEqual([]);
   });
 
   it("requires every retailer with exactly one delivery rule", () => {

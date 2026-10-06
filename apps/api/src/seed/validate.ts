@@ -81,9 +81,7 @@ export function validateSeed(input: unknown): SeedValidation {
   const hosts = new Map(
     seed.retailers.map((retailer) => [retailer.retailerId, retailer.productUrlHosts]),
   );
-  const listed = new Set<string>();
   for (const listing of seed.listings) {
-    listed.add(listing.productId);
     if (!productIds.has(listing.productId)) {
       errors.push(`Listing ${listing.listingId} has unknown product ${listing.productId}`);
     }
@@ -99,7 +97,6 @@ export function validateSeed(input: unknown): SeedValidation {
     }
   }
   for (const productId of productIds) {
-    if (!listed.has(productId)) errors.push(`Product ${productId} has no listing`);
     const specifications = seed.listings
       .filter((listing) => listing.productId === productId)
       .map((listing) => normalizeSpecification(listing.specification));

@@ -1,21 +1,10 @@
 import type { CatalogueResponse } from "@cartoptix/contracts";
-import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import { asc } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { categories, deliveryRules, retailers } from "../db/schema.ts";
 
 export interface CatalogueStore {
   catalogue(): Promise<CatalogueResponse>;
-  close?(): Promise<void>;
-}
-
-/** Test-only store for route tests that do not require PostgreSQL. */
-export function createFixtureCatalogueStore(): CatalogueStore {
-  return {
-    async catalogue() {
-      return structuredClone(catalogueExample);
-    },
-  };
 }
 
 export function createDatabaseCatalogueStore(db: NodePgDatabase): CatalogueStore {
