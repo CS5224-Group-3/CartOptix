@@ -146,6 +146,46 @@ describe.skipIf(connectionString === undefined)(
       }
     });
 
+    it("reprices the seeded offers when quantity changes and handles unknown products", async () => {
+      const atOnePack = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "songhe-glutinous-rice-1kg")}?quantity=1`,
+      });
+      const atTwentyPacks = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "songhe-glutinous-rice-1kg")}?quantity=20`,
+      });
+      const unknown = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "missing-seed-product")}?quantity=1`,
+      });
+      const tooMany = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "songhe-glutinous-rice-1kg")}?quantity=21`,
+      });
+
+      expect(atOnePack.statusCode).toBe(200);
+      expect(atTwentyPacks.statusCode).toBe(200);
+      expect(Value.Check(OffersResponseSchema, atOnePack.json())).toBe(true);
+      expect(Value.Check(OffersResponseSchema, atTwentyPacks.json())).toBe(true);
+      expect(atOnePack.json().quantity).toBe(1);
+      expect(atTwentyPacks.json().quantity).toBe(20);
+      for (const offer of atOnePack.json().offers) {
+        const largerOffer = atTwentyPacks
+          .json()
+          .offers.find(
+            (candidate: { retailerId: string }) => candidate.retailerId === offer.retailerId,
+          );
+        expect(largerOffer).toBeDefined();
+        expect(largerOffer.lineTotalCents).toBe(offer.lineTotalCents * 20);
+        expect(largerOffer.excludedPromotions).toEqual(offer.excludedPromotions);
+      }
+      expect(unknown.statusCode).toBe(404);
+      expect(unknown.json().error.code).toBe("not_found");
+      expect(tooMany.statusCode).toBe(400);
+      expect(tooMany.json().error.code).toBe("invalid_request");
+    });
+
     it("keeps a product with no listing visible and unavailable", async () => {
       await throwaway.client.query(
         `INSERT INTO products (product_id, category_id, representative_name, image_url)
@@ -156,6 +196,10 @@ describe.skipIf(connectionString === undefined)(
         method: "GET",
         url: `${routes.products.url}?q=unlisted%20test%20product&page=1&pageSize=10`,
       });
+      const offers = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "unlisted-test-product")}?quantity=1`,
+      });
 
       expect(response.statusCode).toBe(200);
       expect(response.json().products).toContainEqual({
@@ -165,6 +209,13 @@ describe.skipIf(connectionString === undefined)(
         packSize: "Pack size unavailable",
         available: false,
         imageUrl: null,
+      });
+      expect(offers.statusCode).toBe(200);
+      expect(Value.Check(OffersResponseSchema, offers.json())).toBe(true);
+      expect(offers.json()).toMatchObject({
+        product: { productId: "unlisted-test-product", available: false },
+        quantity: 1,
+        offers: [],
       });
     });
 

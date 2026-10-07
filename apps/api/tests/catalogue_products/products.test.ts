@@ -1,4 +1,9 @@
-import { OffersResponseSchema, ProductsResponseSchema, routes } from "@cartoptix/contracts";
+import {
+  ErrorResponseSchema,
+  OffersResponseSchema,
+  ProductsResponseSchema,
+  routes,
+} from "@cartoptix/contracts";
 import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import { Value } from "typebox/value";
 import { afterEach, describe, expect, it } from "vitest";
@@ -90,6 +95,73 @@ describe("products API", () => {
     ]);
   });
 
+  it.each([1, 20])("prices offers for %i whole packs", async (quantity) => {
+    const response = await start().inject({
+      method: "GET",
+      url: `${routes.products.url}/fixture-rice/offers?quantity=${quantity}`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(Value.Check(OffersResponseSchema, response.json())).toBe(true);
+    expect(response.json().quantity).toBe(quantity);
+    expect(
+      response.json().offers.map((offer: { lineTotalCents: number }) => offer.lineTotalCents),
+    ).toEqual(quantity === 1 ? [410, 615] : [8200, 12300]);
+  });
+
+  it.each([0, 21, 1.5])("rejects unsupported offer quantity %s", async (quantity) => {
+    const response = await start().inject({
+      method: "GET",
+      url: `${routes.products.url}/fixture-rice/offers?quantity=${quantity}`,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Value.Check(ErrorResponseSchema, response.json())).toBe(true);
+    expect(response.json().error.code).toBe("invalid_request");
+  });
+
+  it.each([
+    ["missing quantity", ""],
+    ["non-numeric quantity", "?quantity=many"],
+    ["unknown query field", "?quantity=1&unexpected=true"],
+  ])("rejects an offers request with %s", async (_caseName, query) => {
+    const response = await start().inject({
+      method: "GET",
+      url: `${routes.products.url}/fixture-rice/offers${query}`,
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(Value.Check(ErrorResponseSchema, response.json())).toBe(true);
+    expect(response.json().error.code).toBe("invalid_request");
+  });
+
+  it("returns a contract error when the offer store is unavailable", async () => {
+    const server = buildServer({
+      database: {
+        checkConnection: async () => ({ status: "ok" }),
+        loadBasket: async () => {
+          throw new Error("not used");
+        },
+        loadCatalogue: async () => structuredClone(catalogueExample),
+        loadProducts: async () => ({ products: [], total: 0 }),
+        loadOffers: async () => {
+          throw new Error("database unavailable");
+        },
+        close: async () => {},
+      },
+    });
+
+    const response = await server.inject({
+      method: "GET",
+      url: `${routes.products.url}/fixture-rice/offers?quantity=1`,
+    });
+    await server.close();
+
+    expect(response.statusCode).toBe(500);
+    expect(Value.Check(ErrorResponseSchema, response.json())).toBe(true);
+    expect(response.json().error.code).toBe("service_error");
+  });
+
   it("rejects invalid pagination and unknown products", async () => {
     const server = start();
     const invalid = await server.inject({
@@ -102,6 +174,8 @@ describe("products API", () => {
     });
     expect(invalid.statusCode).toBe(400);
     expect(missing.statusCode).toBe(404);
+    expect(Value.Check(ErrorResponseSchema, missing.json())).toBe(true);
+    expect(missing.json().error.code).toBe("not_found");
   });
 
   it("distinguishes an empty result from a store failure", async () => {

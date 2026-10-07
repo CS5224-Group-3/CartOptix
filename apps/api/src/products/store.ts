@@ -151,17 +151,30 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             .orderBy(asc(listings.listingId));
           if (!productRows[0]) return null;
           const offerRows = await tx
-            .select({
-              retailerId: listings.retailerId,
-              listingId: listings.listingId,
-              productUrl: listings.productUrl,
-              priceKind: listings.priceKind,
-              unitPriceCents: listings.unitPriceCents,
-              excludedPromotions: listings.excludedPromotions,
-            })
+            .select()
             .from(listings)
             .where(eq(listings.productId, productId))
-            .orderBy(asc(listings.unitPriceCents), asc(listings.retailerId));
+            .orderBy(asc(listings.retailerId), asc(listings.listingId));
+          const offers = offerRows
+            .map((offer) =>
+              priceOffer(
+                {
+                  listingId: offer.listingId,
+                  productId: offer.productId,
+                  retailerId: offer.retailerId,
+                  priceKind: offer.priceKind,
+                  unitPrice: offer.unitPriceCents,
+                  // Listing rows hold published offers only; excluded candidates never enter the seed.
+                  eligible: true,
+                  charges: [],
+                  excludedPromotions: offer.excludedPromotions.map((detail) => ({ detail })),
+                },
+                offer.productUrl,
+                quantity,
+              ),
+            )
+            .filter((offer) => offer !== null)
+            .sort((left, right) => left.lineTotalCents - right.lineTotalCents);
           return {
             product: {
               productId: productRows[0].productId,
@@ -172,17 +185,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
               imageUrl: productRows[0].imageUrl,
             },
             quantity,
-            offers: offerRows.map((offer) =>
-              priceOffer(
-                {
-                  ...offer,
-                  // BCRS deposits are intentionally not modelled in the MVP; see product spec.
-                  itemCharges: [],
-                  lineTotalCents: offer.unitPriceCents,
-                },
-                quantity,
-              ),
-            ),
+            offers,
           };
         },
         { isolationLevel: "repeatable read", accessMode: "read only" },

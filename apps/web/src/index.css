@@ -171,3 +171,7 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 @media (max-width: 720px) {
   .product-card .product-image { height: 180px; }
 }
+
+.offer-list__caption { margin: 0 0 3px; color: #71817d; font-size: 11px; }
+.offer-row__price > span, .offer-row__promotion { color: #71817d; font-size: 11px; line-height: 1.45; }
+.offer-row__promotion { color: #9b6711; }

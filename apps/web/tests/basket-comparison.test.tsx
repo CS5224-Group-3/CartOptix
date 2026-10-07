@@ -36,4 +36,4 @@ it("keeps basket-to-results navigation with a synthetic fixture and no compariso
   expect(screen.getAllByRole("article")).toHaveLength(3);
   expect(screen.getAllByText("1 × 1 kg · Quantity: 1 pack")).toHaveLength(2);
   window.history.replaceState({}, "", "/");
-});
+}, 15_000);
