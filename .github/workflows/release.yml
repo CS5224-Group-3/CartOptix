@@ -186,19 +186,35 @@ jobs:
 
           parameters="$(jq -nc --arg cmd "$remote_command" '{commands: [$cmd]}')"
 
-          command_id="$(aws ssm send-command \
+          if ! command_id="$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name AWS-RunShellScript \
             --comment "CartOptix release $RELEASE" \
             --timeout-seconds 1800 \
             --parameters "$parameters" \
             --query 'Command.CommandId' \
-            --output text)"
+            --output text 2>send-error.txt)"; then
+            # SSM rejects a stopped instance as InvalidInstanceId. The host is
+            # stopped to save cost, so an automatic deploy then skips with a
+            # warning; the release is still published. A mistyped
+            # DEV_INSTANCE_ID gives the same error, hence a warning rather
+            # than silence. A manual run asked for a deploy, so it still fails.
+            if [[ "$GITHUB_EVENT_NAME" == "workflow_run" ]] && grep -q InvalidInstanceId send-error.txt; then
+              message="Skipped deploying $RELEASE: instance $INSTANCE_ID is not reachable by SSM, most likely because it is stopped (or DEV_INSTANCE_ID is wrong). The images are published; start the instance and run Release by hand with this SHA to deploy it."
+              echo "::warning::$message"
+              echo "$message" >> "$GITHUB_STEP_SUMMARY"
+              echo "skipped=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            cat send-error.txt >&2
+            exit 1
+          fi
 
           echo "command_id=$command_id" >> "$GITHUB_OUTPUT"
           echo "Started SSM command $command_id."
 
       - name: Wait for the release to finish
+        if: steps.send.outputs.skipped != 'true'
         env:
           COMMAND_ID: ${{ steps.send.outputs.command_id }}
         run: |
