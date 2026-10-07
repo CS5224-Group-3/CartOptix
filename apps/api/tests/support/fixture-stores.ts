@@ -35,7 +35,29 @@ export function createFixtureProductsStore(): {
       return {
         product: structuredClone(offersExample.product),
         quantity,
-        offers: offersExample.offers.map((offer) => priceOffer(offer, quantity)),
+        offers: offersExample.offers
+          .map((offer) =>
+            priceOffer(
+              {
+                listingId: offer.listingId,
+                productId,
+                retailerId: offer.retailerId,
+                priceKind: offer.priceKind,
+                unitPrice: offer.unitPriceCents,
+                eligible: true,
+                charges: offer.itemCharges.map((charge) => ({
+                  label: charge.label,
+                  amount: charge.amountCents / offersExample.quantity,
+                  includedInPrice: charge.includedInPrice,
+                })),
+                excludedPromotions: offer.excludedPromotions.map((detail) => ({ detail })),
+              },
+              offer.productUrl,
+              quantity,
+            ),
+          )
+          .filter((offer) => offer !== null)
+          .sort((left, right) => left.lineTotalCents - right.lineTotalCents),
       };
     },
   };

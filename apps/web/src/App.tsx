@@ -52,7 +52,14 @@ import type {
   ComparisonSubmission,
 } from "./features/basket-comparison/model";
 import { useComparison } from "./features/basket-comparison/useComparison";
-import { ApiError, useCatalogue, useOffers, useProductIndex, useProducts } from "./lib/api";
+import {
+  ApiError,
+  recordOutboundClick,
+  useCatalogue,
+  useOffers,
+  useProductIndex,
+  useProducts,
+} from "./lib/api";
 import { categoryVisual, formatSgd, RETAILER_DISPLAY, RETAILER_IDS } from "./lib/format";
 import BasketComparisonPage from "./pages/BasketComparisonPage";
 import Home from "./pages/Home";
