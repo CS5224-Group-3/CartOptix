@@ -139,6 +139,9 @@ jobs:
       DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
       INSTANCE_ID: ${{ vars.DEV_INSTANCE_ID }}
       REPOSITORY_DIR: ${{ vars.DEV_REPOSITORY_DIR }}
+      # Owns the checkout, its GitHub deploy key and the Docker Compose plugin
+      # on the host. SSM runs commands as root, so the release runs as this user.
+      DEPLOY_USER: ec2-user
 
     steps:
       - name: Check the required repository variables
@@ -173,11 +176,11 @@ jobs:
         run: |
           # Check out the exact commit first, so the host runs the release
           # script and compose file that belong to the release it is deploying.
-          remote_command="set -euo pipefail
-          cd '$REPOSITORY_DIR'
+          remote_command="sudo -u '$DEPLOY_USER' -H bash -euo pipefail -c '
+          cd \"$REPOSITORY_DIR\"
           git fetch --prune origin
-          git checkout --force '$RELEASE'
-          bash deploy/development/release.sh '$RELEASE'"
+          git checkout --force $RELEASE
+          bash deploy/development/release.sh $RELEASE'"
 
           parameters="$(jq -nc --arg cmd "$remote_command" '{commands: [$cmd]}')"
 

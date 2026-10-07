@@ -31,7 +31,6 @@ relied on to load it.
 | --- | --- |
 | `AmazonSSMManagedInstanceCore` on the instance profile | lets Systems Manager reach the host at all |
 | `AmazonEC2ContainerRegistryReadOnly` on the instance profile | lets the host pull the release images. **SSM alone is not enough** |
-| Elastic IP associated with the instance | the public address must survive stop/start |
 | Two ECR repositories, `cartoptix-api` and `cartoptix-web`, tag immutability **on**, with the lifecycle policy below | one tag must never be overwritten; old releases are expired |
 | GitHub OIDC identity provider in IAM | replaces long-lived access keys |
 | Publishing role and deployment role | see below |
@@ -118,7 +117,7 @@ settled. `workflow_run`-triggered runs are evaluated against the default branch.
 | `AWS_PUBLISH_ROLE_ARN` | ARN of the publishing role |
 | `AWS_DEPLOY_ROLE_ARN` | ARN of the deployment role |
 | `DEV_INSTANCE_ID` | EC2 instance id of the development host, e.g. `i-0abc…` |
-| `DEV_REPOSITORY_DIR` | absolute path of the repository checkout on the host, e.g. `/home/ec2-user/CartOptix` |
+| `DEV_REPOSITORY_DIR` | absolute path of the repository checkout on the host, e.g. `/home/ec2-user/src/cartoptix` |
 
 No secrets are needed. If a variable is missing, the workflow fails with an
 explicit message instead of an obscure AWS error.
@@ -126,7 +125,14 @@ explicit message instead of an obscure AWS error.
 ### Development host (once)
 
 - Docker, Docker Compose, git, curl, and the AWS CLI. No Buildx: the host only pulls.
-- A clone of this repository with read access, at `$DEV_REPOSITORY_DIR`.
+- A deploy user, `ec2-user`, in the `docker` group with the Docker Compose plugin.
+  SSM runs commands as root, so the workflow runs the release as this user.
+- A clone of this repository owned by `ec2-user`, with read access (for example an
+  SSH deploy key), at `$DEV_REPOSITORY_DIR`.
+- No Elastic IP. The public address changes whenever the instance stops and
+  starts; releases don't need it, because SSM and the image pulls are outbound.
+  Look up the current address with
+  `aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[0].Instances[0].PublicIpAddress' --output text`.
 - `deploy/development/.env`, created from `.env.example` and `chmod 600`. It now
   needs `IMAGE_REGISTRY` as well as the three `POSTGRES_*` values. **An `.env`
   written before Issue #7 must be updated**, or compose stops with
@@ -326,7 +332,7 @@ the tag.
 
 ### What local verification cannot show
 
-The Release workflow, the SSM command, the ECR pull, the Elastic IP, the arm64
+The Release workflow, the SSM command, the ECR pull, the arm64
 images themselves, and whether an older image runs correctly against a newer
 schema. Those need the development instance, and they are the reviewer's checks.
 
