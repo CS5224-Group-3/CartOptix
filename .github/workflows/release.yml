@@ -176,9 +176,11 @@ jobs:
         run: |
           # Check out the exact commit first, so the host runs the release
           # script and compose file that belong to the release it is deploying.
+          # Fetch every branch explicitly: a single-branch clone otherwise only
+          # fetches the branch it was cloned from, which may no longer exist.
           remote_command="sudo -u '$DEPLOY_USER' -H bash -euo pipefail -c '
           cd \"$REPOSITORY_DIR\"
-          git fetch --prune origin
+          git fetch --prune origin \"+refs/heads/*:refs/remotes/origin/*\"
           git checkout --force $RELEASE
           bash deploy/development/release.sh $RELEASE'"
 
