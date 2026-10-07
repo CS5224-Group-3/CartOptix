@@ -99,7 +99,7 @@ Both roles trust the GitHub OIDC provider:
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:CS5224-Group-3/CartOptix:*"
+          "token.actions.githubusercontent.com:sub": "repo:CS5224-Group-3@325644622/CartOptix@1359158441:*"
         }
       }
     }
@@ -107,7 +107,11 @@ Both roles trust the GitHub OIDC provider:
 }
 ```
 
-Tighten the `sub` condition to `:ref:refs/heads/main` once the workflows have
+The repository uses GitHub's immutable OIDC subject, which includes the owner and
+repository IDs, so a renamed or recreated repository can't reuse the roles. The
+plain `repo:CS5224-Group-3/CartOptix:*` form is rejected. Check the current prefix
+with `gh api repos/CS5224-Group-3/CartOptix/actions/oidc/customization/sub`.
+Tighten the `sub` condition to `…:ref:refs/heads/main` once the workflows have
 settled. `workflow_run`-triggered runs are evaluated against the default branch.
 
 ### Repository variables (once, Settings → Secrets and variables → Actions → Variables)
