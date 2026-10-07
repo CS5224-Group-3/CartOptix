@@ -1,3 +1,14 @@
+# CartOptix development POC.
+#
+# Every service runs a published image. Nothing is built on this host: CI builds
+# and publishes the arm64 images, tagged with the Git commit that produced them
+# (.github/workflows/release.yml). The host only pulls.
+#
+# IMAGE_REGISTRY and RELEASE must be set, normally by deploy/development/.env.
+# RELEASE is the commit SHA of the running release, so the containers identify
+# exactly which build they are running. See RUNBOOK.md for the release and
+# rollback procedures.
+
 services:
   postgres:
     image: postgres:18-alpine
@@ -18,10 +29,7 @@ services:
       retries: 20
 
   api:
-    build:
-      context: ../..
-      dockerfile: apps/api/Dockerfile
-    image: cartoptix-api:issue6
+    image: &api-image ${IMAGE_REGISTRY:?IMAGE_REGISTRY is required}/cartoptix-api:${RELEASE:?RELEASE is required}
     container_name: cartoptix-api
     restart: unless-stopped
     depends_on:
@@ -32,23 +40,56 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
     networks:
       - cartoptix-net
+    labels:
+      com.cartoptix.release: ${RELEASE}
+      com.cartoptix.component: api
+    healthcheck:
+      # Liveness, not readiness: this only has to answer "is the API process
+      # serving?", and the image is node:24-slim, which has no curl or wget.
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:3001/health/live')
+          .then((response) => process.exit(response.ok ? 0 : 1))
+          .catch(() => process.exit(1))
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
 
   web:
-    build:
-      context: ../..
-      dockerfile: deploy/development/web.Dockerfile
-    image: cartoptix-web:issue6
+    image: ${IMAGE_REGISTRY:?IMAGE_REGISTRY is required}/cartoptix-web:${RELEASE:?RELEASE is required}
     container_name: cartoptix-web
     restart: unless-stopped
     depends_on:
-      - api
+      api:
+        condition: service_healthy
     ports:
-      - "80:80"
+      # WEB_PORT exists so a development machine can put the stack on a spare
+      # port when 80 is already taken. The host uses the default.
+      - "${WEB_PORT:-80}:80"
     networks:
       - cartoptix-net
+    labels:
+      com.cartoptix.release: ${RELEASE}
+      com.cartoptix.component: web
+    healthcheck:
+      # nginx:alpine is BusyBox based, so use only the short wget options it
+      # always has rather than the GNU long forms or --spider.
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
 
+  # One-off tasks. They are in the "ops" profile because a release runs each of
+  # them exactly once, from the released image, rather than on every instance or
+  # on every start. Readiness deliberately does not check the seed, so the
+  # import is a release step: see RUNBOOK.md.
   migrate:
-    image: cartoptix-api:issue6
+    image: *api-image
     profiles: ["ops"]
     depends_on:
       postgres:
@@ -60,7 +101,7 @@ services:
       - cartoptix-net
 
   seed:
-    image: cartoptix-api:issue6
+    image: *api-image
     profiles: ["ops"]
     depends_on:
       postgres:

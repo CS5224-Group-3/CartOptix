@@ -234,7 +234,7 @@ Provision reusable infrastructure, then verify teardown by 13 November 2026. Inc
 
 ### Delivery and scaling
 
-PR checks run format, types, relevant tests and builds. Deploy identifiable builds; OIDC is optional for the POC, and credentials are never committed. Apply database migrations once through a designated task, not concurrently on every ASG instance. Retain a known-good application release and use backward-compatible schema changes for rollback.
+PR checks run format, types, relevant tests and builds. Deploy identifiable builds; OIDC is optional for the POC, and credentials are never committed. Apply database migrations once through a designated task, not concurrently on every ASG instance. Retain a known-good application release; rollback restores it when the schema is still compatible, otherwise fix forward. Schema changes need not be backward compatible during the MVP.
 
 Use automatic ASG scaling policies, with a costed maximum of three. Select and document a metric, threshold, warm-up and cooldown from baseline measurements. CPU or ALB requests per target are candidate metrics; the choice is not yet settled. Show scale-out and scale-in under bounded load. The forecast surge may fit baseline capacity, so the trigger demonstration can use a separately labelled higher load.
 

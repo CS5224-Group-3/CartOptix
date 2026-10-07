@@ -1,7 +1,9 @@
 # Pull request checks only.
 #
-# Deployment, image publishing, OIDC, migrations and rollback are owned by the
-# CI/CD issue (#7) and deliberately excluded here.
+# Deployment, image publishing, OIDC, migrations and rollback live in
+# release.yml, which runs after this workflow succeeds. What this
+# workflow does own is actionlint over every workflow file, so a broken release
+# workflow is caught in review rather than on main.
 name: CI
 
 on:
@@ -59,3 +61,17 @@ jobs:
 
       - name: Build
         run: pnpm run build
+
+  workflows:
+    name: Lint workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Lint every workflow file
+        # Pinned, not :latest, so the check cannot change underneath the pull
+        # request that passed on it.
+        # The Docker Hub tag has no "v" prefix; only the GitHub release tag does.
+        run: docker run --rm -v "$PWD:/repo" --workdir /repo rhysd/actionlint:1.7.12
