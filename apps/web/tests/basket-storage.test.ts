@@ -1,4 +1,4 @@
-import { MAX_BASKET_LINES } from "@cartoptix/contracts";
+import { MAX_BASKET_LINES, MAX_PACKS_PER_LINE, MIN_PACKS_PER_LINE } from "@cartoptix/contracts";
 import { describe, expect, it } from "vitest";
 import type { BasketLine } from "../src/demo";
 import { BASKET_STORAGE_KEY, persistBasket, restoreBasket } from "../src/features/basket/storage";
@@ -37,6 +37,15 @@ describe("tab-session basket storage", () => {
     expect(restoreBasket(memoryStorage("[]"))).toEqual([]);
   });
 
+  it("restores exactly 50 lines with quantities at both supported boundaries", () => {
+    const basket = Array.from({ length: MAX_BASKET_LINES }, (_, index) => ({
+      productId: `product-${index}`,
+      quantity: index === 0 ? MIN_PACKS_PER_LINE : MAX_PACKS_PER_LINE,
+    }));
+
+    expect(restoreBasket(memoryStorage(JSON.stringify(basket)))).toEqual(basket);
+  });
+
   it.each([
     ["malformed JSON", "{"],
     ["non-array data", JSON.stringify({ productId: "milk", quantity: 1 })],
@@ -48,10 +57,13 @@ describe("tab-session basket storage", () => {
       ]),
     ],
     ["a non-whole quantity", JSON.stringify([{ productId: "milk", quantity: 1.5 }])],
+    ["a zero quantity", JSON.stringify([{ productId: "milk", quantity: 0 }])],
     [
       "a quantity outside the supported range",
-      JSON.stringify([{ productId: "milk", quantity: 21 }]),
+      JSON.stringify([{ productId: "milk", quantity: MAX_PACKS_PER_LINE + 1 }]),
     ],
+    ["an empty product ID", JSON.stringify([{ productId: "", quantity: 1 }])],
+    ["a whitespace-padded product ID", JSON.stringify([{ productId: " milk ", quantity: 1 }])],
     [
       "more than 50 lines",
       JSON.stringify(
@@ -67,5 +79,27 @@ describe("tab-session basket storage", () => {
 
   it("uses one stable session key", () => {
     expect(BASKET_STORAGE_KEY).toBe("cartoptix:basket:v1");
+  });
+
+  it("returns an empty basket if storage cannot be read", () => {
+    expect(
+      restoreBasket({
+        getItem: () => {
+          throw new Error("Storage access denied");
+        },
+        setItem: () => {},
+      }),
+    ).toEqual([]);
+  });
+
+  it("keeps basket editing available if storage cannot be written", () => {
+    expect(() =>
+      persistBasket(lines, {
+        getItem: () => null,
+        setItem: () => {
+          throw new Error("Storage quota exceeded");
+        },
+      }),
+    ).not.toThrow();
   });
 });

@@ -152,6 +152,27 @@ describe("shopper basket editing", () => {
     expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toHaveLength(50);
   });
 
+  it("allows the 50th distinct product line", async () => {
+    window.sessionStorage.setItem(
+      BASKET_STORAGE_KEY,
+      JSON.stringify(
+        Array.from({ length: 49 }, (_, index) => ({
+          productId: `saved-product-${index}`,
+          quantity: 1,
+        })),
+      ),
+    );
+    openApp();
+    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
+    const firstAddButton = addButtons[0];
+    if (!firstAddButton) throw new Error("Expected at least one catalogue product");
+    fireEvent.click(firstAddButton);
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+
+    expect(await screen.findAllByRole("button", { name: /^Remove / })).toHaveLength(50);
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toHaveLength(50);
+  });
+
   it("explains how to recover when adding packs would exceed 20 for one product", async () => {
     window.sessionStorage.setItem(
       BASKET_STORAGE_KEY,
@@ -188,5 +209,24 @@ describe("shopper basket editing", () => {
     });
     expect((decrease as HTMLButtonElement).disabled).toBe(true);
     expect(decrease.parentElement?.querySelector("strong")?.textContent).toBe("1");
+  });
+
+  it("allows increasing from 19 to 20 packs and disables further increases", async () => {
+    window.sessionStorage.setItem(
+      BASKET_STORAGE_KEY,
+      JSON.stringify([{ productId: "fixture-drink", quantity: 19 }]),
+    );
+    openApp("/basket");
+
+    const increase = await screen.findByRole("button", {
+      name: "Increase Fixture Plain Drink",
+    });
+    fireEvent.click(increase);
+
+    expect((increase as HTMLButtonElement).disabled).toBe(true);
+    expect(increase.parentElement?.querySelector("strong")?.textContent).toBe("20");
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toEqual([
+      { productId: "fixture-drink", quantity: 20 },
+    ]);
   });
 });
