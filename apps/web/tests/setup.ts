@@ -1,6 +1,6 @@
 // Shared jsdom setup: browser APIs the UI libraries expect, and cleanup between tests.
 import { cleanup, configure } from "@testing-library/react";
-import { afterEach, vi } from "vitest";
+import { afterEach, beforeEach, vi } from "vitest";
 
 configure({ asyncUtilTimeout: 5_000 });
 
@@ -22,4 +22,9 @@ afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
+});
+
+beforeEach(() => {
+  // Each test gets a fresh tab; tests that cover reload persistence do so within one test.
+  window.sessionStorage.clear();
 });
