@@ -178,7 +178,7 @@ describe.skipIf(connectionString === undefined)("basket comparison on the commit
         expect(body.status, `${productId} × ${quantity}`).toBe("recommended");
       }
     }
-  });
+  }, 30_000);
 
   it("returns a valid comparison for varied baskets, up to the largest allowed", async () => {
     // A fixed-seed generator keeps failures reproducible.

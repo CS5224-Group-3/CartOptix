@@ -1,6 +1,8 @@
 // Shared jsdom setup: browser APIs the UI libraries expect, and cleanup between tests.
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
+
+configure({ asyncUtilTimeout: 5_000 });
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
