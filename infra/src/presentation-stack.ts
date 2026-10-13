@@ -35,8 +35,8 @@ export class PresentationStack extends Stack {
       ],
     });
 
-    // Single-AZ: an application-instance failure is survivable, a database
-    // failure is not. Do not describe this as failover.
+    // Single-AZ, so the database is a single point of failure. Do not describe
+    // this as failover.
     this.database = new rds.DatabaseInstance(this, "Database", {
       engine: rds.DatabaseInstanceEngine.postgres({
         // Matches the local PostgreSQL 18 image; verified offered on db.t4g.micro in #6.

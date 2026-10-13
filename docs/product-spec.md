@@ -180,7 +180,7 @@ The study validates the idea and informs small MVP adjustments and longer-term r
 
 - AWS Singapore (`ap-southeast-1`); eight-week project operating envelope of approximately **SGD 84**, averaging SGD 1.50/day before credits and including the planned load-test day.
 - For most development, use one `t4g.micro` EC2 instance hosting the application and PostgreSQL.
-- For the presentation configuration, use ALB, an EC2 Auto Scaling Group and Single-AZ `db.t4g.micro` RDS PostgreSQL. Plan for two baseline application instances and a maximum of three, subject to costing.
+- For the presentation configuration, use ALB, an EC2 Auto Scaling Group and Single-AZ `db.t4g.micro` RDS PostgreSQL. Run one baseline application instance, scaling out to a maximum of three. One baseline instance is a cost decision and accepted technical debt: until the group has scaled out, an application-instance failure interrupts service until the Auto Scaling Group replaces the instance. SC-07's instance termination is therefore demonstrated while the group runs at least two instances.
 - The presentation window can shrink from 2–3 weeks to **five days** to fit the budget. If that is still unaffordable, explicitly revisit cost or scope rather than silently drop a demonstration requirement.
 - Allow one day for the main load-testing exercise. Prepare scripts, data and local checks beforehand.
 - Shut down project services by **13 November 2026**, coordinating the final presentation before teardown.

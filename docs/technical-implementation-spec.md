@@ -74,12 +74,14 @@ Presentation
 Browser -HTTPS-> CloudFront (*.cloudfront.net)
                   ├─ default -> private S3 bucket (frontend build)
                   └─ /api/*  -> VPC origin -> internal ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
-                                                             desired/min 2, max 3      db.t4g.micro, Single-AZ
+                                                             desired/min 1, max 3      db.t4g.micro, Single-AZ
 
 Offline data preparation -> validated committed seed -> explicit database import
 ```
 
 The presentation frontend is served from S3 through CloudFront, and the API from the ASG. One origin for both means the browser makes no cross-origin requests, so production needs no CORS handling. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
+
+**Technical debt: one baseline application instance.** For cost, the ASG keeps one instance (minimum and desired 1, maximum 3) instead of two. Until it scales out, the application is also a single point of failure: if that instance fails, the API is unavailable until the ASG launches and health-checks a replacement, which takes minutes. The static frontend stays up because CloudFront serves it from S3. Raise the minimum to 2 when cost allows; the instance-failure demonstration (F3) runs while the group has at least two instances.
 
 Serve browser traffic over HTTPS. The CloudFront-to-ALB connection uses HTTP inside AWS's network, because there is no custom domain to certify the ALB; this is a recorded limitation. Keep any S3 bucket private, restrict application ingress to its intended proxy/load balancer, and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles.
 
@@ -234,7 +236,7 @@ Outbound links must work without the event API. Send tracking asynchronously wit
 
 Cost the entire eight-week project in SGD before credits against approximately SGD 84, including the main load-test day. Include both deployment profiles, their actual durations and any overlap, EBS/RDS storage, ALB hours/capacity, public IPv4, CloudFront/S3, traffic, ECR, logs, backups and any secrets/network services selected. Record the pricing date, currency conversion and applicable tax assumptions. No estimate has yet established that the target configuration fits.
 
-Use one `t4g.micro` for the development POC, with app and database sharing its limited resources. The presentation configuration uses two baseline application instances, maximum three, and Single-AZ `db.t4g.micro`. Select application instance sizes after ARM64 and load checks. Shorten the presentation window to five days before weakening the required demonstrations. If still unaffordable, raise an explicit cost/scope decision.
+Use one `t4g.micro` for the development POC, with app and database sharing its limited resources. The presentation configuration uses one baseline application instance, maximum three, and Single-AZ `db.t4g.micro`; the single baseline instance is accepted technical debt (section 2). Select application instance sizes after ARM64 and load checks. Shorten the presentation window to five days before weakening the required demonstrations. If still unaffordable, raise an explicit cost/scope decision.
 
 Provision reusable infrastructure, then verify teardown by 13 November 2026. Include resources that continue charging after compute shutdown: volumes, load balancers, snapshots, retained databases and logs. Preserve required seed, results and report artefacts before deletion. Any retained billable resource needs an explicit cost entry.
 
@@ -396,8 +398,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### E4 — Provision the presentation architecture
 - **Blocked by:** E2, E3.
-- **Work:** Define in CDK, and deploy from an engineer's machine, an internal ALB, a stateless EC2 ASG (minimum 2, maximum 3) running the commit-tagged API image from ECR, private Single-AZ RDS with approved sizing, and CloudFront serving the frontend from a private S3 bucket; configure liveness-based health checks and draining. An engineer runs the migrations and the one-time seed import by hand, following the runbook. Deployment from CI is out of scope.
-- **Acceptance:** Requests work through HTTPS ingress; either application instance serves the same data; database access is restricted; a database outage does not drain or replace application instances; the stack is created and destroyed from code; the deployed cost assumptions and topology are recorded.
+- **Work:** Define in CDK, and deploy from an engineer's machine, an internal ALB, a stateless EC2 ASG (minimum 1, maximum 3) running the commit-tagged API image from ECR, private Single-AZ RDS with approved sizing, and CloudFront serving the frontend from a private S3 bucket; configure liveness-based health checks and draining. An engineer runs the migrations and the one-time seed import by hand, following the runbook. Deployment from CI is out of scope.
+- **Acceptance:** Requests work through HTTPS ingress; when scaled out, every application instance serves the same data; database access is restricted; a database outage does not drain or replace application instances; the stack is created and destroyed from code; the deployed cost assumptions and topology are recorded.
 
 #### E5 — Configure observability and automatic scaling
 - **Blocked by:** E4.
@@ -423,7 +425,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### F3 — Demonstrate autoscaling and instance-failure behaviour
 - **Blocked by:** E5, F1.
-- **Work:** In a separately labelled portion of the test exercise, force bounded scale-out, observe scale-in and terminate one application instance while traffic continues.
+- **Work:** In a separately labelled portion of the test exercise, force bounded scale-out, observe scale-in and, while the group has at least two instances, terminate one application instance while traffic continues. With one baseline instance, terminating it at baseline is an outage, not a fault-tolerance test.
 - **Acceptance:** Record capacity changes, delay, request outcomes and continued service; do not claim database failover or long-term SLO compliance. Explain if baseline capacity already handles forecast surge.
 
 #### F4 — Conduct the shopper study and record small refinements
