@@ -170,6 +170,7 @@ describe.skipIf(connectionString === undefined)("basket comparison on the commit
     expect(await api.importSeed(committedSeedBytes)).toEqual({ status: "imported" });
   });
 
+  // Repeated real-database comparisons across every product and both quantity boundaries need more time.
   it("recommends a retailer for every product, at one pack and the most packs", async () => {
     // Every published product has an eligible offer, so it alone is always feasible.
     for (const productId of productIds) {

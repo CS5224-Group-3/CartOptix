@@ -33,6 +33,17 @@ describe("tab-session basket storage", () => {
     expect(restoreBasket(storage)).toEqual(lines);
   });
 
+  it("persists only product IDs and quantities, even if a line has extra runtime fields", () => {
+    const storage = memoryStorage();
+    const linesWithMetadata = [
+      { productId: "fixture-rice", quantity: 4, name: "Rice", retailerPrice: 321 },
+    ] as unknown as BasketLine[];
+
+    expect(persistBasket(linesWithMetadata, storage)).toBe(true);
+    expect(storage.read()).toBe(JSON.stringify([{ productId: "fixture-rice", quantity: 4 }]));
+    expect(restoreBasket(storage)).toEqual([{ productId: "fixture-rice", quantity: 4 }]);
+  });
+
   it("restores an empty basket without inventing products", () => {
     expect(restoreBasket(memoryStorage("[]"))).toEqual([]);
   });
@@ -92,6 +103,14 @@ describe("tab-session basket storage", () => {
     ).toEqual([]);
   });
 
+  it("restores only the supported line shape when a stored entry has extra fields", () => {
+    const storage = memoryStorage(
+      JSON.stringify([{ productId: "milk", quantity: 2, name: "Milk", priceCents: 199 }]),
+    );
+
+    expect(restoreBasket(storage)).toEqual([{ productId: "milk", quantity: 2 }]);
+  });
+
   it("keeps basket editing available if storage cannot be written", () => {
     expect(
       persistBasket(lines, {
@@ -101,5 +120,20 @@ describe("tab-session basket storage", () => {
         },
       }),
     ).toBe(false);
+  });
+
+  it("leaves the last saved snapshot untouched when a write fails", () => {
+    const savedSnapshot = JSON.stringify([{ productId: "milk", quantity: 1 }]);
+    const value: string | null = savedSnapshot;
+    const storage = {
+      getItem: () => value,
+      setItem: () => {
+        throw new Error("Storage quota exceeded");
+      },
+    };
+
+    expect(persistBasket([{ productId: "milk", quantity: 2 }], storage)).toBe(false);
+    expect(value).toBe(savedSnapshot);
+    expect(restoreBasket(storage)).toEqual([{ productId: "milk", quantity: 1 }]);
   });
 });

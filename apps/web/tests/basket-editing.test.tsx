@@ -118,7 +118,7 @@ describe("shopper basket editing", () => {
   });
 
   it("warns when session storage rejects a basket edit", async () => {
-    openApp();
+    const firstLoad = openApp();
     await addBothCatalogueProducts();
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new Error("Storage quota exceeded");
@@ -131,6 +131,37 @@ describe("shopper basket editing", () => {
       screen.getByRole("button", { name: "Increase Fixture Plain Drink" }).parentElement
         ?.querySelector("strong")?.textContent,
     ).toBe("2");
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+      { productId: "fixture-drink", quantity: 1 },
+      { productId: "fixture-rice", quantity: 1 },
+    ]);
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    const restoredDrink = await screen.findByRole("button", {
+      name: "Increase Fixture Plain Drink",
+    });
+    expect(restoredDrink.parentElement?.querySelector("strong")?.textContent).toBe("1");
+  });
+
+  it("persists a removal and does not restore the removed line after remount", async () => {
+    const firstLoad = openApp();
+    await addBothCatalogueProducts();
+    fireEvent.click(screen.getByRole("button", { name: "Remove Fixture Plain Drink" }));
+
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+      { productId: "fixture-rice", quantity: 1 },
+    ]);
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    expect(await screen.findByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
+    expect(screen.queryByRole("button", { name: "Remove Fixture Plain Drink" })).toBeNull();
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+      { productId: "fixture-rice", quantity: 1 },
+    ]);
   });
 
   it("does not restore synthetic demo products as a normal basket after reload", async () => {
@@ -144,6 +175,41 @@ describe("shopper basket editing", () => {
     expect(await screen.findByText("Your basket is empty")).toBeDefined();
     expect(screen.queryByText("Product details unavailable")).toBeNull();
     expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+  });
+
+  it("does not persist synthetic lines when a demo basket is edited", async () => {
+    const firstLoad = openApp("/basket");
+    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
+
+    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    expect(await screen.findByText("Your basket is empty")).toBeDefined();
+    expect(screen.queryByText("Product details unavailable")).toBeNull();
+  });
+
+  it("preserves the saved real basket while a demo scenario is loaded", async () => {
+    const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
+    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    const firstLoad = openApp("/basket");
+    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
+
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+      savedBasket,
+    );
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    const increaseDrink = await screen.findByRole("button", {
+      name: "Increase Fixture Plain Drink",
+    });
+    expect(increaseDrink.parentElement?.querySelector("strong")?.textContent).toBe("2");
+    expect(screen.queryByText("Product details unavailable")).toBeNull();
   });
 
   it("marks results stale when a product is removed after comparison", async () => {
@@ -160,24 +226,32 @@ describe("shopper basket editing", () => {
   });
 
   it("marks results stale when a product is added after comparison", async () => {
-    openApp();
+    const productTemplate = productsExample.products[1];
+    if (!productTemplate) throw new Error("Expected a product to use as a catalogue fixture");
+    openApp("/catalogue", [
+      ...productsExample.products,
+      { ...productTemplate, productId: "fixture-oats", name: "Fixture Oats" },
+    ]);
     const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
     const firstAdd = addButtons[0];
-    if (!firstAdd) throw new Error("Expected a catalogue product");
+    const secondAdd = addButtons[1];
+    if (!firstAdd || !secondAdd)
+      throw new Error("Expected two products for the initial comparison");
     fireEvent.click(firstAdd);
+    fireEvent.click(secondAdd);
     fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
     fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
     await screen.findByRole("heading", { name: "Retailer basket comparison" });
     fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
     fireEvent.click(screen.getByRole("link", { name: "Add more" }));
     const catalogueAdds = await screen.findAllByRole("button", { name: /^Add$/ });
-    const secondAdd = catalogueAdds[1];
-    if (!secondAdd) throw new Error("Expected a second catalogue product");
-    fireEvent.click(secondAdd);
+    const thirdAdd = catalogueAdds[2];
+    if (!thirdAdd) throw new Error("Expected the additional catalogue product");
+    fireEvent.click(thirdAdd);
     fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
 
     expect(screen.getByText("Your basket changed.")).toBeDefined();
-    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(3);
   });
 
   it("does not mark the comparison stale when the same demo scenario is loaded again", async () => {

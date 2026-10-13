@@ -172,6 +172,11 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
     }
     setBasketRevision((revision) => revision + 1);
   }, [basket, persistenceFailed]);
+  const isStale = Boolean(
+    comparison &&
+      (comparison.submittedBasket.revision !== basketRevision ||
+        (comparison.submittedScenario ?? null) !== fixtureScenario),
+  );
 
   const value = useMemo<BasketContextValue>(
     () => ({
@@ -181,7 +186,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       fixtureScenario,
       persistenceFailed,
       comparison,
-      isStale: Boolean(comparison && comparison.submittedBasket.revision !== basketRevision),
+      isStale,
       requestState,
       canCompare:
         fixtureScenario !== null
@@ -322,6 +327,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       persistenceFailed,
       comparison,
       basketRevision,
+      isStale,
       requestState,
       submit,
       retry,

@@ -2,6 +2,7 @@
 import { cleanup, configure } from "@testing-library/react";
 import { afterEach, beforeEach, vi } from "vitest";
 
+// Allow async React Query and browser-like UI updates to settle on slower Windows runs.
 configure({ asyncUtilTimeout: 5_000 });
 
 Object.defineProperty(window, "matchMedia", {

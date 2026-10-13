@@ -15,6 +15,8 @@ const allProducts = Array.from({ length: 250 }, (_, index) => ({
   available: true,
   imageUrl: null,
 }));
+// These cases render a 100-card page; allow for contention when all jsdom suites run together.
+const LARGE_CATALOGUE_RENDER_TIMEOUT_MS = 30_000;
 
 function productsPage(url: string) {
   const params = new URL(url, "http://localhost").searchParams;
@@ -78,7 +80,7 @@ describe("catalogue pagination", () => {
     expect(await screen.findByRole("link", { name: "View Product 201" })).toBeDefined();
     expect(screen.getByText("Page 3 of 3")).toBeDefined();
     expect(button("Next").disabled).toBe(true);
-  });
+  }, LARGE_CATALOGUE_RENDER_TIMEOUT_MS);
 
   it("holds the controls and marks the grid busy while the next page loads", async () => {
     const gate = openCatalogue();
@@ -102,5 +104,5 @@ describe("catalogue pagination", () => {
     expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("false");
     expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(false);
     expect(button("Previous").disabled).toBe(false);
-  });
+  }, LARGE_CATALOGUE_RENDER_TIMEOUT_MS);
 });
