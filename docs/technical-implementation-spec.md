@@ -28,8 +28,8 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Persistence | PostgreSQL, Drizzle ORM with drizzle-kit migrations, and bounded `node-postgres` pools. |
 | Comparison | Pure TypeScript shared pricing and comparison modules, run in process for all three retailers. |
 | Packaging | Immutable ARM64-compatible application container; local containerised PostgreSQL. |
-| Infrastructure | AWS CDK in TypeScript, with explicit development and presentation profiles. |
-| Delivery | GitHub Actions checks, AWS deployment of identifiable builds and explicit migration execution. OIDC is optional for the POC; credentials are never committed. |
+| Infrastructure | Development profile: a hand-provisioned EC2 host running Docker Compose (`deploy/development`). Presentation profile: AWS CDK in TypeScript (`infra/`), deployed and destroyed from an engineer's machine. |
+| Delivery | GitHub Actions checks, and publication of commit-tagged arm64 images to ECR from `main`. The development host receives releases from CI (E3); the presentation stack is deployed from an engineer's machine and its migrations and seed import are run by hand (E4). OIDC is optional for the POC; credentials are never committed. |
 | Verification | Vitest, API/PostgreSQL integration tests, Playwright journeys and an arrival-rate load tool such as k6. |
 
 Specific package versions, frontend styling, instance sizes for the ASG, origin networking and scaling thresholds are engineering choices to validate in the tasks below. They must satisfy the product contract, including the two-second basket target.
@@ -50,6 +50,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 | Drizzle | `drizzle-orm` 0.45.3, `drizzle-kit` 0.31.11 | Schema in `apps/api/src/db/schema.ts`; generated SQL migrations in `apps/api/migrations` |
 | Vitest | 5.0.1 | Playwright is deferred until there are journeys to exercise |
 | PostgreSQL | `18-alpine` locally (18.6), matching RDS 18.6 in `ap-southeast-1` | Alpine keeps the local image lean (~264 MB vs ~458 MB for the Debian-based tag); PostgreSQL 18 expects a single mount at `/var/lib/postgresql` |
+| AWS CDK | `aws-cdk-lib` 2.273.0, `aws-cdk` CLI 2.1145.0, `constructs` 10.8.1 | Presentation stack in `infra/` (E4). Synthesised by `pnpm check` without AWS credentials, so it must not use context lookups; not yet deployed |
 
 **Rejected: ESLint with `typescript-eslint`.** `typescript-eslint@8.70.0` declares `typescript >=4.8.4 <6.1.0` and therefore cannot lint a TypeScript 7 codebase. Biome carries its own parser, so it imposes no such constraint. Type-aware lint rules are the cost; `tsc --noEmit` still provides type checking. Revisit only if a needed rule cannot be expressed in Biome.
 
@@ -57,7 +58,7 @@ These versions were installed, built, tested and run on `arm64` during the works
 
 **Seed import (B4 / #4):** the database holds the one committed seed. An import validates the seed, then replaces every row in one transaction; rolling back means re-importing an older seed from Git. The schema keeps keys, references and uniqueness, and the importer's validation enforces value rules.
 
-**Deferred:** React Router, generated OpenAPI, AWS CDK and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
+**Deferred:** React Router, generated OpenAPI and k6 remain proposals. Each belongs to the task that first needs it, so the foundation stays free of dependencies nothing yet uses.
 
 ## 2. Application architecture
 
@@ -69,17 +70,22 @@ Use one backend application with catalogue, pricing, comparison, import and clic
 Development POC
 Browser -> EC2 t4g.micro [web/API + PostgreSQL on persistent storage]
 
-Presentation (CloudFront/S3 frontend optional, subject to costing)
-Browser -> CloudFront -> private S3 frontend assets
-                     -> ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
-                                desired/min 2, max 3      db.t4g.micro, Single-AZ
+Presentation
+Browser -HTTPS-> CloudFront (*.cloudfront.net)
+                  ├─ default -> private S3 bucket (frontend build)
+                  └─ /api/*  -> VPC origin -> internal ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
+                                                             desired/min 2, max 3      db.t4g.micro, Single-AZ
 
 Offline data preparation -> validated committed seed -> explicit database import
 ```
 
-A CloudFront/S3 frontend is optional; the application may serve the frontend instead. Final origin connectivity and networking must be costed before provisioning. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
+The presentation frontend is served from S3 through CloudFront, and the API from the ASG. One origin for both means the browser makes no cross-origin requests, so production needs no CORS handling. ALB routes requests; ASG policies change instance count. RDS remains a single database failure point: surviving an application-instance failure does not demonstrate database failover.
 
-Serve browser traffic over HTTPS. Keep any S3 bucket private, restrict application ingress to its intended proxy/load balancer, and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles. Select an administration/outbound-access arrangement in the costed infrastructure design rather than adding an unbudgeted NAT gateway by default.
+Serve browser traffic over HTTPS. The CloudFront-to-ALB connection uses HTTP inside AWS's network, because there is no custom domain to certify the ALB; this is a recorded limitation. Keep any S3 bucket private, restrict application ingress to its intended proxy/load balancer, and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles.
+
+Presentation networking is chosen for cost: the ALB is internal and reached through a CloudFront VPC origin, which has no extra charge and needs no public IPv4 for the ALB. There is no NAT gateway and no interface endpoint; application instances reach ECR and Systems Manager through their own public IPv4 addresses, and accept traffic only from the ALB.
+
+Instance health is separate from database health. The ALB and ASG judge instances by liveness (`/health/live`), so a database outage does not drain or replace them; instances stay in service and return `ErrorResponse`. Readiness (`/health/ready`) reports the database and may gate a new release's rollout.
 
 ### Import and serving separation
 
@@ -231,6 +237,8 @@ Cost the entire eight-week project in SGD before credits against approximately S
 Use one `t4g.micro` for the development POC, with app and database sharing its limited resources. The presentation configuration uses two baseline application instances, maximum three, and Single-AZ `db.t4g.micro`. Select application instance sizes after ARM64 and load checks. Shorten the presentation window to five days before weakening the required demonstrations. If still unaffordable, raise an explicit cost/scope decision.
 
 Provision reusable infrastructure, then verify teardown by 13 November 2026. Include resources that continue charging after compute shutdown: volumes, load balancers, snapshots, retained databases and logs. Preserve required seed, results and report artefacts before deletion. Any retained billable resource needs an explicit cost entry.
+
+The presentation stack is destroyed at the end of every working session and recreated when needed, and the development host stays stopped while the presentation stack is up. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
 
 ### Delivery and scaling
 
@@ -388,8 +396,8 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### E4 — Provision the presentation architecture
 - **Blocked by:** E2, E3.
-- **Work:** Deploy an ALB, a stateless EC2 ASG (minimum 2, maximum 3) and private Single-AZ RDS with approved sizing, serving the frontend from CloudFront/S3 or the application; migrate/import the seed and configure readiness/draining.
-- **Acceptance:** Requests work through HTTPS ingress; either application instance serves the same data; database access is restricted; the deployed cost assumptions and topology are recorded.
+- **Work:** Define in CDK, and deploy from an engineer's machine, an internal ALB, a stateless EC2 ASG (minimum 2, maximum 3) running the commit-tagged API image from ECR, private Single-AZ RDS with approved sizing, and CloudFront serving the frontend from a private S3 bucket; configure liveness-based health checks and draining. An engineer runs the migrations and the one-time seed import by hand, following the runbook. Deployment from CI is out of scope.
+- **Acceptance:** Requests work through HTTPS ingress; either application instance serves the same data; database access is restricted; a database outage does not drain or replace application instances; the stack is created and destroyed from code; the deployed cost assumptions and topology are recorded.
 
 #### E5 — Configure observability and automatic scaling
 - **Blocked by:** E4.

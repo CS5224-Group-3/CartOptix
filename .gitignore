@@ -3,6 +3,7 @@ node_modules/
 dist/
 build/
 *.tsbuildinfo
+cdk.out/
 
 # Local environment: keep .env.example tracked, never commit real values
 .env

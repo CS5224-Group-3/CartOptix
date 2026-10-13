@@ -267,6 +267,12 @@ curl -I http://127.0.0.1/                 # 200
 Every one of these must return HTTP 200. `/health/ready` returning 503 means the
 API cannot reach PostgreSQL.
 
+For a fuller read-only check, run `./verify-host.sh` from this directory on the
+host. It checks the deployed commit (`EXPECT_SHA`, default `origin/main`), the
+containers, volume and network, the published ports, both endpoints and the seed
+row counts (`EXPECT_COUNTS`, default `294|623|3`), and exits non-zero if any
+check fails.
+
 Which release is running:
 
 ```bash
