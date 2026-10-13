@@ -78,6 +78,7 @@ type BasketContextValue = {
   productMetadata: Map<string, Product>;
   basketRevision: number;
   fixtureScenario: string | null;
+  persistenceFailed: boolean;
   leaveDemo: () => void;
   comparison: BasketComparisonPresentation | null;
   isStale: boolean;
@@ -150,12 +151,27 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
     };
   }, [navigate]);
   const [basketRevision, setBasketRevision] = useState(0);
+  const [persistenceFailed, setPersistenceFailed] = useState(false);
 
-  const changed = useCallback((next: BasketLine[]) => {
+  const changed = useCallback((next: BasketLine[], shouldPersist = true) => {
+    const basketChanged =
+      next.length !== basket.length ||
+      next.some(
+        (line, index) =>
+          line.productId !== basket[index]?.productId || line.quantity !== basket[index]?.quantity,
+    );
+    if (!basketChanged) return;
     setBasket(next);
-    persistBasket(next);
+    if (shouldPersist) {
+      const saved = persistBasket(next);
+      setPersistenceFailed(!saved);
+      if (!saved && !persistenceFailed)
+        toast.warning("Basket changes may not survive a reload", {
+          description: "Session storage is unavailable. Keep this tab open to retain your edits.",
+        });
+    }
     setBasketRevision((revision) => revision + 1);
-  }, []);
+  }, [basket, persistenceFailed]);
 
   const value = useMemo<BasketContextValue>(
     () => ({
@@ -163,6 +179,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       productMetadata,
       basketRevision,
       fixtureScenario,
+      persistenceFailed,
       comparison,
       isStale: Boolean(comparison && comparison.submittedBasket.revision !== basketRevision),
       requestState,
@@ -233,9 +250,10 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
         if (
-          !Number.isInteger(quantity) ||
-          quantity < MIN_PACKS_PER_LINE ||
-          quantity > MAX_PACKS_PER_LINE
+          fixtureScenario !== null &&
+          (!Number.isInteger(quantity) ||
+            quantity < MIN_PACKS_PER_LINE ||
+            quantity > MAX_PACKS_PER_LINE)
         ) {
           toast.error("Invalid quantity", {
             description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
@@ -274,11 +292,11 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           toast.error("Quantity not changed", {
             description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
           });
-        } else if (mutation.changed) changed(mutation.basket);
+        } else if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
       },
       removeFromBasket: (productId) => {
         const mutation = removeBasketLine(basket, productId);
-        if (mutation.changed) changed(mutation.basket);
+        if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
       },
       // Homepage baskets use the normal API source.
       loadScenario: (lines) => {
@@ -293,6 +311,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
             productId,
             quantity,
           })),
+          false,
         );
         setFixtureScenario(scenario);
       },
@@ -300,6 +319,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
     [
       basket,
       fixtureScenario,
+      persistenceFailed,
       comparison,
       basketRevision,
       requestState,
@@ -888,6 +908,7 @@ export function BasketPage() {
     basket,
     basketRevision,
     fixtureScenario,
+    persistenceFailed,
     productMetadata,
     comparison,
     isStale,
@@ -921,6 +942,15 @@ export function BasketPage() {
             currentRevision={basketRevision}
             onRetry={retryComparison}
           />
+          {persistenceFailed && (
+            <div className="stale-banner" role="status">
+              <AlertCircle size={18} />
+              <div>
+                <strong>Basket changes may not survive a reload.</strong>
+                <span>Session storage is unavailable. Keep this tab open to retain your edits.</span>
+              </div>
+            </div>
+          )}
           {isStale && (
             <div className="stale-banner">
               <AlertCircle size={18} />

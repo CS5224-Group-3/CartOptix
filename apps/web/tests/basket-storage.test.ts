@@ -22,7 +22,7 @@ const lines: BasketLine[] = [
 describe("tab-session basket storage", () => {
   it("stores and restores product IDs and quantities in their original order", () => {
     const storage = memoryStorage();
-    persistBasket(lines, storage);
+    expect(persistBasket(lines, storage)).toBe(true);
 
     expect(storage.read()).toBe(
       JSON.stringify([
@@ -93,13 +93,13 @@ describe("tab-session basket storage", () => {
   });
 
   it("keeps basket editing available if storage cannot be written", () => {
-    expect(() =>
+    expect(
       persistBasket(lines, {
         getItem: () => null,
         setItem: () => {
           throw new Error("Storage quota exceeded");
         },
       }),
-    ).not.toThrow();
+    ).toBe(false);
   });
 });

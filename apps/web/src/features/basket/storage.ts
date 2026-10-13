@@ -52,14 +52,15 @@ export function restoreBasket(storage = sessionStorageForTab()): BasketLine[] {
 }
 
 /** Stores only the product IDs and pack counts in this tab's session. */
-export function persistBasket(basket: BasketLine[], storage = sessionStorageForTab()): void {
-  if (!storage) return;
+export function persistBasket(basket: BasketLine[], storage = sessionStorageForTab()): boolean {
+  if (!storage) return false;
   try {
     storage.setItem(
       BASKET_STORAGE_KEY,
       JSON.stringify(basket.map(({ productId, quantity }) => ({ productId, quantity }))),
     );
+    return true;
   } catch {
-    // Basket edits remain usable if browser storage is disabled or full.
+    return false;
   }
 }

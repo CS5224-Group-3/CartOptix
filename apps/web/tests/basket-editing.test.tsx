@@ -87,6 +87,9 @@ describe("shopper basket editing", () => {
   it("restores the exact basket and quantities after the app remounts in the same tab", async () => {
     const firstLoad = openApp();
     await addBothCatalogueProducts();
+    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
+    await screen.findByRole("heading", { name: "Retailer basket comparison" });
+    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
     fireEvent.click(screen.getByRole("button", { name: "Increase Fixture Plain Drink" }));
     await waitFor(() =>
       expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
@@ -112,6 +115,81 @@ describe("shopper basket editing", () => {
       { productId: "fixture-drink", quantity: 2 },
       { productId: "fixture-rice", quantity: 1 },
     ]);
+  });
+
+  it("warns when session storage rejects a basket edit", async () => {
+    openApp();
+    await addBothCatalogueProducts();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("Storage quota exceeded");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Increase Fixture Plain Drink" }));
+
+    expect(screen.getByText("Basket changes may not survive a reload.")).toBeDefined();
+    expect(
+      screen.getByRole("button", { name: "Increase Fixture Plain Drink" }).parentElement
+        ?.querySelector("strong")?.textContent,
+    ).toBe("2");
+  });
+
+  it("does not restore synthetic demo products as a normal basket after reload", async () => {
+    const firstLoad = openApp("/basket");
+    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    expect(await screen.findByText("Your basket is empty")).toBeDefined();
+    expect(screen.queryByText("Product details unavailable")).toBeNull();
+    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+  });
+
+  it("marks results stale when a product is removed after comparison", async () => {
+    const { compareRequests } = openApp();
+    await addBothCatalogueProducts();
+    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
+    await screen.findByRole("heading", { name: "Retailer basket comparison" });
+    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove Fixture Plain Drink" }));
+
+    expect(compareRequests).toHaveLength(1);
+    expect(screen.getByText("Your basket changed.")).toBeDefined();
+    expect(screen.queryByRole("button", { name: "Remove Fixture Plain Drink" })).toBeNull();
+  });
+
+  it("marks results stale when a product is added after comparison", async () => {
+    openApp();
+    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
+    const firstAdd = addButtons[0];
+    if (!firstAdd) throw new Error("Expected a catalogue product");
+    fireEvent.click(firstAdd);
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
+    await screen.findByRole("heading", { name: "Retailer basket comparison" });
+    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
+    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
+    const catalogueAdds = await screen.findAllByRole("button", { name: /^Add$/ });
+    const secondAdd = catalogueAdds[1];
+    if (!secondAdd) throw new Error("Expected a second catalogue product");
+    fireEvent.click(secondAdd);
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+
+    expect(screen.getByText("Your basket changed.")).toBeDefined();
+    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(2);
+  });
+
+  it("does not mark the comparison stale when the same demo scenario is loaded again", async () => {
+    openApp("/basket");
+    const scenario = screen.getByRole("button", { name: /Multiple complete retailers/ });
+    fireEvent.click(scenario);
+    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
+    await screen.findByRole("heading", { name: "Retailer basket comparison" });
+    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
+    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+
+    expect(screen.queryByText("Your basket changed.")).toBeNull();
   });
 
   it("marks a previous comparison stale when a normal basket line changes", async () => {
