@@ -150,6 +150,7 @@ describe("comparison lifecycle", () => {
     await control.finish();
     expect(screen.getByRole("alert").textContent).toContain("This is a service failure");
     expect(screen.getByRole("button", { name: "Retry comparison" })).toBeDefined();
+    expect(screen.queryByRole("link", { name: "Back to basket editing" })).toBeNull();
     expect(riceQuantity()).toBe("1");
     act(() => {
       window.history.pushState({}, "", "/results");
@@ -159,8 +160,10 @@ describe("comparison lifecycle", () => {
     expect(screen.getByRole("alert")).toBeDefined();
     expect(screen.queryByText("No feasible purchasing plan available")).toBeNull();
     expect(screen.queryByText(/^Recommended/)).toBeNull();
+    expect(screen.getByRole("link", { name: "Back to basket editing" })).toBeDefined();
     fireEvent.click(screen.getByRole("link", { name: "Back to basket editing" }));
     expect(screen.getByRole("alert")).toBeDefined();
+    expect(screen.queryByRole("link", { name: "Back to basket editing" })).toBeNull();
     expect(riceQuantity()).toBe("1");
   });
 
@@ -207,8 +210,13 @@ describe("comparison lifecycle", () => {
     await control.finish();
     expect(screen.getByRole("alert")).toBeDefined();
     expect(screen.queryByRole("button", { name: /Retry/ })).toBeNull();
-    expect(screen.getByRole("link", { name: "Back to basket editing" })).toBeDefined();
+    expect(screen.queryByRole("link", { name: "Back to basket editing" })).toBeNull();
     expect(riceQuantity()).toBe("1");
+    act(() => {
+      window.history.pushState({}, "", "/results");
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+    expect(screen.getByRole("link", { name: "Back to basket editing" })).toBeDefined();
   });
 
   it.each([

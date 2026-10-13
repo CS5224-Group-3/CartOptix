@@ -6,10 +6,12 @@ export default function ComparisonRequestStatus({
   request,
   currentRevision,
   onRetry,
+  showBackToBasket = true,
 }: {
   request: ComparisonRequestState;
   currentRevision: number;
   onRetry: () => void;
+  showBackToBasket?: boolean;
 }) {
   if (request.phase === "pending")
     return (
@@ -51,9 +53,11 @@ export default function ComparisonRequestStatus({
             </button>
           </>
         )}
-        <Link className="button button--outline" href="/basket">
-          Back to basket editing
-        </Link>
+        {showBackToBasket && (
+          <Link className="button button--outline" href="/basket">
+            Back to basket editing
+          </Link>
+        )}
       </div>
     </div>
   );

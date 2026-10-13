@@ -74,6 +74,8 @@ describe("API-backed comparison source (opt-in)", () => {
   it.each([
     [400, "invalid_request", false],
     [404, "not_found", false],
+    [429, undefined, true],
+    [429, "invalid_request", true],
     [500, "service_error", true],
     [503, undefined, true],
     [403, undefined, false],

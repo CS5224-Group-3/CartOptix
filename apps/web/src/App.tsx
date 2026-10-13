@@ -5,9 +5,7 @@ import {
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
   type Offer,
-  type OffersResponse,
   type Product,
-  type ProductsResponse,
   type RetailerId,
   SNAPSHOT_DISCLAIMER,
 } from "@cartoptix/contracts";
@@ -50,6 +48,7 @@ import { persistBasket, restoreBasket } from "./features/basket/storage";
 import { createApiSource } from "./features/basket-comparison/apiSource";
 import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
 import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
+import { buildKnownProductMap } from "./features/basket-comparison/knownProducts";
 import { resolveSubmissionMetadata } from "./features/basket-comparison/metadata";
 import type {
   BasketComparisonPresentation,
@@ -99,23 +98,31 @@ const BasketContext = createContext<BasketContextValue | null>(null);
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
   const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
+  const [productMetadataRevision, setProductMetadataRevision] = useState(0);
   const products = useProductIndex();
   const queryClient = useQueryClient();
-  const productMetadata = new Map<string, Product>();
-  for (const [, product] of queryClient.getQueriesData<Product>({
-    queryKey: ["comparison-product"],
-  }))
-    if (product) productMetadata.set(product.productId, product);
-  for (const [id, product] of products) productMetadata.set(id, product);
-  for (const [, data] of queryClient.getQueriesData<ProductsResponse>({ queryKey: ["products"] }))
-    for (const product of data?.products ?? []) productMetadata.set(product.productId, product);
-  for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
-    if (data?.product) productMetadata.set(data.product.productId, data.product);
+  // The revision invalidates this memo when metadata-only cache entries change.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This state is an intentional cache revision token.
+  const productMetadata = useMemo(
+    () => buildKnownProductMap(queryClient, products),
+    [productMetadataRevision, queryClient, products],
+  );
+  useEffect(
+    () =>
+      queryClient.getQueryCache().subscribe((event) => {
+        if (event.type !== "updated" || event.action.type !== "success") return;
+        if (!["comparison-product", "offers", "products"].includes(String(event.query.queryKey[0])))
+          return;
+        setProductMetadataRevision((revision) => revision + 1);
+      }),
+    [queryClient],
+  );
   const prepareSubmission = useCallback(
     async (captured: ComparisonSubmission) => {
       const draft = structuredClone(captured);
+      const knownProducts = buildKnownProductMap(queryClient, products);
       for (const line of draft.basket.products) {
-        const cached = queryClient.getQueryData<Product>(["comparison-product", line.productId]);
+        const cached = knownProducts.get(line.productId);
         if (cached) {
           if (!line.name?.trim()) line.name = cached.name;
           if (!line.packDescription?.trim()) line.packDescription = cached.packSize;
@@ -127,7 +134,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
         queryClient.setQueryData(["comparison-product", product.productId], product);
       });
     },
-    [queryClient],
+    [products, queryClient],
   );
   const { result: comparison, request: requestState, submit, retry } = useComparison(source);
   const [location, navigate] = useLocation();
@@ -227,14 +234,8 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
                 name: product.name,
                 packSize: product.packDescription,
               });
-        for (const [id, product] of productMetadata) known.set(id, product);
-        // Read at click time too: another query may populate its cache before React rerenders.
-        for (const [, data] of queryClient.getQueriesData<ProductsResponse>({
-          queryKey: ["products"],
-        }))
-          for (const product of data?.products ?? []) known.set(product.productId, product);
-        for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
-          if (data?.product) known.set(data.product.productId, data.product);
+        for (const [id, product] of buildKnownProductMap(queryClient, products))
+          known.set(id, product);
         submit(
           {
             basket: {
@@ -340,6 +341,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       productMetadata,
       prepareSubmission,
       queryClient,
+      products,
     ],
   );
 
@@ -951,6 +953,7 @@ export function BasketPage() {
             request={requestState}
             currentRevision={basketRevision}
             onRetry={retryComparison}
+            showBackToBasket={false}
           />
           {persistenceFailed && (
             <div className="stale-banner" role="status">

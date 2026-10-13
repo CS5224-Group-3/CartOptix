@@ -56,19 +56,23 @@ describe("catalogue pagination", () => {
     expect(screen.queryByRole("link", { name: "View Product 101" })).toBeNull();
   });
 
-  it("steps through pages with Next and Previous", async () => {
-    openCatalogue();
-    await screen.findByText("Page 1 of 3");
-    expect(button("Previous").disabled).toBe(true);
+  it(
+    "steps through pages with Next and Previous",
+    async () => {
+      openCatalogue();
+      await screen.findByText("Page 1 of 3");
+      expect(button("Previous").disabled).toBe(true);
 
-    fireEvent.click(button("Next"));
-    expect(await screen.findByRole("link", { name: "View Product 101" })).toBeDefined();
-    expect(screen.getByText("Page 2 of 3")).toBeDefined();
+      fireEvent.click(button("Next"));
+      expect(await screen.findByRole("link", { name: "View Product 101" })).toBeDefined();
+      expect(screen.getByText("Page 2 of 3")).toBeDefined();
 
-    fireEvent.click(button("Previous"));
-    expect(await screen.findByRole("link", { name: "View Product 1" })).toBeDefined();
-    expect(screen.getByText("Page 1 of 3")).toBeDefined();
-  });
+      fireEvent.click(button("Previous"));
+      expect(await screen.findByRole("link", { name: "View Product 1" })).toBeDefined();
+      expect(screen.getByText("Page 1 of 3")).toBeDefined();
+    },
+    LARGE_CATALOGUE_RENDER_TIMEOUT_MS,
+  );
 
   it(
     "jumps to the last page, which is the only way to reach its products",

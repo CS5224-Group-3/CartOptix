@@ -4,9 +4,11 @@ import { ComparisonFailure, PresentationDataFailure } from "./model";
 export function classifyApiFailure(error: unknown): ComparisonFailure {
   if (error instanceof ApiError) {
     const retryable =
-      error.code === "invalid_request" || error.code === "not_found"
-        ? false
-        : error.code === "service_error" || error.status >= 500;
+      error.status === 429 // Too Many Requests error (429 from a proxy or load balancer should be treated as retryable)
+        ? true
+        : error.code === "invalid_request" || error.code === "not_found"
+          ? false
+          : error.code === "service_error" || error.status >= 500; //  Internal Server Error
     return new ComparisonFailure(error.message, retryable);
   }
   if (error instanceof TypeError)
