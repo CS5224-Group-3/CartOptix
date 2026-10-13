@@ -99,7 +99,7 @@ Both roles trust the GitHub OIDC provider:
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:CS5224-Group-3/CartOptix:*"
+          "token.actions.githubusercontent.com:sub": "repo:CS5224-Group-3@325644622/CartOptix@1359158441:*"
         }
       }
     }
@@ -107,7 +107,11 @@ Both roles trust the GitHub OIDC provider:
 }
 ```
 
-Tighten the `sub` condition to `:ref:refs/heads/main` once the workflows have
+The repository uses GitHub's immutable OIDC subject, which includes the owner and
+repository IDs, so a renamed or recreated repository can't reuse the roles. The
+plain `repo:CS5224-Group-3/CartOptix:*` form is rejected. Check the current prefix
+with `gh api repos/CS5224-Group-3/CartOptix/actions/oidc/customization/sub`.
+Tighten the `sub` condition to `…:ref:refs/heads/main` once the workflows have
 settled. `workflow_run`-triggered runs are evaluated against the default branch.
 
 ### Repository variables (once, Settings → Secrets and variables → Actions → Variables)
@@ -155,8 +159,9 @@ explicit message instead of an obscure AWS error.
    which runs:
 
    ```bash
+   # as ec2-user, which owns the checkout, its deploy key and the Compose plugin
    cd "$DEV_REPOSITORY_DIR"
-   git fetch --prune origin
+   git fetch --prune origin "+refs/heads/*:refs/remotes/origin/*"
    git checkout --force <sha>
    bash deploy/development/release.sh <sha>
    ```
@@ -164,6 +169,11 @@ explicit message instead of an obscure AWS error.
 5. `release.sh` pulls the images, applies migrations, imports the seed,
    recreates `api`, recreates `web`, and fails the run unless `/health/ready`
    returns 200.
+
+If the instance is stopped, step 4 is skipped with a warning and the run still
+passes; the images are published. To deploy that release later, start the
+instance and run Release by hand with its SHA (see Rollback). A manual run fails
+rather than skips when the instance is stopped.
 
 ### On the host, by hand
 
@@ -348,6 +358,7 @@ schema. Those need the development instance, and they are the reviewer's checks.
 | Browser or `curl http://127.0.0.1/api/...` returns 502 | `web` was not recreated after `api`. Recreate it: `docker compose up -d --force-recreate web`. |
 | Release workflow fails with `Missing repository variables` | Set the variables listed above. |
 | Release workflow fails with an SSM error | The instance profile is missing, or the instance is not registered with Systems Manager. Check `aws ssm describe-instance-information`. |
+| Release passes with a warning `Skipped deploying …` | The instance was stopped, so the automatic deploy was skipped. Start it and run Release by hand with the SHA. If the instance is running, check `DEV_INSTANCE_ID`. |
 | Release's `publish` job is skipped | CI did not succeed on `main`. The publish job intentionally does nothing after a failed or pull-request run. |
 | `docker: Cannot connect to the Docker daemon` naming `dockerDesktopLinuxEngine` | The engine is not running, or the CLI is on the legacy `default` context. Start Docker Desktop, then `docker context use desktop-linux`, then confirm with `docker info --format "{{.ServerVersion}}"`. |
 | `actionlint` reports `no project was found in any parent directories` | The checkout has no `.git` directory. Name the workflow files explicitly, or run `git init`. |
