@@ -128,8 +128,9 @@ describe("shopper basket editing", () => {
 
     expect(screen.getByText("Basket changes may not survive a reload.")).toBeDefined();
     expect(
-      screen.getByRole("button", { name: "Increase Fixture Plain Drink" }).parentElement
-        ?.querySelector("strong")?.textContent,
+      screen
+        .getByRole("button", { name: "Increase Fixture Plain Drink" })
+        .parentElement?.querySelector("strong")?.textContent,
     ).toBe("2");
     expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       { productId: "fixture-drink", quantity: 1 },
@@ -157,7 +158,9 @@ describe("shopper basket editing", () => {
 
     openApp("/basket");
 
-    expect(await screen.findByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
+    expect(
+      await screen.findByRole("button", { name: "Increase Fixture White Rice" }),
+    ).toBeDefined();
     expect(screen.queryByRole("button", { name: "Remove Fixture Plain Drink" })).toBeNull();
     expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       { productId: "fixture-rice", quantity: 1 },

@@ -153,25 +153,29 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   const [basketRevision, setBasketRevision] = useState(0);
   const [persistenceFailed, setPersistenceFailed] = useState(false);
 
-  const changed = useCallback((next: BasketLine[], shouldPersist = true) => {
-    const basketChanged =
-      next.length !== basket.length ||
-      next.some(
-        (line, index) =>
-          line.productId !== basket[index]?.productId || line.quantity !== basket[index]?.quantity,
-    );
-    if (!basketChanged) return;
-    setBasket(next);
-    if (shouldPersist) {
-      const saved = persistBasket(next);
-      setPersistenceFailed(!saved);
-      if (!saved && !persistenceFailed)
-        toast.warning("Basket changes may not survive a reload", {
-          description: "Session storage is unavailable. Keep this tab open to retain your edits.",
-        });
-    }
-    setBasketRevision((revision) => revision + 1);
-  }, [basket, persistenceFailed]);
+  const changed = useCallback(
+    (next: BasketLine[], shouldPersist = true) => {
+      const basketChanged =
+        next.length !== basket.length ||
+        next.some(
+          (line, index) =>
+            line.productId !== basket[index]?.productId ||
+            line.quantity !== basket[index]?.quantity,
+        );
+      if (!basketChanged) return;
+      setBasket(next);
+      if (shouldPersist) {
+        const saved = persistBasket(next);
+        setPersistenceFailed(!saved);
+        if (!saved && !persistenceFailed)
+          toast.warning("Basket changes may not survive a reload", {
+            description: "Session storage is unavailable. Keep this tab open to retain your edits.",
+          });
+      }
+      setBasketRevision((revision) => revision + 1);
+    },
+    [basket, persistenceFailed],
+  );
   const isStale = Boolean(
     comparison &&
       (comparison.submittedBasket.revision !== basketRevision ||
@@ -953,7 +957,9 @@ export function BasketPage() {
               <AlertCircle size={18} />
               <div>
                 <strong>Basket changes may not survive a reload.</strong>
-                <span>Session storage is unavailable. Keep this tab open to retain your edits.</span>
+                <span>
+                  Session storage is unavailable. Keep this tab open to retain your edits.
+                </span>
               </div>
             </div>
           )}

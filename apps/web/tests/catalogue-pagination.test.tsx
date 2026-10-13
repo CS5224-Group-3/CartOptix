@@ -70,39 +70,47 @@ describe("catalogue pagination", () => {
     expect(screen.getByText("Page 1 of 3")).toBeDefined();
   });
 
-  it("jumps to the last page, which is the only way to reach its products", async () => {
-    openCatalogue();
-    await screen.findByText("Page 1 of 3");
+  it(
+    "jumps to the last page, which is the only way to reach its products",
+    async () => {
+      openCatalogue();
+      await screen.findByText("Page 1 of 3");
 
-    fireEvent.change(screen.getByRole("spinbutton"), { target: { value: "3" } });
-    fireEvent.click(button("Go"));
+      fireEvent.change(screen.getByRole("spinbutton"), { target: { value: "3" } });
+      fireEvent.click(button("Go"));
 
-    expect(await screen.findByRole("link", { name: "View Product 201" })).toBeDefined();
-    expect(screen.getByText("Page 3 of 3")).toBeDefined();
-    expect(button("Next").disabled).toBe(true);
-  }, LARGE_CATALOGUE_RENDER_TIMEOUT_MS);
+      expect(await screen.findByRole("link", { name: "View Product 201" })).toBeDefined();
+      expect(screen.getByText("Page 3 of 3")).toBeDefined();
+      expect(button("Next").disabled).toBe(true);
+    },
+    LARGE_CATALOGUE_RENDER_TIMEOUT_MS,
+  );
 
-  it("holds the controls and marks the grid busy while the next page loads", async () => {
-    const gate = openCatalogue();
-    await screen.findByText("Page 1 of 3");
-    gate.hold = new Promise<void>((resolve) => {
-      gate.release = resolve;
-    });
+  it(
+    "holds the controls and marks the grid busy while the next page loads",
+    async () => {
+      const gate = openCatalogue();
+      await screen.findByText("Page 1 of 3");
+      gate.hold = new Promise<void>((resolve) => {
+        gate.release = resolve;
+      });
 
-    fireEvent.click(button("Next"));
+      fireEvent.click(button("Next"));
 
-    await waitFor(() => expect(button("Next").disabled).toBe(true));
-    expect(button("Previous").disabled).toBe(true);
-    expect(button("Go").disabled).toBe(true);
-    expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("true");
-    // Inert also stops keyboard activation of the previous page's cards.
-    expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(true);
-    expect(screen.getByRole("link", { name: "View Product 1" })).toBeDefined();
+      await waitFor(() => expect(button("Next").disabled).toBe(true));
+      expect(button("Previous").disabled).toBe(true);
+      expect(button("Go").disabled).toBe(true);
+      expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("true");
+      // Inert also stops keyboard activation of the previous page's cards.
+      expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(true);
+      expect(screen.getByRole("link", { name: "View Product 1" })).toBeDefined();
 
-    gate.release?.();
-    expect(await screen.findByRole("link", { name: "View Product 101" })).toBeDefined();
-    expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("false");
-    expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(false);
-    expect(button("Previous").disabled).toBe(false);
-  }, LARGE_CATALOGUE_RENDER_TIMEOUT_MS);
+      gate.release?.();
+      expect(await screen.findByRole("link", { name: "View Product 101" })).toBeDefined();
+      expect(document.querySelector(".product-grid")?.getAttribute("aria-busy")).toBe("false");
+      expect(document.querySelector(".product-grid")?.hasAttribute("inert")).toBe(false);
+      expect(button("Previous").disabled).toBe(false);
+    },
+    LARGE_CATALOGUE_RENDER_TIMEOUT_MS,
+  );
 });
