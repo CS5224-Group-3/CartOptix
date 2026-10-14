@@ -12,7 +12,7 @@
     "dev": "node scripts/dev.mjs",
     "build": "pnpm -r --filter=./apps/* build",
     "test": "vitest run",
-    "check": "biome ci . && tsc --build && vitest run",
+    "check": "biome ci . && tsc --build && vitest run && pnpm --filter @cartoptix/infra synth",
     "fix": "biome check --write ."
   },
   "devDependencies": {

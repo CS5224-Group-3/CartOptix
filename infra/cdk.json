@@ -1,0 +1,7 @@
+{
+  "app": "node bin/presentation.ts",
+  "requireApproval": "broadening",
+  "context": {
+    "@aws-cdk/core:checkSecretUsage": true
+  }
+}
