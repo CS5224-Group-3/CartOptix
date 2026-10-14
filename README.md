@@ -19,7 +19,7 @@ API response and the client that consumes it land in one commit and one review.
 | `packages/contracts` | Request and response types shared by both |
 | `data` | Committed retailer source exports |
 | `deploy/development` | Development host: Docker Compose, release script and runbook |
-| `infra` | AWS CDK definition of the presentation deployment |
+| `infra` | AWS CDK definition of the presentation deployment; see [infra/RUNBOOK.md](infra/RUNBOOK.md) |
 | `docs` | Product and technical specifications |
 | `scripts` | Repository tooling |
 

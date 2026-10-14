@@ -29,7 +29,7 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Comparison | Pure TypeScript shared pricing and comparison modules, run in process for all three retailers. |
 | Packaging | Immutable ARM64-compatible application container; local containerised PostgreSQL. |
 | Infrastructure | Development profile: a hand-provisioned EC2 host running Docker Compose (`deploy/development`). Presentation profile: AWS CDK in TypeScript (`infra/`), deployed and destroyed from an engineer's machine. |
-| Delivery | GitHub Actions checks, and publication of commit-tagged arm64 images to ECR from `main`. The development host receives releases from CI (E3); the presentation stack is deployed from an engineer's machine and its migrations and seed import are run by hand (E4). OIDC is optional for the POC; credentials are never committed. |
+| Delivery | GitHub Actions checks, and publication of commit-tagged arm64 images to ECR from `main`. The development host is updated by hand from those images (E3); the presentation stack is deployed from an engineer's machine and its migrations and seed import are run by hand (E4). OIDC is optional for the POC; credentials are never committed. |
 | Verification | Vitest, API/PostgreSQL integration tests, Playwright journeys and an arrival-rate load tool such as k6. |
 
 Specific package versions, frontend styling, instance sizes for the ASG, origin networking and scaling thresholds are engineering choices to validate in the tasks below. They must satisfy the product contract, including the two-second basket target.
@@ -90,6 +90,8 @@ Serve browser traffic over HTTPS. The CloudFront-to-ALB connection uses HTTP ins
 Presentation networking is chosen for cost: the ALB is internal and reached through a CloudFront VPC origin, which has no extra charge and needs no public IPv4 for the ALB. There is no NAT gateway and no interface endpoint; application instances reach ECR and Systems Manager through their own public IPv4 addresses, and accept traffic only from the ALB.
 
 Instance health is separate from database health. The ALB and ASG judge instances by liveness (`/health/live`), so a database outage does not drain or replace them; instances stay in service and return `ErrorResponse`. Readiness (`/health/ready`) reports the database and may gate a new release's rollout.
+
+Instances boot from the stock Amazon Linux 2023 arm64 image and install Docker at boot. On a `t4g.micro` that install has taken up to six minutes, so a new instance can take several minutes to serve traffic; scale-out observations (F3) include this delay. The ECS-optimised AMI, which ships with Docker, is the fallback if it matters.
 
 ### Import and serving separation
 
