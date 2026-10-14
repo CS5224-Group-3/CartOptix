@@ -35,6 +35,14 @@ export class PresentationStack extends Stack {
       ],
     });
 
+    // The database never opens outbound connections. Inbound PostgreSQL from
+    // the application instances is added with the application tier.
+    const databaseSecurityGroup = new ec2.SecurityGroup(this, "DatabaseSecurityGroup", {
+      vpc: this.vpc,
+      description: "CartOptix RDS PostgreSQL",
+      allowAllOutbound: false,
+    });
+
     // Single-AZ, so the database is a single point of failure. Do not describe
     // this as failover.
     this.database = new rds.DatabaseInstance(this, "Database", {
@@ -45,6 +53,7 @@ export class PresentationStack extends Stack {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T4G, ec2.InstanceSize.MICRO),
       vpc: this.vpc,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
+      securityGroups: [databaseSecurityGroup],
       multiAz: false,
       publiclyAccessible: false,
       databaseName: "cartoptix",

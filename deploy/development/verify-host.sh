@@ -22,9 +22,17 @@ for c in cartoptix-api cartoptix-postgres cartoptix-web; do
   check "$c running" eq "$(docker inspect -f '{{.State.Status}}' $c)" running
 done
 check "postgres healthy" eq "$(docker inspect -f '{{.State.Health.Status}}' cartoptix-postgres)" healthy
-check "only web publishes a port" eq "$(docker ps --format '{{.Names}} {{.Ports}}' | grep -c '0.0.0.0')" 1
+# docker port lists a container's published ports on every address family.
+check "cartoptix-web publishes a port" test -n "$(docker port cartoptix-web)"
+for c in cartoptix-api cartoptix-postgres; do
+  check "$c publishes no port" eq "$(docker port $c)" ""
+done
 check "/health/ready is 200" eq "$(curl -s -o /dev/null -w '%{http_code}' localhost/health/ready)" 200
 check "/api/v1/catalogue is 200" eq "$(curl -s -o /dev/null -w '%{http_code}' localhost/api/v1/catalogue)" 200
-counts=$(docker exec cartoptix-postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tAc "select (select count(*) from products)||chr(124)||(select count(*) from listings)||chr(124)||(select count(*) from retailers)"')
-check "seed counts" eq "$counts" "${EXPECT_COUNTS:-294|623|3}"
+seed_counts() {
+  local got
+  got=$(docker exec cartoptix-postgres sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tAc "select (select count(*) from products)||chr(124)||(select count(*) from listings)||chr(124)||(select count(*) from retailers)"' 2>&1) || { echo "query failed: $got"; return 1; }
+  eq "$got" "${EXPECT_COUNTS:-294|623|3}"
+}
+check "seed counts" seed_counts
 exit $fail
