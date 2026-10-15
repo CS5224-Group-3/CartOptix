@@ -49,10 +49,12 @@ MIN_INSTANCES=2 pnpm --filter @cartoptix/infra run deploy    # evaluation and th
 
 `scripts/deploy.sh` refuses to run with uncommitted changes, checks that
 `cartoptix-api:<release>` exists in ECR, builds the frontend and runs
-`cdk deploy`. The release defaults to `HEAD`. To run an earlier image, or to
-deploy an infra-only branch before it merges, set `RELEASE=<sha>`. That is
-allowed only when `apps/` and `packages/` are identical at both commits, so the
-frontend always matches the API.
+`cdk deploy`. The release defaults to `HEAD`. Only the API comes from the
+release's image; the frontend is always built from your checkout. To run an
+earlier image, or to deploy an infra-only or web-only branch before it merges,
+set `RELEASE=<sha>`. That is allowed only when `apps/api` and `packages/` are
+identical at both commits, so the API and the shared contracts match the
+frontend.
 
 CDK asks for confirmation before adding IAM or security-group permissions. A
 first deploy takes about 15 minutes, mostly RDS and CloudFront. Creation waits
@@ -149,7 +151,7 @@ aws rds describe-db-instances --query 'DBInstances[].DBInstanceIdentifier'
 | --- | --- |
 | `Your session has expired` | Run `aws login --profile cartoptix`. |
 | `deploy: no cartoptix-api image for <sha>` | That commit has not landed on `main`, or its Release run failed. Deploy a released commit, or set `RELEASE`. |
-| `deploy: apps/ or packages/ differ` | `RELEASE` points at a commit whose app code differs from your checkout. Check out that commit instead. |
+| `deploy: apps/api or packages/ differ` | `RELEASE` points at a commit whose API or contracts differ from your checkout. Check out that commit, or deploy after your change lands on `main` and its image is published. |
 | Deploy fails with `Received 0 SUCCESS signal(s)` | An instance's boot script failed or the API never answered `/health/live`. Read `/var/log/cloud-init-output.log` on the instance through Session Manager before the rollback terminates it, or the instance's log stream. |
 | `/health/ready` returns 503 | The API cannot reach RDS. Check the API log stream for the connection error. |
 | `/api/v1/...` returns 500 on a new stack | The database is empty. Load it, above. |
