@@ -14,10 +14,10 @@ import {
 } from "./model";
 import { validateRecommendation } from "./validation";
 
-export const placeholderProvenance: ComparisonProvenance = {
-  kind: "synthetic",
+export const apiProvenance: ComparisonProvenance = {
+  kind: "curated",
   description:
-    "The comparison API currently uses synthetic placeholder data and illustrative product links.",
+    "Prices come from CartOptix's curated retailer dataset, not live retailer prices. Product links open the retailer's own page.",
 };
 
 function requireData(condition: unknown): asserts condition {
@@ -72,7 +72,7 @@ function explain(reason: UnavailableReason, names: Map<string, string>): string 
 export function adaptComparison(
   response: BasketCompareResponse,
   basket: BasketSnapshot,
-  provenance: ComparisonProvenance = placeholderProvenance,
+  provenance: ComparisonProvenance = apiProvenance,
 ): BasketComparisonPresentation {
   try {
     validateSnapshot(basket);

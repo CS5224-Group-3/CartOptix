@@ -45,7 +45,7 @@ describe("API-backed comparison source (opt-in)", () => {
       expect(result.outcome.kind).toBe(
         response.status === "recommended" ? "recommended" : "no-feasible-plan",
       );
-      expect(result.provenance?.kind).toBe("synthetic");
+      expect(result.provenance?.kind).toBe("curated");
     },
   );
 

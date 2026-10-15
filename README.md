@@ -18,6 +18,8 @@ API response and the client that consumes it land in one commit and one review.
 | `apps/web` | React and Vite client |
 | `packages/contracts` | Request and response types shared by both |
 | `data` | Committed retailer source exports |
+| `deploy/development` | Development host: Docker Compose, release script and runbook |
+| `infra` | AWS CDK definition of the presentation deployment; see [infra/RUNBOOK.md](infra/RUNBOOK.md) |
 | `docs` | Product and technical specifications |
 | `scripts` | Repository tooling |
 
@@ -68,7 +70,7 @@ Run these from the repository root.
 | Command | Purpose |
 | --- | --- |
 | `pnpm dev` | Start PostgreSQL, the API and the web app |
-| `pnpm check` | Format check, lint, type check and tests — the same checks CI runs |
+| `pnpm check` | Format check, lint, type check, tests and a CDK synth of `infra/` — the same checks CI runs |
 | `pnpm fix` | Apply formatting and safe lint fixes |
 | `pnpm build` | Production build of the API and web app |
 | `pnpm --filter @cartoptix/api db:migrate` | Apply pending database migrations |
