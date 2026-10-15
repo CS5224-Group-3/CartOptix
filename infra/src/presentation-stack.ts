@@ -11,6 +11,7 @@ import * as rds from "aws-cdk-lib/aws-rds";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import type { Construct } from "constructs";
+import { Observability } from "./observability.ts";
 
 export interface PresentationStackProps extends StackProps {
   /** Full commit SHA of the release: the cartoptix-api image tag and the web build's commit. */
@@ -19,6 +20,14 @@ export interface PresentationStackProps extends StackProps {
   readonly minInstances: number;
   /** Directory holding the built web app (apps/web/dist). */
   readonly webDist: string;
+  /**
+   * Requests per minute per instance that the scaling policy holds (#21).
+   *
+   * Calibrated by the shakedown run in the runbook rather than reasoned from
+   * the load model, because the figure that matters is what one t4g.micro
+   * serves within SC-05 while its CPU credits last.
+   */
+  readonly targetRequestsPerMinute: number;
 }
 
 const API_PORT = 3001;
@@ -26,9 +35,24 @@ const MAX_INSTANCES = 3;
 // AWS-managed prefix list com.amazonaws.global.cloudfront.origin-facing in
 // ap-southeast-1. Hard-coded because looking it up would make synth need AWS.
 const CLOUDFRONT_ORIGIN_FACING_PREFIX_LIST = "pl-31a34658";
-// Placeholder until #21 calibrates it: about 5 requests per second per
-// instance, so the 12 RPS surge in the load model scales two instances out.
-const TARGET_REQUESTS_PER_MINUTE = 300;
+/**
+ * Connections one instance can hold: the comparison pool (4) plus the click
+ * recorder's own pool (2), from `apps/api/src/database.ts` and
+ * `apps/api/src/events/outbound-click.ts`. Scaling to MAX_INSTANCES therefore
+ * demands 18, which is what the database has to absorb.
+ */
+const CONNECTIONS_PER_INSTANCE = 6;
+
+/**
+ * `max_connections` pinned on the database (#21).
+ *
+ * Pinned rather than left to the instance-class default so the headroom over
+ * the 18 connections MAX_INSTANCES demands is a known number rather than one
+ * inferred from a memory formula, and so it cannot move under us if the
+ * instance class ever changes. The remainder covers the engineer's SSM tunnel
+ * for migrations and RDS's own reserved superuser slots.
+ */
+const MAX_CONNECTIONS = 100;
 
 /**
  * Presentation deployment (#20): Browser -> CloudFront -> internal ALB -> EC2 ASG -> RDS.
@@ -69,13 +93,25 @@ export class PresentationStack extends Stack {
       allowAllOutbound: false,
     });
 
+    // Matches the local PostgreSQL 18 image; verified offered on db.t4g.micro in #6.
+    // Shared with the parameter group below, which must name the same engine.
+    const engine = rds.DatabaseInstanceEngine.postgres({
+      version: rds.PostgresEngineVersion.of("18.6", "18"),
+    });
+
+    // Pins max_connections (#21) so the headroom over what MAX_INSTANCES can
+    // demand is a stated number rather than an instance-class default.
+    const databaseParameters = new rds.ParameterGroup(this, "DatabaseParameters", {
+      engine,
+      description: "CartOptix PostgreSQL; connection ceiling pinned for #21",
+      parameters: { max_connections: String(MAX_CONNECTIONS) },
+    });
+
     // Single-AZ, so the database is a single point of failure. Do not describe
     // this as failover.
     this.database = new rds.DatabaseInstance(this, "Database", {
-      engine: rds.DatabaseInstanceEngine.postgres({
-        // Matches the local PostgreSQL 18 image; verified offered on db.t4g.micro in #6.
-        version: rds.PostgresEngineVersion.of("18.6", "18"),
-      }),
+      engine,
+      parameterGroup: databaseParameters,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T4G, ec2.InstanceSize.MICRO),
       vpc: this.vpc,
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
@@ -146,6 +182,10 @@ export class PresentationStack extends Stack {
       launchTemplate,
       minCapacity: props.minInstances,
       maxCapacity: MAX_INSTANCES,
+      // Publishes desired/in-service capacity to CloudWatch (#21). Without
+      // this the ASG reports no capacity metrics at all, and a scaling
+      // experiment leaves nothing to read afterwards.
+      groupMetrics: [autoscaling.GroupMetrics.all()],
       // Liveness only (see the target group): a database outage does not make
       // instances unhealthy, but a hung application is replaced. The grace
       // period covers a slow first boot: installing Docker alone has taken six
@@ -198,7 +238,7 @@ export class PresentationStack extends Stack {
     });
 
     const listener = alb.addListener("Http", { port: 80, open: false });
-    listener.addTargets("Api", {
+    const targets = listener.addTargets("Api", {
       port: API_PORT,
       protocol: elbv2.ApplicationProtocol.HTTP,
       targets: [group],
@@ -211,8 +251,20 @@ export class PresentationStack extends Stack {
       deregistrationDelay: Duration.seconds(30),
     });
 
+    // Target tracking scales both ways from one policy: it adds instances
+    // above the target and removes them below it, so scale-in needs no
+    // separate rule. The two durations are what make the demonstration in
+    // #22 legible rather than oscillating.
     group.scaleOnRequestCount("RequestsPerTarget", {
-      targetRequestsPerMinute: TARGET_REQUESTS_PER_MINUTE,
+      targetRequestsPerMinute: props.targetRequestsPerMinute,
+      // A new instance installs Docker and pulls the image before it serves
+      // anything. Counting its empty request rate before then would read as
+      // spare capacity and cancel the scale-out that just happened.
+      estimatedInstanceWarmup: Duration.minutes(8),
+      // Scale-in is deliberately reluctant: removing an instance during the
+      // load exercise costs more in re-launch time than the minutes of idle
+      // capacity it saves.
+      cooldown: Duration.minutes(5),
     });
 
     // --- Edge ---------------------------------------------------------------
@@ -269,7 +321,23 @@ export class PresentationStack extends Stack {
       distributionPaths: ["/*"],
     });
 
+    // --- Observability (#21) ------------------------------------------------
+
+    const observability = new Observability(this, "Observability", {
+      logGroup,
+      loadBalancer: alb,
+      targetGroup: targets,
+      autoScalingGroup: group,
+      database: this.database,
+      maxInstances: MAX_INSTANCES,
+      maxConnections: MAX_CONNECTIONS,
+      connectionsPerInstance: CONNECTIONS_PER_INSTANCE,
+    });
+
     new CfnOutput(this, "Url", { value: `https://${distribution.distributionDomainName}` });
+    new CfnOutput(this, "Dashboard", {
+      value: `https://${this.region}.console.aws.amazon.com/cloudwatch/home?region=${this.region}#dashboards/dashboard/${observability.dashboard.dashboardName}`,
+    });
     new CfnOutput(this, "Release", { value: props.release });
     new CfnOutput(this, "AutoScalingGroupName", { value: group.autoScalingGroupName });
     new CfnOutput(this, "DatabaseEndpoint", { value: this.database.dbInstanceEndpointAddress });
