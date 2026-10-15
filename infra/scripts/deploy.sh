@@ -9,6 +9,8 @@
 #                  packages/ (the API image's sources, including the shared
 #                  contracts) are identical to HEAD, so infra-only and web-only
 #                  changes can deploy before their own image exists.
+#   TARGET_RPM     requests per minute per instance the scaling policy holds;
+#                  calibrated by the shakedown run (#21), default 300
 #   AWS_PROFILE    defaults to cartoptix
 #
 # Extra arguments go to `cdk deploy`.
@@ -29,4 +31,10 @@ aws ecr describe-images --repository-name cartoptix-api --image-ids "imageTag=$r
   || die "no cartoptix-api image for $release. Images are published when a commit lands on main (release.yml)."
 
 pnpm --filter @cartoptix/web build
-pnpm exec cdk deploy -c release="$release" -c minInstances="${MIN_INSTANCES:-1}" "$@"
+# CartOptixPresentation by name: a bare `cdk deploy` would also touch
+# CartOptixGuardrails, which holds the spending alert and is deployed once.
+pnpm exec cdk deploy CartOptixPresentation \
+  -c release="$release" \
+  -c minInstances="${MIN_INSTANCES:-1}" \
+  -c alertEmail=unused@example.invalid \
+  ${TARGET_RPM:+-c targetRequestsPerMinute="$TARGET_RPM"} "$@"

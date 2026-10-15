@@ -8,4 +8,9 @@ export AWS_PROFILE=${AWS_PROFILE:-cartoptix}
 
 # CDK synthesises the app before deleting, which needs a release and a web build.
 pnpm --filter @cartoptix/web build
-pnpm exec cdk destroy -c release="$(git rev-parse HEAD)" "$@"
+# CartOptixPresentation by name. A bare `cdk destroy` would also delete
+# CartOptixGuardrails, leaving the project with no spending alert at exactly
+# the time nothing is being watched.
+pnpm exec cdk destroy CartOptixPresentation \
+  -c release="$(git rev-parse HEAD)" \
+  -c alertEmail=unused@example.invalid "$@"

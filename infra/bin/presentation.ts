@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { App, Tags } from "aws-cdk-lib";
+import { GuardrailsStack } from "../src/guardrails-stack.ts";
 import { PresentationStack } from "../src/presentation-stack.ts";
 
 const app = new App();
@@ -39,6 +40,26 @@ if (!existsSync(`${webDist}/index.html`)) {
 // Every resource carries this tag so the CartOptix budget can exclude other
 // workloads in the shared account.
 Tags.of(app).add("Project", "cartoptix");
+
+// Deployed once and left alone, unlike the presentation stack below. See
+// guardrails-stack.ts for why the spending alert cannot share its lifetime.
+const alertEmail = String(app.node.tryGetContext("alertEmail") ?? "");
+if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(alertEmail)) {
+  throw new Error(`Context "alertEmail" must be an email address, received "${alertEmail}".`);
+}
+
+const monthlyLimit = Number(app.node.tryGetContext("monthlyLimit") ?? 40);
+if (!(monthlyLimit > 0)) {
+  throw new Error(`Context "monthlyLimit" must be a positive number, received "${monthlyLimit}".`);
+}
+
+new GuardrailsStack(app, "CartOptixGuardrails", {
+  env: { account: ACCOUNT, region: REGION },
+  description: "CartOptix spending alert (#21). Deploy once; do not destroy between sessions.",
+  alertEmail,
+  monthlyLimit,
+  currency: "USD",
+});
 
 new PresentationStack(app, "CartOptixPresentation", {
   env: { account: ACCOUNT, region: REGION },
