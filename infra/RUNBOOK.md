@@ -18,6 +18,31 @@ it is up. It is deployed from an engineer's machine only, never from CI.
 | Database | RDS PostgreSQL 18.6, `db.t4g.micro`, Single-AZ, no backups. Empty until you load it, below |
 | Entry point | `https://<id>.cloudfront.net`, printed as the `Url` output. `/api/*` and `/health/*` go to the API, uncached; everything else is the frontend |
 
+## Network design
+
+The layout is chosen for cost, with security groups doing the isolation.
+
+| Tier | Subnets | Reachable from |
+| --- | --- | --- |
+| ALB | isolated, no public address | CloudFront only: an internal ALB behind a CloudFront VPC origin, with ingress limited to CloudFront's origin-facing prefix list |
+| API instances | public, each with a public IPv4 address | the ALB's security group only, on the API port. No SSH; administration goes through Session Manager |
+| RDS | isolated, no public address | the API instances' security group only, on 5432. No outbound access |
+
+The API instances need outbound access to ECR, Systems Manager, Secrets Manager,
+CloudWatch Logs and the package mirrors at boot. Public subnets give them that
+through the internet gateway for about USD 0.12 a day per instance (public IPv4).
+The alternatives, which would let the instances sit in private subnets, are a
+NAT gateway (about USD 1.40 a day plus data processing) or an interface
+endpoint per service (about USD 0.30 a day per endpoint per AZ, so roughly
+USD 3 a day for five services across two AZs). Approximate on-demand prices for
+`ap-southeast-1`; check current pricing before relying on them.
+
+The trade-off: the instances have public addresses, so their protection rests on
+the security group. The API port is open on the instance itself, but the group
+drops any inbound traffic that doesn't come from the ALB, and no other port is
+allowed. For a long-lived production deployment, move the instances to private
+subnets behind a NAT gateway or VPC endpoints.
+
 ## Prerequisites (once)
 
 - Node 24 and pnpm, as in the [README](../README.md); run `pnpm install` at the root.
