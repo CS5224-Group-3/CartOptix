@@ -5,8 +5,9 @@
   "type": "module",
   "description": "AWS CDK definition of the presentation deployment (#20)",
   "scripts": {
-    "synth": "cdk synth --quiet",
-    "diff": "cdk diff",
+    "synth": "pnpm --filter @cartoptix/web build && cdk synth --quiet -c release=$(git rev-parse HEAD)",
+    "deploy": "scripts/deploy.sh",
+    "destroy": "scripts/destroy.sh",
     "clean": "rm -rf dist cdk.out *.tsbuildinfo"
   },
   "dependencies": {

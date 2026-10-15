@@ -1,12 +1,12 @@
 import type { BasketCompareRequest, BasketCompareResponse } from "@cartoptix/contracts";
 import { compareBasket } from "../../lib/api";
-import { adaptComparison, placeholderProvenance, validateSnapshot } from "./adapter";
+import { adaptComparison, apiProvenance, validateSnapshot } from "./adapter";
 import { classifyApiFailure } from "./failures";
 import type { ComparisonProvenance, ComparisonSource } from "./model";
 
 /** API source for normal basket comparisons. */
 export function createApiSource(
-  provenance: ComparisonProvenance = placeholderProvenance,
+  provenance: ComparisonProvenance = apiProvenance,
 ): ComparisonSource {
   const capturedProvenance = structuredClone(provenance);
   return async (submission) => {
