@@ -391,7 +391,7 @@ describe("normal API comparison flow", () => {
     expect(posts).toHaveBeenCalledTimes(1);
   });
 
-  it("adding catalogue products replaces the demo basket and sends exactly the normal basket", async () => {
+  it("adding catalogue products after a demo restores and extends the saved basket", async () => {
     const { posts, fetchMock } = await open();
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
     fireEvent.click(screen.getByRole("link", { name: "Browse products" }));
@@ -404,16 +404,19 @@ describe("normal API comparison flow", () => {
         /Synthetic Milk|Synthetic White Rice|fixture-milk/,
       ),
     ).toBeNull();
-    compare();
-    await results();
-    expect(posts).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls.find(([url]) => url === routes.compare.url)?.[1]?.body).toBe(
-      JSON.stringify(basketRequestExample),
-    );
+    expect(posts).not.toHaveBeenCalled();
+    expect(fetchMock.mock.calls.some(([url]) => url === routes.compare.url)).toBe(false);
+    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(2);
     expect(
-      screen.getByText(/synthetic placeholder data and illustrative product links/),
-    ).toBeDefined();
-    expect(screen.queryByText(/Synthetic demonstration:/)).toBeNull();
+      screen
+        .getByRole("button", { name: "Increase Fixture Plain Drink" })
+        .parentElement?.querySelector("strong")?.textContent,
+    ).toBe("2");
+    expect(
+      screen
+        .getByRole("button", { name: "Increase Fixture White Rice" })
+        .parentElement?.querySelector("strong")?.textContent,
+    ).toBe("2");
   });
 
   it.each(["network", "service_error", "5xx"])(

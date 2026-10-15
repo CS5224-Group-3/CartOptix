@@ -98,6 +98,7 @@ const BasketContext = createContext<BasketContextValue | null>(null);
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
   const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
+  const basketBeforeDemo = useRef<BasketLine[] | null>(null);
   const [productMetadataRevision, setProductMetadataRevision] = useState(0);
   const products = useProductIndex();
   const queryClient = useQueryClient();
@@ -253,30 +254,16 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
         );
       },
       leaveDemo: () => {
+        basketBeforeDemo.current = null;
         setFixtureScenario(null);
         changed([]);
       },
       retryComparison: () => retry(successNavigation()),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
-        if (
-          fixtureScenario !== null &&
-          (!Number.isInteger(quantity) ||
-            quantity < MIN_PACKS_PER_LINE ||
-            quantity > MAX_PACKS_PER_LINE)
-        ) {
-          toast.error("Invalid quantity", {
-            description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
-          });
-          return false;
-        }
-        if (fixtureScenario !== null) {
-          setFixtureScenario(null);
-          changed([{ productId, quantity }]);
-          toast.info("Demo basket replaced with your catalogue selection.");
-          return true;
-        }
-        const mutation = addBasketLine(basket, productId, quantity);
+        const sourceBasket =
+          fixtureScenario === null ? basket : (basketBeforeDemo.current ?? restoreBasket());
+        const mutation = addBasketLine(sourceBasket, productId, quantity);
         if (mutation.error) {
           if (mutation.error === "line-limit") {
             toast.error("Basket limit reached", {
@@ -293,7 +280,14 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           }
           return false;
         }
-        if (mutation.changed) changed(mutation.basket);
+        if (mutation.changed) {
+          if (fixtureScenario !== null) {
+            basketBeforeDemo.current = null;
+            setFixtureScenario(null);
+            toast.info("Demo ended. Your saved basket is ready to edit.");
+          }
+          changed(mutation.basket);
+        }
         return mutation.changed;
       },
       setQuantity: (productId, quantity) => {
@@ -310,12 +304,14 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       },
       // Homepage baskets use the normal API source.
       loadScenario: (lines) => {
+        basketBeforeDemo.current = null;
         changed(lines);
         setFixtureScenario(null);
       },
       loadComparisonScenario: (scenario) => {
         const fixture = comparisonFixtures[fixtureScenarios[scenario]?.fixture ?? ""];
         if (!fixture) return;
+        if (fixtureScenario === null) basketBeforeDemo.current = basket;
         changed(
           fixture.submittedBasket.products.map(({ productId, quantity }) => ({
             productId,
