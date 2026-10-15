@@ -1031,7 +1031,7 @@ export function BasketPage() {
             <h2>Complete retailer baskets</h2>
             <p className="muted">
               {fixtureScenario === null
-                ? "API comparison mode. Compare your basket using the current synthetic prototype dataset."
+                ? "API comparison mode. Compare your basket using the curated retailer dataset."
                 : "Demo mode. Only the exact selected demonstration basket can be compared."}
             </p>
             {fixtureScenario !== null && (
