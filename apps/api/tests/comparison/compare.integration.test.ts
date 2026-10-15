@@ -170,6 +170,7 @@ describe.skipIf(connectionString === undefined)("basket comparison on the commit
     expect(await api.importSeed(committedSeedBytes)).toEqual({ status: "imported" });
   });
 
+  // Repeated real-database comparisons across every product and both quantity boundaries need more time.
   it("recommends a retailer for every product, at one pack and the most packs", async () => {
     // Every published product has an eligible offer, so it alone is always feasible.
     for (const productId of productIds) {
@@ -178,7 +179,7 @@ describe.skipIf(connectionString === undefined)("basket comparison on the commit
         expect(body.status, `${productId} × ${quantity}`).toBe("recommended");
       }
     }
-  });
+  }, 30_000);
 
   it("returns a valid comparison for varied baskets, up to the largest allowed", async () => {
     // A fixed-seed generator keeps failures reproducible.

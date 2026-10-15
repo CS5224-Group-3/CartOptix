@@ -51,7 +51,13 @@ export function useComparison(source: ComparisonSource) {
           (response) => {
             if (!mounted.current || !response) return;
             // The originating request owns the snapshot, regardless of later basket edits.
-            setResult({ ...response, submittedBasket: structuredClone(submitted.basket) });
+            setResult({
+              ...response,
+              submittedBasket: structuredClone(submitted.basket),
+              ...(submitted.scenario === undefined
+                ? {}
+                : { submittedScenario: submitted.scenario }),
+            });
             setRequest({ phase: "success", submitted });
             inFlight.current = false;
             try {

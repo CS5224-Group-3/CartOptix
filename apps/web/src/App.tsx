@@ -41,6 +41,12 @@ import { Toaster } from "@/components/ui/sonner";
 import ComparisonRequestStatus from "./components/basket/ComparisonRequestStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
 import type { BasketLine } from "./demo";
+import {
+  addBasketLine,
+  removeBasketLine,
+  setBasketLineQuantity,
+} from "./features/basket/mutations";
+import { persistBasket, restoreBasket } from "./features/basket/storage";
 import { createApiSource } from "./features/basket-comparison/apiSource";
 import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
 import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
@@ -72,11 +78,12 @@ type BasketContextValue = {
   productMetadata: Map<string, Product>;
   basketRevision: number;
   fixtureScenario: string | null;
+  persistenceFailed: boolean;
   leaveDemo: () => void;
   comparison: BasketComparisonPresentation | null;
   isStale: boolean;
   basketCount: number;
-  addToBasket: (productId: string, quantity: number) => void;
+  addToBasket: (productId: string, quantity: number) => boolean;
   setQuantity: (productId: string, quantity: number) => void;
   removeFromBasket: (productId: string) => void;
   requestState: ComparisonRequestState;
@@ -90,7 +97,7 @@ type BasketContextValue = {
 const BasketContext = createContext<BasketContextValue | null>(null);
 
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
-  const [basket, setBasket] = useState<BasketLine[]>([]);
+  const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
   const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
   const products = useProductIndex();
   const queryClient = useQueryClient();
@@ -144,11 +151,36 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
     };
   }, [navigate]);
   const [basketRevision, setBasketRevision] = useState(0);
+  const [persistenceFailed, setPersistenceFailed] = useState(false);
 
-  const changed = useCallback((next: BasketLine[]) => {
-    setBasket(next);
-    setBasketRevision((revision) => revision + 1);
-  }, []);
+  const changed = useCallback(
+    (next: BasketLine[], shouldPersist = true) => {
+      const basketChanged =
+        next.length !== basket.length ||
+        next.some(
+          (line, index) =>
+            line.productId !== basket[index]?.productId ||
+            line.quantity !== basket[index]?.quantity,
+        );
+      if (!basketChanged) return;
+      setBasket(next);
+      if (shouldPersist) {
+        const saved = persistBasket(next);
+        setPersistenceFailed(!saved);
+        if (!saved && !persistenceFailed)
+          toast.warning("Basket changes may not survive a reload", {
+            description: "Session storage is unavailable. Keep this tab open to retain your edits.",
+          });
+      }
+      setBasketRevision((revision) => revision + 1);
+    },
+    [basket, persistenceFailed],
+  );
+  const isStale = Boolean(
+    comparison &&
+      (comparison.submittedBasket.revision !== basketRevision ||
+        (comparison.submittedScenario ?? null) !== fixtureScenario),
+  );
 
   const value = useMemo<BasketContextValue>(
     () => ({
@@ -156,8 +188,9 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       productMetadata,
       basketRevision,
       fixtureScenario,
+      persistenceFailed,
       comparison,
-      isStale: Boolean(comparison && comparison.submittedBasket.revision !== basketRevision),
+      isStale,
       requestState,
       canCompare:
         fixtureScenario !== null
@@ -225,62 +258,80 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       retryComparison: () => retry(successNavigation()),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
+        if (
+          fixtureScenario !== null &&
+          (!Number.isInteger(quantity) ||
+            quantity < MIN_PACKS_PER_LINE ||
+            quantity > MAX_PACKS_PER_LINE)
+        ) {
+          toast.error("Invalid quantity", {
+            description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
+          });
+          return false;
+        }
         if (fixtureScenario !== null) {
           setFixtureScenario(null);
-          changed([{ productId, quantity: clampPacks(quantity) }]);
+          changed([{ productId, quantity }]);
           toast.info("Demo basket replaced with your catalogue selection.");
-          return;
+          return true;
         }
-        const current = basket.find((line) => line.productId === productId);
-        if (current) {
-          changed(
-            basket.map((line) =>
-              line.productId === productId
-                ? { ...line, quantity: clampPacks(line.quantity + quantity) }
-                : line,
-            ),
-          );
-        } else if (basket.length < MAX_BASKET_LINES) {
-          changed([...basket, { productId, quantity: clampPacks(quantity) }]);
-        } else {
-          toast.error("Basket limit reached", {
-            description: `CartOptix supports up to ${MAX_BASKET_LINES} distinct basket lines.`,
-          });
+        const mutation = addBasketLine(basket, productId, quantity);
+        if (mutation.error) {
+          if (mutation.error === "line-limit") {
+            toast.error("Basket limit reached", {
+              description: `Remove a product from your basket before adding another. The limit is ${MAX_BASKET_LINES} distinct products.`,
+            });
+          } else if (mutation.error === "pack-limit") {
+            toast.error("Pack limit reached", {
+              description: `This would exceed ${MAX_PACKS_PER_LINE} packs for this product. Reduce the selected quantity or edit the existing basket line.`,
+            });
+          } else {
+            toast.error("Invalid quantity", {
+              description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
+            });
+          }
+          return false;
         }
+        if (mutation.changed) changed(mutation.basket);
+        return mutation.changed;
       },
       setQuantity: (productId, quantity) => {
-        changed(
-          basket.map((line) =>
-            line.productId === productId ? { ...line, quantity: clampPacks(quantity) } : line,
-          ),
-        );
+        const mutation = setBasketLineQuantity(basket, productId, quantity);
+        if (mutation.error) {
+          toast.error("Quantity not changed", {
+            description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
+          });
+        } else if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
       },
-      removeFromBasket: (productId) =>
-        changed(basket.filter((line) => line.productId !== productId)),
+      removeFromBasket: (productId) => {
+        const mutation = removeBasketLine(basket, productId);
+        if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
+      },
       // Homepage baskets use the normal API source.
       loadScenario: (lines) => {
-        setBasket(lines);
+        changed(lines);
         setFixtureScenario(null);
-        setBasketRevision((revision) => revision + 1);
       },
       loadComparisonScenario: (scenario) => {
         const fixture = comparisonFixtures[fixtureScenarios[scenario]?.fixture ?? ""];
         if (!fixture) return;
-        setBasket(
+        changed(
           fixture.submittedBasket.products.map(({ productId, quantity }) => ({
             productId,
             quantity,
           })),
+          false,
         );
         setFixtureScenario(scenario);
-        setBasketRevision((revision) => revision + 1);
       },
     }),
     [
       basket,
       fixtureScenario,
+      persistenceFailed,
       comparison,
       basketRevision,
+      isStale,
       requestState,
       submit,
       retry,
@@ -463,8 +514,8 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
           className="button button--small button--outline"
           disabled={!product.available}
           onClick={() => {
-            addToBasket(product.productId, 1);
-            toast.success("Added to basket", { description: product.name });
+            if (addToBasket(product.productId, 1))
+              toast.success("Added to basket", { description: product.name });
           }}
         >
           <ShoppingBasket size={15} /> Add
@@ -775,7 +826,7 @@ export function ProductDetail() {
               className="button button--primary"
               disabled={!product.available}
               onClick={() => {
-                addToBasket(product.productId, quantity);
+                if (!addToBasket(product.productId, quantity)) return;
                 toast.success("Added to basket", { description: `${quantity} × ${product.name}` });
                 navigate("/basket");
               }}
@@ -867,6 +918,7 @@ export function BasketPage() {
     basket,
     basketRevision,
     fixtureScenario,
+    persistenceFailed,
     productMetadata,
     comparison,
     isStale,
@@ -900,6 +952,17 @@ export function BasketPage() {
             currentRevision={basketRevision}
             onRetry={retryComparison}
           />
+          {persistenceFailed && (
+            <div className="stale-banner" role="status">
+              <AlertCircle size={18} />
+              <div>
+                <strong>Basket changes may not survive a reload.</strong>
+                <span>
+                  Session storage is unavailable. Keep this tab open to retain your edits.
+                </span>
+              </div>
+            </div>
+          )}
           {isStale && (
             <div className="stale-banner">
               <AlertCircle size={18} />
@@ -1111,6 +1174,7 @@ function BasketRow({
         <button
           type="button"
           aria-label={`Decrease ${product.name}`}
+          disabled={line.quantity <= MIN_PACKS_PER_LINE}
           onClick={() => onChange(line.quantity - 1)}
         >
           −
@@ -1119,6 +1183,7 @@ function BasketRow({
         <button
           type="button"
           aria-label={`Increase ${product.name}`}
+          disabled={line.quantity >= MAX_PACKS_PER_LINE}
           onClick={() => onChange(line.quantity + 1)}
         >
           +

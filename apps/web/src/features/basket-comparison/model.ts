@@ -46,6 +46,8 @@ export type RetailerOption = CompleteRetailerOption | UnavailableRetailerOption;
 
 export interface BasketComparisonPresentation {
   submittedBasket: BasketSnapshot;
+  /** Selected synthetic scenario that produced this presentation, when applicable. */
+  submittedScenario?: string;
   options: RetailerOption[];
   outcome: { kind: "recommended"; retailerId: string } | { kind: "no-feasible-plan" };
   fixtureLabel?: string;
