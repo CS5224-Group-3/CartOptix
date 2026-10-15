@@ -18,6 +18,7 @@ import type { FastifyError, FastifyInstance } from "fastify";
 import { compareBasket } from "./comparison/index.ts";
 import { toCompareResponse } from "./comparison/response.ts";
 import type { Database } from "./database.ts";
+import { recordComparison } from "./telemetry.ts";
 
 function errorBody(code: ErrorResponse["error"]["code"], message: string): ErrorResponse {
   return { error: { code, message } };
@@ -89,13 +90,22 @@ export function registerShopperRoutes(server: FastifyInstance, database: Databas
           .code(400)
           .send(errorBody("invalid_request", `Unknown product IDs: ${unknown.join(", ")}.`));
       }
+      // Timed around the comparison itself, not the database read, so the
+      // recorded duration is the work SC-05 bounds rather than seed I/O.
+      const startedAt = performance.now();
       const result = compareBasket({
         lines: request.body.lines,
         offers: data.offers,
         deliveryRules: data.deliveryRules,
         retailers: data.retailers,
       });
-      return toCompareResponse(result, data.listings);
+      const response = toCompareResponse(result, data.listings);
+      recordComparison({
+        status: response.status,
+        durationMs: performance.now() - startedAt,
+        lines: request.body.lines.length,
+      });
+      return response;
     },
   });
 }
