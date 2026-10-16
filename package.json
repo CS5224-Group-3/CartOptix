@@ -13,10 +13,12 @@
     "build": "pnpm -r --filter=./apps/* build",
     "test": "vitest run",
     "check": "biome ci . && tsc --build && vitest run && pnpm --filter @cartoptix/infra synth",
-    "fix": "biome check --write ."
+    "fix": "biome check --write .",
+    "e2e": "playwright test"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
+    "@playwright/test": "^1.52.0",
     "@types/node": "24.10.1",
     "typescript": "7.0.2",
     "vitest": "5.0.1"

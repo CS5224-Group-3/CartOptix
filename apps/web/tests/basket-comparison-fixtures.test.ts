@@ -11,6 +11,60 @@ import { adaptComparison } from "../src/features/basket-comparison/adapter";
 import { comparisonFixtures, fixtureForBasket } from "../src/features/basket-comparison/fixtures";
 
 describe("synthetic comparison fixtures", () => {
+  it("matches the independently calculated reference outcomes", () => {
+    const references = {
+      complete: {
+        totals: { fairprice: 650, redmart: 810 },
+        unavailable: { "cold-storage": "delivery_rule_unverified" },
+        recommendation: "fairprice",
+      },
+      unavailable: {
+        totals: { redmart: 810 },
+        unavailable: {
+          "cold-storage": "delivery_rule_unverified",
+          fairprice: "missing_products",
+        },
+        recommendation: "redmart",
+      },
+      tie: {
+        totals: { fairprice: 810, redmart: 810 },
+        unavailable: { "cold-storage": "delivery_rule_unverified" },
+        recommendation: "fairprice",
+      },
+      infeasible: {
+        totals: {},
+        unavailable: {
+          "cold-storage": "delivery_rule_unverified",
+          fairprice: "below_minimum_order",
+          redmart: "missing_products",
+        },
+        recommendation: null,
+      },
+    } as const;
+
+    for (const [scenario, reference] of Object.entries(references)) {
+      const result = comparisonFixtures[scenario];
+      if (!result) throw new Error(`Missing fixture: ${scenario}`);
+      const totals = Object.fromEntries(
+        result.options
+          .filter((option) => option.kind === "complete")
+          .map((option) => [option.retailer.id, option.estimatedTotalCents]),
+      );
+      const unavailable = Object.fromEntries(
+        result.options
+          .filter((option) => option.kind === "unavailable")
+          .map((option) => [option.retailer.id, option.explanations?.[0]?.reason.code]),
+      );
+
+      expect(totals, scenario).toEqual(reference.totals);
+      expect(unavailable, scenario).toEqual(reference.unavailable);
+      expect(
+        result.outcome.kind === "recommended" ? result.outcome.retailerId : null,
+        scenario,
+      ).toBe(reference.recommendation);
+    }
+  });
+
   it.each([
     ["complete", recommendedExample],
     ["unavailable", oneRetailerCompleteExample],

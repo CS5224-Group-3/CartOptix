@@ -13,6 +13,8 @@ cdk.out/
 # Test and tooling output
 coverage/
 .vitest/
+playwright-report/
+test-results/
 
 # Editor and operating system files
 .DS_Store
