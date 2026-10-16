@@ -64,7 +64,10 @@ export class GuardrailsStack extends Stack {
         },
         {
           // Forecast, so it can arrive while there is still time to destroy
-          // the stack rather than after the month's money is spent.
+          // the stack rather than after the month's money is spent. AWS needs
+          // several weeks of history before it forecasts at all, so this one
+          // is silent early on and the 80% actual alert above is the only
+          // cover during the project's first weeks.
           notification: {
             notificationType: "FORECASTED",
             comparisonOperator: "GREATER_THAN",

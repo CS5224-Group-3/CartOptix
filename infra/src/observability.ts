@@ -254,7 +254,12 @@ export class Observability extends Construct {
           metricName: "CPUUtilization",
           dimensionsMap: { AutoScalingGroupName: props.autoScalingGroup.autoScalingGroupName },
           statistic: "Average",
-          period: Duration.minutes(1),
+          // Five minutes because the launch template does not enable detailed
+          // monitoring: EC2 publishes at this granularity, and asking for one
+          // minute would draw a line with four gaps in every five points.
+          // Detailed monitoring would close them, at a cost the SGD 84 budget
+          // does not need to carry for a widget read by eye.
+          period: Duration.minutes(5),
           label: "App CPU %",
         }),
         props.database.metricCPUUtilization({ label: "Database CPU %" }),

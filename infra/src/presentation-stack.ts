@@ -253,18 +253,22 @@ export class PresentationStack extends Stack {
 
     // Target tracking scales both ways from one policy: it adds instances
     // above the target and removes them below it, so scale-in needs no
-    // separate rule. The two durations are what make the demonstration in
-    // #22 legible rather than oscillating.
+    // separate rule.
+    //
+    // No `cooldown` here. CDK accepts one, but CloudFormation documents
+    // `Cooldown` as valid only for simple scaling, so on a target-tracking
+    // policy it is inert. The timing instead comes from the two alarms AWS
+    // creates with the policy: roughly three one-minute datapoints above
+    // target before scaling out, and about fifteen below it before scaling
+    // in. The shakedown records what was actually observed rather than
+    // asserting those figures here.
     group.scaleOnRequestCount("RequestsPerTarget", {
       targetRequestsPerMinute: props.targetRequestsPerMinute,
       // A new instance installs Docker and pulls the image before it serves
       // anything. Counting its empty request rate before then would read as
-      // spare capacity and cancel the scale-out that just happened.
+      // spare capacity and cancel the scale-out that just happened. Unlike
+      // cooldown, this one does apply to target tracking.
       estimatedInstanceWarmup: Duration.minutes(8),
-      // Scale-in is deliberately reluctant: removing an instance during the
-      // load exercise costs more in re-launch time than the minutes of idle
-      // capacity it saves.
-      cooldown: Duration.minutes(5),
     });
 
     // --- Edge ---------------------------------------------------------------

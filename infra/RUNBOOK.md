@@ -69,6 +69,16 @@ Then activate the cost allocation tag, or the budget reports zero spend forever:
 **Billing and Cost Management -> Cost allocation tags -> user-defined ->
 `Project` -> Activate**. Activation is not retroactive.
 
+Two limits on what this alert can tell you early:
+
+- The budget notifies at 80% of actual spend and at 100% of forecast. AWS needs
+  several weeks of usage history before it will forecast at all, so in the
+  project's first weeks **expect only the 80% actual alert to fire**. Treat the
+  forecast notification as something that starts working later, not as cover
+  for the opening weeks.
+- Billing data lags by several hours, so neither notification is immediate.
+  Neither replaces destroying the stack at the end of a session.
+
 Helper used below, from the repository root:
 
 ```bash
@@ -210,9 +220,16 @@ Calibrate it once, with the stack deployed at `MIN_INSTANCES=1`:
    ```
 
 4. Confirm both directions: hold a load above the target until a second instance
-   is in service, then stop and confirm scale-in. Scale-out reacts within roughly
-   three minutes; a new instance needs around eight more before it serves traffic
-   (`estimatedInstanceWarmup`), and scale-in waits five minutes (`cooldown`).
+   is in service, then stop and confirm scale-in.
+
+   Target tracking sets its own timing through the two alarms AWS creates with
+   the policy, and it is slower in than out: roughly three one-minute datapoints
+   above target before scaling out, and about fifteen below it before scaling
+   in. A new instance then needs around eight more minutes before it serves
+   traffic (`estimatedInstanceWarmup`). There is no cooldown setting to tune
+   here — CloudFormation honours `Cooldown` only for simple scaling policies —
+   so **record the scale-out and scale-in delays you measure** rather than
+   quoting these figures. #22 needs the measured ones.
 
 Record the calibrated value, the run it came from and the observed scale-out and
 scale-in times. Until that is done, the policy is configured but not calibrated,

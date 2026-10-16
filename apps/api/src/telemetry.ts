@@ -1,3 +1,5 @@
+import type { BasketCompareResponse } from "@cartoptix/contracts";
+
 /**
  * Structured events for CloudWatch (#21, technical E5).
  *
@@ -19,8 +21,14 @@
 
 /** Emitted once per completed basket comparison. */
 export interface ComparisonEvent {
-  /** The outcome the shopper saw, not an HTTP status. */
-  status: "recommended" | "no_feasible_plan";
+  /**
+   * The outcome the shopper saw, not an HTTP status.
+   *
+   * Taken from the shared contract rather than restated, so a change to the
+   * wire values cannot leave the dashboard filtering on a status the API no
+   * longer emits.
+   */
+  status: BasketCompareResponse["status"];
   /** Wall-clock time spent comparing, for the SC-05 p99 alongside the ALB's. */
   durationMs: number;
   /** Basket size, so latency can be read against 20- and 50-line baskets. */
