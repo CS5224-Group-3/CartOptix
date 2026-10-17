@@ -102,7 +102,11 @@ test.describe("CartOptix shopper journeys", () => {
     await page.getByRole("button", { name: /Multiple complete retailers/i }).click();
     const increase = page.getByRole("button", { name: /Increase/ }).first();
     for (let index = 0; index < 19; index += 1) await increase.click();
-    await expect(page.getByText("20", { exact: true })).toBeVisible();
+    await expect(
+      page.locator(".basket-row").first().locator(".quantity-control").getByText("20", {
+        exact: true,
+      }),
+    ).toBeVisible();
     await expect(increase).toBeDisabled();
   });
 
@@ -118,6 +122,7 @@ test.describe("CartOptix shopper journeys", () => {
     await page.locator('a[href="/basket"]').click({ force: true });
     await expect(page.getByText(/50 distinct lines/i)).toBeVisible();
     await expect(page.getByText(/Basket lines\s*50\s*\/\s*50/i)).toBeVisible();
+    await expect(page.getByText("Basket limit reached")).toBeVisible();
   });
 });
 

@@ -1,6 +1,6 @@
 // Reproducible demo baskets using products from the committed seed. These
-// products have eligible listings at all three retailers, which makes the
-// basket useful for deployed journey and load-test rehearsal.
+// DEMO_BASKET products have eligible listings at all three retailers. The
+// maximum basket is intentionally FairPrice-complete for load-test rehearsal.
 import type { BasketCompareRequest } from "@cartoptix/contracts";
 
 export type BasketLine = BasketCompareRequest["lines"][number];
@@ -34,7 +34,6 @@ export const MAX_DEMO_BASKET: BasketLine[] = [
   "aaa-pickled-mustard-170g",
   "ah-huat-extra-rich-white-coffee-13-x-36g",
   "alpen-no-added-sugar-swiss-style-muesli",
-  "anlene-actifit-3x-plain-milk-powder-1kg",
   "australia-s-own-a2-protein-full-cream-uht-milk-1l",
   "aveeno-skin-relief-body-wash-1l",
   "ayam-brand-pulled-chicken-buffalo-150g",
@@ -64,14 +63,15 @@ export const MAX_DEMO_BASKET: BasketLine[] = [
   "blue-frog-keto-almond-peanut-and-raspberry-cereal-300g",
   "blue-frog-macadamia-almond-and-manuka-honey-cereal-350g",
   "bob-s-red-mill-classic-instant-oatmeal-6-x-45g",
-  "bonaroma-ground-coffee-peck-me-up-200g",
-  "boncafe-all-day-coffee-beans-200g",
-  "boncafe-colombiana-instant-coffee-200g",
   "boxgreen-honey-mustard-soy-crisps-130g",
   "boxgreen-peanut-pretzel-dark-chocolate-130g",
   "breeze-anti-bacterial-and-colour-protect-liquid-detergent-3-6kg",
   "breeze-colour-care-liquid-detergent-refill-1-5kg",
   "breeze-gentle-on-skin-liquid-detergent-3-6kg",
+  "colavita-linguine-pasta",
+  "colgate-gentle-sensitive-expert-toothbrush-1pcs",
+  "colgate-max-fresh-cool-mint-toothpaste-160g",
+  "colgate-max-fresh-peach-passion-toothpaste-100g",
   "calbee-black-pepper-prawn-crackers-90g",
   "calbee-original-prawn-crackers-90g",
   "calbee-spicy-prawn-crackers-90g",

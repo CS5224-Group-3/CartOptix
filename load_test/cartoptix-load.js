@@ -5,13 +5,34 @@ import { Counter, Trend } from "k6/metrics";
 const baseUrl = (__ENV.BASE_URL || "http://localhost:3001").replace(/\/$/, "");
 const profile = __ENV.PROFILE === "surge" ? "surge" : "normal";
 const mode = __ENV.MODE || "mixed";
-const target = __ENV.TARGET || "all";
-const basketSize = __ENV.BASKET_SIZE === "50" ? 50 : 20;
-const rampTarget = target === "all" ? "basket" : target;
+const target = __ENV.TARGET || "";
+const basketSizeInput = __ENV.BASKET_SIZE || "20";
+const basketSize = basketSizeInput === "50" ? 50 : 20;
 const rampStepRpm = Number(__ENV.RAMP_STEP_RPM || 60);
 const rampStageDuration = __ENV.RAMP_STAGE_DURATION || "2m";
+const rampSteps = Number(__ENV.RAMP_STEPS || 4);
+const rampTarget = target;
+const validModes = new Set(["mixed", "isolated", "ramp"]);
+const validTargets = new Set(["catalogue", "products", "offers", "basket"]);
+
+if (!validModes.has(mode)) {
+  throw new Error("MODE must be mixed, isolated, or ramp");
+}
+if (!["20", "50"].includes(basketSizeInput)) {
+  throw new Error("BASKET_SIZE must be 20 or 50");
+}
+if ((mode === "isolated" || mode === "ramp") && !validTargets.has(target)) {
+  throw new Error(`TARGET must be one of catalogue, products, offers, or basket when MODE=${mode}`);
+}
+if (!Number.isFinite(rampStepRpm) || rampStepRpm <= 0) {
+  throw new Error("RAMP_STEP_RPM must be a positive number");
+}
+if (!Number.isInteger(rampSteps) || rampSteps < 1) {
+  throw new Error("RAMP_STEPS must be a positive integer");
+}
 
 const productIds = [
+  // Keep the first 20 aligned with DEMO_BASKET; k6 cannot import the TS fixture.
   "calbee-black-pepper-prawn-crackers-90g",
   "calbee-original-prawn-crackers-90g",
   "calbee-spicy-prawn-crackers-90g",
@@ -32,37 +53,36 @@ const productIds = [
   "maggi-premium-oyster-sauce-500g",
   "marigold-hl-chocolate-milk-946ml",
   "milkmaid-low-fat-sweetened-condensed-skimmed-milk-392g",
-  "munchy-s-lexus-mixed-nuts-cookies-189g",
-  "naturel-organic-brown-rice-2kg",
-  "naturel-organic-brown-rice-750g",
-  "new-moon-premium-oyster-sauce-510g",
-  "post-great-grains-banana-nut-crunch-cereal-439g",
-  "post-great-grains-blueberry-morning-cereal-382g",
-  "post-great-grains-cranberry-almond-crunch-cereal-396g",
-  "ruffles-sour-cream-and-onion-potato-chips-170g",
-  "songhe-glutinous-rice-1kg",
-  "songhe-noble-brown-rice-5kg",
-  "tai-hua-special-dark-soy-sauce-640ml",
-  "tai-hua-special-light-soy-sauce-640ml",
-  "tai-hua-superior-dark-soy-sauce-640ml",
-  "tai-hua-superior-light-soy-sauce-640ml",
-  "woh-hup-extra-flavour-oyster-sauce-500g",
-  "aaa-pickled-mustard-170g",
-  "ah-huat-extra-rich-white-coffee-13-x-36g",
-  "alpen-no-added-sugar-swiss-style-muesli",
-  "anlene-actifit-3x-plain-milk-powder-1kg",
-  "australia-s-own-a2-protein-full-cream-uht-milk-1l",
-  "aveeno-skin-relief-body-wash-1l",
-  "ayam-brand-pulled-chicken-buffalo-150g",
-  "ayam-brand-pulled-chicken-cajun-150g",
-  "ayam-brand-pulled-chicken-honey-mustard-150g",
-  "ayam-brand-pulled-chicken-truffle-mayonnaise-150g",
-  "ayam-brand-sardines-in-tomato-sauce-155g",
-  "bahlsen-zoo-jungle-cocoa-biscuits-100g",
-  "barilla-italian-pasta-maccheroni-500g",
-  "barilla-italian-pasta-pappardelle-with-eggs-250g",
-  "barilla-italian-pasta-penne-rigate-500g",
-  "barilla-italian-pasta-spaghetti-no-5-500g",
+  "bcrs-evian-natural-mineral-water-6-x-1-5l",
+  "bcrs-farmhouse-fresh-milk-1-89l",
+  "bcrs-magnolia-high-protein-chocolate-milk-375ml",
+  "bcrs-monster-pipeline-punch-energy-drink-can-355ml",
+  "bcrs-pokka-lychee-oolong-tea-1-5l",
+  "bcrs-sunsweet-prune-juice-946ml",
+  "bcrs-volvic-natural-mineral-water-6-x-1-5l",
+  "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+  "beryl-s-assorted-almond-chocolate-370g",
+  "bio-home-multi-surface-cleaner-500ml-lavender-and-bergamot",
+  "biograde-fresh-lemongrass-dishwashing-liquid",
+  "biograde-fresh-lime-dishwashing-liquid",
+  "blue-elephant-hot-red-chilli-sauce-190ml",
+  "blue-elephant-sweet-chilli-sauce-190ml",
+  "blue-frog-keto-almond-peanut-and-raspberry-cereal-300g",
+  "blue-frog-macadamia-almond-and-manuka-honey-cereal-350g",
+  "bob-s-red-mill-classic-instant-oatmeal-6-x-45g",
+  "boxgreen-honey-mustard-soy-crisps-130g",
+  "boxgreen-peanut-pretzel-dark-chocolate-130g",
+  "breeze-anti-bacterial-and-colour-protect-liquid-detergent-3-6kg",
+  "breeze-colour-care-liquid-detergent-refill-1-5kg",
+  "breeze-gentle-on-skin-liquid-detergent-3-6kg",
+  "colavita-linguine-pasta",
+  "colgate-gentle-sensitive-expert-toothbrush-1pcs",
+  "colgate-max-fresh-cool-mint-toothpaste-160g",
+  "colgate-max-fresh-peach-passion-toothpaste-100g",
+  "cocobella-chocolate-coconut-water-1l",
+  "cirio-chopped-tomatoes-400g",
+  "cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-and-ginger-500ml",
+  "campbell-s-real-stock-salt-reduced-beef-stock-1l",
 ];
 
 const baskets = {
@@ -79,6 +99,8 @@ const rates =
       { catalogue: 12, products: 60, offers: 60, basket: 12 };
 
 export const unexpectedFailures = new Counter("unexpected_failures");
+export const requestErrors = new Counter("request_errors");
+export const requestTimeouts = new Counter("request_timeouts");
 export const basket20Duration = new Trend("basket_20_duration", true);
 export const basket50Duration = new Trend("basket_50_duration", true);
 
@@ -91,6 +113,9 @@ function request(name, method, path, body) {
         })
       : http.get(`${baseUrl}${path}`, { tags: { endpoint: name } });
   const valid = check(response, { "expected response": (r) => r.status >= 200 && r.status < 300 });
+  const timedOut = response.status === 0 && /timeout/i.test(response.error || "");
+  if (timedOut) requestTimeouts.add(1, { endpoint: name });
+  if (!valid) requestErrors.add(1, { endpoint: name });
   if (!valid || response.status >= 500) unexpectedFailures.add(1, { endpoint: name });
   if (name === "basket")
     (basketSize === 50 ? basket50Duration : basket20Duration).add(response.timings.duration);
@@ -145,12 +170,25 @@ const scenarios =
           timeUnit: "1m",
           preAllocatedVUs: 10,
           maxVUs: 100,
-          stages: [1, 2, 3, 4].map((multiplier) => ({
-            target: rampStepRpm * multiplier,
-            duration: rampStageDuration,
-          })),
+          stages: Array.from({ length: rampSteps }, (_, index) => {
+            const stepTarget = rampStepRpm * (index + 1);
+            return [
+              { target: stepTarget, duration: "5s" },
+              { target: stepTarget, duration: rampStageDuration },
+            ];
+          }).flat(),
         },
       }
     : constantRateScenarios;
 
-export const options = { scenarios, thresholds: { http_req_failed: ["rate<0.001"] } };
+export const options = {
+  scenarios,
+  thresholds: {
+    http_req_failed: ["rate<0.001"],
+    "http_req_duration{endpoint:catalogue}": ["p(99)<1000"],
+    "http_req_duration{endpoint:products}": ["p(99)<1000"],
+    "http_req_duration{endpoint:basket}": ["p(99)<2000"],
+    basket_20_duration: ["p(99)<2000"],
+    basket_50_duration: ["p(99)<2000"],
+  },
+};
