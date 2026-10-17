@@ -242,6 +242,36 @@ describe("shopper basket editing", () => {
     ]);
   });
 
+  it("persists the saved basket plus a catalogue addition when it matches the demo lines", async () => {
+    const savedBasket = [{ productId: "fixture-drink", quantity: 1 }];
+    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    const firstLoad = openApp("/basket");
+    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
+    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
+    const riceAddButton = addButtons[1];
+    if (!riceAddButton) throw new Error("Expected a second catalogue product");
+    fireEvent.click(riceAddButton);
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+
+    const expectedBasket = [...savedBasket, { productId: "fixture-rice", quantity: 1 }];
+    expect(screen.getByText(/API comparison mode/)).toBeDefined();
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+      expectedBasket,
+    );
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    expect(
+      await screen.findByRole("button", { name: "Increase Fixture Plain Drink" }),
+    ).toBeDefined();
+    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+      expectedBasket,
+    );
+  });
+
   it("marks results stale when a product is removed after comparison", async () => {
     const { compareRequests } = openApp();
     await addBothCatalogueProducts();

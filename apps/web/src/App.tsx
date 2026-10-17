@@ -162,7 +162,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   const [persistenceFailed, setPersistenceFailed] = useState(false);
 
   const changed = useCallback(
-    (next: BasketLine[], shouldPersist = true) => {
+    (next: BasketLine[], shouldPersist = true, force = false) => {
       const basketChanged =
         next.length !== basket.length ||
         next.some(
@@ -170,7 +170,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
             line.productId !== basket[index]?.productId ||
             line.quantity !== basket[index]?.quantity,
         );
-      if (!basketChanged) return;
+      if (!basketChanged && !force) return;
       setBasket(next);
       if (shouldPersist) {
         const saved = persistBasket(next);
@@ -281,12 +281,13 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           return false;
         }
         if (mutation.changed) {
-          if (fixtureScenario !== null) {
+          const leavingDemo = fixtureScenario !== null;
+          if (leavingDemo) {
             basketBeforeDemo.current = null;
             setFixtureScenario(null);
             toast.info("Demo ended. Your saved basket is ready to edit.");
           }
-          changed(mutation.basket);
+          changed(mutation.basket, true, leavingDemo);
         }
         return mutation.changed;
       },
