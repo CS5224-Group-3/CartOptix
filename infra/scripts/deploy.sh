@@ -10,7 +10,7 @@
 #                  contracts) are identical to HEAD, so infra-only and web-only
 #                  changes can deploy before their own image exists.
 #   TARGET_RPM     requests per minute per instance the scaling policy holds;
-#                  calibrated by the shakedown run (#21), default 300
+#                  calibrated by the shakedown run (#21), default 3300
 #   AWS_PROFILE    defaults to cartoptix
 #
 # Extra arguments go to `cdk deploy`.
