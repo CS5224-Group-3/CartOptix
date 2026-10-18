@@ -282,7 +282,7 @@ Acceptance targets are p99 below 1 second for catalogue/search, p99 below 2 seco
 
 The outbound-click endpoint is **excluded from the SC-06 failure measurement**. It answers `204` for every outcome, following the GA Measurement Protocol, so a rejected or dropped event is indistinguishable from a recorded one by status code, and counting its responses would report a success rate that means nothing. Lost events are visible in the server logs instead, and #22 reports them from there. Its latency and throughput are still reported, separately from the four shopper endpoints.
 
-Choose run durations and sample sizes before execution. Low-RPS endpoints need sufficient samples for a meaningful p99 and failure-rate report; include sample counts and avoid implying statistical certainty from a short run. Rehearse locally, then conduct the main cloud exercise in the allocated day. Measure scale-out/scale-in and one-instance termination separately from the acceptance runs. A short experiment cannot establish long-term 99.9% daily request success.
+Choose run durations and sample sizes before execution. Low-RPS endpoints need sufficient samples for a meaningful p99 and failure-rate report; include sample counts and avoid implying statistical certainty from a short run. Rehearse locally, then conduct the main cloud exercise in the allocated day. Measure scale-out/scale-in and one-instance termination separately from the acceptance runs. A short experiment cannot establish long-term 99.9% daily request success. Measured capacity, scaling and instance-termination results are recorded in [capacity findings](capacity-findings.md).
 
 ### Correctness, quality and user evidence
 
