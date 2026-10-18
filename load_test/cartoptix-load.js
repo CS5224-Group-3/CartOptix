@@ -7,7 +7,7 @@ const profile = __ENV.PROFILE === "surge" ? "surge" : "normal";
 const mode = __ENV.MODE || "mixed";
 const target = __ENV.TARGET || "";
 const basketSizeInput = __ENV.BASKET_SIZE || "20";
-const basketSize = basketSizeInput === "50" ? 50 : 20;
+const clickRpm = Number(__ENV.CLICK_RPM || 0);
 const rampStepRpm = Number(__ENV.RAMP_STEP_RPM || 60);
 const rampStageDuration = __ENV.RAMP_STAGE_DURATION || "2m";
 const rampSteps = Number(__ENV.RAMP_STEPS || 4);
@@ -18,8 +18,11 @@ const validTargets = new Set(["catalogue", "products", "offers", "basket"]);
 if (!validModes.has(mode)) {
   throw new Error("MODE must be mixed, isolated, or ramp");
 }
-if (!["20", "50"].includes(basketSizeInput)) {
-  throw new Error("BASKET_SIZE must be 20 or 50");
+if (!["20", "50", "both"].includes(basketSizeInput)) {
+  throw new Error("BASKET_SIZE must be 20, 50 or both");
+}
+if (!Number.isInteger(clickRpm) || clickRpm < 0) {
+  throw new Error("CLICK_RPM must be a non-negative integer");
 }
 if ((mode === "isolated" || mode === "ramp") && !validTargets.has(target)) {
   throw new Error(`TARGET must be one of catalogue, products, offers, or basket when MODE=${mode}`);
@@ -117,8 +120,7 @@ function request(name, method, path, body) {
   if (timedOut) requestTimeouts.add(1, { endpoint: name });
   if (!valid) requestErrors.add(1, { endpoint: name });
   if (!valid || response.status >= 500) unexpectedFailures.add(1, { endpoint: name });
-  if (name === "basket")
-    (basketSize === 50 ? basket50Duration : basket20Duration).add(response.timings.duration);
+  return response;
 }
 
 export function catalogue() {
@@ -135,7 +137,23 @@ export function offers() {
   );
 }
 export function basket() {
-  request("basket", "POST", "/api/v1/basket/compare", { lines: baskets[basketSize] });
+  // "both" alternates sizes so one run reports each size's p99 separately.
+  const size = basketSizeInput === "both" ? (__ITER % 2 ? 50 : 20) : Number(basketSizeInput);
+  const response = request("basket", "POST", "/api/v1/basket/compare", { lines: baskets[size] });
+  (size === 50 ? basket50Duration : basket20Duration).add(response.timings.duration);
+}
+
+// Real seed listings. The endpoint answers 204 whatever happens (excluded from
+// SC-06), so lost clicks are read from the server logs, not from k6.
+const listingIds = [
+  "cold-storage-calbee-prawn-crackers-original-90g",
+  "fairprice-calbee-prawn-crackers---original-13146781",
+  "redmart-pdp-i301134522-s527214284",
+];
+export function click() {
+  request("click", "POST", "/api/v1/events/outbound-click", {
+    listingId: listingIds[__ITER % listingIds.length],
+  });
 }
 
 export function ramp() {
@@ -144,6 +162,8 @@ export function ramp() {
   if (rampTarget === "offers") return offers();
   return basket();
 }
+
+if (mode === "mixed" && clickRpm > 0) rates.click = clickRpm;
 
 const constantRateScenarios = Object.fromEntries(
   (mode === "isolated" ? [target] : Object.keys(rates)).map((name) => [
@@ -183,11 +203,15 @@ const scenarios =
 
 export const options = {
   scenarios,
+  summaryTrendStats: ["avg", "med", "p(95)", "p(99)", "max"],
   thresholds: {
     http_req_failed: ["rate<0.001"],
     "http_req_duration{endpoint:catalogue}": ["p(99)<1000"],
     "http_req_duration{endpoint:products}": ["p(99)<1000"],
     "http_req_duration{endpoint:basket}": ["p(99)<2000"],
+    // No agreed target; k6 only reports a tag's latency when a threshold names it.
+    "http_req_duration{endpoint:offers}": ["max>=0"],
+    "http_req_duration{endpoint:click}": ["max>=0"],
     basket_20_duration: ["p(99)<2000"],
     basket_50_duration: ["p(99)<2000"],
   },

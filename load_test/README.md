@@ -13,6 +13,11 @@ k6 run load_test/cartoptix-load.js -e BASE_URL=https://example.cloudfront.net -e
 For an isolated endpoint, set `MODE=isolated` and `TARGET` to `catalogue`,
 `products`, `offers`, or `basket`. Set `DURATION` to choose the run length.
 
+`BASKET_SIZE=both` alternates 20- and 50-line baskets, reporting each size's p99
+separately in one run. `CLICK_RPM=<n>` adds outbound-click traffic to a mixed
+run. That endpoint answers `204` whatever happens, so count lost clicks from the
+API's `Outbound click not recorded` log lines.
+
 For scaling calibration, run the stepwise ramp against one endpoint. The
 default is basket comparison at 60, 120, 180 and 240 requests per minute,
 with two minutes per step:
