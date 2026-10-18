@@ -34,7 +34,8 @@ export function registerShopperRoutes(server: FastifyInstance, database: Databas
         .code(status >= 400 && status < 500 ? status : 400)
         .send(errorBody("invalid_request", error.message));
     }
-    request.log.error(error);
+    // Fastify's logger is off, so log directly: the 500 is otherwise invisible.
+    console.error(`${request.method} ${request.url} failed:`, error);
     return reply
       .code(500)
       .send(errorBody("service_error", "The service is temporarily unavailable."));

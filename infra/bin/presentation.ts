@@ -21,11 +21,11 @@ if (![1, 2, 3].includes(minInstances)) {
   throw new Error(`Context "minInstances" must be 1, 2 or 3, received "${minInstances}".`);
 }
 
-// Calibrated by the shakedown run in infra/RUNBOOK.md (#21). The default is a
-// starting point, not a measurement: roughly 5 requests per second per
-// instance, so the load model's 12 RPS surge scales a second instance out.
-// Override with -c targetRequestsPerMinute=<n> once a run has measured it.
-const targetRequestsPerMinute = Number(app.node.tryGetContext("targetRequestsPerMinute") ?? 300);
+// Calibrated by the shakedown run in infra/RUNBOOK.md (#21, 18 Oct 2026): one
+// instance reached its CPU credit baseline at 4800 requests per minute of mixed
+// traffic with p99 under 200 ms, so the target is about 70% of that. Recalibrate
+// with -c targetRequestsPerMinute=<n> if the API's cost per request changes.
+const targetRequestsPerMinute = Number(app.node.tryGetContext("targetRequestsPerMinute") ?? 3300);
 if (!Number.isInteger(targetRequestsPerMinute) || targetRequestsPerMinute < 1) {
   throw new Error(
     `Context "targetRequestsPerMinute" must be a positive integer, received "${targetRequestsPerMinute}".`,

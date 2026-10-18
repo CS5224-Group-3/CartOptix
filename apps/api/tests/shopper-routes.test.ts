@@ -6,7 +6,7 @@ import {
   routes,
 } from "@cartoptix/contracts";
 import { Value } from "typebox/value";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { BasketData } from "../src/comparison/store.ts";
 import type { Database } from "../src/database.ts";
 import type { DeliveryRule, OfferRule } from "../src/pricing/index.ts";
@@ -76,6 +76,7 @@ let server: ReturnType<typeof buildServer> | undefined;
 afterEach(async () => {
   await server?.close();
   loadBasket = defaultLoadBasket;
+  vi.restoreAllMocks();
 });
 
 function start() {
@@ -178,16 +179,19 @@ describe("shopper routes", () => {
     expect(response.json().error.code).toBe("invalid_request");
   });
 
-  it("reports an unexpected failure as a retryable service error", async () => {
+  it("reports an unexpected failure as a retryable service error, and logs it", async () => {
+    const logged = vi.spyOn(console, "error").mockImplementation(() => {});
     const app = start();
+    const failure = new Error("boom");
     app.get("/api/v1/test-failure", async () => {
-      throw new Error("boom");
+      throw failure;
     });
     const response = await app.inject({ method: "GET", url: "/api/v1/test-failure" });
     expect(response.statusCode).toBe(500);
     expect(response.json()).toEqual({
       error: { code: "service_error", message: "The service is temporarily unavailable." },
     });
+    expect(logged).toHaveBeenCalledWith("GET /api/v1/test-failure failed:", failure);
   });
 
   it("recommends the cheapest complete retailer from the seed", async () => {
@@ -264,6 +268,7 @@ describe("shopper routes", () => {
   });
 
   it("reports a failed database read as a service error, not a business outcome", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
     loadBasket = async () => {
       throw new Error("connection reset");
     };

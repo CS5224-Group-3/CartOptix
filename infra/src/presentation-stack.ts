@@ -249,6 +249,10 @@ export class PresentationStack extends Stack {
         unhealthyThresholdCount: 3,
       },
       deregistrationDelay: Duration.seconds(30),
+      // A joining instance has a cold database pool and, in standard credit
+      // mode, no CPU credits. Given its full share at once, it failed 0.3% of
+      // requests (most likely pool timeouts) in the #21 scale-out run; ramp it in.
+      slowStart: Duration.seconds(120),
     });
 
     // Target tracking scales both ways from one policy: it adds instances

@@ -203,37 +203,47 @@ match, or the dashboard annotation and the leak alarm both become wrong.
 
 ### Calibrating the scaling policy
 
-The policy holds a target of requests per minute per instance. The default of
-300 is a starting point reasoned from the load model, **not a measurement**.
-Calibrate it once, with the stack deployed at `MIN_INSTANCES=1`:
+The policy holds a target of requests per minute per instance. The default,
+**3300**, was calibrated on 18 October 2026 against release `d2bc862`
+([#21 results](https://github.com/CS5224-Group-3/CartOptix/issues/21#issuecomment-6244650495)):
 
-1. Drive a steady, increasing request rate at `out Url` and watch the latency
-   widget. Find the rate at which one instance's ALB p99 reaches the SC-05 bound
-   of two seconds, or at which its CPU credit balance starts falling.
-2. Take about 70% of that rate as the per-instance target, so an instance scales
-   out before it degrades rather than after.
-3. Redeploy with it, and record the measured figure and the date in the #21
-   thread:
+| Measurement | Result |
+| --- | --- |
+| Knee on one instance | 4800 RPM of mixed traffic (catalogue:products:offers:basket = 1:5:5:1), where CPU reached the `t4g.micro` baseline of 10% and the credit balance stopped rising. p99 stayed under 200 ms |
+| Target | about 70% of the knee: 3300 |
+| Scale-out at 7200 RPM | 1 to 3 instances serving in about 15 minutes; each new instance took about 8 minutes from launch to healthy |
+| Scale-in after the load stopped | started after about 18 minutes, then 3 to 1 within 2 minutes |
+| At 3 instances | 12 database connections at peak (budget 18); RDS CPU about 24% with its credits falling slowly |
+
+Recalibrate if the API's cost per request changes:
+
+1. Deploy at `MIN_INSTANCES=1` and suspend alarm-driven scaling, so the group
+   stays at one instance while you measure:
+   `aws autoscaling suspend-processes --auto-scaling-group-name "$(out AutoScalingGroupName)" --scaling-processes AlarmNotification`
+2. Drive a steady rate in steps of a few minutes each and watch the latency and
+   CPU credit widgets. Find the rate at which ALB p99 reaches the SC-05 bound of
+   two seconds, or at which the CPU credit balance starts falling.
+3. Take about 70% of that rate as the target, so an instance scales out before it
+   degrades. Redeploy with it, then resume scaling with `resume-processes` and the
+   same arguments:
 
    ```bash
    TARGET_RPM=<measured> pnpm --filter @cartoptix/infra deploy
    ```
 
-4. Confirm both directions: hold a load above the target until a second instance
-   is in service, then stop and confirm scale-in.
+4. Hold a load above the target until new instances are in service, then stop
+   and confirm scale-in. Record the figures in #21 and update the default in
+   `bin/presentation.ts`.
 
-   Target tracking sets its own timing through the two alarms AWS creates with
-   the policy, and it is slower in than out: roughly three one-minute datapoints
-   above target before scaling out, and about fifteen below it before scaling
-   in. A new instance then needs around eight more minutes before it serves
-   traffic (`estimatedInstanceWarmup`). There is no cooldown setting to tune
-   here — CloudFormation honours `Cooldown` only for simple scaling policies —
-   so **record the scale-out and scale-in delays you measure** rather than
-   quoting these figures. #22 needs the measured ones.
+Target tracking sets its own timing through the two alarms AWS creates with the
+policy: three one-minute datapoints above the target before scaling out, and
+fifteen below it before scaling in. There is no cooldown setting to tune here;
+CloudFormation honours `Cooldown` only for simple scaling policies.
 
-Record the calibrated value, the run it came from and the observed scale-out and
-scale-in times. Until that is done, the policy is configured but not calibrated,
-and #21's first acceptance criterion is not met.
+New instances join the target group in slow start for 120 seconds, so traffic
+reaches them gradually. They start with a cold database pool and, in standard
+credit mode, no CPU credits; without slow start the calibration run failed 0.3%
+of requests in the minute each one joined.
 
 ## Destroy
 
