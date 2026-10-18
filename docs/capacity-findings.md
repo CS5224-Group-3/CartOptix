@@ -1,6 +1,6 @@
 # Capacity and resilience findings
 
-Measured results from the presentation stack on 18 October 2026, for #21 and #22. This
+Measured results from the presentation stack on 18 October 2026, for #21 and #22 (runs A–G). This
 document records observations only; assessment against the product contract is left
 to the evaluation report.
 
@@ -132,6 +132,69 @@ endpoints with a threshold, and offers has none.
 The technical specification measures one-instance termination separately from the
 SC-05/SC-06 acceptance runs (section 7).
 
+## Run E: surge, mixed, 20- and 50-line baskets (`14536c6`)
+
+Two instances. `load_test/cartoptix-load.js` from #65 with `PROFILE=surge
+BASKET_SIZE=both DURATION=15m` (basket requests alternate 20 and 50 lines).
+05:41:29–05:56:30 UTC.
+
+## Run F: run E plus outbound clicks (`14536c6`)
+
+Identical to run E with `CLICK_RPM=60` added. 05:56:30–06:11:30 UTC.
+
+| Series | Expected samples (E / F) | p95 E | p99 E | max E | p95 F | p99 F | max F |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Catalogue | 900 / 900 | 30.4 ms | 70.9 ms | 235 ms | 35.7 ms | 91.1 ms | 424 ms |
+| Products search | 4,500 / 4,500 | 29.9 ms | 50.3 ms | 545 ms | 31.9 ms | 82.1 ms | 842 ms |
+| Offers | 4,500 / 4,500 | 22.0 ms | 36.8 ms | 548 ms | 24.0 ms | 65.1 ms | 806 ms |
+| Basket, all | 900 / 900 | 48.8 ms | 91.6 ms | 401 ms | 52.4 ms | 100.6 ms | 592 ms |
+| Basket, 20-line | 450 / 450 | 33.6 ms | 79.5 ms | 166 ms | 31.0 ms | 81.0 ms | 101 ms |
+| Basket, 50-line | 450 / 450 | 60.6 ms | 118.6 ms | 401 ms | 84.5 ms | 111.4 ms | 592 ms |
+| Outbound click | – / 900 | – | – | – | 23.5 ms | 85.6 ms | 334 ms |
+
+Expected samples are the configured rate × duration; k6's summary export does not
+give a count per series.
+
+| Measure | Run E | Run F |
+| --- | --- | --- |
+| Requests (k6) | 10,803 at 12.00 RPS | 11,705 at 13.00 RPS |
+| Failed requests | 0 | 0 |
+| ALB target 5xx / ELB 5xx | 0 / 0 | 0 / 0 |
+| Clicks logged as not recorded | – | 0 |
+| App CPU, group average (5 min) | 1.4–1.6% | 1.4–1.6% |
+| RDS CPU (5 min) | 6.3% | 6.3–6.9% |
+| RDS credit balance | rising, 80.4 → 81.5 | rising, 81.5 → 82.5 |
+
+## Run G: stepped mixed load at three instances (`14536c6`)
+
+Group pinned at three instances with `AlarmNotification` suspended. Same mixed
+traffic as the calibration ramp (`calib.js`, 1:5:5:1, 20-line basket), 4 minutes per
+step, 06:14:22–06:30:22 UTC. The third instance was launched at 06:11:40 and became
+healthy in the ALB at 06:17, so the 7,200 RPM step ran on two instances for its
+first 3 minutes.
+
+| Offered RPM (RPS) | Requests | Failures | Dropped iterations | k6 p99, all | k6 p99 catalogue / products / offers / basket |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 7,200 (120) | 28,799 | 0 | 5 | 101 ms | 99 / 124 / 79 / 111 ms |
+| 9,600 (160) | 38,402 | 0 | 2 | 73 ms | 61 / 85 / 64 / 79 ms |
+| 12,000 (200) | 47,989 | 0 | 15 | 86 ms | 74 / 106 / 70 / 85 ms |
+| 14,400 (240) | 57,553 | 0 | 51 | 154 ms | 175 / 180 / 128 / 162 ms |
+
+- ALB target 5xx and ELB 5xx: 0 throughout. ALB p99 by minute: 0.03–0.14 s.
+- k6 used at most 107 of its 400 allowed VUs.
+- App CPU, group average (5 min): 8.7% (7,200) rising to 11.6% (14,400).
+- App CPU credit balances (5 min): the two older instances flat at 31.1 → 31.0 and
+  27.3 → 27.4 during the run; the new instance 0.0 → 0.2.
+- RDS CPU (1-minute average) per step: about 24–25% at 7,200, 29–32% at 9,600,
+  36–37% at 12,000 and 41–44% at 14,400 RPM. The `db.t4g.micro` CPU baseline is 10%.
+- RDS CPU credit balance (5 min): 82.5 (06:15) → 80.7 (06:20) → 78.2 (06:25).
+- Database connections (5-minute maximum): 10–13.
+- One outbound click, not from k6 (run G sent none), was logged at 06:30:00 as
+  `Outbound click not recorded: Connection terminated due to connection timeout`.
+
+For comparison with the single-instance ramp: RDS CPU was 9% at 1,800 RPM and 11.8% at
+2,400 RPM there, and its credit balance began falling between 2,400 and 3,600 RPM.
+
 ## Configuration relevant to these results
 
 | Setting | Value |
@@ -146,7 +209,8 @@ SC-05/SC-06 acceptance runs (section 7).
 
 ## Not measured
 
-- Isolated-endpoint and normal-profile runs, and 50-line basket runs on AWS (#22, F2).
-- Comparison latency under concurrent outbound-click load (#22, F2).
+- Isolated-endpoint and normal-profile runs on AWS.
+- Mixed load above 14,400 RPM, and how long the database sustains loads that drain
+  its CPU credits.
 - Database failure or failover.
 - Runs longer than 25 minutes.
