@@ -24,6 +24,9 @@ if (!["20", "50", "both"].includes(basketSizeInput)) {
 if (!Number.isInteger(clickRpm) || clickRpm < 0) {
   throw new Error("CLICK_RPM must be a non-negative integer");
 }
+if (clickRpm > 0 && mode !== "mixed") {
+  throw new Error("CLICK_RPM applies only when MODE=mixed");
+}
 if ((mode === "isolated" || mode === "ramp") && !validTargets.has(target)) {
   throw new Error(`TARGET must be one of catalogue, products, offers, or basket when MODE=${mode}`);
 }
