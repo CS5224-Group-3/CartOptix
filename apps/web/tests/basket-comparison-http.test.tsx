@@ -27,6 +27,7 @@ function deferred() {
 async function open(
   compare = async () => json(recommendedExample),
   lookup?: (url: string) => Promise<Response>,
+  seedCache?: (client: QueryClient) => void,
 ) {
   const posts = vi.fn(compare);
   const offers = vi.fn(
@@ -50,6 +51,7 @@ async function open(
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
+  seedCache?.(client);
   window.history.replaceState({}, "", "/catalogue");
   const view = render(<App queryClient={client} />);
   for (const button of await screen.findAllByRole("button", { name: "Add" }))
@@ -177,18 +179,54 @@ describe("normal API comparison flow", () => {
     expect(within(screen.getByRole("main")).getAllByText("Fixture Plain Drink")).toHaveLength(2);
   });
 
-  it("uses cached product-detail metadata outside the product index without another lookup", async () => {
-    const { client, offers } = await open();
-    await clearMetadata(client);
-    for (const product of productsExample.products)
-      client.setQueryData<OffersResponse>(["offers", product.productId, 3], {
-        product,
-        quantity: 3,
-        offers: [],
+  it.each(["comparison-product", "product-index", "products-page", "offers"] as const)(
+    "uses cached %s metadata without another lookup",
+    async (source) => {
+      const { offers } = await open(undefined, undefined, (client) => {
+        if (source === "comparison-product") {
+          for (const product of productsExample.products)
+            client.setQueryData(["comparison-product", product.productId], product);
+        } else if (source === "product-index") {
+          client.setQueryData(["product-index"], productsExample.products);
+        } else if (source === "products-page") {
+          client.setQueryData(["products", { page: 99, pageSize: 20 }], {
+            products: productsExample.products,
+            total: productsExample.products.length,
+          });
+        } else {
+          for (const product of productsExample.products)
+            client.setQueryData<OffersResponse>(["offers", product.productId, 3], {
+              product,
+              quantity: 3,
+              offers: [],
+            });
+        }
       });
+
+      compare();
+      await results();
+
+      expect(offers).not.toHaveBeenCalled();
+    },
+  );
+
+  it("offers a retry after HTTP 429 and succeeds when retried", async () => {
+    let rateLimited = true;
+    const { posts } = await open(async () => {
+      if (rateLimited) {
+        rateLimited = false;
+        return json({ error: { code: "service_error", message: "Rate limited" } }, 429);
+      }
+      return json(recommendedExample);
+    });
+
     compare();
+    expect(await screen.findByRole("button", { name: "Retry comparison" })).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Retry comparison" }));
     await results();
-    expect(offers).not.toHaveBeenCalled();
+
+    expect(posts).toHaveBeenCalledTimes(2);
+    expect(screen.getByText(/^Recommended/)).toBeDefined();
   });
 
   it("fails safely without POST when metadata cannot be resolved", async () => {
@@ -200,6 +238,7 @@ describe("normal API comparison flow", () => {
     expect((await screen.findByRole("alert")).textContent).toContain("Missing");
     expect(posts).not.toHaveBeenCalled();
     expect(screen.queryByRole("button", { name: "Retry comparison" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Back to basket editing" })).toBeNull();
   });
 
   it("edits during metadata lookup do not change the submitted request", async () => {
@@ -212,7 +251,7 @@ describe("normal API comparison flow", () => {
     await clearMetadata(client);
     compare();
     await waitFor(() => expect(offers).toHaveBeenCalledTimes(2));
-    fireEvent.click(screen.getByRole("button", { name: "Increase fixture-rice" }));
+    fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
     await act(async () =>
       waiting.resolve(json({ product: productsExample.products[0], quantity: 1, offers: [] })),
     );
@@ -350,7 +389,7 @@ describe("normal API comparison flow", () => {
     expect(posts).toHaveBeenCalledTimes(1);
   });
 
-  it("adding catalogue products replaces the demo basket and sends exactly the normal basket", async () => {
+  it("adding catalogue products after a demo restores and extends the saved basket", async () => {
     const { posts, fetchMock } = await open();
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
     fireEvent.click(screen.getByRole("link", { name: "Browse products" }));
@@ -363,14 +402,19 @@ describe("normal API comparison flow", () => {
         /Synthetic Milk|Synthetic White Rice|fixture-milk/,
       ),
     ).toBeNull();
-    compare();
-    await results();
-    expect(posts).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls.find(([url]) => url === routes.compare.url)?.[1]?.body).toBe(
-      JSON.stringify(basketRequestExample),
-    );
-    expect(screen.getByText(/curated retailer dataset, not live retailer prices/)).toBeDefined();
-    expect(screen.queryByText(/Synthetic demonstration:/)).toBeNull();
+    expect(posts).not.toHaveBeenCalled();
+    expect(fetchMock.mock.calls.some(([url]) => url === routes.compare.url)).toBe(false);
+    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(2);
+    expect(
+      screen
+        .getByRole("button", { name: "Increase Fixture Plain Drink" })
+        .parentElement?.querySelector("strong")?.textContent,
+    ).toBe("2");
+    expect(
+      screen
+        .getByRole("button", { name: "Increase Fixture White Rice" })
+        .parentElement?.querySelector("strong")?.textContent,
+    ).toBe("2");
   });
 
   it.each(["network", "service_error", "5xx"])(

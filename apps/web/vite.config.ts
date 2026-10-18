@@ -28,7 +28,7 @@ export default defineConfig({
     environment: "jsdom",
     globals: false,
     setupFiles: ["./tests/setup.ts"],
-    // Browser-style integration tests are slower on Windows CI than unit tests.
+    // Allow time for async browser-style integration flows and large rendered catalogue pages.
     testTimeout: 15_000,
   },
 });

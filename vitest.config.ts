@@ -9,5 +9,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     projects: ["apps/api", "apps/web", "packages/contracts"],
+    // Keep worker concurrency predictable; the default starts one worker per test file.
+    maxWorkers: 4,
   },
 });

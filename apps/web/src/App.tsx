@@ -5,9 +5,7 @@ import {
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
   type Offer,
-  type OffersResponse,
   type Product,
-  type ProductsResponse,
   type RetailerId,
   SNAPSHOT_DISCLAIMER,
 } from "@cartoptix/contracts";
@@ -50,6 +48,7 @@ import { persistBasket, restoreBasket } from "./features/basket/storage";
 import { createApiSource } from "./features/basket-comparison/apiSource";
 import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
 import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
+import { buildKnownProductMap } from "./features/basket-comparison/knownProducts";
 import { resolveSubmissionMetadata } from "./features/basket-comparison/metadata";
 import type {
   BasketComparisonPresentation,
@@ -99,23 +98,32 @@ const BasketContext = createContext<BasketContextValue | null>(null);
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
   const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
+  const basketBeforeDemo = useRef<BasketLine[] | null>(null);
+  const [productMetadataRevision, setProductMetadataRevision] = useState(0);
   const products = useProductIndex();
   const queryClient = useQueryClient();
-  const productMetadata = new Map<string, Product>();
-  for (const [, product] of queryClient.getQueriesData<Product>({
-    queryKey: ["comparison-product"],
-  }))
-    if (product) productMetadata.set(product.productId, product);
-  for (const [id, product] of products) productMetadata.set(id, product);
-  for (const [, data] of queryClient.getQueriesData<ProductsResponse>({ queryKey: ["products"] }))
-    for (const product of data?.products ?? []) productMetadata.set(product.productId, product);
-  for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
-    if (data?.product) productMetadata.set(data.product.productId, data.product);
+  // The revision invalidates this memo when metadata-only cache entries change.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This state is an intentional cache revision token.
+  const productMetadata = useMemo(
+    () => buildKnownProductMap(queryClient, products),
+    [productMetadataRevision, queryClient, products],
+  );
+  useEffect(
+    () =>
+      queryClient.getQueryCache().subscribe((event) => {
+        if (event.type !== "updated" || event.action.type !== "success") return;
+        if (!["comparison-product", "offers", "products"].includes(String(event.query.queryKey[0])))
+          return;
+        setProductMetadataRevision((revision) => revision + 1);
+      }),
+    [queryClient],
+  );
   const prepareSubmission = useCallback(
     async (captured: ComparisonSubmission) => {
       const draft = structuredClone(captured);
+      const knownProducts = buildKnownProductMap(queryClient, products);
       for (const line of draft.basket.products) {
-        const cached = queryClient.getQueryData<Product>(["comparison-product", line.productId]);
+        const cached = knownProducts.get(line.productId);
         if (cached) {
           if (!line.name?.trim()) line.name = cached.name;
           if (!line.packDescription?.trim()) line.packDescription = cached.packSize;
@@ -127,7 +135,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
         queryClient.setQueryData(["comparison-product", product.productId], product);
       });
     },
-    [queryClient],
+    [products, queryClient],
   );
   const { result: comparison, request: requestState, submit, retry } = useComparison(source);
   const [location, navigate] = useLocation();
@@ -154,7 +162,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   const [persistenceFailed, setPersistenceFailed] = useState(false);
 
   const changed = useCallback(
-    (next: BasketLine[], shouldPersist = true) => {
+    (next: BasketLine[], shouldPersist = true, force = false) => {
       const basketChanged =
         next.length !== basket.length ||
         next.some(
@@ -162,7 +170,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
             line.productId !== basket[index]?.productId ||
             line.quantity !== basket[index]?.quantity,
         );
-      if (!basketChanged) return;
+      if (!basketChanged && !force) return;
       setBasket(next);
       if (shouldPersist) {
         const saved = persistBasket(next);
@@ -227,14 +235,8 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
                 name: product.name,
                 packSize: product.packDescription,
               });
-        for (const [id, product] of productMetadata) known.set(id, product);
-        // Read at click time too: another query may populate its cache before React rerenders.
-        for (const [, data] of queryClient.getQueriesData<ProductsResponse>({
-          queryKey: ["products"],
-        }))
-          for (const product of data?.products ?? []) known.set(product.productId, product);
-        for (const [, data] of queryClient.getQueriesData<OffersResponse>({ queryKey: ["offers"] }))
-          if (data?.product) known.set(data.product.productId, data.product);
+        for (const [id, product] of buildKnownProductMap(queryClient, products))
+          known.set(id, product);
         submit(
           {
             basket: {
@@ -252,30 +254,16 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
         );
       },
       leaveDemo: () => {
+        basketBeforeDemo.current = null;
         setFixtureScenario(null);
         changed([]);
       },
       retryComparison: () => retry(successNavigation()),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
-        if (
-          fixtureScenario !== null &&
-          (!Number.isInteger(quantity) ||
-            quantity < MIN_PACKS_PER_LINE ||
-            quantity > MAX_PACKS_PER_LINE)
-        ) {
-          toast.error("Invalid quantity", {
-            description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
-          });
-          return false;
-        }
-        if (fixtureScenario !== null) {
-          setFixtureScenario(null);
-          changed([{ productId, quantity }]);
-          toast.info("Demo basket replaced with your catalogue selection.");
-          return true;
-        }
-        const mutation = addBasketLine(basket, productId, quantity);
+        const sourceBasket =
+          fixtureScenario === null ? basket : (basketBeforeDemo.current ?? restoreBasket());
+        const mutation = addBasketLine(sourceBasket, productId, quantity);
         if (mutation.error) {
           if (mutation.error === "line-limit") {
             toast.error("Basket limit reached", {
@@ -292,7 +280,15 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           }
           return false;
         }
-        if (mutation.changed) changed(mutation.basket);
+        if (mutation.changed) {
+          const leavingDemo = fixtureScenario !== null;
+          if (leavingDemo) {
+            basketBeforeDemo.current = null;
+            setFixtureScenario(null);
+            toast.info("Demo ended. Your saved basket is ready to edit.");
+          }
+          changed(mutation.basket, true, leavingDemo);
+        }
         return mutation.changed;
       },
       setQuantity: (productId, quantity) => {
@@ -309,12 +305,14 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       },
       // Homepage baskets use the normal API source.
       loadScenario: (lines) => {
+        basketBeforeDemo.current = null;
         changed(lines);
         setFixtureScenario(null);
       },
       loadComparisonScenario: (scenario) => {
         const fixture = comparisonFixtures[fixtureScenarios[scenario]?.fixture ?? ""];
         if (!fixture) return;
+        if (fixtureScenario === null) basketBeforeDemo.current = basket;
         changed(
           fixture.submittedBasket.products.map(({ productId, quantity }) => ({
             productId,
@@ -340,6 +338,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       productMetadata,
       prepareSubmission,
       queryClient,
+      products,
     ],
   );
 
@@ -951,6 +950,7 @@ export function BasketPage() {
             request={requestState}
             currentRevision={basketRevision}
             onRetry={retryComparison}
+            showBackToBasket={false}
           />
           {persistenceFailed && (
             <div className="stale-banner" role="status">
