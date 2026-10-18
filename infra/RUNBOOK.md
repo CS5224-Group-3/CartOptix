@@ -4,8 +4,8 @@ Issue #20. How to deploy, load, check, scale and destroy the presentation
 stack (`CartOptixPresentation`). The architecture and its limitations are in the
 [technical spec](../docs/technical-implementation-spec.md), section 2.
 
-The stack runs only while someone is working on it or presenting. **Destroy it at
-the end of every working session**, and keep the development host stopped while
+The stack runs only while someone is working on it, testing it or presenting.
+**Destroy it when it is not in use, checked daily**, and keep the development host stopped while
 it is up. It is deployed from an engineer's machine only, never from CI.
 
 ## What gets deployed
@@ -58,7 +58,7 @@ subnets behind a NAT gateway or VPC endpoints.
   secret. See the admin request on #20.
 
 Once per project, deploy the spending alert. It is a separate stack on purpose:
-`pnpm destroy` tears down the presentation stack after every session, and an
+`pnpm destroy` tears down the presentation stack whenever it is idle, and an
 alert that went with it would be absent whenever nothing is being watched.
 
 ```bash
@@ -77,7 +77,7 @@ Two limits on what this alert can tell you early:
   forecast notification as something that starts working later, not as cover
   for the opening weeks.
 - Billing data lags by several hours, so neither notification is immediate.
-  Neither replaces destroying the stack at the end of a session.
+  Neither replaces destroying the stack when it is idle.
 
 Helper used below, from the repository root:
 

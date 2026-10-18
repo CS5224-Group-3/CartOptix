@@ -244,7 +244,7 @@ Use one `t4g.micro` for the development POC, with app and database sharing its l
 
 Provision reusable infrastructure, then verify teardown by 13 November 2026. Include resources that continue charging after compute shutdown: volumes, load balancers, snapshots, retained databases and logs. Preserve required seed, results and report artefacts before deletion. Any retained billable resource needs an explicit cost entry.
 
-The presentation stack is destroyed at the end of every working session and recreated when needed, and the development host stays stopped while the presentation stack is up. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
+The presentation stack is destroyed when it is not in use, checked daily, and recreated when needed, and the development host stays stopped while the presentation stack is up. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
 
 ### Delivery and scaling
 
