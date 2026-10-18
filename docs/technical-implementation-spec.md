@@ -244,7 +244,7 @@ Use one `t4g.micro` for the development POC, with app and database sharing its l
 
 Provision reusable infrastructure, then verify teardown by 13 November 2026. Include resources that continue charging after compute shutdown: volumes, load balancers, snapshots, retained databases and logs. Preserve required seed, results and report artefacts before deletion. Any retained billable resource needs an explicit cost entry.
 
-The presentation stack is destroyed at the end of every working session and recreated when needed, and the development host stays stopped while the presentation stack is up. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
+The presentation stack is destroyed when it is not in use, checked daily, and recreated when needed, and the development host stays stopped while the presentation stack is up. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
 
 ### Delivery and scaling
 
@@ -276,7 +276,7 @@ The first-year scenario is 1,000 daily active shoppers, two sessions each, 20% a
 
 Paths above omit `/api/v1`. Health and click endpoints are outside this four-endpoint forecast; record their additional traffic explicitly. Verify click tracking under concurrent activity without relabelling the four-endpoint totals.
 
-Run isolated endpoint tests, then all four endpoints simultaneously at the declared rates. Use open-model arrival-rate generation so slow responses do not silently reduce offered load. Vary products, queries and baskets; include normal 20-line and maximum 50-line baskets and relevant pricing boundaries. Report basket p99 and sample counts separately for each size, as well as the aggregate, so maximum-sized requests cannot be hidden by the mix. Both sizes must meet the basket target. Do not rely only on cached identical requests. Declare cache settings and test paths.
+Run all four endpoints simultaneously at the declared surge rates, which are at least the normal rates on every endpoint. Isolated endpoint runs are diagnostic, for a mixed run that misses a target. Separately, measure the highest mixed load the three-instance maximum sustains. Use open-model arrival-rate generation so slow responses do not silently reduce offered load. Vary products, queries and baskets; include normal 20-line and maximum 50-line baskets and relevant pricing boundaries. Report basket p99 and sample counts separately for each size, as well as the aggregate, so maximum-sized requests cannot be hidden by the mix. Both sizes must meet the basket target. Do not rely only on cached identical requests. Declare cache settings and test paths.
 
 Acceptance targets are p99 below 1 second for catalogue/search, p99 below 2 seconds for basket comparison, and at most 0.1% unexpected failures. Product-offer latency must be reported; no separate numeric target was agreed for that endpoint. Measure shopper-facing API latency from a documented load-generator location through the deployed ingress, with server-side timings for diagnosis. Report failures separately rather than excluding them silently from success claims.
 
@@ -422,9 +422,9 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 - **Work:** Implement the four-endpoint arrival-rate workload, varied inputs, isolated and mixed scenarios and result collection. Define run duration, sample counts, generator location and metric denominators.
 - **Acceptance:** Offered load does not fall silently when responses slow; 2.4/12 RPS profiles are reproducible; 20-/50-line baskets are covered; health/click traffic is accounted for separately. Scripts can be prepared against fixtures.
 
-#### F2 — Run normal/surge performance acceptance tests
+#### F2 — Run surge performance acceptance tests
 - **Blocked by:** C5, D5, E5, F1.
-- **Work:** Use the allocated cloud load-test day to run isolated and mixed tests, capture latency/error/resource data and record the code and configuration tested. Include a mixed outbound-click and basket-comparison case, because the claim that click tracking cannot slow comparison is currently reasoned from a separate connection pool rather than measured; clicks still share the database's connection limit, CPU and I/O.
+- **Work:** Use the allocated cloud load-test day to run the mixed surge test and the three-instance maximum-load test, capture latency/error/resource data and record the code and configuration tested. Include a mixed outbound-click and basket-comparison case, because the claim that click tracking cannot slow comparison is currently reasoned from a separate connection pool rather than measured; clicks still share the database's connection limit, CPU and I/O.
 - **Acceptance:** Report p99 and sample counts per endpoint and separately for 20-line and 50-line basket requests, thresholds from SC-05/SC-06, offered/achieved throughput, failures and credit/DB pressure. Product-offer latency is reported without inventing a new threshold. Comparison p99 under concurrent click load is reported against its ordinary p99, so any interference is visible rather than assumed absent. Record failures honestly and remediate/retest affected cases; do not change targets silently.
 
 #### F3 — Demonstrate autoscaling and instance-failure behaviour

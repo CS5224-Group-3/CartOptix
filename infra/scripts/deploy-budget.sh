@@ -6,7 +6,7 @@
 #   AWS_PROFILE    defaults to cartoptix
 #
 # Separate from deploy.sh because this stack must outlive the presentation
-# stack: destroy.sh tears that one down after every session, and a spending
+# stack: destroy.sh tears that one down whenever it is idle, and a spending
 # alert that disappears with it would be absent whenever nothing is watching.
 set -euo pipefail
 cd "$(dirname "$0")/.."
