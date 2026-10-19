@@ -61,6 +61,47 @@ afterEach(() => {
 });
 
 describe("shopper basket editing", () => {
+  it("opens product details from basket title and image without changing the basket", async () => {
+    openApp();
+    await addBothCatalogueProducts();
+
+    // Both product links must point to the existing details route.
+    const titleLink = screen.getByRole("link", {
+      name: "Fixture Plain Drink",
+    });
+    const imageLink = screen.getByRole("link", {
+      name: "View details for Fixture Plain Drink",
+    });
+
+    expect(titleLink.getAttribute("href")).toBe("/product/fixture-drink");
+    expect(imageLink.getAttribute("href")).toBe("/product/fixture-drink");
+
+    // Clicking the product title opens its details page.
+    fireEvent.click(titleLink);
+    await screen.findByRole("heading", { name: "Fixture Plain Drink" });
+    expect(window.location.pathname).toBe("/product/fixture-drink");
+
+    // Return to the basket.
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+    await screen.findByRole("heading", {
+      name: "Exact products you selected",
+    });
+
+    // Clicking the product image opens the same details page.
+    fireEvent.click(
+      screen.getByRole("link", {
+        name: "View details for Fixture Plain Drink",
+      }),
+    );
+    await screen.findByRole("heading", { name: "Fixture Plain Drink" });
+    expect(window.location.pathname).toBe("/product/fixture-drink");
+
+    // Verify the basket still contains the original products and quantities.
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+      { productId: "fixture-drink", quantity: 1 },
+      { productId: "fixture-rice", quantity: 1 },
+    ]);
+  });
   it("adds products, changes a line quantity and removes only the selected product", async () => {
     openApp();
     await addBothCatalogueProducts();
