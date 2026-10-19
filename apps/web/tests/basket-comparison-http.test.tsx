@@ -10,9 +10,10 @@ import {
 } from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 
+beforeEach(() => window.localStorage.clear());
 afterEach(() => window.history.replaceState({}, "", "/"));
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
 function deferred() {
