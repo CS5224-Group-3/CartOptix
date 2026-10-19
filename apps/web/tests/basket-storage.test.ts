@@ -19,7 +19,7 @@ const lines: BasketLine[] = [
   { productId: "fixture-drink", quantity: 1 },
 ];
 
-describe("tab-session basket storage", () => {
+describe("shared basket storage", () => {
   it("stores and restores product IDs and quantities in their original order", () => {
     const storage = memoryStorage();
     expect(persistBasket(lines, storage)).toBe(true);

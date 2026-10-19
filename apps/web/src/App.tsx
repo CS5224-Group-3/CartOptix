@@ -177,7 +177,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
         setPersistenceFailed(!saved);
         if (!saved && !persistenceFailed)
           toast.warning("Basket changes may not survive a reload", {
-            description: "Session storage is unavailable. Keep this tab open to retain your edits.",
+            description: "Browser storage is unavailable. Keep this tab open to retain your edits.",
           });
       }
       setBasketRevision((revision) => revision + 1);

@@ -54,9 +54,9 @@ async function addBothCatalogueProducts() {
   await screen.findByRole("heading", { name: "Exact products you selected" });
 }
 
-beforeEach(() => window.sessionStorage.removeItem(BASKET_STORAGE_KEY));
+beforeEach(() => window.localStorage.removeItem(BASKET_STORAGE_KEY));
 afterEach(() => {
-  window.sessionStorage.removeItem(BASKET_STORAGE_KEY);
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
   window.history.replaceState({}, "", "/");
 });
 
@@ -92,7 +92,7 @@ describe("shopper basket editing", () => {
     fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
     fireEvent.click(screen.getByRole("button", { name: "Increase Fixture Plain Drink" }));
     await waitFor(() =>
-      expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+      expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
         { productId: "fixture-drink", quantity: 2 },
         { productId: "fixture-rice", quantity: 1 },
       ]),
@@ -111,13 +111,13 @@ describe("shopper basket editing", () => {
         .parentElement?.querySelector("strong")?.textContent,
     ).toBe("1");
     expect(document.querySelectorAll(".basket-row")).toHaveLength(2);
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       { productId: "fixture-drink", quantity: 2 },
       { productId: "fixture-rice", quantity: 1 },
     ]);
   });
 
-  it("warns when session storage rejects a basket edit", async () => {
+  it("warns when browser storage rejects a basket edit", async () => {
     const firstLoad = openApp();
     await addBothCatalogueProducts();
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
@@ -132,7 +132,7 @@ describe("shopper basket editing", () => {
         .getByRole("button", { name: "Increase Fixture Plain Drink" })
         .parentElement?.querySelector("strong")?.textContent,
     ).toBe("2");
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       { productId: "fixture-drink", quantity: 1 },
       { productId: "fixture-rice", quantity: 1 },
     ]);
@@ -151,7 +151,7 @@ describe("shopper basket editing", () => {
     await addBothCatalogueProducts();
     fireEvent.click(screen.getByRole("button", { name: "Remove Fixture Plain Drink" }));
 
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       { productId: "fixture-rice", quantity: 1 },
     ]);
     firstLoad.unmount();
@@ -162,7 +162,7 @@ describe("shopper basket editing", () => {
       await screen.findByRole("button", { name: "Increase Fixture White Rice" }),
     ).toBeDefined();
     expect(screen.queryByRole("button", { name: "Remove Fixture Plain Drink" })).toBeNull();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       { productId: "fixture-rice", quantity: 1 },
     ]);
   });
@@ -170,14 +170,14 @@ describe("shopper basket editing", () => {
   it("does not restore synthetic demo products as a normal basket after reload", async () => {
     const firstLoad = openApp("/basket");
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
-    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+    expect(window.localStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
     firstLoad.unmount();
 
     openApp("/basket");
 
     expect(await screen.findByText("Your basket is empty")).toBeDefined();
     expect(screen.queryByText("Product details unavailable")).toBeNull();
-    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+    expect(window.localStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
   });
 
   it("does not persist synthetic lines when a demo basket is edited", async () => {
@@ -185,7 +185,7 @@ describe("shopper basket editing", () => {
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
     fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
 
-    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
+    expect(window.localStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
     firstLoad.unmount();
 
     openApp("/basket");
@@ -196,12 +196,12 @@ describe("shopper basket editing", () => {
 
   it("preserves the saved real basket while a demo scenario is loaded", async () => {
     const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
     const firstLoad = openApp("/basket");
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
     fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
 
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
       savedBasket,
     );
     firstLoad.unmount();
@@ -217,7 +217,7 @@ describe("shopper basket editing", () => {
 
   it("keeps the saved basket when adding a catalogue product after loading a demo", async () => {
     const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
     openApp("/basket");
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
     fireEvent.click(screen.getByRole("link", { name: "Add more" }));
@@ -236,7 +236,7 @@ describe("shopper basket editing", () => {
         .parentElement?.querySelector("strong")?.textContent,
     ).toBe("2");
     expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
       ...savedBasket,
       { productId: "fixture-rice", quantity: 1 },
     ]);
@@ -244,7 +244,7 @@ describe("shopper basket editing", () => {
 
   it("persists the saved basket plus a catalogue addition when it matches the demo lines", async () => {
     const savedBasket = [{ productId: "fixture-drink", quantity: 1 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
     const firstLoad = openApp("/basket");
     fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
     fireEvent.click(screen.getByRole("link", { name: "Add more" }));
@@ -256,7 +256,7 @@ describe("shopper basket editing", () => {
 
     const expectedBasket = [...savedBasket, { productId: "fixture-rice", quantity: 1 }];
     expect(screen.getByText(/API comparison mode/)).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
       expectedBasket,
     );
     firstLoad.unmount();
@@ -267,7 +267,7 @@ describe("shopper basket editing", () => {
       await screen.findByRole("button", { name: "Increase Fixture Plain Drink" }),
     ).toBeDefined();
     expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
       expectedBasket,
     );
   });
@@ -343,7 +343,7 @@ describe("shopper basket editing", () => {
   });
 
   it("explains how to recover when adding a product would exceed 50 lines", async () => {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       BASKET_STORAGE_KEY,
       JSON.stringify(
         Array.from({ length: 50 }, (_, index) => ({
@@ -361,11 +361,11 @@ describe("shopper basket editing", () => {
     expect(
       await screen.findByText(/Remove a product from your basket before adding another/),
     ).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toHaveLength(50);
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toHaveLength(50);
   });
 
   it("allows the 50th distinct product line", async () => {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       BASKET_STORAGE_KEY,
       JSON.stringify(
         Array.from({ length: 49 }, (_, index) => ({
@@ -382,11 +382,11 @@ describe("shopper basket editing", () => {
     fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
 
     expect(await screen.findAllByRole("button", { name: /^Remove / })).toHaveLength(50);
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toHaveLength(50);
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toHaveLength(50);
   });
 
   it("explains how to recover when adding packs would exceed 20 for one product", async () => {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       BASKET_STORAGE_KEY,
       JSON.stringify([{ productId: "fixture-drink", quantity: 20 }]),
     );
@@ -410,7 +410,7 @@ describe("shopper basket editing", () => {
   });
 
   it("does not allow the quantity control to go below one pack", async () => {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       BASKET_STORAGE_KEY,
       JSON.stringify([{ productId: "fixture-drink", quantity: 1 }]),
     );
@@ -424,7 +424,7 @@ describe("shopper basket editing", () => {
   });
 
   it("allows increasing from 19 to 20 packs and disables further increases", async () => {
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       BASKET_STORAGE_KEY,
       JSON.stringify([{ productId: "fixture-drink", quantity: 19 }]),
     );
@@ -437,7 +437,7 @@ describe("shopper basket editing", () => {
 
     expect((increase as HTMLButtonElement).disabled).toBe(true);
     expect(increase.parentElement?.querySelector("strong")?.textContent).toBe("20");
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toEqual([
+    expect(JSON.parse(window.localStorage.getItem(BASKET_STORAGE_KEY) ?? "[]")).toEqual([
       { productId: "fixture-drink", quantity: 20 },
     ]);
   });
