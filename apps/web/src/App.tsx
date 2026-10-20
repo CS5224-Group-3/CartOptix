@@ -44,7 +44,12 @@ import {
   removeBasketLine,
   setBasketLineQuantity,
 } from "./features/basket/mutations";
-import { persistBasket, restoreBasket } from "./features/basket/storage";
+import {
+  BASKET_STORAGE_KEY,
+  persistBasket,
+  restoreBasket,
+  restoreBasketSnapshot,
+} from "./features/basket/storage";
 import { createApiSource } from "./features/basket-comparison/apiSource";
 import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
 import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
@@ -160,6 +165,29 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   }, [navigate]);
   const [basketRevision, setBasketRevision] = useState(0);
   const [persistenceFailed, setPersistenceFailed] = useState(false);
+
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== BASKET_STORAGE_KEY || event.storageArea !== window.localStorage) return;
+      const next = restoreBasketSnapshot(event.newValue);
+      setBasket((current) => {
+        const changed =
+          current.length !== next.length ||
+          current.some(
+            (line, index) =>
+              line.productId !== next[index]?.productId || line.quantity !== next[index]?.quantity,
+          );
+        if (changed) {
+          setFixtureScenario(null);
+          basketBeforeDemo.current = null;
+          setBasketRevision((revision) => revision + 1);
+        }
+        return changed ? next : current;
+      });
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const changed = useCallback(
     (next: BasketLine[], shouldPersist = true, force = false) => {
@@ -958,7 +986,7 @@ export function BasketPage() {
               <div>
                 <strong>Basket changes may not survive a reload.</strong>
                 <span>
-                  Session storage is unavailable. Keep this tab open to retain your edits.
+                  Browser storage is unavailable. Keep this tab open to retain your edits.
                 </span>
               </div>
             </div>

@@ -44,7 +44,16 @@ export function restoreBasket(storage = sharedBasketStorage()): BasketLine[] {
   if (!storage) return [];
   try {
     const serialized = storage.getItem(BASKET_STORAGE_KEY);
-    if (serialized === null) return [];
+    return restoreBasketSnapshot(serialized);
+  } catch {
+    return [];
+  }
+}
+
+/** Parses a storage event snapshot using the same validation as normal restoration. */
+export function restoreBasketSnapshot(serialized: string | null): BasketLine[] {
+  if (serialized === null) return [];
+  try {
     return validStoredBasket(JSON.parse(serialized)) ?? [];
   } catch {
     return [];
