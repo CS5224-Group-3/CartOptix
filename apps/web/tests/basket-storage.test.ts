@@ -1,6 +1,6 @@
 import { MAX_BASKET_LINES, MAX_PACKS_PER_LINE, MIN_PACKS_PER_LINE } from "@cartoptix/contracts";
 import { describe, expect, it } from "vitest";
-import type { BasketLine } from "../src/demo";
+import type { BasketLine } from "../src/features/basket/model";
 import { BASKET_STORAGE_KEY, persistBasket, restoreBasket } from "../src/features/basket/storage";
 
 function memoryStorage(initial?: string) {

@@ -86,10 +86,7 @@ export default function BasketComparisonPage({
       {recommendation.kind !== "invalid" && (
         <>
           <p>Each complete option keeps your entire requested basket with one retailer.</p>
-          <p className="notice-card">
-            {result.provenance?.description ??
-              `Synthetic demonstration: ${result.fixtureLabel ?? "Comparison fixture"}. These are not retailer prices. Product links are illustrative.`}
-          </p>
+          <p className="notice-card">{result.provenance?.description}</p>
           {result.outcome.kind === "no-feasible-plan" && (
             <h2>No feasible purchasing plan available</h2>
           )}

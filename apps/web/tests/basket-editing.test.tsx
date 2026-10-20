@@ -11,7 +11,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
-import { openBasketHarness } from "./basket-harness";
 
 const json = (value: unknown) => new Response(JSON.stringify(value), { status: 200 });
 
@@ -296,125 +295,6 @@ describe("shopper basket editing", () => {
       ...savedBasket,
       { productId: "fixture-rice", quantity: 1 },
     ]);
-  });
-
-  it("does not restore synthetic demo products as a normal basket after reload", async () => {
-    const firstLoad = openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
-    firstLoad.unmount();
-
-    openApp("/basket");
-
-    expect(await screen.findByText("Your basket is empty")).toBeDefined();
-    expect(screen.queryByText("Product details unavailable")).toBeNull();
-    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
-  });
-
-  it("does not persist synthetic lines when a demo basket is edited", async () => {
-    const firstLoad = openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
-
-    expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
-    firstLoad.unmount();
-
-    openApp("/basket");
-
-    expect(await screen.findByText("Your basket is empty")).toBeDefined();
-    expect(screen.queryByText("Product details unavailable")).toBeNull();
-  });
-
-  it("preserves the saved real basket while a demo scenario is loaded", async () => {
-    const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
-    const firstLoad = openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
-
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
-      savedBasket,
-    );
-    firstLoad.unmount();
-
-    openApp("/basket");
-
-    const increaseDrink = await screen.findByRole("button", {
-      name: "Increase Fixture Plain Drink",
-    });
-    expect(increaseDrink.parentElement?.querySelector("strong")?.textContent).toBe("2");
-    expect(screen.queryByText("Product details unavailable")).toBeNull();
-  });
-
-  it("restores and extends the saved basket when adding a catalogue product during a demo", async () => {
-    const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
-    const firstLoad = openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
-    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
-    const riceAddButton = addButtons[1];
-    if (!riceAddButton) throw new Error("Expected a second catalogue product");
-    fireEvent.click(riceAddButton);
-    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
-
-    const expectedBasket = [...savedBasket, { productId: "fixture-rice", quantity: 1 }];
-    expect(screen.getByRole("button", { name: "Increase Fixture Plain Drink" })).toBeDefined();
-    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
-      expectedBasket,
-    );
-    firstLoad.unmount();
-
-    openApp("/basket");
-
-    expect(
-      await screen.findByRole("button", { name: "Increase Fixture Plain Drink" }),
-    ).toBeDefined();
-    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
-      expectedBasket,
-    );
-  });
-
-  it("persists a catalogue addition when it matches the displayed demo lines", async () => {
-    const savedBasket = [{ productId: "fixture-drink", quantity: 1 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
-    const firstLoad = openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
-    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
-    const riceAddButton = addButtons[1];
-    if (!riceAddButton) throw new Error("Expected a second catalogue product");
-    fireEvent.click(riceAddButton);
-    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
-
-    const expectedBasket = [...savedBasket, { productId: "fixture-rice", quantity: 1 }];
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
-      expectedBasket,
-    );
-    firstLoad.unmount();
-
-    openApp("/basket");
-
-    expect(
-      await screen.findByRole("button", { name: "Increase Fixture Plain Drink" }),
-    ).toBeDefined();
-    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
-      expectedBasket,
-    );
-  });
-
-  it("does not mark results stale when the same demo scenario is loaded again", async () => {
-    openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
-    await screen.findByRole("heading", { name: "Retailer basket comparison" });
-    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-
-    expect(screen.queryByText("Your basket changed.")).toBeNull();
   });
 
   it("marks results stale when a product is removed after comparison", async () => {

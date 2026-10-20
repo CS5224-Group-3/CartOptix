@@ -81,6 +81,8 @@ Run these from the repository root.
 database with `docker compose down`, or `docker compose down --volumes` to also
 discard its data.
 
+End-to-end shopper journeys run in CI as a separate job; locally, start the seeded API and web app with `pnpm dev`, install browsers with `pnpm exec playwright install chromium webkit`, then run `pnpm e2e`.
+
 The database listens on port **5433** to avoid clashing with any PostgreSQL
 already installed on your machine.
 

@@ -1,17 +1,17 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { createFixtureSource } from "../src/features/basket-comparison/fixtureSource";
-import { comparisonFixtures } from "../src/features/basket-comparison/fixtures";
 import {
   ComparisonFailure,
   type ComparisonSubmission,
 } from "../src/features/basket-comparison/model";
 import { useComparison } from "../src/features/basket-comparison/useComparison";
+import { createFixtureSource } from "./support/fixtureSource";
+import { comparisonFixtures } from "./support/fixtures";
 
-function submission(scenario = "complete"): ComparisonSubmission {
+function submission(): ComparisonSubmission {
   const fixture = comparisonFixtures.complete;
   if (!fixture) throw new Error("Missing fixture");
-  return { scenario, basket: structuredClone(fixture.submittedBasket) };
+  return { basket: structuredClone(fixture.submittedBasket) };
 }
 
 describe("asynchronous comparison source", () => {
@@ -44,7 +44,7 @@ describe("asynchronous comparison source", () => {
     const request = submission();
     act(() => {
       result.current.submit(request, onSuccess);
-      result.current.submit(submission("unavailable"), onSuccess);
+      result.current.submit(submission(), onSuccess);
       request.basket.revision = 10;
       request.basket.products = [];
     });

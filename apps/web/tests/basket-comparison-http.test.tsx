@@ -12,7 +12,6 @@ import { QueryClient } from "@tanstack/react-query";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
-import { openBasketHarness } from "./basket-harness";
 
 afterEach(() => window.history.replaceState({}, "", "/"));
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
@@ -384,26 +383,6 @@ describe("normal API comparison flow", () => {
     expect(
       (screen.getByRole("button", { name: "Compare basket" }) as HTMLButtonElement).disabled,
     ).toBe(false);
-  });
-
-  it("keeps demo comparisons off the API and allows API comparisons after leaving demo", async () => {
-    const demo = openBasketHarness();
-    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
-    compare();
-    await results();
-    expect(demo.fetchMock.mock.calls.some(([url]) => String(url) === routes.compare.url)).toBe(
-      false,
-    );
-
-    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
-    fireEvent.click(screen.getByRole("button", { name: "Leave demo and start a new basket" }));
-    expect(screen.getByRole("heading", { name: "Your basket is empty" })).toBeDefined();
-    demo.unmount();
-
-    const { posts } = await open();
-    compare();
-    await results();
-    expect(posts).toHaveBeenCalledTimes(1);
   });
 
   it.each(["network", "service_error", "5xx"])(

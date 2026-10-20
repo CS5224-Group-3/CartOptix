@@ -1,5 +1,5 @@
 import { MAX_BASKET_LINES, MAX_PACKS_PER_LINE, MIN_PACKS_PER_LINE } from "@cartoptix/contracts";
-import type { BasketLine } from "../../demo";
+import type { BasketLine } from "./model";
 
 export const BASKET_STORAGE_KEY = "cartoptix:basket:v1";
 

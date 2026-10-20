@@ -1,9 +1,9 @@
 import { SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { comparisonFixtures } from "../src/features/basket-comparison/fixtures";
 import type { BasketComparisonPresentation } from "../src/features/basket-comparison/model";
 import BasketComparisonPage from "../src/pages/BasketComparisonPage";
+import { comparisonFixtures } from "./support/fixtures";
 
 function scenario(name: string): BasketComparisonPresentation {
   const result = comparisonFixtures[name];

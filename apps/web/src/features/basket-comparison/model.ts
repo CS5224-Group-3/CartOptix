@@ -64,8 +64,6 @@ export type RetailerOption = CompleteRetailerOption | UnavailableRetailerOption;
 
 export interface BasketComparisonPresentation {
   submittedBasket: BasketSnapshot;
-  /** Selected synthetic scenario that produced this presentation, when applicable. */
-  submittedScenario?: string;
   options: RetailerOption[];
   outcome: { kind: "recommended"; retailerId: string } | { kind: "no-feasible-plan" };
   fixtureLabel?: string;
@@ -74,14 +72,12 @@ export interface BasketComparisonPresentation {
 
 /** Source identity is configuration, not an assertion inferred from an HTTP response. */
 export interface ComparisonProvenance {
-  kind: "synthetic" | "demo" | "test" | "curated";
+  kind: "synthetic" | "test" | "curated";
   description: string;
 }
 
 /** A frontend request to a presentation-data source, never an HTTP payload. */
 export interface ComparisonSubmission {
-  /** Present only for an explicitly selected synthetic demo. */
-  scenario?: string;
   basket: BasketSnapshot;
 }
 

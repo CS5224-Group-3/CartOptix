@@ -12,7 +12,7 @@ Read this with the [product specification](product-spec.md), which owns user jou
 - Integer-cent pricing shared by product comparison, basket comparison and result validation.
 - Complete-basket comparison at each of the three retailers, with at most 50 distinct lines and 1–20 whole packs per line; no substitutions or divided lines.
 - Exact comparison of all feasible single-retailer options, recommending the cheapest with a stable tie-break.
-- Version-controlled clean seed data, no website collection dates, and a visible fixed-dataset disclaimer.
+- Version-controlled clean seed data, no website collection dates, and a visible price-and-availability notice.
 - Two AWS deployment profiles: single-node development and a short-lived ALB/ASG/RDS presentation deployment.
 - Automatic scaling and application-instance failure demonstrations; endpoint-RPS load tests.
 
@@ -232,7 +232,7 @@ Contract decisions (#5):
   - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across seed edits and snapshot refreshes, because browser baskets keep product IDs through a correction. A product that drops out of a refresh is removed from the seed, and a basket that still holds it gets the existing not-found handling.
   - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
 
-The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, per-retailer availability reasons and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
+The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, per-retailer availability reasons and the price-and-availability notice. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
 
 Outbound links must work without the event API. Send tracking asynchronously with a bounded/non-blocking attempt; a failed event must not cancel navigation. Click-event writes should have bounded database access and must not starve comparison requests.
 

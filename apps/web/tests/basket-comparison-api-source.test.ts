@@ -14,7 +14,6 @@ import {
 
 function submission(): ComparisonSubmission {
   return {
-    scenario: "must-not-be-sent",
     basket: {
       revision: 9,
       products: basketRequestExample.lines.map((line) => {
@@ -29,7 +28,7 @@ function submission(): ComparisonSubmission {
 }
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
-describe("API-backed comparison source (opt-in)", () => {
+describe("API-backed comparison source", () => {
   it.each([recommendedExample, noFeasiblePlanExample])(
     "sends only the shared request and treats business outcomes as success",
     async (response) => {

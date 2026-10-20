@@ -67,7 +67,7 @@ Catalogue search is case- and whitespace-insensitive substring matching across t
 ### J2 — Build a basket
 
 1. Add, remove or change basket lines.
-2. Review the snapshot disclaimer and each retailer's delivery rule.
+2. Review the price-and-availability notice and each retailer's delivery rule.
 3. Request a comparison.
 
 The normal evaluation basket has 20 distinct lines. The supported maximum is **50 distinct lines**, with **1–20 whole packs per line**. Changing the basket makes an earlier comparison stale; the interface must request a new calculation before presenting it as current.
@@ -155,7 +155,9 @@ Validate every returned complete option and explain each unavailable retailer. A
 
 Do **not** display collection dates on the website. Display this notice near comparisons:
 
-> Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
+> Prices and availability may have changed. Confirm details on the retailer's website.
+
+The notice no longer mentions that the dataset is a fixed prototype snapshot, so the app reads as a production service in demonstrations. Show it on the catalogue and comparison pages.
 
 Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Engineers refresh it by taking a new snapshot of all three retailers within one short window (`scripts/scrape/README.md`); each refresh replaces the previous snapshot entirely and stays a fixed dataset until the next one. If any retailer's collection fails, the previous seed stays; listings skipped under a check cap (PR-02) are not a failure, and are left out rather than carried over. Neither the seed nor the site records when a snapshot was taken, and source references are not presented as collection dates. There is no scheduled or live refresh.
 

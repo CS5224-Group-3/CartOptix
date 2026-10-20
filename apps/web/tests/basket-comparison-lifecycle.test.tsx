@@ -9,11 +9,8 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
-import {
-  createFixtureSource,
-  fixtureScenarios,
-} from "../src/features/basket-comparison/fixtureSource";
 import { ComparisonFailure, type ComparisonSource } from "../src/features/basket-comparison/model";
+import { createFixtureSource, fixtureScenarios } from "./support/fixtureSource";
 
 afterEach(() => {
   window.sessionStorage.removeItem(BASKET_STORAGE_KEY);
@@ -24,11 +21,10 @@ function controlledSource() {
   const releases: (() => void)[] = [];
   let selectedScenario = "complete";
   const fixtureSource = createFixtureSource({
+    scenario: () => selectedScenario,
     wait: () => new Promise<void>((resolve) => releases.push(resolve)),
   });
-  const source = vi.fn((submission: Parameters<ComparisonSource>[0]) =>
-    fixtureSource({ ...submission, scenario: selectedScenario }),
-  );
+  const source = vi.fn(fixtureSource);
   return {
     source,
     selectScenario(name: RegExp) {

@@ -1,5 +1,8 @@
+import {
+  ComparisonFailure,
+  type ComparisonSource,
+} from "../../src/features/basket-comparison/model";
 import { comparisonFixtures, fixtureForBasket } from "./fixtures";
-import { ComparisonFailure, type ComparisonSource } from "./model";
 
 type FixtureScenario = {
   label: string;
@@ -39,15 +42,19 @@ export const fixtureScenarios: Record<string, FixtureScenario> = {
  * Tests can supply a controlled wait promise without timers or HTTP mocks.
  */
 export function createFixtureSource({
+  scenario: selectedScenario = "complete",
   wait = () => new Promise<void>((resolve) => setTimeout(resolve, 350)),
 }: {
+  scenario?: string | (() => string);
   wait?: () => Promise<void>;
 } = {}): ComparisonSource {
   const failedOnce = new Set<string>();
   return async (submission) => {
     const submitted = structuredClone(submission);
+    const scenarioId =
+      typeof selectedScenario === "function" ? selectedScenario() : selectedScenario;
     await wait();
-    const scenario = fixtureScenarios[submitted.scenario ?? ""];
+    const scenario = fixtureScenarios[scenarioId];
     const result =
       scenario &&
       fixtureForBasket(scenario.fixture, submitted.basket.products, submitted.basket.revision);
@@ -58,7 +65,7 @@ export function createFixtureSource({
       );
     }
     const attemptKey = JSON.stringify([
-      submitted.scenario,
+      scenarioId,
       submitted.basket.revision,
       submitted.basket.products.map(({ productId, quantity }) => [productId, quantity]).sort(),
     ]);
@@ -81,7 +88,7 @@ export function createFixtureSource({
     return {
       ...result,
       provenance: {
-        kind: "demo",
+        kind: "synthetic",
         description: `Synthetic demonstration: ${result.fixtureLabel}. These are not retailer prices. Product links are illustrative.`,
       },
     };

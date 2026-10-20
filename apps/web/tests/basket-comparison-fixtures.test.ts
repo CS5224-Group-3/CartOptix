@@ -8,7 +8,7 @@ import {
 } from "@cartoptix/contracts/fixtures";
 import { describe, expect, it } from "vitest";
 import { adaptComparison } from "../src/features/basket-comparison/adapter";
-import { comparisonFixtures, fixtureForBasket } from "../src/features/basket-comparison/fixtures";
+import { comparisonFixtures, fixtureForBasket } from "./support/fixtures";
 
 describe("synthetic comparison fixtures", () => {
   it("matches the independently calculated reference outcomes", () => {

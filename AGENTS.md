@@ -15,7 +15,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - Support at most 50 distinct lines and 1–20 whole packs per line.
 - Use verified, directly supermarket-fulfilled offers marked in stock. Quarantine ambiguous matches, prices, promotions and mandatory charges.
 - Calculate in integer SGD cents. Recommend the cheapest feasible retailer option; show each unavailable retailer with its reason. A partial basket may be shown as a labelled estimate, but is never presented as complete, ranked against complete options or recommended.
-- Show the fixed-dataset disclaimer, not collection dates. Keep the clean seed in Git.
+- Show the price-and-availability notice (`SNAPSHOT_DISCLAIMER`), not collection dates. Keep the clean seed in Git.
 
 ## Working conventions
 
@@ -42,6 +42,8 @@ We use trunk-based development: `main` is the trunk and must always pass CI and 
 See [README.md](README.md) for prerequisites, setup and commands. Docker must be installed and running, because it provides the local PostgreSQL database.
 
 Run `pnpm check` before proposing changes; it runs the same format, lint, type and test checks as CI. It needs PostgreSQL running, because the API integration tests query it; start it with `pnpm dev` or `docker compose up --detach --wait`.
+
+End-to-end shopper journeys run in CI as a separate job; locally, start the seeded API and web app with `pnpm dev`, install browsers with `pnpm exec playwright install chromium webkit`, then run `pnpm e2e`.
 
 - `@cartoptix/contracts` is consumed from its compiled `dist/`. `pnpm check` and `pnpm dev` build it first; after editing contracts, run `tsc --build` before running `pnpm test` or Vitest on their own, or they will use stale output.
 - The API runs TypeScript directly with Node's type stripping (`node src/main.ts`). Use `.ts` extensions in relative imports, and avoid syntax that needs compilation: enums, namespaces and constructor parameter properties.

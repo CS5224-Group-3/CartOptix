@@ -1,11 +1,15 @@
 import { routes } from "@cartoptix/contracts";
-import { catalogueExample, productsExample } from "@cartoptix/contracts/fixtures";
+import {
+  basketRequestExample,
+  catalogueExample,
+  productsExample,
+} from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
-import { openBasketHarness } from "./basket-harness";
+import { comparisonFixtures } from "./support/fixtures";
 
 afterEach(() => {
   window.sessionStorage.removeItem(BASKET_STORAGE_KEY);
@@ -41,13 +45,29 @@ it("renders the empty basket page, brand backdrop and zero item and pack counts"
   expect(fetchMock.mock.calls.some(([url]) => String(url) === routes.compare.url)).toBe(false);
 });
 
-it("keeps synthetic basket comparison local and marks its previous result stale after an edit", async () => {
-  const { fetchMock } = openBasketHarness();
+it("comparison navigates to results and goes stale after an edit", async () => {
+  window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
+  const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.startsWith(routes.catalogue.url)) return new Response(JSON.stringify(catalogueExample));
+    if (url.startsWith(routes.products.url)) return new Response(JSON.stringify(productsExample));
+    throw new Error(`Unexpected request: ${url}`);
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  window.history.pushState({}, "", "/basket");
+  const fakeSource = vi.fn(async () => {
+    const fixture = comparisonFixtures.complete;
+    if (!fixture) throw new Error("Missing fixture");
+    return structuredClone(fixture);
+  });
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  queryClient.setQueryData(["product-index"], productsExample.products);
+  render(<App comparisonSource={fakeSource} queryClient={queryClient} />);
   expect(screen.queryByText("How many retailer orders?")).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
   fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
   expect(await screen.findByRole("heading", { name: "Retailer basket comparison" })).toBeDefined();
   expect(window.location.pathname).toBe("/results");
+  expect(fakeSource).toHaveBeenCalledTimes(1);
   expect(fetchMock.mock.calls.some(([url]) => String(url).startsWith(routes.compare.url))).toBe(
     false,
   );
