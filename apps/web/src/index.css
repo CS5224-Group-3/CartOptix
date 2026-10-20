@@ -159,6 +159,38 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .retailer-option__amounts > div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; }
 .retailer-option__amounts dd { margin: 0; white-space: nowrap; }
 
+/* Basket product backdrop. */
+.basket-product-hero { --basket-product-size: clamp(190px, 22vw, 340px); position: relative; isolation: isolate; height: var(--basket-product-size); overflow: hidden; background: #1b342f; }
+.basket-product-hero--static { --basket-product-size: min(340px, calc(100vw / var(--basket-product-count))); }
+.basket-product-hero--empty { --basket-product-size: clamp(190px, 22vw, 340px); }
+.basket-product-hero__viewport { position: absolute; inset: 0; overflow: hidden; }
+.basket-product-hero__track { position: absolute; inset: 0 auto 0 0; display: flex; width: max-content; height: 100%; }
+.basket-product-hero__track--static { width: 100%; justify-content: center; }
+.basket-product-hero__track--scrolling { animation: basket-product-pan 192s linear infinite; will-change: transform; }
+.basket-product-hero__group { display: flex; flex: 0 0 auto; width: max-content; height: 100%; }
+.basket-product-hero__track--static .basket-product-hero__group { width: 100%; justify-content: center; }
+.basket-product-hero--empty .basket-product-hero__group { width: max-content; justify-content: flex-start; }
+.basket-product-hero__tile { display: grid; flex: 0 0 var(--basket-product-size); place-items: center; width: var(--basket-product-size); height: var(--basket-product-size); overflow: hidden; aspect-ratio: 1 / 1; }
+.basket-product-hero__tile img { width: 100%; height: 100%; object-fit: cover; opacity: .8; }
+.basket-product-hero__brand-mark { display: grid; place-items: center; width: 38%; aspect-ratio: 1 / 1; border-radius: 26%; color: white; background: var(--green); }
+.basket-product-hero__overlay { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(8,25,22,.97), rgba(8,25,22,.9) 54%, rgba(8,25,22,.78)); }
+.basket-product-hero__content { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center; height: 100%; color: white; }
+.basket-product-hero__heading-row { display: flex; align-items: center; justify-content: space-between; gap: clamp(14px, 4vw, 40px); width: 100%; }
+.basket-product-hero__content .eyebrow { margin: 0 0 6px; color: #d1e5dc; font-size: clamp(9px, calc(var(--basket-product-size) * .035), 12px); }
+.basket-product-hero__content h1 { flex: 1 1 auto; min-width: 0; width: auto; max-width: none; margin: 0; color: white; font: 800 clamp(30px, calc(var(--basket-product-size) * .18), 60px)/1.05 var(--font-display); letter-spacing: -.055em; }
+.basket-product-hero__description { max-width: 760px; margin: 8px 0 0; color: #e3ece8; font-size: clamp(16px, calc(var(--basket-product-size) * .052), 21px); line-height: 1.35; }
+.basket-product-hero--static .basket-product-hero__content .eyebrow { display: none; }
+.basket-product-hero--static .basket-product-hero__description { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.basket-header__meta { display: flex; flex: 0 0 auto; justify-content: flex-end; margin-left: auto; border: 1px solid #d6e5de; border-radius: 13px; background: rgba(255,255,255,.84); }
+.basket-header__meta div { display: flex; min-width: 82px; flex-direction: column; gap: 2px; padding: 13px 16px; }
+.basket-header__meta div + div { border-left: 1px solid #d6e5de; }
+.basket-header__meta strong { color: var(--navy); font: 800 22px var(--font-display); }
+.basket-header__meta span { color: #82918d; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+@keyframes basket-product-pan {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* Catalogue collage hero and search controls. */
 .catalogue-collage-hero { --catalogue-square-size: max(145px, 12.5vw); position: relative; isolation: isolate; min-height: max(390px, calc(var(--catalogue-square-size) * 2)); overflow: hidden; background: #1b342f; }
 .catalogue-collage-viewport { position: absolute; inset: 0; overflow: hidden; }

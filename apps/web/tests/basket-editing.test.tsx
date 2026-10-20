@@ -1,4 +1,4 @@
-import { routes } from "@cartoptix/contracts";
+import { routes, type Product } from "@cartoptix/contracts";
 import {
   basketRequestExample,
   catalogueExample,
@@ -14,7 +14,7 @@ import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
 
 const json = (value: unknown) => new Response(JSON.stringify(value), { status: 200 });
 
-function openApp(path = "/catalogue", productList = productsExample.products) {
+function openApp(path = "/catalogue", productList: Product[] = productsExample.products) {
   const compareRequests: string[] = [];
   const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input);
@@ -61,6 +61,65 @@ afterEach(() => {
 });
 
 describe("shopper basket editing", () => {
+  it("shows a static basket backdrop through ten products and scrolls from eleven", async () => {
+    const productList = Array.from({ length: 6 }, () => productsExample.products)
+      .flat()
+      .slice(0, 11)
+      .map((product, index) => ({
+        ...product,
+        productId: `basket-product-${index}`,
+        name: `Basket Product ${index}`,
+        imageUrl: `/images/basket-product-${index}.webp`,
+      }));
+    const storeLines = (count: number) => {
+      window.sessionStorage.setItem(
+        BASKET_STORAGE_KEY,
+        JSON.stringify(productList.slice(0, count).map(({ productId }) => ({ productId, quantity: 1 }))),
+      );
+    };
+
+    const emptyBasket = openApp("/basket", productList);
+    await screen.findByRole("heading", { name: "Your basket is empty" });
+    const emptyTrack = emptyBasket.container.querySelector(".basket-product-hero__track");
+    expect(emptyTrack?.classList.contains("basket-product-hero__track--static")).toBe(true);
+    expect(emptyBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(12);
+    expect(screen.queryByText(/distinct lines.*whole packs/)).toBeNull();
+    emptyBasket.unmount();
+
+    storeLines(10);
+    const staticBasket = openApp("/basket", productList);
+    await waitFor(() =>
+      expect(
+        staticBasket.container.querySelectorAll(".basket-product-hero__tile img"),
+      ).toHaveLength(10),
+    );
+    const headingRow = staticBasket.container.querySelector(
+      ".basket-product-hero__heading-row",
+    );
+    expect(headingRow?.querySelector("h1")?.textContent).toBe("Review your basket");
+    expect(headingRow?.querySelector(".basket-header__meta")?.textContent).toBe(
+      "10items10packs",
+    );
+    const staticTrack = staticBasket.container.querySelector(".basket-product-hero__track");
+    expect(staticTrack?.classList.contains("basket-product-hero__track--static")).toBe(true);
+    expect(staticBasket.container.querySelectorAll(".basket-product-hero__group")).toHaveLength(1);
+    expect(staticBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(0);
+    staticBasket.unmount();
+
+    storeLines(11);
+    const scrollingBasket = openApp("/basket", productList);
+    await waitFor(() =>
+      expect(
+        scrollingBasket.container.querySelectorAll(".basket-product-hero__tile img"),
+      ).toHaveLength(22),
+    );
+    const scrollingTrack = scrollingBasket.container.querySelector(".basket-product-hero__track");
+    expect(scrollingTrack?.classList.contains("basket-product-hero__track--scrolling")).toBe(true);
+    expect(scrollingBasket.container.querySelectorAll(".basket-product-hero__group")).toHaveLength(2);
+    expect(scrollingBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(0);
+    scrollingBasket.unmount();
+  });
+
   it("opens product details from basket title and image without changing the basket", async () => {
     openApp();
     await addBothCatalogueProducts();

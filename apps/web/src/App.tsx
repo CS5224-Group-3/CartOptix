@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import {
   createContext,
+  type CSSProperties,
   type ReactNode,
   useCallback,
   useContext,
@@ -456,29 +457,6 @@ function AppShell({ children }: { children: ReactNode }) {
         </div>
       </footer>
     </div>
-  );
-}
-
-function PageIntro({
-  eyebrow,
-  title,
-  description,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  children?: ReactNode;
-}) {
-  return (
-    <section className="page-intro">
-      <div className="container">
-        <p className="eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p className="page-intro__description">{description}</p>
-        {children}
-      </div>
-    </section>
   );
 }
 
@@ -1040,18 +1018,74 @@ export function BasketPage() {
   } = useBasket();
 
   const categoryNames = useCategoryNames();
+  const basketBackdropProducts = basket.map((line) => {
+    const fixtureProduct =
+      fixtureScenario === null
+        ? undefined
+        : comparisonFixtures[
+            fixtureScenarios[fixtureScenario]?.fixture ?? ""
+          ]?.submittedBasket.products.find((product) => product.productId === line.productId);
+    const product = fixtureProduct ? undefined : productMetadata.get(line.productId);
+    const { accent } = categoryVisual(fixtureProduct ? "synthetic" : product?.categoryId ?? "synthetic");
+    return { productId: line.productId, imageUrl: product?.imageUrl ?? null, accent };
+  });
+  const isBasketEmpty = basketBackdropProducts.length === 0;
+  const backdropProducts = isBasketEmpty
+    ? Array.from({ length: 12 }, (_, index) => ({
+        productId: `cartoptix-icon-${index}`,
+        imageUrl: null,
+        accent: "#1b342f",
+      }))
+    : basketBackdropProducts;
+  const shouldScrollBackdrop = basket.length >= 11;
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
   return (
     <main>
-      <PageIntro
-        eyebrow="Your basket"
-        title="Review your basket"
-        description="Compare the complete basket independently at each retailer using prototype data."
+      <section
+        className={`basket-product-hero${shouldScrollBackdrop ? " basket-product-hero--scrolling" : " basket-product-hero--static"}${isBasketEmpty ? " basket-product-hero--empty" : ""}`}
+        style={{ "--basket-product-count": backdropProducts.length } as CSSProperties}
       >
-        <div className="data-pill">
-          <ShoppingBasket size={14} /> {basket.length} distinct lines · {totalPacks} whole packs
+        <div className="basket-product-hero__viewport" aria-hidden="true">
+          <div
+            className={`basket-product-hero__track${shouldScrollBackdrop ? " basket-product-hero__track--scrolling" : " basket-product-hero__track--static"}`}
+          >
+            {Array.from({ length: shouldScrollBackdrop ? 2 : 1 }, (_, copy) => (
+              <div className="basket-product-hero__group" key={copy}>
+                {backdropProducts.map((product) => (
+                  <div
+                    key={`${copy}-${product.productId}`}
+                    className={`basket-product-hero__tile${isBasketEmpty ? " basket-product-hero__tile--brand" : ""}`}
+                    data-product-id={isBasketEmpty ? undefined : product.productId}
+                    style={{ background: product.accent }}
+                  >
+                    {isBasketEmpty ? (
+                      <span className="basket-product-hero__brand-mark">
+                        <Leaf size="40%" aria-hidden="true" />
+                      </span>
+                    ) : (
+                      product.imageUrl && <img src={product.imageUrl} alt="" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </PageIntro>
+        <div className="basket-product-hero__overlay" />
+        <div className="container basket-product-hero__content">
+          <p className="eyebrow">Shopping basket</p>
+          <div className="basket-product-hero__heading-row">
+            <h1>Review your basket</h1>
+            <div className="basket-header__meta">
+              <div><strong>{basket.length}</strong><span>items</span></div>
+              <div><strong>{totalPacks}</strong><span>packs</span></div>
+            </div>
+          </div>
+          <p className="basket-product-hero__description">
+            Check your items and choose how many retailer orders you are comfortable with.
+          </p>
+        </div>
+      </section>
       <section className="container basket-layout">
         <div className="basket-main">
           <ComparisonRequestStatus
@@ -1087,7 +1121,7 @@ export function BasketPage() {
             <div className="empty-state basket-empty">
               <ShoppingBasket size={30} />
               <h2>Your basket is empty</h2>
-              <p>Start with the catalogue or load a reproducible demo scenario.</p>
+              <p>Browse the catalogue to add products to your basket.</p>
               <Link className="button button--primary" href="/catalogue">
                 Browse products <ArrowRight size={16} />
               </Link>
@@ -1096,8 +1130,8 @@ export function BasketPage() {
             <div className="basket-card">
               <div className="basket-card__header">
                 <div>
-                  <p className="eyebrow">Basket lines</p>
-                  <h2>Exact products you selected</h2>
+                  <p className="eyebrow">Selected items</p>
+                  <h2>Your grocery list</h2>
                 </div>
                 <Link href="/catalogue" className="button button--outline button--small">
                   Add more
@@ -1172,38 +1206,13 @@ export function BasketPage() {
               })}
             </div>
           )}
-          <div className="demo-panel">
-            <div>
-              <p className="eyebrow">Reproducible demos</p>
-              <h3>Try a known scenario</h3>
-              <p>These controls load fixed baskets for testing comparison outcomes.</p>
-            </div>
-            <div className="demo-grid">
-              {Object.entries(fixtureScenarios).map(([key, scenario]) => (
-                <button
-                  type="button"
-                  key={key}
-                  className="demo-button"
-                  onClick={() => {
-                    loadComparisonScenario(key);
-                    toast.success("Demo scenario loaded", { description: scenario.label });
-                  }}
-                >
-                  <strong>{scenario.label}</strong>
-                  <span>Synthetic data — not retailer prices</span>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
         <aside className="basket-sidebar">
           <div className="basket-summary-card">
-            <p className="eyebrow">Comparison setup</p>
+            <p className="eyebrow">Compare options</p>
             <h2>Complete retailer baskets</h2>
             <p className="muted">
-              {fixtureScenario === null
-                ? "API comparison mode. Compare your basket using the curated retailer dataset."
-                : "Demo mode. Only the exact selected demonstration basket can be compared."}
+              We’ll compare your shopping cart for you.
             </p>
             {fixtureScenario !== null && (
               <button type="button" className="button button--outline" onClick={leaveDemo}>
@@ -1220,10 +1229,10 @@ export function BasketPage() {
               <div>
                 <Check size={15} /> Non-member pricing
               </div>
-              <small>No postcode or delivery-slot selector.</small>
+              <small>Prices and availability are checked in the comparison</small>
             </div>
             <div className="basket-summary-card__footer">
-              <span>Basket lines</span>
+              <span>Items in basket</span>
               <strong>
                 {basket.length} / {MAX_BASKET_LINES}
               </strong>
@@ -1244,12 +1253,6 @@ export function BasketPage() {
                   : "View current results"}
               </Link>
             )}
-          </div>
-          <div className="trust-card">
-            <Sparkles size={17} />
-            <p>
-              <strong>Fixed dataset disclaimer</strong> {SNAPSHOT_DISCLAIMER}
-            </p>
           </div>
         </aside>
       </section>
