@@ -18,7 +18,9 @@ import {
   CircleHelp,
   Leaf,
   Menu,
+  Search,
   ShieldCheck,
+  SlidersHorizontal,
   ShoppingBasket,
   Sparkles,
   X,
@@ -543,9 +545,20 @@ export function CataloguePage() {
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const pageSize = 100;
   const [pageInput, setPageInput] = useState(String(page));
   useEffect(() => setPageInput(String(page)), [page]);
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", focusSearch);
+    return () => window.removeEventListener("keydown", focusSearch);
+  }, []);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
   const query = useMemo(
@@ -560,6 +573,9 @@ export function CataloguePage() {
   const { data, isLoading, isError, isPlaceholderData } = useProducts(query);
   const products = data?.products ?? [];
   const total = data?.total ?? 0;
+  const categories = catalogue.data?.categories ?? [];
+  const quickCategories = categories.slice(0, 6);
+  const backdropProducts = products.slice(0, 8);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   useEffect(() => {
     setPage((current) => Math.min(current, totalPages));
@@ -571,22 +587,89 @@ export function CataloguePage() {
   };
   return (
     <main>
-      <section className="container catalogue-section">
-        <div className="catalogue-toolbar">
-          <label className="search-field">
-            <span className="sr-only">Search products</span>
-            <span>⌕</span>
+      <section className="catalogue-collage-hero">
+        <div className="catalogue-collage-grid" aria-hidden="true">
+          {backdropProducts.map((product, index) => {
+            const { emoji, accent } = categoryVisual(product.categoryId);
+            return (
+              <div
+                key={product.productId}
+                className={`catalogue-collage-tile catalogue-collage-tile--${index + 1}`}
+                style={{ background: accent }}
+              >
+                {product.imageUrl ? <img src={product.imageUrl} alt="" /> : <span>{emoji}</span>}
+                <span className="catalogue-collage-tile__emoji">{emoji}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="catalogue-collage-overlay" />
+        <div className="container catalogue-collage-content">
+          <p className="catalogue-kicker">
+            <span className="catalogue-kicker__dot" /> CartOptix catalogue
+          </p>
+          <h1>Find your everyday essentials.</h1>
+          <div className="catalogue-search-card">
+            <Search size={21} aria-hidden="true" />
+            <label htmlFor="catalogue-search" className="sr-only">
+              Search products
+            </label>
             <input
+              ref={searchInputRef}
+              id="catalogue-search"
               value={search}
               maxLength={100}
               onChange={(event) => {
                 setSearch(event.target.value);
                 setPage(1);
               }}
-              placeholder="Search by product, brand or variant"
+              placeholder="Search products, brands or pack sizes"
             />
-          </label>
-          <label className="select-field">
+            <span className="catalogue-search-card__hint">⌘ / Ctrl K</span>
+          </div>
+          <p className="catalogue-search-caption">
+            Exact products. Clear retailer offers. No substitutions.
+          </p>
+        </div>
+      </section>
+      <section className="container catalogue-section">
+        <div className="catalogue-heading">
+          <div>
+            <p className="eyebrow">Browse the collection</p>
+            <h2>Good things for the everyday.</h2>
+          </div>
+          <p className="catalogue-heading__note">
+            Start with a category, then open any product to see how retailers compare.
+          </p>
+        </div>
+        <div className="catalogue-controls">
+          <div className="category-chips" role="group" aria-label="Quick product category filters">
+            <button
+              type="button"
+              className={categoryId === "" ? "is-active" : ""}
+              onClick={() => {
+                setCategoryId("");
+                setPage(1);
+              }}
+            >
+              All
+            </button>
+            {quickCategories.map((category) => (
+              <button
+                key={category.categoryId}
+                type="button"
+                className={categoryId === category.categoryId ? "is-active" : ""}
+                onClick={() => {
+                  setCategoryId(category.categoryId);
+                  setPage(1);
+                }}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+          <label className="select-field select-field--compact">
+            <SlidersHorizontal size={15} aria-hidden="true" />
             <span className="sr-only">Filter category</span>
             <select
               value={categoryId}
@@ -595,21 +678,21 @@ export function CataloguePage() {
                 setPage(1);
               }}
             >
-              <option value="">All</option>
-              {(catalogue.data?.categories ?? []).map((category) => (
+              <option value="">All categories</option>
+              {categories.map((category) => (
                 <option key={category.categoryId} value={category.categoryId}>
                   {category.name}
                 </option>
               ))}
             </select>
-            <ChevronDown size={16} />
+            <ChevronDown size={15} aria-hidden="true" />
           </label>
         </div>
         <div className="catalogue-summary">
           <p>
             <strong>{total}</strong> products found
           </p>
-          <p>{catalogue.data?.categories.length ?? 0} categories</p>
+          <p>Fixed catalogue · Singapore grocery retailers</p>
         </div>
         {isLoading ? (
           <div className="loading-state">Loading the catalogue…</div>

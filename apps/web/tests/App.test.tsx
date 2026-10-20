@@ -1,6 +1,6 @@
 // Verifies the main web application renders its expected initial UI.
-import { SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
-import { catalogueExample, productsExample, routes } from "@cartoptix/contracts";
+import { SNAPSHOT_DISCLAIMER, routes } from "@cartoptix/contracts";
+import { catalogueExample, productsExample } from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -32,7 +32,7 @@ describe("App", () => {
 
     expect(screen.getByRole("link", { name: "CartOptix home" })).toBeDefined();
     expect(
-      await screen.findByRole("heading", { name: "Build a basket from exact products." }),
+      await screen.findByRole("heading", { name: "Find your everyday essentials." }),
     ).toBeDefined();
     await waitFor(() => expect(window.location.pathname).toBe("/catalogue"));
   });
