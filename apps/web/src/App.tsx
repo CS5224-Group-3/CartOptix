@@ -561,6 +561,7 @@ export function CataloguePage() {
   }, []);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
+  const { data: heroData } = useProducts({ page: 1, pageSize: 8 });
   const query = useMemo(
     () => ({
       ...(search.trim() ? { q: search.trim() } : {}),
@@ -575,7 +576,7 @@ export function CataloguePage() {
   const total = data?.total ?? 0;
   const categories = catalogue.data?.categories ?? [];
   const quickCategories = categories.slice(0, 6);
-  const backdropProducts = products.slice(0, 8);
+  const backdropProducts = heroData?.products ?? [];
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   useEffect(() => {
     setPage((current) => Math.min(current, totalPages));
@@ -588,20 +589,30 @@ export function CataloguePage() {
   return (
     <main>
       <section className="catalogue-collage-hero">
-        <div className="catalogue-collage-grid" aria-hidden="true">
-          {backdropProducts.map((product, index) => {
-            const { emoji, accent } = categoryVisual(product.categoryId);
-            return (
-              <div
-                key={product.productId}
-                className={`catalogue-collage-tile catalogue-collage-tile--${index + 1}`}
-                style={{ background: accent }}
-              >
-                {product.imageUrl ? <img src={product.imageUrl} alt="" /> : <span>{emoji}</span>}
-                <span className="catalogue-collage-tile__emoji">{emoji}</span>
+        <div className="catalogue-collage-viewport" aria-hidden="true">
+          <div className="catalogue-collage-track">
+            {[0, 1].map((copy) => (
+              <div className="catalogue-collage-group" key={copy}>
+                {backdropProducts.map((product, index) => {
+                  const { emoji, accent } = categoryVisual(product.categoryId);
+                  return (
+                    <div
+                      key={`${copy}-${product.productId}`}
+                      className={`catalogue-collage-tile catalogue-collage-tile--${index + 1}`}
+                      style={{ background: accent }}
+                    >
+                      {product.imageUrl ? (
+                        <img src={product.imageUrl} alt="" />
+                      ) : (
+                        <span>{emoji}</span>
+                      )}
+                      <span className="catalogue-collage-tile__emoji">{emoji}</span>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
         <div className="catalogue-collage-overlay" />
         <div className="container catalogue-collage-content">

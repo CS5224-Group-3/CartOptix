@@ -161,7 +161,9 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 
 /* Catalogue collage hero and search controls. */
 .catalogue-collage-hero { position: relative; isolation: isolate; min-height: 390px; overflow: hidden; background: #1b342f; }
-.catalogue-collage-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 5px; opacity: .84; transform: scale(1.02); }
+.catalogue-collage-viewport { position: absolute; inset: 0; overflow: hidden; }
+.catalogue-collage-track { position: absolute; inset: 0 auto 0 0; display: flex; width: max-content; animation: catalogue-collage-pan 88s linear infinite; will-change: transform; }
+.catalogue-collage-group { display: grid; flex: 0 0 100vw; width: 100vw; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 5px; padding-right: 5px; }
 .catalogue-collage-tile { position: relative; display: grid; place-items: center; overflow: hidden; }
 .catalogue-collage-tile img { width: 100%; height: 100%; object-fit: cover; opacity: .8; }
 .catalogue-collage-tile > span:first-child { font-size: clamp(42px, 7vw, 92px); }
@@ -197,7 +199,6 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 @media (max-width: 560px) {
   .catalogue-collage-hero, .catalogue-collage-content { min-height: 330px; }
   .catalogue-collage-content { padding-top: 38px; padding-bottom: 38px; }
-  .catalogue-collage-grid { grid-template-columns: repeat(4, minmax(95px, 1fr)); }
   .catalogue-collage-overlay { background: linear-gradient(90deg, rgba(13,34,31,.9), rgba(13,34,31,.72)); }
   .catalogue-collage-content h1 { margin-bottom: 19px; }
   .catalogue-search-card { gap: 9px; min-height: 58px; padding-left: 14px; }
@@ -205,6 +206,13 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
   .catalogue-search-card__hint { display: none; }
   .catalogue-heading { align-items: start; flex-direction: column; gap: 8px; margin-bottom: 20px; }
   .catalogue-heading__note { font-size: 12px; }
+}
+@keyframes catalogue-collage-pan {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catalogue-collage-track { animation: none; }
 }
 .retailer-option a { overflow-wrap: anywhere; }
 
