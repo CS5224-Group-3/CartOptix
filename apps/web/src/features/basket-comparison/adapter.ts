@@ -56,8 +56,10 @@ export function validateSnapshot(basket: BasketSnapshot): void {
  * What a line's packs cost: whole deals at the deal price, the rest at the unit
  * price. Rejects a deal whose counts or saving do not add up.
  */
-function packsCost({ quantity, unitPriceCents, multibuy }: PlanLine): number {
+function packsCost({ quantity, unitPriceCents, priceKind, multibuy }: PlanLine): number {
   if (multibuy === null) return unitPriceCents * quantity;
+  // A deal never stacks on a sale price (PR-03).
+  requireData(priceKind === "ordinary");
   const { packsPerDeal, dealPriceCents, timesApplied, savingCents } = multibuy;
   requireData(
     Number.isInteger(packsPerDeal) &&

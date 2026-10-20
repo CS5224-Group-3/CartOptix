@@ -112,6 +112,14 @@ describe("validateSeed", () => {
       "Listing fairprice-1002 has a multibuy that is not cheaper",
     ],
     [
+      "a multibuy stacked on a sale price",
+      (s: Fixture) => {
+        s.listings[2].priceKind = "unconditional_sale";
+        s.listings[2].originalPriceCents = 400;
+      },
+      "Sale listing fairprice-1002 cannot also have a multibuy",
+    ],
+    [
       "an ordinary price with an original price",
       (s: Fixture) => (s.listings[0].originalPriceCents = 1500),
       "Ordinary listing redmart-i1-s1 cannot have an original price",

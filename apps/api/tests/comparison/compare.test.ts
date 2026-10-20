@@ -113,6 +113,22 @@ describe("compareBasket", () => {
     expect(coldStorage.order.lines.find((line) => line.productId === "milk")?.multibuy).toBeNull();
   });
 
+  it('never combines two lines that share an "Any 2" deal', () => {
+    const deal = { packsPerDeal: 2, dealPrice: 500, mixAndMatch: true };
+    const result = compare({
+      lines: [
+        { productId: "rice", quantity: 1 },
+        { productId: "milk", quantity: 1 },
+      ],
+      offers: offers.map((o) => (o.retailerId === "redmart" ? { ...o, multibuy: deal } : o)),
+    });
+    const redmart = result.options.find((option) => option.retailerId === "redmart");
+    if (redmart?.status !== "complete") throw new Error("Expected RedMart complete");
+    // One pack of each at the unit price: 1000 + 300 + 500 delivery, no deal.
+    expect(redmart.order.total).toBe(1800);
+    expect(redmart.order.lines.map((line) => line.multibuy?.deals)).toEqual([0, 0]);
+  });
+
   it("breaks a tie by retailer ID, whatever order the retailers are given in", () => {
     const tiedOffers = [
       offer("redmart", "rice", 900),

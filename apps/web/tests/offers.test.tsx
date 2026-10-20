@@ -97,4 +97,43 @@ describe("product offer view", () => {
     expect(screen.getByText("1")).toBeDefined();
     expect(decrease).toHaveProperty("disabled", true);
   });
+
+  it("describes the offers on screen with the quantity they were priced for", async () => {
+    let release = () => {};
+    const slow = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.includes("/offers?")) {
+          const quantity = Number(
+            new URL(url, window.location.origin).searchParams.get("quantity"),
+          );
+          if (quantity === 2) await slow;
+          return Response.json(offerResponse(quantity));
+        }
+        if (url === "/api/v1/catalogue") return Response.json(catalogueExample);
+        throw new Error(`Unexpected request: ${url}`);
+      }),
+    );
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+    });
+    window.history.replaceState({}, "", `/product/${offersExample.product.productId}`);
+    render(<App queryClient={queryClient} />);
+    expect(await screen.findByText("Buy 2 for S$7.00")).toBeDefined();
+
+    fireEvent.click(screen.getByRole("button", { name: "Increase quantity" }));
+    // The one-pack offers are still shown, so they are still described as one pack.
+    expect(screen.getByText("2")).toBeDefined();
+    expect(screen.getByText(/For 1 pack; before delivery and order charges/)).toBeDefined();
+    expect(screen.getByText("Buy 2 for S$7.00")).toBeDefined();
+    expect(screen.queryByText(/1 × deal/)).toBeNull();
+
+    release();
+    expect(await screen.findByText("1 × deal (2 for S$7.00) · You save S$1.20")).toBeDefined();
+    expect(screen.getByText(/For 2 packs; before delivery and order charges/)).toBeDefined();
+  });
 });

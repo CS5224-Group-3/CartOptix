@@ -14,7 +14,8 @@ Rules (product spec PR-03):
   is cheaper than N packs at the unit price. "N At $X" costs X; "N Save X%" and
   "Buy N Get X% Off" take X% off N packs, rounded half-up to the cent;
   "N Save $X" takes X off N packs. Deals worded "Any" are marked mix-and-match,
-  but only same-product packs are counted. Validity dates are ignored.
+  but only same-product packs are counted. Validity dates are ignored. A deal
+  on a sale price is not applied, because promotions never stack.
 - Other savings text that is not the plain "Save $X" of a sale (spend
   thresholds, gifts, deals that would not be cheaper) is a promotion that is
   not applied. It is kept as a shopper-facing note, with any dates removed.
@@ -28,8 +29,6 @@ import csv
 import re
 from decimal import ROUND_HALF_UP, Decimal, InvalidOperation
 from pathlib import Path
-
-import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 CURATED = ROOT / "data" / "curated"
@@ -96,7 +95,8 @@ def derive_offer(source) -> dict:
     is_sale = price is not None and original is not None and original > price
     eligible = price is not None and price > 0
     terms = DATES.sub("", savings).strip()
-    multibuy = parse_multibuy(terms, price) if eligible and terms else None
+    # A sale price is already a discount; a multibuy never stacks on it (PR-03).
+    multibuy = parse_multibuy(terms, price) if eligible and terms and not is_sale else None
     promotion = ""
     if savings and multibuy is None and not (is_sale and PLAIN_SAVING.fullmatch(savings)):
         promotion = terms
@@ -112,6 +112,8 @@ def derive_offer(source) -> dict:
 
 
 def load_workbooks() -> dict:
+    import pandas as pd  # Only reading the workbooks needs it; the rules do not.
+
     return {
         retailer: pd.read_excel(RAW / name, dtype=str).fillna("")
         for retailer, name in WORKBOOKS.items()

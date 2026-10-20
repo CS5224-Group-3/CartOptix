@@ -199,6 +199,13 @@ describe("shared comparison contract adapter", () => {
     expect(() => adaptComparison(response, basket)).toThrow(PresentationDataFailure);
   });
 
+  it("rejects a multibuy stacked on a sale price", () => {
+    const { response, basket, line } = withDeal();
+    line.priceKind = "unconditional_sale";
+    line.originalPriceCents = line.unitPriceCents + 50;
+    expect(() => adaptComparison(response, basket)).toThrow(PresentationDataFailure);
+  });
+
   it("maps no feasible plan and all structured reasons without partial totals", () => {
     const result = adaptComparison(noFeasiblePlanExample, snapshot());
     expect(result.outcome).toEqual({ kind: "no-feasible-plan" });

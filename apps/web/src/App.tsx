@@ -744,7 +744,9 @@ export function ProductDetail() {
         </div>
       </main>
     );
-  const { product, offers } = data;
+  // Offers for the previous quantity stay on screen while the new ones load, so
+  // describe them with the quantity they were priced for.
+  const { product, offers, quantity: pricedQuantity } = data;
   const categoryName = categoryNames.get(product.categoryId) ?? "";
   const missingRetailers = RETAILER_IDS.filter(
     (retailerId) => !offers.some((offer) => offer.retailerId === retailerId),
@@ -818,10 +820,11 @@ export function ProductDetail() {
               <span>Product cost</span>
             </div>
             <p className="offer-list__caption">
-              For {quantity} {quantity === 1 ? "pack" : "packs"}; before delivery and order charges.
+              For {pricedQuantity} {pricedQuantity === 1 ? "pack" : "packs"}; before delivery and
+              order charges.
             </p>
             {offers.map((offer) => (
-              <OfferRow key={offer.retailerId} offer={offer} quantity={quantity} />
+              <OfferRow key={offer.retailerId} offer={offer} quantity={pricedQuantity} />
             ))}
             {missingRetailers.map((retailerId) => (
               <UnavailableOfferRow key={retailerId} retailerId={retailerId} />

@@ -129,6 +129,9 @@ function lineMultibuy(offer: OfferRule, packs: number): LineMultibuy | null {
   ) {
     throw new PricingContractError(`Offer ${offer.listingId} has an invalid multibuy`);
   }
+  if (offer.priceKind === "unconditional_sale") {
+    throw new PricingContractError(`Offer ${offer.listingId} stacks a multibuy on a sale price`);
+  }
   const perDealSaving = multiplyCents(offer.unitPrice, packsPerDeal) - dealPrice;
   if (perDealSaving <= 0) return null;
   const deals = Math.floor(packs / packsPerDeal);

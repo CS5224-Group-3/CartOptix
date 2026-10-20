@@ -157,7 +157,7 @@ Freezing evaluation data is best-effort; record material changes and rerun affec
 
 ### Shared pricing kernel
 
-One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Percentage deals are rounded once, half-up to the cent per deal, when curation builds the seed, so the module never rounds; the live-checkout evidence for PR-03 confirms the convention, and a deal type that disagrees stays excluded.
+One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Percentage deals are rounded once, half-up to the cent per deal, when curation builds the seed, so the module never rounds; the live-checkout evidence for PR-03 must confirm the convention, and a deal type that disagrees stays excluded.
 
 - Compute the verified ordinary or unconditional sale cost for the exact pack quantity.
 - Apply a listing's same-product multibuy: floor(quantity ÷ packs per deal) deals, the rest at the unit price, and only when the deal is cheaper. Never count packs from another line, and never stack promotions.

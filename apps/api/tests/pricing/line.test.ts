@@ -80,5 +80,11 @@ describe("priceLine", () => {
         expect(() => priceLine({ offer, packs })).toThrow(PricingContractError);
       });
     }
+
+    it("throws rather than stacking a multibuy on a sale price", () => {
+      const chicken = lookup(fixture.offers, "chicken", "offer");
+      const stacked = { ...chicken, priceKind: "unconditional_sale" as const };
+      expect(() => priceLine({ offer: stacked, packs: 2 })).toThrow(PricingContractError);
+    });
   });
 });
