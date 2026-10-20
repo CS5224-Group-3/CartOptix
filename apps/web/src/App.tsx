@@ -423,9 +423,9 @@ function AppShell({ children }: { children: ReactNode }) {
             >
               Browse products
             </Link>
-            <a href="/catalogue#how-it-works" onClick={() => setMenuOpen(false)}>
+            <Link href="/catalogue#how-it-works" onClick={() => setMenuOpen(false)}>
               How it works
-            </a>
+            </Link>
             <Link
               href="/basket"
               className={`nav-basket ${location === "/basket" ? "is-active" : ""}`}
@@ -631,7 +631,7 @@ export function CataloguePage() {
       </section>
       <section className="container catalogue-section">
         <div className="catalogue-controls">
-          <div className="category-chips" role="group" aria-label="Quick product category filters">
+          <fieldset className="category-chips" aria-label="Quick product category filters">
             <button
               type="button"
               className={categoryId === "" ? "is-active" : ""}
@@ -655,7 +655,7 @@ export function CataloguePage() {
                 {category.name}
               </button>
             ))}
-          </div>
+          </fieldset>
           <label className="select-field select-field--compact">
             <SlidersHorizontal size={15} aria-hidden="true" />
             <span className="sr-only">Filter category</span>
@@ -1042,6 +1042,7 @@ export function BasketPage() {
       }))
     : basketBackdropProducts;
   const shouldScrollBackdrop = basket.length >= 11;
+  const backdropCopies = shouldScrollBackdrop ? ["primary", "duplicate"] : ["primary"];
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
   return (
     <main>
@@ -1053,7 +1054,7 @@ export function BasketPage() {
           <div
             className={`basket-product-hero__track${shouldScrollBackdrop ? " basket-product-hero__track--scrolling" : " basket-product-hero__track--static"}`}
           >
-            {Array.from({ length: shouldScrollBackdrop ? 2 : 1 }, (_, copy) => (
+            {backdropCopies.map((copy) => (
               <div className="basket-product-hero__group" key={copy}>
                 {backdropProducts.map((product) => (
                   <div

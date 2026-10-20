@@ -2,7 +2,7 @@ import { routes } from "@cartoptix/contracts";
 import { catalogueExample, productsExample } from "@cartoptix/contracts/fixtures";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
-import { vi } from "vitest";
+import { type Mock, vi } from "vitest";
 import { Route, Switch } from "wouter";
 import {
   AppShell,
@@ -30,7 +30,12 @@ export function BasketTestControls() {
   );
 }
 
-export function openBasketHarness(path = "/basket", source?: ComparisonSource) {
+export function openBasketHarness(
+  path = "/basket",
+  source?: ComparisonSource,
+): ReturnType<typeof render> & {
+  fetchMock: Mock<(input: RequestInfo | URL) => Promise<Response>>;
+} {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input);
     if (url.startsWith(routes.catalogue.url))
