@@ -82,6 +82,36 @@ import BasketComparisonPage from "./pages/BasketComparisonPage";
 
 const clampPacks = (quantity: number) =>
   Math.min(MAX_PACKS_PER_LINE, Math.max(MIN_PACKS_PER_LINE, Math.round(quantity)));
+const CATALOGUE_BACKDROP_TILE_COUNT = 50;
+const CATALOGUE_BACKDROP_GROUP_KEYS = [
+  "primary",
+  "copy-1",
+  "copy-2",
+  "copy-3",
+  "copy-4",
+  "copy-5",
+] as const;
+
+function createCatalogueBackdropSequence(products: Product[]) {
+  if (products.length <= 1) return products.map((product, slot) => ({ product, slot }));
+
+  const sequence: { product: Product; slot: number }[] = [];
+  for (let slot = 0; slot < CATALOGUE_BACKDROP_TILE_COUNT; slot += 1) {
+    const product = products[slot % products.length];
+    if (product) sequence.push({ product, slot });
+  }
+  return sequence;
+}
+
+function getFixtureProduct(fixtureScenario: string | null, productId: string) {
+  if (fixtureScenario === null) return undefined;
+  const fixtureId = fixtureScenarios[fixtureScenario]?.fixture;
+  return fixtureId
+    ? comparisonFixtures[fixtureId]?.submittedBasket.products.find(
+        (product) => product.productId === productId,
+      )
+    : undefined;
+}
 
 type BasketContextValue = {
   basket: BasketLine[];
@@ -100,7 +130,6 @@ type BasketContextValue = {
   canCompare: boolean;
   runComparison: () => void;
   retryComparison: () => void;
-  loadScenario: (lines: BasketLine[]) => void;
   loadComparisonScenario: (scenario: string) => void;
 };
 
@@ -325,12 +354,6 @@ export function BasketProvider({
         const mutation = removeBasketLine(basket, productId);
         if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
       },
-      // Homepage baskets use the normal API source.
-      loadScenario: (lines) => {
-        basketBeforeDemo.current = null;
-        changed(lines);
-        setFixtureScenario(null);
-      },
       loadComparisonScenario: (scenario) => {
         const fixture = comparisonFixtures[fixtureScenarios[scenario]?.fixture ?? ""];
         if (!fixture) return;
@@ -450,13 +473,6 @@ function AppShell({ children }: { children: ReactNode }) {
             </div>
             <p>Transparent basket comparison for Singapore grocery shoppers.</p>
           </div>
-          <div>
-            <p className="footer-label">Prototype boundaries</p>
-            <p>Fixed demo dataset · estimates only · no checkout integration</p>
-          </div>
-          <div className="footer-trust">
-            <Check size={16} /> Retailer payments never influence recommendations.
-          </div>
         </div>
       </footer>
     </div>
@@ -558,14 +574,7 @@ export function CataloguePage() {
   const categories = catalogue.data?.categories ?? [];
   const quickCategories = categories.slice(0, 6);
   const backdropProducts = heroData?.products ?? [];
-  const backdropSequence =
-    backdropProducts.length > 1
-      ? Array.from({ length: 50 }, (_, slot) =>
-          backdropProducts
-            .slice(slot % backdropProducts.length, (slot % backdropProducts.length) + 1)
-            .map((product) => ({ product, slot })),
-        ).flat()
-      : backdropProducts.map((product, slot) => ({ product, slot }));
+  const backdropSequence = createCatalogueBackdropSequence(backdropProducts);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   useEffect(() => {
     setPage((current) => Math.min(current, totalPages));
@@ -580,13 +589,13 @@ export function CataloguePage() {
       <section className="catalogue-collage-hero">
         <div className="catalogue-collage-viewport" aria-hidden="true">
           <div className="catalogue-collage-track">
-            {[0, 1, 2, 3, 4, 5].map((copy) => (
-              <div className="catalogue-collage-group" key={copy}>
+            {CATALOGUE_BACKDROP_GROUP_KEYS.map((copyKey) => (
+              <div className="catalogue-collage-group" key={copyKey}>
                 {backdropSequence.map(({ product, slot }) => {
                   const { accent } = categoryVisual(product.categoryId);
                   return (
                     <div
-                      key={`${copy}-${slot}-${product.productId}`}
+                      key={`${copyKey}-${slot}-${product.productId}`}
                       className={`catalogue-collage-tile catalogue-collage-tile--${(slot % backdropProducts.length) + 1}`}
                       data-product-id={product.productId}
                       style={{
@@ -837,9 +846,6 @@ export function ProductDetail() {
       <section className="container product-detail">
         <div className="product-detail__visual">
           <ProductImage product={product} className="product-image--detail" />
-          <div className="prototype-note">
-            <Sparkles size={15} /> Exact product identity · fixed dataset
-          </div>
         </div>
         <div className="product-detail__content">
           <p className="eyebrow">{categoryName}</p>
@@ -912,7 +918,6 @@ export function ProductDetail() {
               onClick={() => {
                 if (!addToBasket(product.productId, quantity)) return;
                 toast.success("Added to basket", { description: `${quantity} × ${product.name}` });
-                navigate("/basket");
               }}
             >
               <ShoppingBasket size={17} /> Add {quantity} pack{quantity > 1 ? "s" : ""} to basket
@@ -1021,12 +1026,7 @@ export function BasketPage() {
 
   const categoryNames = useCategoryNames();
   const basketBackdropProducts = basket.map((line) => {
-    const fixtureProduct =
-      fixtureScenario === null
-        ? undefined
-        : comparisonFixtures[
-            fixtureScenarios[fixtureScenario]?.fixture ?? ""
-          ]?.submittedBasket.products.find((product) => product.productId === line.productId);
+    const fixtureProduct = getFixtureProduct(fixtureScenario, line.productId);
     const product = fixtureProduct ? undefined : productMetadata.get(line.productId);
     const { accent } = categoryVisual(
       fixtureProduct ? "synthetic" : (product?.categoryId ?? "synthetic"),
@@ -1149,14 +1149,7 @@ export function BasketPage() {
                 </Link>
               </div>
               {basket.map((line) => {
-                const fixtureProduct =
-                  fixtureScenario === null
-                    ? undefined
-                    : comparisonFixtures[
-                        fixtureScenarios[fixtureScenario ?? ""]?.fixture ?? ""
-                      ]?.submittedBasket.products.find(
-                        (product) => product.productId === line.productId,
-                      );
+                const fixtureProduct = getFixtureProduct(fixtureScenario, line.productId);
                 const product = fixtureProduct
                   ? {
                       productId: fixtureProduct.productId,

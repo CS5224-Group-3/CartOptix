@@ -40,7 +40,7 @@ export type RetailerId = Static<typeof RetailerIdSchema>;
 
 /** Shown near every comparison (PR-06). A constant, so it is not repeated in responses. */
 export const SNAPSHOT_DISCLAIMER =
-  "Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.";
+  "Prices and availability may have changed. Confirm details on the retailer's website.";
 
 /** Shown near every comparison. BCRS container deposits are not modelled in the MVP:
  * the same 10¢ per container applies at every retailer, so it cannot change which retailer
