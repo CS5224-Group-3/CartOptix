@@ -18,6 +18,7 @@ import {
   CircleHelp,
   Leaf,
   Menu,
+  ShieldCheck,
   ShoppingBasket,
   Sparkles,
   X,
@@ -34,7 +35,7 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
-import { Link, Route, Switch, useLocation, useRoute } from "wouter";
+import { Link, Redirect, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
 import ComparisonRequestStatus from "./components/basket/ComparisonRequestStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -75,7 +76,6 @@ import {
   RETAILER_IDS,
 } from "./lib/format";
 import BasketComparisonPage from "./pages/BasketComparisonPage";
-import Home from "./pages/Home";
 
 const clampPacks = (quantity: number) =>
   Math.min(MAX_PACKS_PER_LINE, Math.max(MIN_PACKS_PER_LINE, Math.round(quantity)));
@@ -377,7 +377,6 @@ function AppShell({ children }: { children: ReactNode }) {
   const { basketCount } = useBasket();
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const isLanding = location === "/";
   return (
     <div className="app-shell">
       <header className="site-header">
@@ -416,7 +415,7 @@ function AppShell({ children }: { children: ReactNode }) {
               Browse products
             </Link>
             <a
-              href={isLanding ? "#how-it-works" : "/#how-it-works"}
+              href="/catalogue#how-it-works"
               onClick={() => setMenuOpen(false)}
             >
               How it works
@@ -572,15 +571,6 @@ export function CataloguePage() {
   };
   return (
     <main>
-      <PageIntro
-        eyebrow="Prototype catalogue"
-        title="Build a basket from exact products."
-        description="Search the demo catalogue, inspect retailer offers, then add whole packs to your basket. Product identity and pack size stay fixed throughout the comparison."
-      >
-        <div className="data-pill">
-          <Sparkles size={14} /> Prototype data · not live retailer pricing
-        </div>
-      </PageIntro>
       <section className="container catalogue-section">
         <div className="catalogue-toolbar">
           <label className="search-field">
@@ -709,6 +699,14 @@ export function CataloguePage() {
             </button>
           </div>
         )}
+      </section>
+      <HowItWorks />
+      <section className="visible-trust">
+        <div className="container">
+          <p>
+            <ShieldCheck size={16} /> {SNAPSHOT_DISCLAIMER}
+          </p>
+        </div>
       </section>
     </main>
   );
@@ -1323,7 +1321,9 @@ export { AppShell, HowItWorks };
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/">
+        <Redirect to="/catalogue" />
+      </Route>
       <Route path="/catalogue" component={CataloguePage} />
       <Route path="/product/:id" component={ProductDetail} />
       <Route path="/basket" component={BasketPage} />
