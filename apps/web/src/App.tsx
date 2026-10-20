@@ -20,14 +20,14 @@ import {
   Menu,
   Search,
   ShieldCheck,
-  SlidersHorizontal,
   ShoppingBasket,
+  SlidersHorizontal,
   Sparkles,
   X,
 } from "lucide-react";
 import {
-  createContext,
   type CSSProperties,
+  createContext,
   type ReactNode,
   useCallback,
   useContext,
@@ -106,7 +106,13 @@ type BasketContextValue = {
 
 const BasketContext = createContext<BasketContextValue | null>(null);
 
-function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
+export function BasketProvider({
+  children,
+  source,
+}: {
+  children: ReactNode;
+  source: ComparisonSource;
+}) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
   const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
   const basketBeforeDemo = useRef<BasketLine[] | null>(null);
@@ -417,10 +423,7 @@ function AppShell({ children }: { children: ReactNode }) {
             >
               Browse products
             </Link>
-            <a
-              href="/catalogue#how-it-works"
-              onClick={() => setMenuOpen(false)}
-            >
+            <a href="/catalogue#how-it-works" onClick={() => setMenuOpen(false)}>
               How it works
             </a>
             <Link
@@ -1013,7 +1016,6 @@ export function BasketPage() {
     canCompare,
     runComparison,
     retryComparison,
-    loadComparisonScenario,
     leaveDemo,
   } = useBasket();
 
@@ -1026,7 +1028,9 @@ export function BasketPage() {
             fixtureScenarios[fixtureScenario]?.fixture ?? ""
           ]?.submittedBasket.products.find((product) => product.productId === line.productId);
     const product = fixtureProduct ? undefined : productMetadata.get(line.productId);
-    const { accent } = categoryVisual(fixtureProduct ? "synthetic" : product?.categoryId ?? "synthetic");
+    const { accent } = categoryVisual(
+      fixtureProduct ? "synthetic" : (product?.categoryId ?? "synthetic"),
+    );
     return { productId: line.productId, imageUrl: product?.imageUrl ?? null, accent };
   });
   const isBasketEmpty = basketBackdropProducts.length === 0;
@@ -1077,8 +1081,14 @@ export function BasketPage() {
           <div className="basket-product-hero__heading-row">
             <h1>Review your basket</h1>
             <div className="basket-header__meta">
-              <div><strong>{basket.length}</strong><span>items</span></div>
-              <div><strong>{totalPacks}</strong><span>packs</span></div>
+              <div>
+                <strong>{basket.length}</strong>
+                <span>items</span>
+              </div>
+              <div>
+                <strong>{totalPacks}</strong>
+                <span>packs</span>
+              </div>
             </div>
           </div>
           <p className="basket-product-hero__description">
@@ -1211,9 +1221,7 @@ export function BasketPage() {
           <div className="basket-summary-card">
             <p className="eyebrow">Compare options</p>
             <h2>Complete retailer baskets</h2>
-            <p className="muted">
-              We’ll compare your shopping cart for you.
-            </p>
+            <p className="muted">We’ll compare your shopping cart for you.</p>
             {fixtureScenario !== null && (
               <button type="button" className="button button--outline" onClick={leaveDemo}>
                 Leave demo and start a new basket

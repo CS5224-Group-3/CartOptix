@@ -1,5 +1,5 @@
 // Verifies the main web application renders its expected initial UI.
-import { SNAPSHOT_DISCLAIMER, routes } from "@cartoptix/contracts";
+import { routes, SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
 import {
   catalogueExample,
   emptyProductsExample,

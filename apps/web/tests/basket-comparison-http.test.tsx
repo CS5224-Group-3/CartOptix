@@ -12,6 +12,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
+import { openBasketHarness } from "./basket-harness";
 
 afterEach(() => window.history.replaceState({}, "", "/"));
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
@@ -78,7 +79,7 @@ async function clearMetadata(client: QueryClient) {
 describe("normal API comparison flow", () => {
   it("compares a catalogue basket with only lines, without an exact demo match", async () => {
     const { posts, offers, fetchMock } = await open();
-    expect(screen.getByText(/API comparison mode/)).toBeDefined();
+    expect(screen.getByRole("heading", { name: "Complete retailer baskets" })).toBeDefined();
     compare();
     await results();
     expect(posts).toHaveBeenCalledTimes(1);
@@ -376,51 +377,33 @@ describe("normal API comparison flow", () => {
     expect(screen.queryByRole("button", { name: "Retry comparison" })).toBeNull();
   });
 
-  it("explicit demos avoid POST and leaving demo restores API comparison", async () => {
-    const { posts } = await open();
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
-    expect(screen.getByText(/Demo mode/)).toBeDefined();
+  it("keeps the basket page free of synthetic scenario controls", async () => {
+    await open();
+    expect(screen.queryByRole("button", { name: /Multiple complete retailers/ })).toBeNull();
+    expect(screen.queryByText(/Demo mode/)).toBeNull();
+    expect(
+      (screen.getByRole("button", { name: "Compare basket" }) as HTMLButtonElement).disabled,
+    ).toBe(false);
+  });
+
+  it("keeps demo comparisons off the API and allows API comparisons after leaving demo", async () => {
+    const demo = openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
     compare();
     await results();
-    expect(posts).not.toHaveBeenCalled();
+    expect(demo.fetchMock.mock.calls.some(([url]) => String(url) === routes.compare.url)).toBe(
+      false,
+    );
+
     fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
     fireEvent.click(screen.getByRole("button", { name: "Leave demo and start a new basket" }));
-    expect(screen.getByText(/API comparison mode/)).toBeDefined();
-    fireEvent.click(screen.getAllByRole("link", { name: "Browse products" })[0] as HTMLElement);
-    for (const button of await screen.findAllByRole("button", { name: "Add" }))
-      fireEvent.click(button);
-    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+    expect(screen.getByRole("heading", { name: "Your basket is empty" })).toBeDefined();
+    demo.unmount();
+
+    const { posts } = await open();
     compare();
     await results();
     expect(posts).toHaveBeenCalledTimes(1);
-  });
-
-  it("adding catalogue products after a demo restores and extends the saved basket", async () => {
-    const { posts, fetchMock } = await open();
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
-    fireEvent.click(screen.getByRole("link", { name: "Browse products" }));
-    for (const button of await screen.findAllByRole("button", { name: "Add" }))
-      fireEvent.click(button);
-    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
-    expect(screen.getByText(/API comparison mode/)).toBeDefined();
-    expect(
-      within(screen.getByRole("main")).queryByText(
-        /Synthetic Milk|Synthetic White Rice|fixture-milk/,
-      ),
-    ).toBeNull();
-    expect(posts).not.toHaveBeenCalled();
-    expect(fetchMock.mock.calls.some(([url]) => url === routes.compare.url)).toBe(false);
-    expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(2);
-    expect(
-      screen
-        .getByRole("button", { name: "Increase Fixture Plain Drink" })
-        .parentElement?.querySelector("strong")?.textContent,
-    ).toBe("2");
-    expect(
-      screen
-        .getByRole("button", { name: "Increase Fixture White Rice" })
-        .parentElement?.querySelector("strong")?.textContent,
-    ).toBe("2");
   });
 
   it.each(["network", "service_error", "5xx"])(

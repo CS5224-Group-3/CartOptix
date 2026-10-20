@@ -1,4 +1,4 @@
-import { routes, type Product } from "@cartoptix/contracts";
+import { type Product, routes } from "@cartoptix/contracts";
 import {
   basketRequestExample,
   catalogueExample,
@@ -11,6 +11,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
+import { openBasketHarness } from "./basket-harness";
 
 const json = (value: unknown) => new Response(JSON.stringify(value), { status: 200 });
 
@@ -51,7 +52,7 @@ async function addBothCatalogueProducts() {
   const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
   for (const button of addButtons) fireEvent.click(button);
   fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
-  await screen.findByRole("heading", { name: "Exact products you selected" });
+  await screen.findByRole("heading", { name: "Your grocery list" });
 }
 
 beforeEach(() => window.sessionStorage.removeItem(BASKET_STORAGE_KEY));
@@ -74,7 +75,9 @@ describe("shopper basket editing", () => {
     const storeLines = (count: number) => {
       window.sessionStorage.setItem(
         BASKET_STORAGE_KEY,
-        JSON.stringify(productList.slice(0, count).map(({ productId }) => ({ productId, quantity: 1 }))),
+        JSON.stringify(
+          productList.slice(0, count).map(({ productId }) => ({ productId, quantity: 1 })),
+        ),
       );
     };
 
@@ -82,7 +85,9 @@ describe("shopper basket editing", () => {
     await screen.findByRole("heading", { name: "Your basket is empty" });
     const emptyTrack = emptyBasket.container.querySelector(".basket-product-hero__track");
     expect(emptyTrack?.classList.contains("basket-product-hero__track--static")).toBe(true);
-    expect(emptyBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(12);
+    expect(emptyBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(
+      12,
+    );
     expect(screen.queryByText(/distinct lines.*whole packs/)).toBeNull();
     emptyBasket.unmount();
 
@@ -93,17 +98,15 @@ describe("shopper basket editing", () => {
         staticBasket.container.querySelectorAll(".basket-product-hero__tile img"),
       ).toHaveLength(10),
     );
-    const headingRow = staticBasket.container.querySelector(
-      ".basket-product-hero__heading-row",
-    );
+    const headingRow = staticBasket.container.querySelector(".basket-product-hero__heading-row");
     expect(headingRow?.querySelector("h1")?.textContent).toBe("Review your basket");
-    expect(headingRow?.querySelector(".basket-header__meta")?.textContent).toBe(
-      "10items10packs",
-    );
+    expect(headingRow?.querySelector(".basket-header__meta")?.textContent).toBe("10items10packs");
     const staticTrack = staticBasket.container.querySelector(".basket-product-hero__track");
     expect(staticTrack?.classList.contains("basket-product-hero__track--static")).toBe(true);
     expect(staticBasket.container.querySelectorAll(".basket-product-hero__group")).toHaveLength(1);
-    expect(staticBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(0);
+    expect(
+      staticBasket.container.querySelectorAll(".basket-product-hero__brand-mark"),
+    ).toHaveLength(0);
     staticBasket.unmount();
 
     storeLines(11);
@@ -115,8 +118,12 @@ describe("shopper basket editing", () => {
     );
     const scrollingTrack = scrollingBasket.container.querySelector(".basket-product-hero__track");
     expect(scrollingTrack?.classList.contains("basket-product-hero__track--scrolling")).toBe(true);
-    expect(scrollingBasket.container.querySelectorAll(".basket-product-hero__group")).toHaveLength(2);
-    expect(scrollingBasket.container.querySelectorAll(".basket-product-hero__brand-mark")).toHaveLength(0);
+    expect(scrollingBasket.container.querySelectorAll(".basket-product-hero__group")).toHaveLength(
+      2,
+    );
+    expect(
+      scrollingBasket.container.querySelectorAll(".basket-product-hero__brand-mark"),
+    ).toHaveLength(0);
     scrollingBasket.unmount();
   });
 
@@ -143,7 +150,7 @@ describe("shopper basket editing", () => {
     // Return to the basket.
     fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
     await screen.findByRole("heading", {
-      name: "Exact products you selected",
+      name: "Your grocery list",
     });
 
     // Clicking the product image opens the same details page.
@@ -267,9 +274,33 @@ describe("shopper basket editing", () => {
     ]);
   });
 
+  it("keeps saved basket items and counts when adding a catalogue product", async () => {
+    const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
+    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    openApp("/basket");
+    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
+    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
+    const riceAddButton = addButtons[1];
+    if (!riceAddButton) throw new Error("Expected a second catalogue product");
+    fireEvent.click(riceAddButton);
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+
+    const increaseDrink = await screen.findByRole("button", {
+      name: "Increase Fixture Plain Drink",
+    });
+    expect(increaseDrink).toBeDefined();
+    expect(increaseDrink.parentElement?.querySelector("strong")?.textContent).toBe("2");
+    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
+    expect(document.querySelector(".basket-header__meta")?.textContent).toBe("2items3packs");
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
+      ...savedBasket,
+      { productId: "fixture-rice", quantity: 1 },
+    ]);
+  });
+
   it("does not restore synthetic demo products as a normal basket after reload", async () => {
-    const firstLoad = openApp("/basket");
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    const firstLoad = openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
     expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
     firstLoad.unmount();
 
@@ -281,8 +312,8 @@ describe("shopper basket editing", () => {
   });
 
   it("does not persist synthetic lines when a demo basket is edited", async () => {
-    const firstLoad = openApp("/basket");
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    const firstLoad = openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
     fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
 
     expect(window.sessionStorage.getItem(BASKET_STORAGE_KEY)).toBeNull();
@@ -297,8 +328,8 @@ describe("shopper basket editing", () => {
   it("preserves the saved real basket while a demo scenario is loaded", async () => {
     const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
     window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
-    const firstLoad = openApp("/basket");
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    const firstLoad = openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
     fireEvent.click(screen.getByRole("button", { name: "Increase Fixture White Rice" }));
 
     expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
@@ -315,38 +346,11 @@ describe("shopper basket editing", () => {
     expect(screen.queryByText("Product details unavailable")).toBeNull();
   });
 
-  it("keeps the saved basket when adding a catalogue product after loading a demo", async () => {
+  it("restores and extends the saved basket when adding a catalogue product during a demo", async () => {
     const savedBasket = [{ productId: "fixture-drink", quantity: 2 }];
     window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
-    openApp("/basket");
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
-    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
-    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
-    const riceAddButton = addButtons[1];
-    if (!riceAddButton) throw new Error("Expected a second catalogue product");
-    fireEvent.click(riceAddButton);
-    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
-
-    expect(
-      await screen.findByRole("button", { name: "Increase Fixture Plain Drink" }),
-    ).toBeDefined();
-    expect(
-      screen
-        .getByRole("button", { name: "Increase Fixture Plain Drink" })
-        .parentElement?.querySelector("strong")?.textContent,
-    ).toBe("2");
-    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
-    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual([
-      ...savedBasket,
-      { productId: "fixture-rice", quantity: 1 },
-    ]);
-  });
-
-  it("persists the saved basket plus a catalogue addition when it matches the demo lines", async () => {
-    const savedBasket = [{ productId: "fixture-drink", quantity: 1 }];
-    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
-    const firstLoad = openApp("/basket");
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
+    const firstLoad = openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
     fireEvent.click(screen.getByRole("link", { name: "Add more" }));
     const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
     const riceAddButton = addButtons[1];
@@ -355,7 +359,8 @@ describe("shopper basket editing", () => {
     fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
 
     const expectedBasket = [...savedBasket, { productId: "fixture-rice", quantity: 1 }];
-    expect(screen.getByText(/API comparison mode/)).toBeDefined();
+    expect(screen.getByRole("button", { name: "Increase Fixture Plain Drink" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
     expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
       expectedBasket,
     );
@@ -370,6 +375,46 @@ describe("shopper basket editing", () => {
     expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
       expectedBasket,
     );
+  });
+
+  it("persists a catalogue addition when it matches the displayed demo lines", async () => {
+    const savedBasket = [{ productId: "fixture-drink", quantity: 1 }];
+    window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(savedBasket));
+    const firstLoad = openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
+    fireEvent.click(screen.getByRole("link", { name: "Add more" }));
+    const addButtons = await screen.findAllByRole("button", { name: /^Add$/ });
+    const riceAddButton = addButtons[1];
+    if (!riceAddButton) throw new Error("Expected a second catalogue product");
+    fireEvent.click(riceAddButton);
+    fireEvent.click(screen.getByRole("link", { name: /^Basket / }));
+
+    const expectedBasket = [...savedBasket, { productId: "fixture-rice", quantity: 1 }];
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+      expectedBasket,
+    );
+    firstLoad.unmount();
+
+    openApp("/basket");
+
+    expect(
+      await screen.findByRole("button", { name: "Increase Fixture Plain Drink" }),
+    ).toBeDefined();
+    expect(screen.getByRole("button", { name: "Increase Fixture White Rice" })).toBeDefined();
+    expect(JSON.parse(window.sessionStorage.getItem(BASKET_STORAGE_KEY) ?? "null")).toEqual(
+      expectedBasket,
+    );
+  });
+
+  it("does not mark results stale when the same demo scenario is loaded again", async () => {
+    openBasketHarness();
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
+    await screen.findByRole("heading", { name: "Retailer basket comparison" });
+    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
+    fireEvent.click(screen.getByRole("button", { name: "Load complete demo basket" }));
+
+    expect(screen.queryByText("Your basket changed.")).toBeNull();
   });
 
   it("marks results stale when a product is removed after comparison", async () => {
@@ -412,18 +457,6 @@ describe("shopper basket editing", () => {
 
     expect(screen.getByText("Your basket changed.")).toBeDefined();
     expect(screen.getAllByRole("button", { name: /^Remove / })).toHaveLength(3);
-  });
-
-  it("does not mark the comparison stale when the same demo scenario is loaded again", async () => {
-    openApp("/basket");
-    const scenario = screen.getByRole("button", { name: /Multiple complete retailers/ });
-    fireEvent.click(scenario);
-    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
-    await screen.findByRole("heading", { name: "Retailer basket comparison" });
-    fireEvent.click(screen.getByRole("link", { name: "Edit basket" }));
-    fireEvent.click(screen.getByRole("button", { name: /Multiple complete retailers/ }));
-
-    expect(screen.queryByText("Your basket changed.")).toBeNull();
   });
 
   it("marks a previous comparison stale when a normal basket line changes", async () => {
