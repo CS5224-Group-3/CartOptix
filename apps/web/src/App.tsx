@@ -561,7 +561,7 @@ export function CataloguePage() {
   }, []);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
-  const { data: heroData } = useProducts({ page: 1, pageSize: 8 });
+  const { data: heroData } = useProducts({ page: 1, pageSize: 50 });
   const query = useMemo(
     () => ({
       ...(search.trim() ? { q: search.trim() } : {}),
@@ -577,6 +577,14 @@ export function CataloguePage() {
   const categories = catalogue.data?.categories ?? [];
   const quickCategories = categories.slice(0, 6);
   const backdropProducts = heroData?.products ?? [];
+  const backdropSequence =
+    backdropProducts.length > 1
+      ? Array.from({ length: 50 }, (_, slot) =>
+          backdropProducts
+            .slice(slot % backdropProducts.length, (slot % backdropProducts.length) + 1)
+            .map((product) => ({ product, slot })),
+        ).flat()
+      : backdropProducts.map((product, slot) => ({ product, slot }));
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   useEffect(() => {
     setPage((current) => Math.min(current, totalPages));
@@ -591,22 +599,22 @@ export function CataloguePage() {
       <section className="catalogue-collage-hero">
         <div className="catalogue-collage-viewport" aria-hidden="true">
           <div className="catalogue-collage-track">
-            {[0, 1].map((copy) => (
+            {[0, 1, 2, 3, 4, 5].map((copy) => (
               <div className="catalogue-collage-group" key={copy}>
-                {backdropProducts.map((product, index) => {
-                  const { emoji, accent } = categoryVisual(product.categoryId);
+                {backdropSequence.map(({ product, slot }) => {
+                  const { accent } = categoryVisual(product.categoryId);
                   return (
                     <div
-                      key={`${copy}-${product.productId}`}
-                      className={`catalogue-collage-tile catalogue-collage-tile--${index + 1}`}
-                      style={{ background: accent }}
+                      key={`${copy}-${slot}-${product.productId}`}
+                      className={`catalogue-collage-tile catalogue-collage-tile--${(slot % backdropProducts.length) + 1}`}
+                      data-product-id={product.productId}
+                      style={{
+                        background: accent,
+                        gridColumn: Math.floor(slot / 2) + 1,
+                        gridRow: (slot % 2) + 1,
+                      }}
                     >
-                      {product.imageUrl ? (
-                        <img src={product.imageUrl} alt="" />
-                      ) : (
-                        <span>{emoji}</span>
-                      )}
-                      <span className="catalogue-collage-tile__emoji">{emoji}</span>
+                      {product.imageUrl && <img src={product.imageUrl} alt="" />}
                     </div>
                   );
                 })}
@@ -616,9 +624,6 @@ export function CataloguePage() {
         </div>
         <div className="catalogue-collage-overlay" />
         <div className="container catalogue-collage-content">
-          <p className="catalogue-kicker">
-            <span className="catalogue-kicker__dot" /> CartOptix catalogue
-          </p>
           <h1>Find your everyday essentials.</h1>
           <div className="catalogue-search-card">
             <Search size={21} aria-hidden="true" />
@@ -644,15 +649,6 @@ export function CataloguePage() {
         </div>
       </section>
       <section className="container catalogue-section">
-        <div className="catalogue-heading">
-          <div>
-            <p className="eyebrow">Browse the collection</p>
-            <h2>Good things for the everyday.</h2>
-          </div>
-          <p className="catalogue-heading__note">
-            Start with a category, then open any product to see how retailers compare.
-          </p>
-        </div>
         <div className="catalogue-controls">
           <div className="category-chips" role="group" aria-label="Quick product category filters">
             <button
@@ -1049,7 +1045,7 @@ export function BasketPage() {
     <main>
       <PageIntro
         eyebrow="Your basket"
-        title="Compare the basket, not partial items."
+        title="Review your basket"
         description="Compare the complete basket independently at each retailer using prototype data."
       >
         <div className="data-pill">

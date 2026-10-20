@@ -64,19 +64,36 @@ describe("App", () => {
     const { container } = render(<App queryClient={createQueryClient()} />);
 
     await waitFor(() =>
-      expect(container.querySelectorAll(".catalogue-collage-tile")).toHaveLength(4),
+      expect(container.querySelectorAll(".catalogue-collage-tile").length).toBeGreaterThan(1),
     );
-    const initialTiles = Array.from(container.querySelectorAll(".catalogue-collage-tile")).map(
-      (tile) => tile.textContent,
+    expect(container.querySelectorAll(".catalogue-collage-group")).toHaveLength(6);
+    const firstGroupTiles = Array.from(
+      container.querySelectorAll<HTMLElement>(
+        ".catalogue-collage-group:first-child .catalogue-collage-tile",
+      ),
     );
+    expect(firstGroupTiles.length).toBeGreaterThan(1);
+    expect(firstGroupTiles.length % 2).toBe(0);
+    for (const [slot, tile] of firstGroupTiles.entries()) {
+      expect(tile.style.gridColumn).toBe(String(Math.floor(slot / 2) + 1));
+      expect(tile.style.gridRow).toBe(String((slot % 2) + 1));
+      if (slot % 2 === 0) {
+        const bottomTile = firstGroupTiles.at(slot + 1);
+        expect(bottomTile).toBeDefined();
+        expect(tile.dataset.productId).not.toBe(bottomTile?.dataset.productId);
+      }
+    }
+    const initialTiles = Array.from(
+      container.querySelectorAll<HTMLElement>(".catalogue-collage-tile"),
+    ).map((tile) => tile.dataset.productId);
     fireEvent.change(screen.getByRole("textbox", { name: "Search products" }), {
       target: { value: "no matching product" },
     });
 
     expect(await screen.findByRole("heading", { name: "No matching products" })).toBeDefined();
-    const filteredTiles = Array.from(container.querySelectorAll(".catalogue-collage-tile")).map(
-      (tile) => tile.textContent,
-    );
+    const filteredTiles = Array.from(
+      container.querySelectorAll<HTMLElement>(".catalogue-collage-tile"),
+    ).map((tile) => tile.dataset.productId);
     expect(filteredTiles).toEqual(initialTiles);
     expect(fetchMock.mock.calls.some(([url]) => String(url).includes("q=no"))).toBe(true);
   });
