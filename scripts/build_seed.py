@@ -83,8 +83,6 @@ def load_registry() -> dict[str, str]:
 def main(selection_path: str) -> None:
     raw = load_workbooks()
     registry = load_registry()
-    with open(DELIVERY_RULES, encoding="utf-8") as f:
-        delivery = json.load(f)
 
     groups: dict[str, list[dict]] = defaultdict(list)
     with open(selection_path, encoding="utf-8") as f:
@@ -134,24 +132,34 @@ def main(selection_path: str) -> None:
         for retailer, row, source, offer, lid, url in members:
             registry[lid] = product_id
             listings.append(
-                {
-                    "listingId": lid,
-                    "productId": product_id,
-                    "retailerId": RETAILERS[retailer][0],
-                    "sourceRecordId": row["source_record_id"],
-                    "name": source["Product Name"].strip(),
-                    "specification": source["Specification"].strip() or source["Product Name"].strip(),
-                    "productUrl": url,
-                    "priceKind": offer["price_kind"],
-                    "unitPriceCents": offer["unit_price_cents"],
-                    "originalPriceCents": offer["original_price_cents"],
-                    "multibuy": offer["multibuy"],
-                    "excludedPromotions": [offer["excluded_promotion"]]
-                    if offer["excluded_promotion"]
-                    else [],
-                }
+                seed_listing(lid, product_id, RETAILERS[retailer][0], row["source_record_id"], source, offer, url)
             )
 
+    write_seed(products, listings, registry)
+
+
+def seed_listing(lid: str, product_id: str, retailer_id: str, source_record_id: str, source, offer: dict, url: str) -> dict:
+    """One seed listing from a source row and the offer derived from it."""
+    return {
+        "listingId": lid,
+        "productId": product_id,
+        "retailerId": retailer_id,
+        "sourceRecordId": source_record_id,
+        "name": source["Product Name"].strip(),
+        "specification": source["Specification"].strip() or source["Product Name"].strip(),
+        "productUrl": url,
+        "priceKind": offer["price_kind"],
+        "unitPriceCents": offer["unit_price_cents"],
+        "originalPriceCents": offer["original_price_cents"],
+        "multibuy": offer["multibuy"],
+        "excludedPromotions": [offer["excluded_promotion"]] if offer["excluded_promotion"] else [],
+    }
+
+
+def write_seed(products: list[dict], listings: list[dict], registry: dict[str, str]) -> None:
+    """Writes the seed, with the fixed retailers, categories and delivery rules, and the ID registry."""
+    with open(DELIVERY_RULES, encoding="utf-8") as f:
+        delivery = json.load(f)
     seed = {
         "retailers": [
             {"retailerId": rid, "name": name, "productUrlHosts": hosts}
@@ -175,7 +183,6 @@ def main(selection_path: str) -> None:
         writer.writerow(["listing_id", "product_id"])
         writer.writerows(sorted(registry.items()))
     print(f"Wrote {len(products)} products and {len(listings)} listings to {SEED.relative_to(ROOT)}")
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

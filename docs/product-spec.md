@@ -44,7 +44,7 @@ The catalogue targets **200–300 canonical products** across these eight catego
 7. Household Cleaning
 8. Toiletries & Personal Care
 
-Data quality takes precedence over catalogue size. At least **70% of published canonical products should have eligible offers from two or more retailers**. This is a provisional usefulness target; report actual coverage and any shortfall. Do not weaken matching standards or require every product to exist at all three retailers. Retain some single-retailer products to represent coverage gaps.
+Data quality takes precedence over catalogue size. At least **70% of published canonical products should have eligible offers from two or more retailers**. This is a provisional usefulness target; report actual coverage and any shortfall. Do not weaken matching standards or require every product to exist at all three retailers. Publish a product only when two or more retailers have an eligible listing, because a product sold at one retailer gives nothing to compare; one that falls below that in a refresh leaves the catalogue and keeps its ID for when it returns.
 
 Only **direct supermarket fulfilment** is in scope. Third-party sellers and separate delivery arrangements are excluded even when their products belong to the selected categories.
 
@@ -112,7 +112,9 @@ Each complete-basket option places every line with the same retailer. Do not div
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. Synthetic data is for development and tests.
+Each snapshot refresh reads every published listing again and searches the retailers a product is missing from. A refresh never fills a missing or failed observation with an earlier one.
+
+Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. At RedMart the scraper records the page's "Sold by" line; a listing with one is third-party and excluded, and a page whose seller cannot be read is checked by hand. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. Synthetic data is for development and tests.
 
 ### PR-03 — Supported pricing and promotions
 
@@ -153,7 +155,7 @@ Do **not** display collection dates on the website. Display this notice near com
 
 > Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
 
-Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Source references are not presented as collection dates.
+Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Engineers refresh it by taking a new snapshot of all three retailers within one short window (`scripts/scrape/README.md`); each refresh replaces the previous snapshot entirely and stays a fixed dataset until the next one. If any retailer's collection fails, the previous seed stays. Neither the seed nor the site records when a snapshot was taken, and source references are not presented as collection dates. There is no scheduled or live refresh.
 
 ### PR-07 — Usage measurement
 

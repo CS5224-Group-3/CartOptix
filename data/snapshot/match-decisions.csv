@@ -1,0 +1,50 @@
+product_id,product url,decision,confidence,reason
+anlene-actifit-3x-plain-milk-powder-1kg,https://www.fairprice.com.sg/product/anlene-actifit-3x-adult-milk-powder-plain-1kg-13067233,MATCH,HIGH,Same Anlene Actifit 3X plain milk powder and 1kg pack
+boncafe-all-day-coffee-beans-200g,https://www.fairprice.com.sg/product/391243,MATCH,HIGH,Same Boncafe All Day whole beans and 200g pack
+boncafe-all-day-coffee-beans-200g,https://www.fairprice.com.sg/product/boncafe-ground-coffee-powder-all-day-200g-160987,NOT_MATCH,HIGH,Ground coffee rather than whole beans
+boncafe-colombiana-instant-coffee-200g,https://www.fairprice.com.sg/product/boncafe-instant-coffee-colombiana-200g-460973,MATCH,HIGH,Same Boncafe Colombiana instant coffee and 200g pack
+greenfields-fresh-milk-1-89l,https://www.fairprice.com.sg/product/greenfield-fresh-milk---regular-13062327,MATCH,HIGH,Regular fresh milk matches the unflavoured target and 1.89L size
+greenfields-fresh-milk-1-89l,https://www.fairprice.com.sg/product/greenfields-fresh-milk-low-fat-1-89l-13062328,NOT_MATCH,HIGH,Low Fat differs from regular fresh milk
+lee-kum-kee-vegetarian-oyster-flavoured-sauce-510g,https://www.fairprice.com.sg/product/lee-kum-kee-oyster-sauce-vegetarian-510g-10709187,MATCH,HIGH,Same Lee Kum Kee vegetarian oyster sauce and 510g pack
+magnolia-fresh-milk-946ml,https://www.fairprice.com.sg/product/f-n-magnolia-fresh-milk-946ml-13022014,MATCH,HIGH,Same Magnolia fresh milk and 946ml pack
+magnolia-fresh-milk-946ml,https://www.fairprice.com.sg/product/f-n-magnolia-fresh-milk-chocolate-946ml-12337233,NOT_MATCH,HIGH,Chocolate differs from plain fresh milk
+magnolia-fresh-milk-946ml,https://www.fairprice.com.sg/product/f-n-magnolia-plus-fresh-milk-lactose-free-946ml-13178222,NOT_MATCH,HIGH,Plus lactose-free is a different product line and type
+marigold-100-orange-juice-1l,https://www.fairprice.com.sg/product/marigold-100-juice-orange-1lt-434556,MATCH,HIGH,Same Marigold 100% orange juice and 1L pack
+marigold-100-orange-juice-1l,https://www.fairprice.com.sg/product/marigold-100-packet-juice-orange-sunrise-mixed-fruits-1l-10397400,NOT_MATCH,HIGH,Orange Sunrise Mixed Fruits differs from orange juice
+marigold-evaporated-creamer-385g,https://www.fairprice.com.sg/product/marigold-evaporated-creamer-385g-13031758,MATCH,HIGH,Same Marigold evaporated creamer and 385g pack
+marigold-uht-chocolate-milk-1l,https://www.fairprice.com.sg/product/marigold-uht-milk-chocolate-1lt-84905,MATCH,HIGH,Same Marigold UHT chocolate milk and 1L pack
+marigold-uht-strawberry-milk-1l,https://www.fairprice.com.sg/product/marigold-uht-milk-strawberry-1lt-10919360,MATCH,HIGH,Same Marigold UHT strawberry milk and 1L pack
+meiji-fresh-milk-830ml,https://www.fairprice.com.sg/product/bcrs-meiji-fresh-milk-regular-830ml-13293648,MATCH,HIGH,Same Meiji regular fresh milk and 830ml pack
+meiji-fresh-milk-830ml,https://www.fairprice.com.sg/product/bcrs-meiji-fresh-milk-coffee-830ml-13293668,NOT_MATCH,HIGH,Coffee flavour differs from regular fresh milk
+meiji-fresh-milk-830ml,https://www.fairprice.com.sg/product/bcrs-meiji-low-fat-fresh-milk-chocolate-830ml-13293669,NOT_MATCH,HIGH,Low-fat chocolate differs from regular fresh milk
+naturel-organic-brown-gaba-and-riceberry-rice-1-8kg,https://www.fairprice.com.sg/product/naturel-organic-rice---mixed-brown-gaba---riceberry-13145201,MATCH,HIGH,Same Naturel organic brown GABA and Riceberry blend and 1.8kg pack
+naturel-organic-brown-rice-fusilli-250g,https://www.fairprice.com.sg/product/13132173,MATCH,HIGH,Same Naturel organic brown rice fusilli and 250g pack
+nestle-fitnesse-oats-and-honey-granola-300g,https://www.fairprice.com.sg/product/nestle-fitnesse-granola-oats-honey-300g-13104729,MATCH,HIGH,Same Nestle Fitnesse oats and honey granola and 300g pack
+nissin-kyushu-white-instant-noodles-cup-75g,https://www.fairprice.com.sg/product/nissin-cup-noodle-kyushu-white-75g-13072127,MATCH,HIGH,Same Nissin Kyushu White cup noodles and 75g pack
+perfect-italiano-block-parmesan-cheese-250g,https://www.fairprice.com.sg/product/perfect-italiano-cheese-traditional-hard-cheese-block-250g-226565,UNSURE,MEDIUM,Brand size and block form agree but Traditional Hard Cheese does not explicitly establish Parmesan
+pokka-chrysanthemum-white-tea-6-x-250ml,https://www.fairprice.com.sg/product/pokka-chrysanthemum-with-white-tea-6s-x-250ml-11195034,MATCH,HIGH,Same Pokka chrysanthemum with white tea and six 250ml packs
+pokka-ice-lemon-tea-6-x-250ml,https://www.fairprice.com.sg/product/pokka-packet-lemon-tea-6s-x-250ml-11113385,MATCH,HIGH,Same Pokka Ice Lemon Tea and six 250ml packs
+pokka-ice-lemon-tea-6-x-250ml,https://www.fairprice.com.sg/product/pokka-packet-drink---ice-lemon-tea-less-sugar-13143743,NOT_MATCH,HIGH,Less Sugar is a different variant from the target
+pokka-ice-peach-tea-6-x-250ml,https://www.fairprice.com.sg/product/13151473,NOT_MATCH,HIGH,Less Sugar is a different variant from the target
+pokka-ice-peach-tea-6-x-250ml,https://www.fairprice.com.sg/product/pokka-packet-peach-tea-6s-x-250ml-11113406,MATCH,HIGH,Same Pokka peach tea and six 250ml packs
+pokka-no-sugar-sencha-japanese-green-tea-6-x-250ml,https://www.fairprice.com.sg/product/pokka-packet-drink-sencha-japanese-green-tea-no-sugar-6-x-250ml-13234163,MATCH,HIGH,Same Pokka No Sugar Sencha Japanese Green Tea and six 250ml packs
+post-fruity-pebbles-cereal-311g,https://www.fairprice.com.sg/product/post-fruity-pebbles-311g-12291378,MATCH,HIGH,Same Post Fruity Pebbles cereal and 311g pack
+cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-and-ginger-500ml,https://coldstorage.com.sg/product/cloversoft-2-in-1-bleach-free-toilet-cleaner-vanilla-lavender-500ml,NOT_MATCH,HIGH,Vanilla and Lavender scent differs from Rosemary and Ginger
+cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-and-ginger-500ml,https://coldstorage.com.sg/product/cloversoft-2-in-1-bleach-free-toilet-cleaner-peppermint-cucumber-500ml,NOT_MATCH,HIGH,Peppermint and Cucumber scent differs from Rosemary and Ginger
+dove-gentle-exfoliating-body-wash-1l,https://coldstorage.com.sg/product/dove-bodywash-gentle-exfoliating-1l,MATCH,HIGH,Same Dove Gentle Exfoliating body wash and 1L pack
+emborg-mozzarella-shredded-cheese-200g,https://coldstorage.com.sg/product/emborg-shredded-mozzarella-cheese-200g,MATCH,HIGH,Same Emborg shredded mozzarella and 200g pack
+emborg-pasta-shredded-cheese,https://coldstorage.com.sg/product/emborg-pasta-cheese-200g,MATCH,HIGH,Same Emborg shredded pasta cheese and 200g pack
+fortune-kway-teow-noodles-400g,https://coldstorage.com.sg/product/fortune-kway-teow-400g,MATCH,HIGH,Same Fortune Kway Teow noodles and 400g pack
+gerber-rice-cereal-baby-cereal-227g,https://coldstorage.com.sg/product/gerber-rice-cereal-227g,MATCH,HIGH,Same Gerber rice baby cereal and 227g pack
+hipp-organic-cereal-flakes-fruit,https://coldstorage.com.sg/product/hipp-organic-fruit-cereal-flakes-200g,MATCH,HIGH,Same HiPP organic fruit cereal flakes and 200g pack
+kodomo-baby-laundry-detergent-nature-care-2l,https://coldstorage.com.sg/product/kodomo-lion-nature-care-detergent-2l,MATCH,HIGH,Same Kodomo Nature Care baby laundry detergent and 2L pack
+kodomo-baby-laundry-detergent-nature-care-refill-1l,https://coldstorage.com.sg/product/kodomo-lion-baby-laundry-detergent-refill---nature-care-1l,MATCH,HIGH,Same Kodomo Nature Care baby laundry detergent refill and 1L pack
+magiclean-fresh-floral-floor-cleaner-3l,https://coldstorage.com.sg/product/magiclean-floor-fresh-floral-28l,UNSURE,MEDIUM,Name and specification say 3L but URL suggests 2.8L
+marigold-greek-style-yoghurt-natural-130g,https://coldstorage.com.sg/product/marigold-gs-yog-nat-130g-1s,MATCH,HIGH,Same Marigold natural Greek style yoghurt and 130g pack
+marigold-hl-dark-chocolate-milk-with-plant-sterols,https://coldstorage.com.sg/product/marigold-hl-d-choc-mil-946ml,MATCH,HIGH,Same Marigold HL dark chocolate milk with plant sterols and 946ml pack
+marigold-hl-milk-banana-946ml,https://coldstorage.com.sg/product/marigold-hl-milk-banana-946ml,MATCH,HIGH,Same Marigold HL banana milk and 946ml pack
+marigold-hl-milk-plain-946ml,https://coldstorage.com.sg/product/marigold-hl-milk-946ml,MATCH,HIGH,Same Marigold HL plain milk and 946ml pack
+marigold-hl-milk-plain-946ml,https://coldstorage.com.sg/product/marigold-hl-milk-plant-sterol-946ml,NOT_MATCH,HIGH,Added plant sterols make this a different variant from plain HL milk
+marigold-hl-milk-strawberry-946ml,https://coldstorage.com.sg/product/marigold-hl-milk-strawberry-946ml,MATCH,HIGH,Same Marigold HL strawberry milk and 946ml pack
+shokubutsu-hydro-body-wash-lumi-glow-900ml,https://coldstorage.com.sg/product/hydro-bw-lumi-glow,MATCH,HIGH,Same Shokubutsu Hydro+ Lumi Glow body wash and 900ml pack
+songhe-8020-mixed-fragrant-red-rice-2kg,https://coldstorage.com.sg/product/songhe-mixed-fragrant-rice-noble-red-rice-2kg,MATCH,HIGH,Same SongHe 80/20 fragrant and red rice blend and 2kg pack

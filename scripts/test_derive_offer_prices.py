@@ -20,6 +20,11 @@ class ParseMultibuy(unittest.TestCase):
             {"packsPerDeal": 2, "dealPriceCents": 450, "mixAndMatch": False},
         )
 
+    def test_each_retailers_wording(self):
+        self.assertEqual(parse_multibuy("Any 2 @ $6.55", 350)["dealPriceCents"], 655)
+        self.assertEqual(parse_multibuy("Any 2 For $6.30", 388)["dealPriceCents"], 630)
+        self.assertEqual(parse_multibuy("Buy 2 Save 13%", 635)["dealPriceCents"], 1105)
+
     def test_percentage_rounds_half_up_once_per_deal(self):
         # 2 × 333 = 666; 15% off = 566.1 → 566.
         self.assertEqual(parse_multibuy("Any 2 Save 15%", 333)["dealPriceCents"], 566)

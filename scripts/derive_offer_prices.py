@@ -11,11 +11,12 @@ Rules (product spec PR-03):
   unconditional sale; otherwise it is ordinary. A sale keeps its original
   price for display only; it never changes what the shopper pays.
 - A same-product multibuy becomes a deal of N packs for a fixed price, if that
-  is cheaper than N packs at the unit price. "N At $X" costs X; "N Save X%" and
-  "Buy N Get X% Off" take X% off N packs, rounded half-up to the cent;
-  "N Save $X" takes X off N packs. Deals worded "Any" are marked mix-and-match,
-  but only same-product packs are counted. Validity dates are ignored. A deal
-  on a sale price is not applied, because promotions never stack.
+  is cheaper than N packs at the unit price. "N At $X" (also "@" or "For")
+  costs X; "N Save X%" and "Buy N Get X% Off" take X% off N packs, rounded
+  half-up to the cent; "N Save $X" takes X off N packs. Deals worded "Any" are
+  marked mix-and-match, but only same-product packs are counted. Validity
+  dates are ignored. A deal on a sale price is not applied, because promotions
+  never stack.
 - Other savings text that is not the plain "Save $X" of a sale (spend
   thresholds, gifts, deals that would not be cheaper) is a promotion that is
   not applied. It is kept as a shopper-facing note, with any dates removed.
@@ -41,7 +42,7 @@ WORKBOOKS = {
 PLAIN_SAVING = re.compile(r"save \$?\d+(\.\d+)?", re.IGNORECASE)
 DATES = re.compile(r"\s*\([^)]*\d+/\d+[^)]*\)")
 MULTIBUY = re.compile(
-    r"(?P<scope>any|buy) (?P<packs>\d+) (?:at (?P<price>\$?[\d.]+)"
+    r"(?P<scope>any|buy) (?P<packs>\d+) (?:(?:at|@|for) (?P<price>\$?[\d.]+)"
     r"|save (?P<saving>\$[\d.]+)|(?:save|get) (?P<percent>\d+(?:\.\d+)?)%(?: off)?)",
     re.IGNORECASE,
 )
