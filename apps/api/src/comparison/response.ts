@@ -7,6 +7,7 @@ import type {
   PlanLine,
 } from "@cartoptix/contracts";
 import type { PricedLine } from "../pricing/index.ts";
+import { toWireMultibuy } from "../products/offers.ts";
 import type { BasketComparison, RetailerOption } from "./index.ts";
 import type { ListingDetails } from "./store.ts";
 
@@ -42,16 +43,16 @@ function toOption(
 
 function toPlanLine(line: PricedLine, listings: ReadonlyMap<string, ListingDetails>): PlanLine {
   const listing = listings.get(line.listingId);
-  const [segment] = line.packsBreakdown;
-  if (!listing || !segment) throw new Error(`No listing details for ${line.listingId}`);
+  if (!listing) throw new Error(`No listing details for ${line.listingId}`);
   return {
     productId: line.productId,
     quantity: line.packs,
     listingId: line.listingId,
     productUrl: listing.productUrl,
     priceKind: line.priceKind,
-    unitPriceCents: segment.unitPrice,
+    unitPriceCents: line.unitPrice,
     originalPriceCents: listing.originalPriceCents,
+    multibuy: toWireMultibuy(line),
     itemCharges: line.appliedCharges.map((charge) => ({
       label: charge.label,
       amountCents: charge.amount,

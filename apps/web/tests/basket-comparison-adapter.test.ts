@@ -1,4 +1,4 @@
-import type { BasketCompareResponse, CompleteOption } from "@cartoptix/contracts";
+import type { BasketCompareResponse, CompleteOption, Multibuy } from "@cartoptix/contracts";
 import {
   basketRequestExample,
   noFeasiblePlanExample,
@@ -76,6 +76,7 @@ describe("shared comparison contract adapter", () => {
         unitPriceCents: 250,
         originalPriceCents: null,
         priceKind: "ordinary",
+        multibuy: null,
         itemCharges: [],
         excludedPromotions: [],
       },
@@ -129,6 +130,7 @@ describe("shared comparison contract adapter", () => {
       unitPriceCents: 250,
       originalPriceCents: 300,
       priceKind: "unconditional_sale",
+      multibuy: null,
       itemCharges: line.itemCharges,
       excludedPromotions: line.excludedPromotions,
     });
@@ -148,6 +150,53 @@ describe("shared comparison contract adapter", () => {
     line.priceKind = priceKind;
     line.originalPriceCents = originalPriceCents;
     expect(() => adaptComparison(response, snapshot())).toThrow(PresentationDataFailure);
+  });
+
+  /** A line of 3 packs with a "2 for" deal saving 100: one deal plus one pack.
+   * Uses the one-complete-retailer fixture, so no other option needs repricing. */
+  function withDeal(change: Partial<Multibuy> = {}) {
+    const response: BasketCompareResponse = structuredClone(oneRetailerCompleteExample);
+    const option = complete(response);
+    const line = option.lines[0];
+    if (!line) throw new Error("Missing line");
+    const unit = line.unitPriceCents;
+    const charges = line.itemCharges.reduce(
+      (sum, charge) => sum + (charge.includedInPrice ? 0 : charge.amountCents),
+      0,
+    );
+    const total = 3 * unit - 100 + charges;
+    line.quantity = 3;
+    line.multibuy = {
+      packsPerDeal: 2,
+      dealPriceCents: 2 * unit - 100,
+      mixAndMatch: false,
+      timesApplied: 1,
+      savingCents: 100,
+      ...change,
+    };
+    option.totalCents += total - line.lineTotalCents;
+    line.lineTotalCents = total;
+    const basket = snapshot();
+    for (const product of basket.products)
+      if (product.productId === line.productId) product.quantity = 3;
+    return { response, basket, line, total };
+  }
+
+  it("reconciles a multibuy line from its deals and remaining packs", () => {
+    const { response, basket, line, total } = withDeal();
+    const mapped = adaptComparison(response, basket).options.find((o) => o.kind === "complete");
+    if (mapped?.kind !== "complete") throw new Error("Missing option");
+    expect(mapped.lines[0]?.amountCents).toBe(total);
+    expect(mapped.lines[0]?.pricing.multibuy).toEqual(line.multibuy);
+  });
+
+  it.each([
+    ["a deal count that does not match the quantity", { timesApplied: 0 }],
+    ["a saving that does not add up", { savingCents: 90 }],
+    ["a deal that is not cheaper", { dealPriceCents: 100_000 }],
+  ])("rejects a multibuy with %s", (_name, change) => {
+    const { response, basket } = withDeal(change);
+    expect(() => adaptComparison(response, basket)).toThrow(PresentationDataFailure);
   });
 
   it("maps no feasible plan and all structured reasons without partial totals", () => {

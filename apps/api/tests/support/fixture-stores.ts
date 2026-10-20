@@ -44,6 +44,11 @@ export function createFixtureProductsStore(): {
                 retailerId: offer.retailerId,
                 priceKind: offer.priceKind,
                 unitPrice: offer.unitPriceCents,
+                multibuy: offer.multibuy && {
+                  packsPerDeal: offer.multibuy.packsPerDeal,
+                  dealPrice: offer.multibuy.dealPriceCents,
+                  mixAndMatch: offer.multibuy.mixAndMatch,
+                },
                 eligible: true,
                 charges: offer.itemCharges.map((charge) => ({
                   label: charge.label,

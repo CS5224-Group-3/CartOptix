@@ -90,7 +90,7 @@ describe("products API", () => {
     expect(response.statusCode).toBe(200);
     expect(Value.Check(OffersResponseSchema, response.json())).toBe(true);
     expect(response.json().offers).toEqual([
-      expect.objectContaining({ retailerId: "fairprice", lineTotalCents: 820 }),
+      expect.objectContaining({ retailerId: "fairprice", lineTotalCents: 700 }),
       expect.objectContaining({ retailerId: "redmart", lineTotalCents: 1230 }),
     ]);
   });
@@ -106,7 +106,7 @@ describe("products API", () => {
     expect(response.json().quantity).toBe(quantity);
     expect(
       response.json().offers.map((offer: { lineTotalCents: number }) => offer.lineTotalCents),
-    ).toEqual(quantity === 1 ? [410, 615] : [8200, 12300]);
+    ).toEqual(quantity === 1 ? [410, 615] : [7000, 12300]);
   });
 
   it.each([0, 21, 1.5])("rejects unsupported offer quantity %s", async (quantity) => {

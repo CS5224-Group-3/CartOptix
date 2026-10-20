@@ -152,7 +152,7 @@ describe("normal API comparison flow", () => {
     expect(fair.getByText(/Unit price: S\$2.50.*\(sale price\)/)).toBeDefined();
     expect(fair.getByText("S$2.90").closest("s")).not.toBeNull();
     expect(fair.getByText(/Included charge: S\$0.10.*included in unit price/)).toBeDefined();
-    expect(fair.getByText("Excluded promotion: Members only")).toBeDefined();
+    expect(fair.getByText("Members only — not included in this estimate")).toBeDefined();
     expect(fair.getByText(/S\$3.99 waived on orders from S\$6.00/)).toBeDefined();
     expect(fair.getAllByText("S$6.50")).toHaveLength(2);
     const red = within(screen.getByRole("article", { name: "RedMart" }));

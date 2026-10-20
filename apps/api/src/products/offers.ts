@@ -1,5 +1,18 @@
-import type { Offer } from "@cartoptix/contracts";
-import { multiplyCents, type OfferRule, priceLine } from "../pricing/index.ts";
+import type { Multibuy, Offer } from "@cartoptix/contracts";
+import { multiplyCents, type OfferRule, type PricedLine, priceLine } from "../pricing/index.ts";
+
+/** A priced line's deal on the wire; shared with basket comparison. */
+export function toWireMultibuy({ multibuy }: PricedLine): Multibuy | null {
+  return (
+    multibuy && {
+      packsPerDeal: multibuy.packsPerDeal,
+      dealPriceCents: multibuy.dealPrice,
+      mixAndMatch: multibuy.mixAndMatch,
+      timesApplied: multibuy.deals,
+      savingCents: multibuy.saving,
+    }
+  );
+}
 
 /** Price a product offer through the same rules used by basket comparison.
  * Returns null when the listing is ineligible or cannot be priced. */
@@ -25,6 +38,7 @@ export function priceOffer(
     priceKind: offer.priceKind,
     unitPriceCents: offer.unitPrice,
     originalPriceCents: listing.originalPriceCents,
+    multibuy: toWireMultibuy(result.line),
     itemCharges,
     lineTotalCents: result.line.total,
     excludedPromotions: result.line.disclosures

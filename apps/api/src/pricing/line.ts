@@ -2,6 +2,7 @@ import { MAX_PACKS_PER_LINE, MIN_PACKS_PER_LINE } from "@cartoptix/contracts";
 import { isCents, multiplyCents, sumCents } from "./money.ts";
 import {
   type AppliedCharge,
+  type LineMultibuy,
   type LinePricingResult,
   type PackPricing,
   PricingContractError,
@@ -17,9 +18,8 @@ import type { OfferRule } from "./rules.ts";
  * offer comparison and basket comparison call this, so a price shown next to
  * an offer is the same price the basket total is built from.
  *
- * Scope is the verified ordinary or unconditional sale price. Section 4 allows
- * the initial kernel to omit multibuy execution, and PR-03 makes multibuys
- * optional, so no bundle is priced until #4 verifies one.
+ * Scope is the verified ordinary or unconditional sale price, plus the
+ * listing's same-product multibuy when the line has enough packs (PR-03).
  */
 
 export interface PriceLineInput {
@@ -64,14 +64,26 @@ export function priceLine({ offer, packs }: PriceLineInput): LinePricingResult {
     return charges;
   }
 
-  const packsBreakdown: PackPricing[] = [
-    {
+  const multibuy = lineMultibuy(offer, packs);
+  const dealPacks = multibuy ? multibuy.deals * multibuy.packsPerDeal : 0;
+  const packsBreakdown: PackPricing[] = [];
+  if (multibuy && multibuy.deals > 0) {
+    packsBreakdown.push({
+      kind: "multibuy",
+      deals: multibuy.deals,
+      packsPerDeal: multibuy.packsPerDeal,
+      dealPrice: multibuy.dealPrice,
+      amount: multiplyCents(multibuy.dealPrice, multibuy.deals),
+    });
+  }
+  if (packs > dealPacks) {
+    packsBreakdown.push({
       kind: "unit",
-      packs,
+      packs: packs - dealPacks,
       unitPrice: offer.unitPrice,
-      amount: multiplyCents(offer.unitPrice, packs),
-    },
-  ];
+      amount: multiplyCents(offer.unitPrice, packs - dealPacks),
+    });
+  }
   const packsSubtotal = sumCents(packsBreakdown.map((segment) => segment.amount));
 
   const disclosures: PricingDisclosure[] = [
@@ -88,13 +100,44 @@ export function priceLine({ offer, packs }: PriceLineInput): LinePricingResult {
       retailerId: offer.retailerId,
       listingId: offer.listingId,
       priceKind: offer.priceKind,
+      unitPrice: offer.unitPrice,
       packs,
+      multibuy,
       packsSubtotal,
       packsBreakdown,
       appliedCharges: charges.applied,
       total: packsSubtotal + sumCents(charges.applied.map((charge) => charge.amount)),
       disclosures,
     },
+  };
+}
+
+/**
+ * Whole deals in the line, counted against this listing's packs only (PR-03).
+ * A deal that is not cheaper than its packs at the unit price is ignored;
+ * curation should already have excluded it.
+ */
+function lineMultibuy(offer: OfferRule, packs: number): LineMultibuy | null {
+  const rule = offer.multibuy;
+  if (!rule) return null;
+  const { packsPerDeal, dealPrice } = rule;
+  if (
+    !Number.isInteger(packsPerDeal) ||
+    packsPerDeal < 2 ||
+    !isCents(dealPrice) ||
+    dealPrice <= 0
+  ) {
+    throw new PricingContractError(`Offer ${offer.listingId} has an invalid multibuy`);
+  }
+  const perDealSaving = multiplyCents(offer.unitPrice, packsPerDeal) - dealPrice;
+  if (perDealSaving <= 0) return null;
+  const deals = Math.floor(packs / packsPerDeal);
+  return {
+    packsPerDeal,
+    dealPrice,
+    mixAndMatch: rule.mixAndMatch,
+    deals,
+    saving: multiplyCents(perDealSaving, deals),
   };
 }
 

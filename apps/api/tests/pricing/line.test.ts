@@ -40,6 +40,8 @@ describe("priceLine", () => {
       expect(line.total).toBe(expected.total);
       expect(line.packsBreakdown).toEqual(expected.packsBreakdown);
       expect(line.appliedCharges).toEqual(expected.appliedCharges);
+      expect(line.multibuy).toEqual(expected.multibuy);
+      expect(line.unitPrice).toBe(offer.unitPrice);
       expect(line.disclosures.map((disclosure) => disclosure.code)).toEqual(
         expected.disclosureCodes,
       );

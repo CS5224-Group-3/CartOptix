@@ -10,6 +10,7 @@ const baseOffer: OfferRule = {
   retailerId: "fairprice",
   priceKind: "ordinary",
   unitPrice: 410,
+  multibuy: null,
   eligible: true,
   charges: [
     { label: "Pack deposit", amount: 10, includedInPrice: true },
@@ -29,6 +30,7 @@ describe("product offer pricing", () => {
       priceKind: "ordinary",
       unitPriceCents: 410,
       originalPriceCents: null,
+      multibuy: null,
       itemCharges: [
         { label: "Pack deposit", amountCents: 30, includedInPrice: true },
         { label: "Handling fee", amountCents: 15, includedInPrice: false },
@@ -49,6 +51,29 @@ describe("product offer pricing", () => {
       unitPriceCents: 410,
       originalPriceCents: 500,
       lineTotalCents: 820,
+    });
+  });
+
+  it("prices a multibuy and reports its terms, deals and saving", () => {
+    const offer = priceOffer(
+      {
+        ...baseOffer,
+        charges: [],
+        multibuy: { packsPerDeal: 2, dealPrice: 700, mixAndMatch: true },
+      },
+      listing,
+      3,
+    );
+    expect(offer).toMatchObject({
+      unitPriceCents: 410,
+      multibuy: {
+        packsPerDeal: 2,
+        dealPriceCents: 700,
+        mixAndMatch: true,
+        timesApplied: 1,
+        savingCents: 120,
+      },
+      lineTotalCents: 1110,
     });
   });
 

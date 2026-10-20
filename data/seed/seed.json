@@ -1881,6 +1881,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 245,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -1894,6 +1895,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 790,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -1907,6 +1909,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2190,
       "originalPriceCents": 2375,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -1920,6 +1923,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 270,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -1933,7 +1937,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 350,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-ayam-pulled-chicken-cajun-150g",
@@ -1946,7 +1955,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 350,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-ayam-pulled-chicken-honey-mustard-150g",
@@ -1959,7 +1973,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 350,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-ayam-pulled-chicken-truffle-mayonnaise-150g",
@@ -1972,7 +1991,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 350,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-bahlsen-zoo-jungle-biscuits-with-cocoa-100g",
@@ -1985,6 +2009,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 395,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -1998,6 +2023,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 290,
       "originalPriceCents": 330,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2011,6 +2037,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1105,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2024,6 +2051,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 485,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2037,6 +2065,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 495,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2050,6 +2079,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1350,
       "originalPriceCents": 1590,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2063,6 +2093,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1350,
       "originalPriceCents": 1590,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2076,6 +2107,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 800,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2089,7 +2121,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 920,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $15.90"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1590,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-boncafe-colombiana-instant-coffee-200g",
@@ -2102,6 +2139,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1395,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2115,6 +2153,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 825,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2128,6 +2167,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 825,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2141,6 +2181,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 750,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2154,6 +2195,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 245,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2167,6 +2209,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 245,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2180,6 +2223,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2193,6 +2237,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 625,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2206,6 +2251,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 245,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2219,6 +2265,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 400,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2232,7 +2279,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 400,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.90"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 690,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-colgate-max-fresh-cool-mint-toothpaste-160g",
@@ -2245,6 +2297,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 495,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2258,6 +2311,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 550,
       "originalPriceCents": 595,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2271,7 +2325,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 835,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $19.95"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1995,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-colgate-total-charcoal-clean-150g",
@@ -2284,7 +2343,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 755,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $17.50"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1750,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-colgate-total-fresh-mint-150g",
@@ -2297,7 +2361,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 755,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $17.50"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1750,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-colgate-total-gum-care-2-x-150g",
@@ -2310,6 +2379,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1450,
       "originalPriceCents": 1495,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2323,6 +2393,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 725,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2336,6 +2407,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1515,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2349,6 +2421,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 325,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2362,6 +2435,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 325,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2375,6 +2449,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2388,7 +2463,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1100,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $17.45"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1745,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-evian-natural-mineral-water-6x-1-5l",
@@ -2401,6 +2481,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1775,
       "originalPriceCents": 2045,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2414,6 +2495,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
       "originalPriceCents": 730,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2427,6 +2509,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2195,
       "originalPriceCents": 2295,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2440,6 +2523,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 785,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2453,6 +2537,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 745,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2466,6 +2551,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1280,
       "originalPriceCents": 1475,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2479,6 +2565,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 615,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2492,6 +2579,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
       "originalPriceCents": 545,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2505,6 +2593,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
       "originalPriceCents": 600,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2518,6 +2607,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 725,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2531,6 +2621,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 290,
       "originalPriceCents": 320,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2544,6 +2635,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
       "originalPriceCents": 770,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2557,6 +2649,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
       "originalPriceCents": 770,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2570,6 +2663,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 415,
       "originalPriceCents": 435,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2583,6 +2677,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2596,6 +2691,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2425,
       "originalPriceCents": 2845,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2609,6 +2705,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 420,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2622,6 +2719,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 580,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2635,6 +2733,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 660,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2648,6 +2747,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2661,6 +2761,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2674,6 +2775,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 390,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2687,7 +2789,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 500,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.50"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 750,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-kikkoman-sushi-sashimi-soy-sauce-250ml",
@@ -2700,6 +2807,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 520,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2713,6 +2821,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 460,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2726,6 +2835,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 630,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2739,6 +2849,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2752,6 +2863,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2765,6 +2877,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2778,6 +2891,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2791,6 +2905,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2804,6 +2919,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 195,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2817,6 +2933,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2830,6 +2947,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2843,6 +2961,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2856,6 +2975,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2869,6 +2989,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 195,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2882,6 +3003,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
       "originalPriceCents": 720,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2895,6 +3017,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 605,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2908,6 +3031,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 375,
       "originalPriceCents": 425,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2921,6 +3045,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 300,
       "originalPriceCents": 375,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2934,6 +3059,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 365,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2947,6 +3073,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2960,6 +3087,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2973,6 +3101,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 575,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2986,6 +3115,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -2999,6 +3129,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1795,
       "originalPriceCents": 1995,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3012,6 +3143,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1000,
       "originalPriceCents": 1090,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3025,6 +3157,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 375,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3038,7 +3171,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 365,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-magnolia-high-protein-choco-milk-375ml",
@@ -3051,6 +3189,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 475,
       "originalPriceCents": 520,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3064,6 +3203,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 295,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3077,6 +3217,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 295,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3090,6 +3231,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 215,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3103,7 +3245,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-marigold-uht-milk-choc-1l",
@@ -3116,6 +3263,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 295,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3129,6 +3277,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 295,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3142,6 +3291,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 540,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3155,7 +3305,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 355,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.70"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 670,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-meiji-l-f-high-protein-plain-milk-350ml_12832",
@@ -3168,6 +3323,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 375,
       "originalPriceCents": 495,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3181,6 +3337,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 95,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3194,6 +3351,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 610,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3207,6 +3365,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 270,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3220,6 +3379,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 365,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3233,6 +3393,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 355,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3246,6 +3407,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1185,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3259,6 +3421,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1185,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3272,6 +3435,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 580,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3285,6 +3449,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 330,
       "originalPriceCents": 425,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3298,6 +3463,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 795,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3311,6 +3477,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 700,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3324,6 +3491,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 320,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3337,6 +3505,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 320,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3350,6 +3519,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 455,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3363,6 +3533,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3376,6 +3547,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3389,6 +3561,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3402,6 +3575,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3415,6 +3589,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 185,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3428,6 +3603,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 960,
       "originalPriceCents": 1200,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3441,6 +3617,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 680,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3454,6 +3631,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 680,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3467,6 +3645,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 895,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3480,7 +3659,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1215,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $17.80"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1780,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-pantene-total-damage-care-shampoo-680ml",
@@ -3493,7 +3677,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1215,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $17.80"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1780,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-parodontax-herbal-toothpaste-90g",
@@ -3506,6 +3695,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1070,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3519,6 +3709,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1135,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3532,7 +3723,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 370,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.40"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 640,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-pokka-ice-lemon-tea-6-x-250ml",
@@ -3545,7 +3741,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 370,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.40"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 640,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-pokka-lychee-oolong-tea-1-5l",
@@ -3558,7 +3759,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 270,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.70"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 470,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-pokka-peach-tea-6-x-250ml",
@@ -3571,7 +3777,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 370,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.40"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 640,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-pokka-sencha-japanese-green-tea-no-sugar-6-x-250ml",
@@ -3584,6 +3795,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 370,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3597,6 +3809,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3610,6 +3823,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3623,6 +3837,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
       "originalPriceCents": 890,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3636,6 +3851,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
       "originalPriceCents": 890,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3649,6 +3865,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
       "originalPriceCents": 890,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3662,6 +3879,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
       "originalPriceCents": 890,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3675,6 +3893,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 730,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3688,7 +3907,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 685,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1195,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-president-unsalted-butter-200g",
@@ -3701,7 +3925,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 685,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1195,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-ripe-freshly-squeezed-orange-juice-1l",
@@ -3714,6 +3943,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 435,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3727,6 +3957,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3740,6 +3971,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1625,
       "originalPriceCents": 1710,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3753,6 +3985,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 380,
       "originalPriceCents": 500,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3766,6 +3999,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 655,
       "originalPriceCents": 880,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3779,6 +4013,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3792,6 +4027,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3805,6 +4041,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3818,6 +4055,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1520,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3831,6 +4069,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1310,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3844,6 +4083,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1520,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3857,6 +4097,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 520,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3870,6 +4111,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3883,6 +4125,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3896,6 +4139,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3909,6 +4153,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
       "originalPriceCents": 1090,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3922,6 +4167,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
       "originalPriceCents": 1090,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3935,6 +4181,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 200,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3948,6 +4195,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 405,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3961,6 +4209,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1780,
       "originalPriceCents": 1980,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -3974,7 +4223,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 890,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $17.80"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1780,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-splat-lavendersept-toothpaste-100ml",
@@ -3987,7 +4241,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 890,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $17.80"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1780,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-splat-white-plus-toothpaste-100ml",
@@ -4000,7 +4259,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 890,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $17.80"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1780,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-starbucks-verona-dark-roast-ground-coffee-200g",
@@ -4013,6 +4277,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1360,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4026,6 +4291,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 705,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4039,6 +4305,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 795,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4052,6 +4319,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 400,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4065,6 +4333,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 470,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4078,6 +4347,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 280,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4091,6 +4361,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 470,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4104,6 +4375,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 680,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4117,6 +4389,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 680,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4130,6 +4403,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 515,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4143,6 +4417,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 490,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4156,6 +4431,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1465,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4169,6 +4445,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1795,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4182,6 +4459,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1795,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4195,7 +4473,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 255,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $5.00"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 500,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-volvic-mineral-water-6x-1-5l",
@@ -4208,6 +4491,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1870,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4221,6 +4505,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 440,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4234,6 +4519,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 395,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4247,6 +4533,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 690,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4260,6 +4547,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 690,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4273,6 +4561,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 690,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4286,6 +4575,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4299,6 +4589,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 125,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4312,7 +4603,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 410,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $5.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 595,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "cold-storage-zenko-ancient-grain-granola-tropical-fruit-300g",
@@ -4325,6 +4621,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1195,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4338,6 +4635,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 525,
       "originalPriceCents": 576,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4351,6 +4649,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 135,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4364,6 +4663,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 230,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4377,6 +4677,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1757,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4390,6 +4691,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1795,
       "originalPriceCents": 1995,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4403,6 +4705,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 245,
       "originalPriceCents": 274,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4416,6 +4719,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1140,
       "originalPriceCents": 1263,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4429,7 +4733,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 438,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $7.80"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 780,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-13168442",
@@ -4442,6 +4751,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1140,
       "originalPriceCents": 1263,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4455,6 +4765,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 480,
       "originalPriceCents": 601,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4468,6 +4779,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
       "originalPriceCents": 1885,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4481,6 +4793,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4494,7 +4807,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 780,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $14.35"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1435,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-alpen-swiss-style-muesli-no-added-sugar-560g-10469443",
@@ -4507,6 +4825,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1105,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4520,6 +4839,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 402,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4533,6 +4853,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 4471,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4546,6 +4867,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4559,6 +4881,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 348,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4572,6 +4895,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 348,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4585,6 +4909,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 348,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4598,6 +4923,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 348,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4611,6 +4937,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 395,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4624,6 +4951,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 388,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4637,6 +4965,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 631,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4650,7 +4979,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 388,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 495,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-barilla-spaghetti-no-5-500g-13263702",
@@ -4663,7 +4997,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 388,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 495,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-bcrs-evian-natural-mineral-bottle-water-6-x-1-5l-13281509",
@@ -4676,6 +5015,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1775,
       "originalPriceCents": 1885,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4689,6 +5029,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
       "originalPriceCents": 726,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4702,6 +5043,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 475,
       "originalPriceCents": 505,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4715,7 +5057,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 295,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $5.00"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 500,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-bcrs-pokka-lychee-oolong-tea-1-5l-13281663",
@@ -4728,6 +5075,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 225,
       "originalPriceCents": 250,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4741,6 +5089,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1595,
       "originalPriceCents": 1770,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4754,6 +5103,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 185,
       "originalPriceCents": 229,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4767,6 +5117,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1150,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4780,6 +5131,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 505,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4793,6 +5145,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4806,6 +5159,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 525,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4819,6 +5173,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 525,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4832,6 +5187,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4845,6 +5201,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4858,6 +5215,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4871,6 +5229,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4884,6 +5243,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4897,6 +5257,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 524,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4910,6 +5271,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 237,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4923,7 +5285,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 237,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 435,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-calbee-prawn-crackers---spicy-13146782",
@@ -4936,7 +5303,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 237,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 435,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-campbell-s-real-stock-beef-salt-reduced-1000ml-13274174",
@@ -4949,6 +5321,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 605,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4962,6 +5335,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 225,
       "originalPriceCents": 244,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4975,6 +5349,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 749,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -4988,6 +5363,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 323,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5001,7 +5377,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 399,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.50"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 650,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-cocobella-coconut-water---chocolate-1",
@@ -5014,6 +5395,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 400,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5027,6 +5409,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 225,
       "originalPriceCents": 259,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5040,7 +5423,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1105,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $13.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1395,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-colgate-m-frsh-peach-passion-100g-13264531",
@@ -5053,7 +5441,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 595,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 720,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-colgate-toothpaste-max-fresh-cool-mint-160g-12472021",
@@ -5066,6 +5459,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 484,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5079,6 +5473,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 830,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5092,6 +5487,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1450,
       "originalPriceCents": 1490,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5105,7 +5501,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 750,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $12.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1295,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-colgate-total-toothpaste-fresh-mint-150g-10880056",
@@ -5118,7 +5519,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 750,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $12.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1295,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-cowhead-granola-assorted-fruits-250g-13264673",
@@ -5131,6 +5537,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 695,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5144,6 +5551,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 695,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5157,6 +5565,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 715,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5170,6 +5579,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5183,6 +5593,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 697,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5196,6 +5607,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1375,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5209,6 +5621,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 301,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5222,6 +5635,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 301,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5235,6 +5649,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 535,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5248,6 +5663,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
       "originalPriceCents": 995,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5261,6 +5677,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
       "originalPriceCents": 995,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5274,6 +5691,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
       "originalPriceCents": 995,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5287,6 +5705,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
       "originalPriceCents": 995,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5300,6 +5719,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 900,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5313,6 +5733,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1500,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5326,6 +5747,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1400,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5339,6 +5761,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 2410,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5352,6 +5775,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 900,
       "originalPriceCents": 1080,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5365,6 +5789,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
       "originalPriceCents": 795,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5378,6 +5803,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
       "originalPriceCents": 795,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5391,6 +5817,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 990,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5404,6 +5831,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1110,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5417,6 +5845,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 990,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5430,6 +5859,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2160,
       "originalPriceCents": 2265,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5443,6 +5873,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1146,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5456,6 +5887,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 347,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5469,7 +5901,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 450,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 695,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-golden-pineapple-thai-fragrant-rice-5-kg-90041954",
@@ -5482,6 +5919,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1280,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5495,6 +5933,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 470,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5508,6 +5947,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5521,6 +5961,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 428,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5534,6 +5975,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
       "originalPriceCents": 590,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5547,6 +5989,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 750,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5560,6 +6003,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 280,
       "originalPriceCents": 305,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5573,6 +6017,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 920,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5586,6 +6031,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
       "originalPriceCents": 740,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5599,6 +6045,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
       "originalPriceCents": 740,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5612,6 +6059,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 415,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5625,6 +6073,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 950,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5638,6 +6087,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 2345,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5651,6 +6101,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 393,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5664,6 +6115,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5677,6 +6129,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5690,6 +6143,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5703,6 +6157,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5716,6 +6171,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5729,6 +6185,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5742,6 +6199,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 550,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5755,6 +6213,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 390,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5768,6 +6227,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5781,6 +6241,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5794,6 +6255,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 500,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5807,6 +6269,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 660,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5820,6 +6283,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 300,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5833,7 +6297,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 460,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.60"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 460,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-kinmemai-better-brown-rice-5-kg-90089692",
@@ -5846,6 +6315,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 4750,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5859,7 +6329,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 423,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $5.00"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 500,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-koala-quality-japonica-rice",
@@ -5872,6 +6347,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1080,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5885,6 +6361,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1111,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5898,6 +6375,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1763,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5911,6 +6389,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 754,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5924,6 +6403,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5937,6 +6417,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5950,7 +6431,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-lay-s-potato-chips-cheddar-sour-cream-170g-13225851",
@@ -5963,7 +6449,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-lay-s-potato-chips-hot-spicy-50g-13254871",
@@ -5976,6 +6467,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 175,
       "originalPriceCents": 192,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -5989,7 +6481,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-lay-s-potato-chips-salt-vinegar-180g-13219217",
@@ -6002,7 +6499,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-lay-s-potato-chips-salted-egg-170g-13255751",
@@ -6015,7 +6517,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-lay-s-potato-chips-sour-cream-onion-50g-13253763",
@@ -6028,6 +6535,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 175,
       "originalPriceCents": 192,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6041,6 +6549,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6054,6 +6563,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6067,6 +6577,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6080,6 +6591,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6093,6 +6605,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 687,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6106,6 +6619,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 570,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6119,6 +6633,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 403,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6132,6 +6647,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6145,6 +6661,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6158,6 +6675,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6171,6 +6689,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6184,6 +6703,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 535,
       "originalPriceCents": 596,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6197,6 +6717,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 690,
       "originalPriceCents": 750,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6210,7 +6731,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 185,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $2.50"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 250,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-marigold-hl-dark-chocolate-milk-with-plant-sterols-946ml-13222258",
@@ -6223,7 +6749,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 386,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.80"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 680,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-marigold-hl-milk-banana-946ml-10977034",
@@ -6236,7 +6767,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 356,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-marigold-hl-milk-chocolate-946ml-10054432",
@@ -6249,7 +6785,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 356,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-marigold-hl-milk-plain-946ml-131467",
@@ -6262,7 +6803,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 356,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-marigold-hl-milk-strawberry-946ml-11641604",
@@ -6275,7 +6821,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 356,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-marigold-packet-drink-chrysanthemum-tea-less-sweet-6-x-250ml-11520036",
@@ -6288,6 +6839,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 319,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6301,7 +6853,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 265,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 495,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-megachef-premium-oyster-sauce-600g-90011343",
@@ -6314,6 +6871,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6327,6 +6885,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 75,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6340,6 +6899,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 504,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6353,6 +6913,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 264,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6366,6 +6927,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6379,7 +6941,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-myojo-spicy-instant-noodles-hot-chicken-5-x-80g-13196130",
@@ -6392,6 +6959,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 298,
       "originalPriceCents": 336,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6405,6 +6973,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1100,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6418,6 +6987,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 540,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6431,6 +7001,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1100,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6444,6 +7015,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1365,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6457,6 +7029,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 3825,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6470,6 +7043,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 298,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6483,6 +7057,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 250,
       "originalPriceCents": 298,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6496,6 +7071,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 428,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6509,6 +7085,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
       "originalPriceCents": 968,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6522,6 +7099,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
       "originalPriceCents": 968,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6535,6 +7113,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
       "originalPriceCents": 968,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6548,6 +7127,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
       "originalPriceCents": 968,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6561,6 +7141,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 995,
       "originalPriceCents": 1200,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6574,6 +7155,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
       "originalPriceCents": 680,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6587,6 +7169,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 680,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6600,7 +7183,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 406,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $7.00"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 700,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-oral-b-vitality-pro-electric-toothbrush-deep-clean-lilac-1-per-pack-13276756",
@@ -6613,6 +7201,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 4900,
       "originalPriceCents": 7000,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6626,6 +7215,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1250,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6639,6 +7229,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 777,
       "originalPriceCents": 1191,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6652,6 +7243,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 777,
       "originalPriceCents": 1191,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6665,6 +7257,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 965,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6678,6 +7271,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 888,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6691,6 +7285,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 888,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6704,6 +7299,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 888,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6717,6 +7313,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 888,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6730,6 +7327,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 888,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6743,6 +7341,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 767,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6756,6 +7355,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 767,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6769,6 +7369,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 968,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6782,7 +7383,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 685,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1195,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-president-butter-unsalted-200g-13228537",
@@ -6795,7 +7401,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 685,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1195,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-quaker-instant-oatmeal-plus-vitamin-d-600g-13284934",
@@ -6808,6 +7419,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 480,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6821,6 +7433,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 700,
       "originalPriceCents": 910,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6834,6 +7447,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 635,
       "originalPriceCents": 835,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6847,6 +7461,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1625,
       "originalPriceCents": 1695,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6860,7 +7475,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $8.45"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 845,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-ruffles-potato-chips-original-180g-11880752",
@@ -6873,7 +7493,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $8.45"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 845,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-ruffles-potato-chips-sour-cream-onion-170g-10729225",
@@ -6886,7 +7511,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $8.45"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 845,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-s-glutinous-rice-1kg-13215764",
@@ -6899,6 +7529,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 403,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6912,6 +7543,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 505,
       "originalPriceCents": 555,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6925,6 +7557,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
       "originalPriceCents": 742,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6938,6 +7571,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 475,
       "originalPriceCents": 520,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6951,6 +7585,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 505,
       "originalPriceCents": 555,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -6964,7 +7599,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $16.70"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1670,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-sensodyne-toothpaste-complete-protection-extra-fresh-100g-13041614",
@@ -6977,7 +7617,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $16.70"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1670,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-sensodyne-toothpaste-repair-protect-100g-13000828",
@@ -6990,6 +7635,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7003,6 +7649,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1320,
       "originalPriceCents": 1750,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7016,7 +7663,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $13.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1395,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-shokubutsu-men-body-foam-refill-refresh-600ml-13073427",
@@ -7029,6 +7681,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7042,7 +7695,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $13.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1395,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-sincero-almond-dark-chocolate-380g-13294633",
@@ -7055,6 +7713,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
       "originalPriceCents": 1090,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7068,6 +7727,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
       "originalPriceCents": 1090,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7081,7 +7741,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 200,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $3.80"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 380,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-songhe-8020-mixed-fragrant-red-rice-5kg-13255994",
@@ -7094,6 +7759,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
       "originalPriceCents": 1880,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7107,6 +7773,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 825,
       "originalPriceCents": 890,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7120,6 +7787,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1650,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7133,6 +7801,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1750,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7146,6 +7815,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 500,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7159,7 +7829,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 890,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $13.90"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1390,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-splat-toothpaste-lavendersept-100ml-13279169",
@@ -7172,7 +7847,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 890,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $13.90"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1390,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-splat-toothpaste-white-plus-100ml-13279171",
@@ -7185,6 +7865,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 890,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7198,6 +7879,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1180,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7211,6 +7893,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 703,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7224,6 +7907,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7237,7 +7921,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 810,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $9.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 995,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-tabasco-habanero-sauce-60ml-397530",
@@ -7250,6 +7939,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 350,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7263,6 +7953,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
       "originalPriceCents": 438,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7276,6 +7967,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7289,6 +7981,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
       "originalPriceCents": 438,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7302,6 +7995,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
       "originalPriceCents": 642,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7315,6 +8009,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
       "originalPriceCents": 642,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7328,7 +8023,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 489,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $8.40"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 840,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-temole-broccoli-puffs-cheese-56g-13206635",
@@ -7341,6 +8041,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 499,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7354,6 +8055,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 630,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7367,6 +8069,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 675,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7380,6 +8083,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1282,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7393,7 +8097,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 484,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $8.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 855,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-top-detergent-powder-anti-bacterial-5kg-13212629",
@@ -7406,6 +8115,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7419,6 +8129,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7432,6 +8143,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7445,6 +8157,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7458,6 +8171,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7471,6 +8185,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7484,6 +8199,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7497,6 +8213,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7510,6 +8227,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 504,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7523,6 +8241,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1464,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7536,6 +8255,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1575,
       "originalPriceCents": 1795,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7549,6 +8269,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1575,
       "originalPriceCents": 1795,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7562,7 +8283,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.50"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 450,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-uic-big-value-dishwashing-liquid-refill-lemon-4-x-600ml-13066595",
@@ -7575,6 +8301,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 469,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7588,6 +8315,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 143,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7601,6 +8329,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 650,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7614,6 +8343,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 419,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7627,6 +8357,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 351,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7640,7 +8371,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 396,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $5.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 595,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "fairprice-yumearth-organic-pops---vitamin-c",
@@ -7653,6 +8389,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 650,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7666,6 +8403,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7679,6 +8417,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 120,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7692,7 +8431,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1750,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i13718441209-s124659334681",
@@ -7705,6 +8445,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 535,
       "originalPriceCents": 595,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7718,6 +8459,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 450,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7731,6 +8473,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 531,
       "originalPriceCents": 590,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7744,7 +8487,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1187,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i1643060745-s7717827871",
@@ -7757,7 +8505,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 19%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 420,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i1682511818-s8125888551",
@@ -7770,7 +8523,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i1683191211-s8128041773",
@@ -7783,6 +8541,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 800,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7796,6 +8555,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 348,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7809,6 +8569,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 735,
       "originalPriceCents": 750,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7822,7 +8583,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 499,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $7.9"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 790,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2161875448-s12322750521",
@@ -7835,6 +8601,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 504,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7848,7 +8615,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2256140521-s12993854142",
@@ -7861,7 +8633,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 620,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2277374957-s13151460750",
@@ -7874,7 +8651,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 422,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 Save 31%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 582,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2437055547-s14423159838",
@@ -7887,7 +8669,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 387,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.8"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 680,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2556934540-s16009517329",
@@ -7900,6 +8687,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 712,
       "originalPriceCents": 913,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7913,7 +8701,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1150,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 Save 20%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1840,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2742796146-s18594995860",
@@ -7926,7 +8719,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 24%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 547,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2791236407-s19279758674",
@@ -7939,7 +8737,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 191,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $4.50"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 450,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2806828394-s19385512491",
@@ -7952,6 +8755,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1500,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7965,6 +8769,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 900,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7978,6 +8783,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1400,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -7991,6 +8797,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 555,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8004,7 +8811,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 790,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i2821212439-s19464365332",
@@ -8017,7 +8825,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 790,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i2821279080-s19464356322",
@@ -8030,7 +8839,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 790,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i2857681278-s19702839017",
@@ -8043,7 +8853,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 399,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save $2.06"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 592,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301072905-s527094683",
@@ -8056,6 +8871,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8069,7 +8885,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 388,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.30"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 630,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301084917-s527112314",
@@ -8082,7 +8903,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 353,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.70"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 670,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301088904-s527120163",
@@ -8095,6 +8921,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 605,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8108,7 +8935,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 357,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301090871-s527132004",
@@ -8121,7 +8953,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 388,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.30"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 630,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301100893-s527118178",
@@ -8134,6 +8971,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 374,
       "originalPriceCents": 534,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8147,6 +8985,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 435,
       "originalPriceCents": 469,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8160,7 +8999,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 275,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.90"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 490,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301116496-s527198231",
@@ -8173,7 +9017,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301118507-s527178834",
@@ -8186,6 +9031,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
       "originalPriceCents": 888,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8199,6 +9045,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 697,
       "originalPriceCents": 750,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8212,6 +9059,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
       "originalPriceCents": 888,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8225,7 +9073,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 13%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 626,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301122375-s527206003",
@@ -8238,6 +9091,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 706,
       "originalPriceCents": 767,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8251,6 +9105,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
       "originalPriceCents": 888,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8264,6 +9119,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 920,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8277,7 +9133,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 Save 5%"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1035,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301126624-s527208386",
@@ -8290,7 +9151,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301126655-s527208413",
@@ -8303,7 +9165,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 525,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 7%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 977,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301128368-s527164945",
@@ -8316,7 +9183,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 245,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $4.5"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 450,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301130405-s527192384",
@@ -8329,7 +9201,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301130504-s527192589",
@@ -8342,6 +9215,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
       "originalPriceCents": 641,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8355,6 +9229,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 991,
       "originalPriceCents": 1101,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8368,6 +9243,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 539,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8381,7 +9257,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 237,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301136427-s527194515",
@@ -8394,7 +9271,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 141,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 Save 10%"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 381,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301136541-s527194689",
@@ -8407,6 +9289,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
       "originalPriceCents": 641,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8420,7 +9303,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 265,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $7.35"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 735,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301140377-s527168985",
@@ -8433,7 +9321,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 390,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301140518-s527216187",
@@ -8446,6 +9335,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 474,
       "originalPriceCents": 499,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8459,7 +9349,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 265,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 495,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301140731-s527216509",
@@ -8472,6 +9367,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 581,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8485,6 +9381,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1180,
       "originalPriceCents": 1610,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8498,6 +9395,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
       "originalPriceCents": 888,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8511,6 +9409,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1395,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8524,7 +9423,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301142365-s527188659",
@@ -8537,6 +9441,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 994,
       "originalPriceCents": 1105,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8550,7 +9455,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 406,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 Save 14%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 698,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301142670-s527234202",
@@ -8563,6 +9473,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
       "originalPriceCents": 795,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8576,7 +9487,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 357,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301144308-s527204114",
@@ -8589,7 +9505,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1764,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301144365-s527204148",
@@ -8602,7 +9519,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301144490-s527204430",
@@ -8615,6 +9537,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
       "originalPriceCents": 438,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8628,6 +9551,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 3825,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8641,6 +9565,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1349,
       "originalPriceCents": 1754,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8654,6 +9579,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 418,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8667,6 +9593,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
       "originalPriceCents": 438,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8680,6 +9607,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
       "originalPriceCents": 1100,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8693,6 +9621,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1365,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8706,7 +9635,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 320,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.50"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 450,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301148471-s527200418",
@@ -8719,6 +9653,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1080,
       "originalPriceCents": 1350,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8732,6 +9667,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 469,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8745,7 +9681,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 13%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 626,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301150658-s527232238",
@@ -8758,7 +9699,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 357,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301150660-s527232240",
@@ -8771,7 +9717,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 357,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 655,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301150916-s527232645",
@@ -8784,7 +9735,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 292,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 435,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301154196-s527184726",
@@ -8797,6 +9753,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 706,
       "originalPriceCents": 767,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8810,7 +9767,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 13%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 626,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301154841-s527222858",
@@ -8823,6 +9785,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 425,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8836,7 +9799,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301156311-s527210114",
@@ -8849,6 +9813,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 325,
       "originalPriceCents": 353,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8862,7 +9827,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1187,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301156348-s527210165",
@@ -8875,7 +9845,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 405,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $20 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $20 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301156436-s527210289",
@@ -8888,6 +9859,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 480,
       "originalPriceCents": 530,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8901,7 +9873,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301156623-s527210681",
@@ -8914,7 +9887,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301158117-s527196131",
@@ -8927,6 +9901,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 754,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8940,6 +9915,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8953,7 +9929,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 200,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Buy 2 At $3.00"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 300,
+        "mixAndMatch": false
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301168041-s527252247",
@@ -8966,7 +9947,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 292,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 435,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301174024-s527238567",
@@ -8979,6 +9965,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 979,
       "originalPriceCents": 1069,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -8992,7 +9979,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 388,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 At $6.30"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 630,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301182107-s527264227",
@@ -9005,6 +9997,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 133,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9018,7 +10011,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 560,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i301194113-s527232922",
@@ -9031,6 +10025,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9044,6 +10039,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1055,
       "originalPriceCents": 1105,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9057,6 +10053,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 550,
       "originalPriceCents": 655,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9070,6 +10067,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 750,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9083,6 +10081,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 797,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9096,7 +10095,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 760,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i303054411-s536356288",
@@ -9109,6 +10109,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 420,
       "originalPriceCents": 489,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9122,6 +10123,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 641,
       "originalPriceCents": 711,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9135,7 +10137,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1187,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i303282111-s536560976",
@@ -9148,6 +10155,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
       "originalPriceCents": 785,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9161,6 +10169,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 792,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9174,6 +10183,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 516,
       "originalPriceCents": 555,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9187,6 +10197,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 516,
       "originalPriceCents": 555,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9200,7 +10211,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i303530725-s537166575",
@@ -9213,6 +10229,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 237,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9226,6 +10243,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 237,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9239,6 +10257,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 166,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9252,6 +10271,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1750,
       "originalPriceCents": 2070,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9265,6 +10285,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
       "originalPriceCents": 1885,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9278,6 +10299,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 4750,
       "originalPriceCents": 5820,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9291,6 +10313,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 531,
       "originalPriceCents": 590,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9304,6 +10327,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 621,
       "originalPriceCents": 675,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9317,6 +10341,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 825,
       "originalPriceCents": 890,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9330,6 +10355,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 470,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9343,6 +10369,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 336,
       "originalPriceCents": 402,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9356,6 +10383,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 530,
       "originalPriceCents": 570,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9369,6 +10397,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1176,
       "originalPriceCents": 1264,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9382,7 +10411,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i305102136-s541200598",
@@ -9395,7 +10425,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 15%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 440,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i305126315-s541238206",
@@ -9408,6 +10443,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2015,
       "originalPriceCents": 2256,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9421,6 +10457,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 3487,
       "originalPriceCents": 4471,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9434,6 +10471,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
       "originalPriceCents": 1880,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9447,6 +10485,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9460,6 +10499,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9473,6 +10513,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9486,6 +10527,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
       "originalPriceCents": 989,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9499,6 +10541,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 2412,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9512,6 +10555,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
       "originalPriceCents": 740,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9525,6 +10569,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 555,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9538,6 +10583,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
       "originalPriceCents": 555,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9551,7 +10597,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 815,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i315052020-s586456663",
@@ -9564,7 +10611,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1111,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i3167191152-s21541250285",
@@ -9577,6 +10625,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 799,
       "originalPriceCents": 920,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9590,6 +10639,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1030,
       "originalPriceCents": 1101,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9603,7 +10653,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 650,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i3209930402-s21782609328",
@@ -9616,6 +10667,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 245,
       "originalPriceCents": 350,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9629,6 +10681,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9642,6 +10695,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9655,6 +10709,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9668,6 +10723,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1758,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9681,6 +10737,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1650,
       "originalPriceCents": 1665,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9694,6 +10751,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 496,
       "originalPriceCents": 695,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9707,6 +10765,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 496,
       "originalPriceCents": 695,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9720,6 +10779,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1560,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9733,6 +10793,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 535,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9746,6 +10807,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 950,
       "originalPriceCents": 1110,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9759,6 +10821,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 995,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9772,7 +10835,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 185,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 4 At $5"]
+      "multibuy": {
+        "packsPerDeal": 4,
+        "dealPriceCents": 500,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i3535547421-s23305723977",
@@ -9785,6 +10853,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 4900,
       "originalPriceCents": 7000,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9798,6 +10867,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 805,
       "originalPriceCents": 895,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9811,7 +10881,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 650,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $20 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $20 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i3638934417-s24060701839",
@@ -9824,6 +10895,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 375,
       "originalPriceCents": 495,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9837,7 +10909,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 480,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 2 Save 11%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 854,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i378388292-s887448413",
@@ -9850,6 +10927,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1353,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9863,6 +10941,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 427,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9876,6 +10955,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 402,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9889,6 +10969,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 531,
       "originalPriceCents": 590,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9902,6 +10983,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 595,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9915,6 +10997,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1176,
       "originalPriceCents": 1264,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9928,6 +11011,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 234,
       "originalPriceCents": 260,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -9941,7 +11025,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1282,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
       "listingId": "redmart-pdp-i888128400-s3073342728",
@@ -9954,7 +11039,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 191,
       "originalPriceCents": null,
-      "excludedPromotions": ["Promotion not applied: Any 3 At $4.50"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 450,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i900304103-s3131466521",
@@ -9967,6 +11057,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 590,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     }
   ]

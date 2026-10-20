@@ -29,6 +29,13 @@
       "when": 1792516935956,
       "tag": "0003_listing_original_price",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792517330452,
+      "tag": "0004_listing_multibuy",
+      "breakpoints": true
     }
   ]
 }

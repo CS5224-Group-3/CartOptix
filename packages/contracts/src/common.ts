@@ -90,6 +90,24 @@ export const OrderChargeSchema = closedObject({
 });
 export type OrderCharge = Static<typeof OrderChargeSchema>;
 
+/**
+ * A same-product deal: `packsPerDeal` packs of this listing for `dealPriceCents`
+ * (PR-03). Present whenever the listing has a deal, so the client can mention
+ * it even when the line is too small to qualify.
+ */
+export const MultibuySchema = closedObject({
+  packsPerDeal: Type.Integer({ minimum: 2, maximum: MAX_PACKS_PER_LINE }),
+  dealPriceCents: PositiveCentsSchema,
+  /** The retailer's deal also accepts other products ("Any N"). CartOptix counts
+   * packs of this product only, so mixing items may save more than shown. */
+  mixAndMatch: Type.Boolean(),
+  /** Deals in this line: floor(quantity / packsPerDeal). */
+  timesApplied: Type.Integer({ minimum: 0, maximum: MAX_PACKS_PER_LINE }),
+  /** Saving against the unit price for the whole line; 0 when no deal applies. */
+  savingCents: CentsSchema,
+});
+export type Multibuy = Static<typeof MultibuySchema>;
+
 /** Cost of the requested packs at one retailer, before delivery. */
 const lineCost = {
   listingId: IdSchema,
@@ -99,10 +117,14 @@ const lineCost = {
   /** The pre-sale price of an `unconditional_sale` listing, shown struck through;
    * null for ordinary prices. Display only: totals never use it (PR-03). */
   originalPriceCents: nullable(PositiveCentsSchema),
+  /** The listing's multibuy, or null when it has none. */
+  multibuy: nullable(MultibuySchema),
   itemCharges: Type.Array(ItemChargeSchema),
-  /** Unit price × quantity, plus every charge with `includedInPrice: false`. */
+  /** Each deal at its deal price, the remaining packs at the unit price, plus
+   * every charge with `includedInPrice: false`. */
   lineTotalCents: PositiveCentsSchema,
-  /** Promotions seen but not applied, e.g. unverified multibuys. */
+  /** Promotions seen but not included in the estimate, as the retailer worded
+   * them, e.g. "Spend $30 + Free Gift". */
   excludedPromotions: Type.Array(Type.String({ minLength: 1 })),
 };
 

@@ -22,6 +22,7 @@ const offer = (
   retailerId,
   priceKind: "ordinary",
   unitPrice,
+  multibuy: null,
   eligible: true,
   charges: [],
   excludedPromotions: [],
@@ -94,6 +95,22 @@ describe("compareBasket", () => {
         ["milk", 3],
       ]);
     }
+  });
+
+  it("lets a same-product multibuy change the winner, counting its own packs only", () => {
+    const deal = { packsPerDeal: 2, dealPrice: 1500, mixAndMatch: true };
+    const result = compare({
+      offers: offers.map((o) =>
+        o.retailerId === "cold-storage" && o.productId === "rice" ? { ...o, multibuy: deal } : o,
+      ),
+    });
+    // Cold Storage 1500 (one deal) + 1050 + 500 = 3050, now below FairPrice's 3200.
+    expect(result).toMatchObject({ status: "recommended", recommendedRetailerId: "cold-storage" });
+    const coldStorage = result.options[0];
+    if (coldStorage?.status !== "complete") throw new Error("Expected Cold Storage complete");
+    expect(coldStorage.order.total).toBe(3050);
+    // The deal is worded "Any 2", but milk packs never count towards it.
+    expect(coldStorage.order.lines.find((line) => line.productId === "milk")?.multibuy).toBeNull();
   });
 
   it("breaks a tie by retailer ID, whatever order the retailers are given in", () => {

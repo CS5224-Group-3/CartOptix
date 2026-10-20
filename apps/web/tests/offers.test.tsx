@@ -7,25 +7,35 @@ import App from "../src/App.tsx";
 
 afterEach(() => window.history.replaceState({}, "", "/"));
 
+/** The fixture offers repriced for `quantity`: whole deals, remaining packs, added charges. */
 function offerResponse(quantity: number) {
   return {
     product: offersExample.product,
     quantity,
-    offers: offersExample.offers.map((offer) => ({
-      ...offer,
-      itemCharges: offer.itemCharges.map((charge) => ({
+    offers: offersExample.offers.map((offer) => {
+      const itemCharges = offer.itemCharges.map((charge) => ({
         ...charge,
         amountCents: (charge.amountCents / offersExample.quantity) * quantity,
-      })),
-      lineTotalCents:
-        offer.unitPriceCents * quantity +
-        offer.itemCharges
-          .filter((charge) => !charge.includedInPrice)
-          .reduce(
-            (total, charge) => total + (charge.amountCents / offersExample.quantity) * quantity,
-            0,
-          ),
-    })),
+      }));
+      const deal = offer.multibuy;
+      const deals = deal ? Math.floor(quantity / deal.packsPerDeal) : 0;
+      const dealPacks = deals * (deal?.packsPerDeal ?? 0);
+      return {
+        ...offer,
+        itemCharges,
+        multibuy: deal && {
+          ...deal,
+          timesApplied: deals,
+          savingCents: deals * (deal.packsPerDeal * offer.unitPriceCents - deal.dealPriceCents),
+        },
+        lineTotalCents:
+          deals * (deal?.dealPriceCents ?? 0) +
+          (quantity - dealPacks) * offer.unitPriceCents +
+          itemCharges
+            .filter((charge) => !charge.includedInPrice)
+            .reduce((total, charge) => total + charge.amountCents, 0),
+      };
+    }),
   };
 }
 
@@ -53,7 +63,9 @@ describe("product offer view", () => {
     expect(await screen.findAllByText("for 1 pack")).toHaveLength(2);
     expect(requestedQuantities).toContain(1);
     expect(screen.getByText(/For 1 pack; before delivery and order charges/)).toBeDefined();
-    expect(screen.getByText("Excluded promotion: Unverified multibuy offer")).toBeDefined();
+    expect(screen.getByText("Spend $30 + Free Gift — not included in this estimate")).toBeDefined();
+    expect(screen.getByText("Buy 2 for S$7.00")).toBeDefined();
+    expect(screen.getByText("Mixing items in this deal may save more")).toBeDefined();
     expect(screen.getByText("S$7.20").closest("s")).not.toBeNull();
     expect(screen.getByText(/S\$6.00 per pack · Sale price/)).toBeDefined();
     expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
@@ -67,9 +79,15 @@ describe("product offer view", () => {
     await waitFor(() => expect(requestedQuantities).toContain(2));
     expect(screen.getByText(/For 2 packs; before delivery and order charges/)).toBeDefined();
     expect(screen.getByText("S$12.30")).toBeDefined();
+    expect(screen.getByText("S$7.00")).toBeDefined();
+    expect(screen.getByText("1 × deal (2 for S$7.00) · You save S$1.20")).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Increase quantity" }));
+    expect(
+      await screen.findByText("1 × deal (2 for S$7.00) + 1 × S$4.10 · You save S$1.20"),
+    ).toBeDefined();
 
     const increase = screen.getByRole("button", { name: "Increase quantity" });
-    for (let quantity = 3; quantity <= 20; quantity += 1) fireEvent.click(increase);
+    for (let quantity = 4; quantity <= 20; quantity += 1) fireEvent.click(increase);
     expect(screen.getByText("20")).toBeDefined();
     expect(increase).toHaveProperty("disabled", true);
     expect(requestedQuantities).toContain(20);

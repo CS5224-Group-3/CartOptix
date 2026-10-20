@@ -116,17 +116,22 @@ Product mappings may be decided with AI assistance. As a proof of concept, publi
 
 ### PR-03 — Supported pricing and promotions
 
-Start with ordinary prices and clearly unconditional sale prices. Support same-product multibuys only for selected listings whose terms can be verified and encoded, including eligible quantity, repetition limits and the price of remaining packs.
+Use ordinary prices and clearly unconditional sale prices. Show an unconditional sale's original price struck through beside the price paid, so shoppers can see the discount. It is for display only and never changes a total.
 
-Multibuy support is optional for the initial MVP, not a release blocker. If reliable terms cannot be recovered within the project's effort budget, proceed with verified ordinary and unconditional sale prices and disclose the excluded promotions. The MVP takes this route: it applies no multibuys, and records them as excluded promotions.
+Apply same-product multibuys: deals of the form "N at $X", "N save X%", "Buy N get X% off" and "N save $X". Curation turns each into a deal of N packs for one price; a percentage comes off N packs at the unit price and is rounded half-up to the cent. Pricing then follows these rules:
 
-Show an unconditional sale's original price struck through beside the price paid, so shoppers can see the discount. It is for display only and never changes a total.
+1. A deal applies floor(quantity ÷ N) times. Remaining packs are charged at the unit price.
+2. A deal applies only when it is cheaper than its packs at the unit price, and never stacks with another discount.
+3. A deal counts packs of its own product only. When the retailer's wording is "Any N", other products may also qualify; CartOptix does not combine basket lines, and tells the shopper that mixing items may save more.
+4. Never add packs to reach a deal (PR-01). The product page may tell the shopper what a deal needs, for example "Buy 2 for S$6.55".
 
-Raw promotion descriptions are evidence, not executable rules. Do not automatically subtract a `Savings` amount from a price that may already include the discount. Do not infer unrestricted repetition or same-product eligibility from “Any N” wording.
+Raw promotion descriptions are evidence, not executable rules. Do not automatically subtract a `Savings` amount from a price that may already include the discount.
 
-When promotion conditions are unresolved, use a verified ordinary price if available and disclose that an additional promotion is excluded. If no reliable applicable price exists, exclude the offer. Cross-product promotions, memberships, vouchers, payment-method discounts and gifts are outside the calculation scope.
+Other promotions stay out of the estimate and are shown as the retailer worded them, with a note that they are not included. Cross-product promotions, spend thresholds, memberships, vouchers, payment-method discounts and gifts are outside the calculation scope. If no reliable applicable price exists, exclude the offer.
 
-Approved promotion rules are fixed in the committed seed. Calculations do not re-evaluate them against the current date, so the same basket and seed retain the same pricing rules as the calendar advances. Curate dated promotions only when evidence establishes that they belong in the recorded scenario; otherwise exclude the promotion and apply the reliable-price fallback above. Preserve captured validity terms internally without inventing a collection date. Changes to approved rules are made by editing the seed. The fixed-dataset disclaimer applies to these promotions as well as prices and availability.
+Promotions have no date handling. Curation strips validity wording and does not record or evaluate dates. Every approved deal in a snapshot applies while that snapshot is the seed, and changes only when the seed is replaced. The fixed-dataset disclaimer applies to these promotions as well as prices and availability.
+
+Before a snapshot ships, check about ten deals per retailer against the live checkout, recording the quantities and the expected and observed amounts. A deal type whose checkout disagrees stays excluded.
 
 ### PR-04 — Delivery and mandatory charges
 

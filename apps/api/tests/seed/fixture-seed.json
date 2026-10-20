@@ -73,6 +73,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1250,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     },
     {
@@ -86,6 +87,7 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1190,
       "originalPriceCents": 1390,
+      "multibuy": null,
       "excludedPromotions": ["Member price excluded; non-member pricing is used."]
     },
     {
@@ -99,6 +101,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 331,
       "originalPriceCents": null,
+      "multibuy": { "packsPerDeal": 2, "dealPriceCents": 600, "mixAndMatch": true },
       "excludedPromotions": []
     },
     {
@@ -112,6 +115,7 @@
       "priceKind": "ordinary",
       "unitPriceCents": 540,
       "originalPriceCents": null,
+      "multibuy": null,
       "excludedPromotions": []
     }
   ]

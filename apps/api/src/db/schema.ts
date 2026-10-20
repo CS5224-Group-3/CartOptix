@@ -14,6 +14,7 @@ import {
   foreignKey,
   index,
   integer,
+  jsonb,
   pgTable,
   primaryKey,
   text,
@@ -21,6 +22,7 @@ import {
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
+import type { SeedMultibuy } from "../seed/schema.ts";
 
 export const retailers = pgTable("retailers", {
   retailerId: text("retailer_id").$type<RetailerId>().primaryKey(),
@@ -88,6 +90,8 @@ export const listings = pgTable(
     unitPriceCents: integer("unit_price_cents").notNull(),
     /** Pre-sale price of an unconditional sale, for display only; NULL otherwise. */
     originalPriceCents: integer("original_price_cents"),
+    /** Approved same-product deal (PR-03); NULL when the listing has none. */
+    multibuy: jsonb("multibuy").$type<SeedMultibuy>(),
     excludedPromotions: text("excluded_promotions").array().notNull().default([]),
   },
   (table) => [

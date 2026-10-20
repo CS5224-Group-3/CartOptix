@@ -66,7 +66,14 @@ import {
   useProductIndex,
   useProducts,
 } from "./lib/api";
-import { categoryVisual, formatSgd, RETAILER_DISPLAY, RETAILER_IDS } from "./lib/format";
+import {
+  categoryVisual,
+  excludedPromotionNote,
+  formatSgd,
+  multibuyNotes,
+  RETAILER_DISPLAY,
+  RETAILER_IDS,
+} from "./lib/format";
 import BasketComparisonPage from "./pages/BasketComparisonPage";
 import Home from "./pages/Home";
 
@@ -781,8 +788,8 @@ export function ProductDetail() {
             </div>
           </div>
           <p className="product-detail__copy">
-            Compare the estimated product cost for your requested quantity. Prices use ordinary or
-            clearly unconditional sale prices; other promotions are shown as excluded.
+            Compare the estimated product cost for your requested quantity. Prices include sale
+            prices and multibuy deals on this product; other promotions are not included.
           </p>
           <div className="quantity-control">
             <span>Quantity (whole packs)</span>
@@ -866,9 +873,14 @@ function OfferRow({ offer, quantity }: { offer: Offer; quantity: number }) {
             {formatSgd(offer.unitPriceCents)} per pack ·{" "}
             {offer.priceKind === "unconditional_sale" ? "Sale price" : "Regular price"}
           </span>
+          {multibuyNotes(offer.multibuy, quantity, offer.unitPriceCents, true).map((note) => (
+            <span className="offer-row__deal" key={note}>
+              {note}
+            </span>
+          ))}
           {offer.excludedPromotions.map((promotion) => (
             <span className="offer-row__promotion" key={promotion}>
-              Excluded promotion: {promotion}
+              {excludedPromotionNote(promotion)}
             </span>
           ))}
         </div>
@@ -1273,16 +1285,16 @@ function HowItWorks() {
           <div>
             <h3>What is included</h3>
             <p>
-              Direct supermarket fulfilment, ordinary prices, clearly unconditional sale prices,
-              delivery fees, free-delivery thresholds and minimum-order values.
+              Direct supermarket fulfilment, regular and sale prices, multibuy deals on the same
+              product, delivery fees, free-delivery thresholds and minimum-order values.
             </p>
           </div>
           <div>
             <h3>What is not included</h3>
             <p>
-              Live scraping, third-party sellers, multibuy and cross-product promotions, cart
-              transfer, stock reservation, payment, delivery-slot selection or buying extra items
-              just to unlock a discount.
+              Live scraping, third-party sellers, cross-product promotions, cart transfer, stock
+              reservation, payment, delivery-slot selection or buying extra items just to unlock a
+              discount.
             </p>
           </div>
           <div>
