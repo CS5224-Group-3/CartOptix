@@ -214,7 +214,7 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .catalogue-heading h2 { margin: 5px 0 0; color: var(--navy); font: 800 clamp(24px, 3vw, 33px)/1.15 var(--font-display); letter-spacing: -.045em; }
 .catalogue-heading__note { max-width: 380px; margin: 0 0 2px; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .catalogue-section.container { width: 75%; max-width: none; }
-.catalogue-section .product-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.catalogue-section .product-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
 .catalogue-controls { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 18px; }
 .category-chips { display: flex; align-items: center; gap: 8px; min-width: 0; margin: 0; border: 0; padding: 3px 2px 7px; overflow-x: auto; scrollbar-width: thin; }
 .category-chips button { flex: 0 0 auto; min-height: 38px; padding: 0 14px; border: 1px solid #e2e9e7; border-radius: 999px; color: #60716e; background: white; font-size: 12px; font-weight: 700; transition: border-color .16s ease, color .16s ease, background .16s ease; }
