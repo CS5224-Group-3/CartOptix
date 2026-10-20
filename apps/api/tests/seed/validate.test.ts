@@ -94,4 +94,24 @@ describe("validateSeed", () => {
     const errors = errorsFor((s) => (s.listings[1].specification = "1 litre"));
     expect(errors).toContain("Product fixture-rice-5kg has conflicting pack specifications");
   });
+
+  it.each([
+    [
+      "a sale without an original price",
+      (s: Fixture) => (s.listings[1].originalPriceCents = null),
+      "Sale listing fairprice-1001 needs a plausible original price",
+    ],
+    [
+      "a sale whose original price is not higher",
+      (s: Fixture) => (s.listings[1].originalPriceCents = 1190),
+      "Sale listing fairprice-1001 has an original price no higher than its price",
+    ],
+    [
+      "an ordinary price with an original price",
+      (s: Fixture) => (s.listings[0].originalPriceCents = 1500),
+      "Ordinary listing redmart-i1-s1 cannot have an original price",
+    ],
+  ])("rejects %s", (_name, mutate, error) => {
+    expect(errorsFor(mutate)).toContain(error);
+  });
 });

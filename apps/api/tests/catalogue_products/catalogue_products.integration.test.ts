@@ -146,6 +146,31 @@ describe.skipIf(connectionString === undefined)(
       }
     });
 
+    it("carries a sale's original price from the seed without changing the total", async () => {
+      const response = await server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", "anlene-actifit-3x-plain-milk-powder-1kg")}?quantity=2`,
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.json().offers).toEqual([
+        expect.objectContaining({
+          retailerId: "redmart",
+          priceKind: "unconditional_sale",
+          unitPriceCents: 2015,
+          originalPriceCents: 2256,
+          lineTotalCents: 4030,
+        }),
+        expect.objectContaining({
+          retailerId: "cold-storage",
+          priceKind: "unconditional_sale",
+          unitPriceCents: 2190,
+          originalPriceCents: 2375,
+          lineTotalCents: 4380,
+        }),
+      ]);
+    });
+
     it("reprices the seeded offers when quantity changes and handles unknown products", async () => {
       const atOnePack = await server.inject({
         method: "GET",

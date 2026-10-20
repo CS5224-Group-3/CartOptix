@@ -51,6 +51,7 @@ function toPlanLine(line: PricedLine, listings: ReadonlyMap<string, ListingDetai
     productUrl: listing.productUrl,
     priceKind: line.priceKind,
     unitPriceCents: segment.unitPrice,
+    originalPriceCents: listing.originalPriceCents,
     itemCharges: line.appliedCharges.map((charge) => ({
       label: charge.label,
       amountCents: charge.amount,

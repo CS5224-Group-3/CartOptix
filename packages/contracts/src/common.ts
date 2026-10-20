@@ -96,6 +96,9 @@ const lineCost = {
   productUrl: HttpsUrlSchema,
   priceKind: Type.Union([Type.Literal("ordinary"), Type.Literal("unconditional_sale")]),
   unitPriceCents: PositiveCentsSchema,
+  /** The pre-sale price of an `unconditional_sale` listing, shown struck through;
+   * null for ordinary prices. Display only: totals never use it (PR-03). */
+  originalPriceCents: nullable(PositiveCentsSchema),
   itemCharges: Type.Array(ItemChargeSchema),
   /** Unit price × quantity, plus every charge with `includedInPrice: false`. */
   lineTotalCents: PositiveCentsSchema,

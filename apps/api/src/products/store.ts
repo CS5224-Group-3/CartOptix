@@ -169,7 +169,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
                   charges: [],
                   excludedPromotions: offer.excludedPromotions.map((detail) => ({ detail })),
                 },
-                offer.productUrl,
+                offer,
                 quantity,
               ),
             )

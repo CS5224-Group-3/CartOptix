@@ -24,7 +24,10 @@ export interface CompleteRetailerOption {
   lines: (SubmittedProduct & {
     amountCents: number;
     purchaseUrl: string;
-    pricing: Pick<PlanLine, "unitPriceCents" | "priceKind" | "itemCharges" | "excludedPromotions">;
+    pricing: Pick<
+      PlanLine,
+      "unitPriceCents" | "originalPriceCents" | "priceKind" | "itemCharges" | "excludedPromotions"
+    >;
   })[];
   productSubtotalCents: number;
   /** Additional charges only; amounts already in line prices are not added again. */

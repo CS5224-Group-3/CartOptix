@@ -74,6 +74,7 @@ describe("shared comparison contract adapter", () => {
       purchaseUrl: original.lines[0]?.productUrl,
       pricing: {
         unitPriceCents: 250,
+        originalPriceCents: null,
         priceKind: "ordinary",
         itemCharges: [],
         excludedPromotions: [],
@@ -118,6 +119,7 @@ describe("shared comparison contract adapter", () => {
     if (!line) throw new Error("Missing line");
     line.itemCharges = [{ label: "Included handling", amountCents: 10, includedInPrice: true }];
     line.priceKind = "unconditional_sale";
+    line.originalPriceCents = 300;
     line.excludedPromotions = ["Member promotion excluded"];
     option.deliveryCents = 100;
     option.totalCents += 100;
@@ -125,6 +127,7 @@ describe("shared comparison contract adapter", () => {
     if (mapped?.kind !== "complete") throw new Error("Missing option");
     expect(mapped.lines[0]?.pricing).toEqual({
       unitPriceCents: 250,
+      originalPriceCents: 300,
       priceKind: "unconditional_sale",
       itemCharges: line.itemCharges,
       excludedPromotions: line.excludedPromotions,
@@ -132,6 +135,19 @@ describe("shared comparison contract adapter", () => {
     expect(mapped.lines[0]?.amountCents).toBe(250);
     expect(mapped.deliveryCents).toBe(100);
     expect(mapped.estimatedTotalCents).toBe(750);
+  });
+
+  it.each([
+    ["a sale without an original price", "unconditional_sale", null],
+    ["a sale whose original price is not higher", "unconditional_sale", 250],
+    ["an ordinary price with an original price", "ordinary", 300],
+  ] as const)("rejects %s", (_name, priceKind, originalPriceCents) => {
+    const response: BasketCompareResponse = structuredClone(recommendedExample);
+    const line = complete(response).lines[0];
+    if (!line) throw new Error("Missing line");
+    line.priceKind = priceKind;
+    line.originalPriceCents = originalPriceCents;
+    expect(() => adaptComparison(response, snapshot())).toThrow(PresentationDataFailure);
   });
 
   it("maps no feasible plan and all structured reasons without partial totals", () => {

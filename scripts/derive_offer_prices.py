@@ -8,7 +8,8 @@ Rules (product spec PR-03):
 - The unit price is the workbook's Product Price, parsed to whole cents. Savings
   text is never subtracted.
 - A listing with an Original Price above its Product Price is an
-  unconditional sale; otherwise it is ordinary.
+  unconditional sale; otherwise it is ordinary. A sale keeps its original
+  price for display only; it never changes what the shopper pays.
 - Savings text that is not the plain "Save $X" of a sale (multibuys, spend
   thresholds, gifts) is a promotion that is not applied. It is kept as a
   shopper-facing note, with any validity dates removed.
@@ -62,6 +63,7 @@ def derive_offer(source) -> dict:
     eligible = price is not None and price > 0
     return {
         "unit_price_cents": price if eligible else None,
+        "original_price_cents": original if eligible and is_sale else None,
         "price_kind": ("unconditional_sale" if is_sale else "ordinary") if eligible else None,
         "excluded_promotion": promotion,
         "eligible": eligible,

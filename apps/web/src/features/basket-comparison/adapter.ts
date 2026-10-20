@@ -119,6 +119,12 @@ export function adaptComparison(
           );
           requireData(cents(line.lineTotalCents) && line.lineTotalCents > 0);
           requireData(line.priceKind === "ordinary" || line.priceKind === "unconditional_sale");
+          const original = line.originalPriceCents;
+          requireData(
+            line.priceKind === "unconditional_sale"
+              ? original !== null && cents(original) && original > line.unitPriceCents
+              : original === null,
+          );
           requireData(text(line.productUrl) && new URL(line.productUrl).protocol === "https:");
           requireData(Array.isArray(line.itemCharges) && strings(line.excludedPromotions));
           for (const charge of line.itemCharges)
@@ -145,6 +151,7 @@ export function adaptComparison(
             purchaseUrl: line.productUrl,
             pricing: structuredClone({
               unitPriceCents: line.unitPriceCents,
+              originalPriceCents: line.originalPriceCents,
               priceKind: line.priceKind,
               itemCharges: line.itemCharges,
               excludedPromotions: line.excludedPromotions,

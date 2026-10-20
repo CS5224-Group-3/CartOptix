@@ -1880,6 +1880,7 @@
       "productUrl": "https://coldstorage.com.sg/product/aaa-pickled-mustard-170g",
       "priceKind": "ordinary",
       "unitPriceCents": 245,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -1892,6 +1893,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ah-huat-white-coffee-extra-rich-15sx40g",
       "priceKind": "ordinary",
       "unitPriceCents": 790,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -1904,6 +1906,7 @@
       "productUrl": "https://coldstorage.com.sg/product/anlene-actifit-3x-plain-milk-powder-1kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2190,
+      "originalPriceCents": 2375,
       "excludedPromotions": []
     },
     {
@@ -1916,6 +1919,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ayam-brand-sardines-in-tomato-sauce-155g",
       "priceKind": "ordinary",
       "unitPriceCents": 270,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -1928,6 +1932,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ayam-pulled-chicken-buffalo-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 350,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -1940,6 +1945,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ayam-pulled-chicken-cajun-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 350,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -1952,6 +1958,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ayam-pulled-chicken-honey-mustard-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 350,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -1964,6 +1971,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ayam-pulled-chicken-truffle-mayonnaise-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 350,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -1976,6 +1984,7 @@
       "productUrl": "https://coldstorage.com.sg/product/bahlsen-zoo-jungle-biscuits-with-cocoa-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 395,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -1988,6 +1997,7 @@
       "productUrl": "https://coldstorage.com.sg/product/bcrs-monster-energy-pipeline-punch-can-355ml_12832",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 290,
+      "originalPriceCents": 330,
       "excludedPromotions": []
     },
     {
@@ -2000,6 +2010,7 @@
       "productUrl": "https://coldstorage.com.sg/product/beryl-s-asst-alm-choc-370g",
       "priceKind": "ordinary",
       "unitPriceCents": 1105,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2012,6 +2023,7 @@
       "productUrl": "https://coldstorage.com.sg/product/blue-elephant-hot-red-chilli-sauce-190ml",
       "priceKind": "ordinary",
       "unitPriceCents": 485,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2024,6 +2036,7 @@
       "productUrl": "https://coldstorage.com.sg/product/blue-elephant-sweet-chilli-sauce-190ml",
       "priceKind": "ordinary",
       "unitPriceCents": 495,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2036,6 +2049,7 @@
       "productUrl": "https://coldstorage.com.sg/product/blue-frog-keto-almond-peanut-raspberry-300g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1350,
+      "originalPriceCents": 1590,
       "excludedPromotions": []
     },
     {
@@ -2048,6 +2062,7 @@
       "productUrl": "https://coldstorage.com.sg/product/blue-frog-macadamia-almond-manuka-honey-350g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1350,
+      "originalPriceCents": 1590,
       "excludedPromotions": []
     },
     {
@@ -2060,6 +2075,7 @@
       "productUrl": "https://coldstorage.com.sg/product/bonaroma-ground-coffee-peck-me-up-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 800,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2072,6 +2088,7 @@
       "productUrl": "https://coldstorage.com.sg/product/boncafe-all-day-bean-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 920,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $15.90"]
     },
     {
@@ -2084,6 +2101,7 @@
       "productUrl": "https://coldstorage.com.sg/product/boncafe-colombiana-instant-coffee-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 1395,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2096,6 +2114,7 @@
       "productUrl": "https://coldstorage.com.sg/product/boxgreen-honey-mustard-soy-crisps-130g",
       "priceKind": "ordinary",
       "unitPriceCents": 825,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2108,6 +2127,7 @@
       "productUrl": "https://coldstorage.com.sg/product/boxgreen-peanut-pretzel-dark-chocolate-130g",
       "priceKind": "ordinary",
       "unitPriceCents": 825,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2120,6 +2140,7 @@
       "productUrl": "https://coldstorage.com.sg/product/brm-cls-inst-oatml-6s-952oz",
       "priceKind": "ordinary",
       "unitPriceCents": 750,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2132,6 +2153,7 @@
       "productUrl": "https://coldstorage.com.sg/product/calbee-prawn-crackers-black-pepper-90g",
       "priceKind": "ordinary",
       "unitPriceCents": 245,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2144,6 +2166,7 @@
       "productUrl": "https://coldstorage.com.sg/product/calbee-prawn-crackers-original-90g",
       "priceKind": "ordinary",
       "unitPriceCents": 245,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2156,6 +2179,7 @@
       "productUrl": "https://coldstorage.com.sg/product/calbee-prawn-crackers-spicy-90g",
       "priceKind": "ordinary",
       "unitPriceCents": 250,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2168,6 +2192,7 @@
       "productUrl": "https://coldstorage.com.sg/product/campbells-real-stock-beef-salt-reduced-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 625,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2180,6 +2205,7 @@
       "productUrl": "https://coldstorage.com.sg/product/carnation-low-fat-evaporated-milk-405g",
       "priceKind": "ordinary",
       "unitPriceCents": 245,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2192,6 +2218,7 @@
       "productUrl": "https://coldstorage.com.sg/product/cirio-chopped-tomatoes-400g",
       "priceKind": "ordinary",
       "unitPriceCents": 400,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2204,6 +2231,7 @@
       "productUrl": "https://coldstorage.com.sg/product/cocobella-cctnut-choc-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 400,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.90"]
     },
     {
@@ -2216,6 +2244,7 @@
       "productUrl": "https://coldstorage.com.sg/product/colgate-max-fresh-cool-mint-toothpaste-160g",
       "priceKind": "ordinary",
       "unitPriceCents": 495,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2228,6 +2257,7 @@
       "productUrl": "https://coldstorage.com.sg/product/colgate-max-fresh-peach-passion-toothpaste-100g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 550,
+      "originalPriceCents": 595,
       "excludedPromotions": []
     },
     {
@@ -2240,6 +2270,7 @@
       "productUrl": "https://coldstorage.com.sg/product/colgate-total-breath-health-toothpaste-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 835,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $19.95"]
     },
     {
@@ -2252,6 +2283,7 @@
       "productUrl": "https://coldstorage.com.sg/product/colgate-total-charcoal-clean-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 755,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $17.50"]
     },
     {
@@ -2264,6 +2296,7 @@
       "productUrl": "https://coldstorage.com.sg/product/colgate-total-fresh-mint-150g",
       "priceKind": "ordinary",
       "unitPriceCents": 755,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $17.50"]
     },
     {
@@ -2276,6 +2309,7 @@
       "productUrl": "https://coldstorage.com.sg/product/colgate-total-gum-care-2-x-150g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1450,
+      "originalPriceCents": 1495,
       "excludedPromotions": []
     },
     {
@@ -2288,6 +2322,7 @@
       "productUrl": "https://coldstorage.com.sg/product/cowhead-mozzarella-pear-250g",
       "priceKind": "ordinary",
       "unitPriceCents": 725,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2300,6 +2335,7 @@
       "productUrl": "https://coldstorage.com.sg/product/davidoff-fine-aroma-instant-coffee-90g",
       "priceKind": "ordinary",
       "unitPriceCents": 1515,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2312,6 +2348,7 @@
       "productUrl": "https://coldstorage.com.sg/product/del-monte-sardines-lemon-sauce-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 325,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2324,6 +2361,7 @@
       "productUrl": "https://coldstorage.com.sg/product/del-monte-sardines-teriyaki-sauce-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 325,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2336,6 +2374,7 @@
       "productUrl": "https://coldstorage.com.sg/product/doritos-cheese-nacho-190g",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2348,6 +2387,7 @@
       "productUrl": "https://coldstorage.com.sg/product/elgydium-toothpaste-anti-plaque-75ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1100,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $17.45"]
     },
     {
@@ -2360,6 +2400,7 @@
       "productUrl": "https://coldstorage.com.sg/product/evian-natural-mineral-water-6x-1-5l",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1775,
+      "originalPriceCents": 2045,
       "excludedPromotions": []
     },
     {
@@ -2372,6 +2413,7 @@
       "productUrl": "https://coldstorage.com.sg/product/farmhouse-fresh-milk-1-89l",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
+      "originalPriceCents": 730,
       "excludedPromotions": []
     },
     {
@@ -2384,6 +2426,7 @@
       "productUrl": "https://coldstorage.com.sg/product/fernleaf-full-cream-11kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2195,
+      "originalPriceCents": 2295,
       "excludedPromotions": []
     },
     {
@@ -2396,6 +2439,7 @@
       "productUrl": "https://coldstorage.com.sg/product/galbani-shredded-mozzarella-emmental-170g",
       "priceKind": "ordinary",
       "unitPriceCents": 785,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2408,6 +2452,7 @@
       "productUrl": "https://coldstorage.com.sg/product/gerber-lil-crunchies-garden-tomato-42g",
       "priceKind": "ordinary",
       "unitPriceCents": 745,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2420,6 +2465,7 @@
       "productUrl": "https://coldstorage.com.sg/product/golden-pineapple-thai-fragrant-rice-5kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1280,
+      "originalPriceCents": 1475,
       "excludedPromotions": []
     },
     {
@@ -2432,6 +2478,7 @@
       "productUrl": "https://coldstorage.com.sg/product/greenfields-fresh-milk-189l",
       "priceKind": "ordinary",
       "unitPriceCents": 615,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2444,6 +2491,7 @@
       "productUrl": "https://coldstorage.com.sg/product/heinz-no-salt-tomato-ketchup-397g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
+      "originalPriceCents": 545,
       "excludedPromotions": []
     },
     {
@@ -2456,6 +2504,7 @@
       "productUrl": "https://coldstorage.com.sg/product/heinz-tomato-ketchup-no-sugar-added-369g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
+      "originalPriceCents": 600,
       "excludedPromotions": []
     },
     {
@@ -2468,6 +2517,7 @@
       "productUrl": "https://coldstorage.com.sg/product/hershey-s-kisses-m-choc-146g",
       "priceKind": "ordinary",
       "unitPriceCents": 725,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2480,6 +2530,7 @@
       "productUrl": "https://coldstorage.com.sg/product/hi-chew-chewy-candy---strawberry-grape-100g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 290,
+      "originalPriceCents": 320,
       "excludedPromotions": []
     },
     {
@@ -2492,6 +2543,7 @@
       "productUrl": "https://coldstorage.com.sg/product/hormel-spam-lite-luncheon-meat-340g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
+      "originalPriceCents": 770,
       "excludedPromotions": []
     },
     {
@@ -2504,6 +2556,7 @@
       "productUrl": "https://coldstorage.com.sg/product/hormel-spam-with-bacon-340g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
+      "originalPriceCents": 770,
       "excludedPromotions": []
     },
     {
@@ -2516,6 +2569,7 @@
       "productUrl": "https://coldstorage.com.sg/product/hunts-whole-peeled-plum-tomatoes-411g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 415,
+      "originalPriceCents": 435,
       "excludedPromotions": []
     },
     {
@@ -2528,6 +2582,7 @@
       "productUrl": "https://coldstorage.com.sg/product/irvins-salted-egg-potato-chips-95g",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2540,6 +2595,7 @@
       "productUrl": "https://coldstorage.com.sg/product/jin-huang-thai-fragrant-jasmine-rice-10kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2425,
+      "originalPriceCents": 2845,
       "excludedPromotions": []
     },
     {
@@ -2552,6 +2608,7 @@
       "productUrl": "https://coldstorage.com.sg/product/john-west-salmon-tempters-toamto-onion-95g",
       "priceKind": "ordinary",
       "unitPriceCents": 420,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2564,6 +2621,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kct-light-soya-sauce-superior-640ml",
       "priceKind": "ordinary",
       "unitPriceCents": 580,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2576,6 +2634,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kelloggs-frosties-300g",
       "priceKind": "ordinary",
       "unitPriceCents": 660,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2588,6 +2647,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kelloggs-granalo-boost-protein-extra-300g",
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2600,6 +2660,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kelloggs-granola-boost-vitamin-d-calcium-300g",
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2612,6 +2673,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kelloggs-rice-krispies-130g",
       "priceKind": "ordinary",
       "unitPriceCents": 390,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2624,6 +2686,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kelloggs-strawberry-cornflakes-250g",
       "priceKind": "ordinary",
       "unitPriceCents": 500,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.50"]
     },
     {
@@ -2636,6 +2699,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kikkoman-sushi-sashimi-soy-sauce-250ml",
       "priceKind": "ordinary",
       "unitPriceCents": 520,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2648,6 +2712,7 @@
       "productUrl": "https://coldstorage.com.sg/product/kinder-candy-cocoa-1053g",
       "priceKind": "ordinary",
       "unitPriceCents": 460,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2660,6 +2725,7 @@
       "productUrl": "https://coldstorage.com.sg/product/laughing-cow-cheez-dippers-original-140g",
       "priceKind": "ordinary",
       "unitPriceCents": 630,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2672,6 +2738,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lay-s-stax-extra-cheese-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2684,6 +2751,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lay-s-stax-original-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2696,6 +2764,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lay-s-stax-smokin-bbq-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2708,6 +2777,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lay-s-stax-sour-cream-onion-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2720,6 +2790,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-cheddar-sour-cream-170g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -2732,6 +2803,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-hot-spicy-50g",
       "priceKind": "ordinary",
       "unitPriceCents": 195,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2744,6 +2816,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-nori-seaweed-170g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -2756,6 +2829,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-salt-vinegar-170g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -2768,6 +2842,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-salted-egg-170g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -2780,6 +2855,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-sour-cream-onion-170g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -2792,6 +2868,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lays-sour-cream-onion-50g",
       "priceKind": "ordinary",
       "unitPriceCents": 195,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2804,6 +2881,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lee-kum-kee-abalone-sauce-535g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
+      "originalPriceCents": 720,
       "excludedPromotions": []
     },
     {
@@ -2816,6 +2894,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lee-kum-kee-gluten-free-soy-sauce-500ml",
       "priceKind": "ordinary",
       "unitPriceCents": 605,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2828,6 +2907,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lee-kum-kee-golden-vegetarian-oyster-sauce-with-mushroom-510g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 375,
+      "originalPriceCents": 425,
       "excludedPromotions": []
     },
     {
@@ -2840,6 +2920,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lee-kum-kee-vegetarian-oyster-flavoured-sauce-510g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 300,
+      "originalPriceCents": 375,
       "excludedPromotions": []
     },
     {
@@ -2852,6 +2933,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lexus-cookies-dark-choc-189g",
       "priceKind": "ordinary",
       "unitPriceCents": 365,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2864,6 +2946,7 @@
       "productUrl": "https://coldstorage.com.sg/product/linwoods-overnight-oats-original-energy-300g",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2876,6 +2959,7 @@
       "productUrl": "https://coldstorage.com.sg/product/little-blossom-fruity-sticks-mixed-berry-12g",
       "priceKind": "ordinary",
       "unitPriceCents": 250,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2888,6 +2972,7 @@
       "productUrl": "https://coldstorage.com.sg/product/little-blossom-organic-brown-rice-puffs-strawberry-40g",
       "priceKind": "ordinary",
       "unitPriceCents": 575,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2900,6 +2985,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lucido-deodorant-scalp-shampoo-450ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2912,6 +2998,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lurpak-spreadable-butter-slightly-salted-500g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1795,
+      "originalPriceCents": 1995,
       "excludedPromotions": []
     },
     {
@@ -2924,6 +3011,7 @@
       "productUrl": "https://coldstorage.com.sg/product/lurpak-unsalted-spreadable-250g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1000,
+      "originalPriceCents": 1090,
       "excludedPromotions": []
     },
     {
@@ -2936,6 +3024,7 @@
       "productUrl": "https://coldstorage.com.sg/product/maggi-premium-oyster-sauce-500g",
       "priceKind": "ordinary",
       "unitPriceCents": 375,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2948,6 +3037,7 @@
       "productUrl": "https://coldstorage.com.sg/product/magnolia-fresh-milk-946ml",
       "priceKind": "ordinary",
       "unitPriceCents": 365,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -2960,6 +3050,7 @@
       "productUrl": "https://coldstorage.com.sg/product/magnolia-high-protein-choco-milk-375ml",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 475,
+      "originalPriceCents": 520,
       "excludedPromotions": []
     },
     {
@@ -2972,6 +3063,7 @@
       "productUrl": "https://coldstorage.com.sg/product/marigold-100-juice-summer-fruits-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 295,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2984,6 +3076,7 @@
       "productUrl": "https://coldstorage.com.sg/product/marigold-100-orange-juice-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 295,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -2996,6 +3089,7 @@
       "productUrl": "https://coldstorage.com.sg/product/marigold-evaporated-creamer-385g",
       "priceKind": "ordinary",
       "unitPriceCents": 215,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3008,6 +3102,7 @@
       "productUrl": "https://coldstorage.com.sg/product/marigold-hl-milk-choc-946ml",
       "priceKind": "ordinary",
       "unitPriceCents": 360,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -3020,6 +3115,7 @@
       "productUrl": "https://coldstorage.com.sg/product/marigold-uht-milk-choc-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 295,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3032,6 +3128,7 @@
       "productUrl": "https://coldstorage.com.sg/product/marigold-uht-milk-strawberry-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 295,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3044,6 +3141,7 @@
       "productUrl": "https://coldstorage.com.sg/product/megachef-premium-oyster-sauce-600g",
       "priceKind": "ordinary",
       "unitPriceCents": 540,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3056,6 +3154,7 @@
       "productUrl": "https://coldstorage.com.sg/product/meiji-fresh-milk-830ml_12832",
       "priceKind": "ordinary",
       "unitPriceCents": 355,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.70"]
     },
     {
@@ -3068,6 +3167,7 @@
       "productUrl": "https://coldstorage.com.sg/product/meiji-l-f-high-protein-plain-milk-350ml_12832",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 375,
+      "originalPriceCents": 495,
       "excludedPromotions": []
     },
     {
@@ -3080,6 +3180,7 @@
       "productUrl": "https://coldstorage.com.sg/product/mili-braised-peanut-170g",
       "priceKind": "ordinary",
       "unitPriceCents": 95,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3092,6 +3193,7 @@
       "productUrl": "https://coldstorage.com.sg/product/mili-premium-pork-luncheon-meat-340g",
       "priceKind": "ordinary",
       "unitPriceCents": 610,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3104,6 +3206,7 @@
       "productUrl": "https://coldstorage.com.sg/product/milkmaid-sweetened-condensed-skimmed-milk-low-fat-392g",
       "priceKind": "ordinary",
       "unitPriceCents": 270,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3116,6 +3219,7 @@
       "productUrl": "https://coldstorage.com.sg/product/munchys-lexus-cookies-mixed-nuts-189g",
       "priceKind": "ordinary",
       "unitPriceCents": 365,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3128,6 +3232,7 @@
       "productUrl": "https://coldstorage.com.sg/product/myojo-spicy-hot-chicken-80g-x-5s",
       "priceKind": "ordinary",
       "unitPriceCents": 355,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3140,6 +3245,7 @@
       "productUrl": "https://coldstorage.com.sg/product/naturel-org-brown-rice-2kg",
       "priceKind": "ordinary",
       "unitPriceCents": 1185,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3152,6 +3258,7 @@
       "productUrl": "https://coldstorage.com.sg/product/naturel-organic-brown-gaba-riceberry-rice-180kg",
       "priceKind": "ordinary",
       "unitPriceCents": 1185,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3164,6 +3271,7 @@
       "productUrl": "https://coldstorage.com.sg/product/naturel-organic-brown-rice-750g",
       "priceKind": "ordinary",
       "unitPriceCents": 580,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3176,6 +3284,7 @@
       "productUrl": "https://coldstorage.com.sg/product/naturel-organic-brown-rice-fusilli-250g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 330,
+      "originalPriceCents": 425,
       "excludedPromotions": []
     },
     {
@@ -3188,6 +3297,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nestle-fitnesse-granola-oats-honey-300g",
       "priceKind": "ordinary",
       "unitPriceCents": 795,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3200,6 +3310,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nestle-kit-kat-strawberry-285g",
       "priceKind": "ordinary",
       "unitPriceCents": 700,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3212,6 +3323,7 @@
       "productUrl": "https://coldstorage.com.sg/product/new-moon-low-calorie-konjac-flat-noodles-270g",
       "priceKind": "ordinary",
       "unitPriceCents": 320,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3224,6 +3336,7 @@
       "productUrl": "https://coldstorage.com.sg/product/new-moon-low-calorie-konjac-round-noodles-270g",
       "priceKind": "ordinary",
       "unitPriceCents": 320,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3236,6 +3349,7 @@
       "productUrl": "https://coldstorage.com.sg/product/new-moon-premium-oyster-sauce-510g",
       "priceKind": "ordinary",
       "unitPriceCents": 455,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3248,6 +3362,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nissin-granola-fruits-500g",
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3260,6 +3375,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nissin-granola-maple-syrup-500g",
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3272,6 +3388,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nissin-granola-matcha-500g",
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3284,6 +3401,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nissin-granola-strawberry-400g",
       "priceKind": "ordinary",
       "unitPriceCents": 1010,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3296,6 +3414,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nissin-kyushu-white-cup-noodles-75g",
       "priceKind": "ordinary",
       "unitPriceCents": 185,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3308,6 +3427,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nivea-deodorant-control-defend-spray-150ml",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 960,
+      "originalPriceCents": 1200,
       "excludedPromotions": []
     },
     {
@@ -3320,6 +3440,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nivea-extra-bright-fresh-lavier-50ml",
       "priceKind": "ordinary",
       "unitPriceCents": 680,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3332,6 +3453,7 @@
       "productUrl": "https://coldstorage.com.sg/product/nivea-extra-bright-velvet-romance-50ml",
       "priceKind": "ordinary",
       "unitPriceCents": 680,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3344,6 +3466,7 @@
       "productUrl": "https://coldstorage.com.sg/product/osk-tokuho-powdered-green-tea-75g",
       "priceKind": "ordinary",
       "unitPriceCents": 895,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3356,6 +3479,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pantene-daily-moisture-renewal-shampoo-680ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1215,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $17.80"]
     },
     {
@@ -3368,6 +3492,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pantene-total-damage-care-shampoo-680ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1215,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $17.80"]
     },
     {
@@ -3380,6 +3505,7 @@
       "productUrl": "https://coldstorage.com.sg/product/parodontax-herbal-toothpaste-90g",
       "priceKind": "ordinary",
       "unitPriceCents": 1070,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3392,6 +3518,7 @@
       "productUrl": "https://coldstorage.com.sg/product/perfect-italiano-hard-cheese-block-250g",
       "priceKind": "ordinary",
       "unitPriceCents": 1135,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3404,6 +3531,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pokka-chrysanthemum-white-tea-6-x-250ml",
       "priceKind": "ordinary",
       "unitPriceCents": 370,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.40"]
     },
     {
@@ -3416,6 +3544,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pokka-ice-lemon-tea-6-x-250ml",
       "priceKind": "ordinary",
       "unitPriceCents": 370,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.40"]
     },
     {
@@ -3428,6 +3557,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pokka-lychee-oolong-tea-1-5l",
       "priceKind": "ordinary",
       "unitPriceCents": 270,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.70"]
     },
     {
@@ -3440,6 +3570,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pokka-peach-tea-6-x-250ml",
       "priceKind": "ordinary",
       "unitPriceCents": 370,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.40"]
     },
     {
@@ -3452,6 +3583,7 @@
       "productUrl": "https://coldstorage.com.sg/product/pokka-sencha-japanese-green-tea-no-sugar-6-x-250ml",
       "priceKind": "ordinary",
       "unitPriceCents": 370,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3464,6 +3596,7 @@
       "productUrl": "https://coldstorage.com.sg/product/post-cereal-fruity-pebbles-311g",
       "priceKind": "ordinary",
       "unitPriceCents": 560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3476,6 +3609,7 @@
       "productUrl": "https://coldstorage.com.sg/product/post-cocoa-pebbles-cereal-311g",
       "priceKind": "ordinary",
       "unitPriceCents": 560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3488,6 +3622,7 @@
       "productUrl": "https://coldstorage.com.sg/product/post-great-grains-cereal---banana-nut-crunch-439g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
+      "originalPriceCents": 890,
       "excludedPromotions": []
     },
     {
@@ -3500,6 +3635,7 @@
       "productUrl": "https://coldstorage.com.sg/product/post-great-grains-cereal---blueberry-morning-382g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
+      "originalPriceCents": 890,
       "excludedPromotions": []
     },
     {
@@ -3512,6 +3648,7 @@
       "productUrl": "https://coldstorage.com.sg/product/post-great-grains-cereal-cranberry-almond-crunch-396g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
+      "originalPriceCents": 890,
       "excludedPromotions": []
     },
     {
@@ -3524,6 +3661,7 @@
       "productUrl": "https://coldstorage.com.sg/product/post-great-grains-red-berry-almond-crunch-368g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 650,
+      "originalPriceCents": 890,
       "excludedPromotions": []
     },
     {
@@ -3536,6 +3674,7 @@
       "productUrl": "https://coldstorage.com.sg/product/president-grated-emmental-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 730,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3548,6 +3687,7 @@
       "productUrl": "https://coldstorage.com.sg/product/president-salted-butter-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 685,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
     },
     {
@@ -3560,6 +3700,7 @@
       "productUrl": "https://coldstorage.com.sg/product/president-unsalted-butter-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 685,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
     },
     {
@@ -3572,6 +3713,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ripe-freshly-squeezed-orange-juice-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 435,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3584,6 +3726,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ripe-freshly-squeezed-pink-grapefruit-juice-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3596,6 +3739,7 @@
       "productUrl": "https://coldstorage.com.sg/product/royal-umbrella-hommali-rice-5kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1625,
+      "originalPriceCents": 1710,
       "excludedPromotions": []
     },
     {
@@ -3608,6 +3752,7 @@
       "productUrl": "https://coldstorage.com.sg/product/royal-umbrella-thai-hom-mali-rice-1kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 380,
+      "originalPriceCents": 500,
       "excludedPromotions": []
     },
     {
@@ -3620,6 +3765,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ru-thai-brown-rice-2kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 655,
+      "originalPriceCents": 880,
       "excludedPromotions": []
     },
     {
@@ -3632,6 +3778,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ruffles-cheddar-sour-cream-170g",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3644,6 +3791,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ruffles-original-170g",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3656,6 +3804,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ruffles-sour-cream-onion-170g",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3668,6 +3817,7 @@
       "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1520,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3680,6 +3830,7 @@
       "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-moist-recovery-shampoo-400ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1310,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3692,6 +3843,7 @@
       "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1520,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3704,6 +3856,7 @@
       "productUrl": "https://coldstorage.com.sg/product/scs-sliced-cheese-reduced-fat-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 520,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3716,6 +3869,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sensodyne-repair-protect-toothpaste-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3728,6 +3882,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sensodyne-tooth-paste-cprotection-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3740,6 +3895,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sensodyne-toothpaste-complete-protection-extra-fresh-100g",
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3752,6 +3908,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sincero-dark-chocolate-almond-380g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
+      "originalPriceCents": 1090,
       "excludedPromotions": []
     },
     {
@@ -3764,6 +3921,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sincero-milk-chocolate-almond-380g",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
+      "originalPriceCents": 1090,
       "excludedPromotions": []
     },
     {
@@ -3776,6 +3934,7 @@
       "productUrl": "https://coldstorage.com.sg/product/snickers-strawberry-40g",
       "priceKind": "ordinary",
       "unitPriceCents": 200,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3788,6 +3947,7 @@
       "productUrl": "https://coldstorage.com.sg/product/songhe-glutinous-rice-1kg",
       "priceKind": "ordinary",
       "unitPriceCents": 405,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3800,6 +3960,7 @@
       "productUrl": "https://coldstorage.com.sg/product/songhe-noble-brown-rice-5kg",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1780,
+      "originalPriceCents": 1980,
       "excludedPromotions": []
     },
     {
@@ -3812,6 +3973,7 @@
       "productUrl": "https://coldstorage.com.sg/product/splat-biocalcium-toothpaste-100ml",
       "priceKind": "ordinary",
       "unitPriceCents": 890,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $17.80"]
     },
     {
@@ -3824,6 +3986,7 @@
       "productUrl": "https://coldstorage.com.sg/product/splat-lavendersept-toothpaste-100ml",
       "priceKind": "ordinary",
       "unitPriceCents": 890,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $17.80"]
     },
     {
@@ -3836,6 +3999,7 @@
       "productUrl": "https://coldstorage.com.sg/product/splat-white-plus-toothpaste-100ml",
       "priceKind": "ordinary",
       "unitPriceCents": 890,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $17.80"]
     },
     {
@@ -3848,6 +4012,7 @@
       "productUrl": "https://coldstorage.com.sg/product/starbucks-verona-dark-roast-ground-coffee-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 1360,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3860,6 +4025,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sunsilk-strong-long-shampoo-300ml",
       "priceKind": "ordinary",
       "unitPriceCents": 705,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3872,6 +4038,7 @@
       "productUrl": "https://coldstorage.com.sg/product/sunsweet-prune-juice-946ml",
       "priceKind": "ordinary",
       "unitPriceCents": 795,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3884,6 +4051,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tabasco-habanero-sauce-60ml",
       "priceKind": "ordinary",
       "unitPriceCents": 400,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3896,6 +4064,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tai-hua-special-dark-soy-sauce-640ml",
       "priceKind": "ordinary",
       "unitPriceCents": 470,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3908,6 +4077,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tai-hua-special-light-soy-sauce-320ml",
       "priceKind": "ordinary",
       "unitPriceCents": 280,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3920,6 +4090,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tai-hua-special-light-soy-sauce-640ml",
       "priceKind": "ordinary",
       "unitPriceCents": 470,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3932,6 +4103,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tai-hua-superior-dark-soy-sauce-640ml",
       "priceKind": "ordinary",
       "unitPriceCents": 680,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3944,6 +4116,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tai-hua-superior-light-soy-sauce-640ml",
       "priceKind": "ordinary",
       "unitPriceCents": 680,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3956,6 +4129,7 @@
       "productUrl": "https://coldstorage.com.sg/product/temole-brocolli-puff-cheese-56g",
       "priceKind": "ordinary",
       "unitPriceCents": 515,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3968,6 +4142,7 @@
       "productUrl": "https://coldstorage.com.sg/product/top-concentrated-liquid-detergent-blooming-freshness-refill-15kg-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 490,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3980,6 +4155,7 @@
       "productUrl": "https://coldstorage.com.sg/product/tresemme-hairfall-control-shampoo-670ml",
       "priceKind": "ordinary",
       "unitPriceCents": 1465,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -3992,6 +4168,7 @@
       "productUrl": "https://coldstorage.com.sg/product/twinings-tea-bags---earl-grey-tea-50s-x2g",
       "priceKind": "ordinary",
       "unitPriceCents": 1795,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4004,6 +4181,7 @@
       "productUrl": "https://coldstorage.com.sg/product/twinings-tea-bags---english-breakfast-50s-x-2g",
       "priceKind": "ordinary",
       "unitPriceCents": 1795,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4016,6 +4194,7 @@
       "productUrl": "https://coldstorage.com.sg/product/ufc-refresh-coconut-twist-500ml",
       "priceKind": "ordinary",
       "unitPriceCents": 255,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $5.00"]
     },
     {
@@ -4028,6 +4207,7 @@
       "productUrl": "https://coldstorage.com.sg/product/volvic-mineral-water-6x-1-5l",
       "priceKind": "ordinary",
       "unitPriceCents": 1870,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4040,6 +4220,7 @@
       "productUrl": "https://coldstorage.com.sg/product/woh-hup-oyster-sauce-extra-flavour-500g",
       "priceKind": "ordinary",
       "unitPriceCents": 440,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4052,6 +4233,7 @@
       "productUrl": "https://coldstorage.com.sg/product/woh-hup-shitake-mushroom-oyster-sauce-500g",
       "priceKind": "ordinary",
       "unitPriceCents": 395,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4064,6 +4246,7 @@
       "productUrl": "https://coldstorage.com.sg/product/yava-gran-choco-banana-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 690,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4076,6 +4259,7 @@
       "productUrl": "https://coldstorage.com.sg/product/yava-gran-choco-vanilla-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 690,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4088,6 +4272,7 @@
       "productUrl": "https://coldstorage.com.sg/product/yava-granola-coconut-banana-200g",
       "priceKind": "ordinary",
       "unitPriceCents": 690,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4100,6 +4285,7 @@
       "productUrl": "https://coldstorage.com.sg/product/yeo-s-first-harvest-green-t-no-suga-1-5l",
       "priceKind": "ordinary",
       "unitPriceCents": 250,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4112,6 +4298,7 @@
       "productUrl": "https://coldstorage.com.sg/product/yeo-s-oolong-tea-no-sugar-330ml",
       "priceKind": "ordinary",
       "unitPriceCents": 125,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4124,6 +4311,7 @@
       "productUrl": "https://coldstorage.com.sg/product/yeos-100-natural-coconut-water-1l",
       "priceKind": "ordinary",
       "unitPriceCents": 410,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $5.95"]
     },
     {
@@ -4136,6 +4324,7 @@
       "productUrl": "https://coldstorage.com.sg/product/zenko-ancient-grain-granola-tropical-fruit-300g",
       "priceKind": "ordinary",
       "unitPriceCents": 1195,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4148,6 +4337,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/11980278",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 525,
+      "originalPriceCents": 576,
       "excludedPromotions": []
     },
     {
@@ -4160,6 +4350,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/12536742",
       "priceKind": "ordinary",
       "unitPriceCents": 135,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4172,6 +4363,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13083273",
       "priceKind": "ordinary",
       "unitPriceCents": 230,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4184,6 +4376,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13099854",
       "priceKind": "ordinary",
       "unitPriceCents": 1757,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4196,6 +4389,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13126837",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1795,
+      "originalPriceCents": 1995,
       "excludedPromotions": []
     },
     {
@@ -4208,6 +4402,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13130967",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 245,
+      "originalPriceCents": 274,
       "excludedPromotions": []
     },
     {
@@ -4220,6 +4415,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13139860",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1140,
+      "originalPriceCents": 1263,
       "excludedPromotions": []
     },
     {
@@ -4232,6 +4428,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13164716",
       "priceKind": "ordinary",
       "unitPriceCents": 438,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $7.80"]
     },
     {
@@ -4244,6 +4441,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13168442",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1140,
+      "originalPriceCents": 1263,
       "excludedPromotions": []
     },
     {
@@ -4256,6 +4454,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13168611",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 480,
+      "originalPriceCents": 601,
       "excludedPromotions": []
     },
     {
@@ -4268,6 +4467,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/13172379",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
+      "originalPriceCents": 1885,
       "excludedPromotions": []
     },
     {
@@ -4280,6 +4480,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/aaa-pickled-mustard-170-g-90021716",
       "priceKind": "ordinary",
       "unitPriceCents": 290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4292,6 +4493,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ah-huat-white-coffee-extra-rich-600g-13032436",
       "priceKind": "ordinary",
       "unitPriceCents": 780,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $14.35"]
     },
     {
@@ -4304,6 +4506,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/alpen-swiss-style-muesli-no-added-sugar-560g-10469443",
       "priceKind": "ordinary",
       "unitPriceCents": 1105,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4316,6 +4519,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/australia-s-own-a2-protein-uht-milk-full-cream-1l-13167166",
       "priceKind": "ordinary",
       "unitPriceCents": 402,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4328,6 +4532,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/aveeno-body-wash-skin-relief-1l-13148362",
       "priceKind": "ordinary",
       "unitPriceCents": 4471,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4340,6 +4545,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ayam-brand-sardines-in-tomato-sauce-155g-13191444",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4352,6 +4558,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ayam-p-chicken-buffalo-150g-13263708",
       "priceKind": "ordinary",
       "unitPriceCents": 348,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4364,6 +4571,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ayam-p-chicken-cajun-150g-13263705",
       "priceKind": "ordinary",
       "unitPriceCents": 348,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4376,6 +4584,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ayam-p-chicken-h-mustard-150g-13263706",
       "priceKind": "ordinary",
       "unitPriceCents": 348,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4388,6 +4597,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ayam-p-chicken-t-mayonnse-150g-13263707",
       "priceKind": "ordinary",
       "unitPriceCents": 348,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4400,6 +4610,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bahlsen-zoo-jungle-biscuit-cocoa-100g-13046017",
       "priceKind": "ordinary",
       "unitPriceCents": 395,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4412,6 +4623,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/barilla-italian-pasta-maccheroni-500g-500g-13165424",
       "priceKind": "ordinary",
       "unitPriceCents": 388,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4424,6 +4636,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/barilla-italian-pasta-pappardelle-with-eggs-250g-11965342",
       "priceKind": "ordinary",
       "unitPriceCents": 631,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4436,6 +4649,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/barilla-italian-pasta-penne-rigate-500g-13165406",
       "priceKind": "ordinary",
       "unitPriceCents": 388,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
     },
     {
@@ -4448,6 +4662,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/barilla-spaghetti-no-5-500g-13263702",
       "priceKind": "ordinary",
       "unitPriceCents": 388,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
     },
     {
@@ -4460,6 +4675,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-evian-natural-mineral-bottle-water-6-x-1-5l-13281509",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1775,
+      "originalPriceCents": 1885,
       "excludedPromotions": []
     },
     {
@@ -4472,6 +4688,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-farmhouse-milk-fresh-1-89l-13281014",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
+      "originalPriceCents": 726,
       "excludedPromotions": []
     },
     {
@@ -4484,6 +4701,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-magnolia-high-protein-milk-chocolate-375ml-13281537",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 475,
+      "originalPriceCents": 505,
       "excludedPromotions": []
     },
     {
@@ -4496,6 +4714,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-monster-energy-can-drink-pipeline-punch-355ml-13281523",
       "priceKind": "ordinary",
       "unitPriceCents": 295,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $5.00"]
     },
     {
@@ -4508,6 +4727,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-pokka-lychee-oolong-tea-1-5l-13281663",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 225,
+      "originalPriceCents": 250,
       "excludedPromotions": []
     },
     {
@@ -4520,6 +4740,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-volvic-natural-mineral-bottle-water-6-x-1-5l-13281017",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1595,
+      "originalPriceCents": 1770,
       "excludedPromotions": []
     },
     {
@@ -4532,6 +4753,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bcrs-yeo-s-bottle-drink-first-harvest-green-tea-no-sugar-1-5l-13281653",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 185,
+      "originalPriceCents": 229,
       "excludedPromotions": []
     },
     {
@@ -4544,6 +4766,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/beryl-s-assorted-almond-chocolate-370-g-90040901",
       "priceKind": "ordinary",
       "unitPriceCents": 1150,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4556,6 +4779,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bio-home-multi-surface-cleaner-lavender-bergamot-500ml-13210829",
       "priceKind": "ordinary",
       "unitPriceCents": 505,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4568,6 +4792,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/biograde-fresh-lemongrass-dishwashing-liquid-3-l-90043347",
       "priceKind": "ordinary",
       "unitPriceCents": 590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4580,6 +4805,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/blue-elephant-hot-red-chilli-sauce",
       "priceKind": "ordinary",
       "unitPriceCents": 525,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4592,6 +4818,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/blue-elephant-sweet-chilli-sauce",
       "priceKind": "ordinary",
       "unitPriceCents": 525,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4604,6 +4831,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/blue-frog-cereal-keto-almond-peanut-raspberry-300g-13270074",
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4616,6 +4844,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/blue-frog-cereal-macadamia-almond-manuka-honey-350g-13270072",
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4628,6 +4857,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/bob-s-red-mill-instant-oatmeal-classic-6-x-45g-13281101",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4640,6 +4870,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/boxgreen-honey-mustard-soy-crisps-130-g-90065376",
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4652,6 +4883,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/boxgreen-peanut-pretzel-dark-chocolate-130-g-90065374",
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4664,6 +4896,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/breeze-liquid-detergent-refill-colour-care-1-8kg-13029014",
       "priceKind": "ordinary",
       "unitPriceCents": 524,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4676,6 +4909,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/calbee-prawn-crackers---black-pepper-13146780",
       "priceKind": "ordinary",
       "unitPriceCents": 237,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4688,6 +4922,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/calbee-prawn-crackers---original-13146781",
       "priceKind": "ordinary",
       "unitPriceCents": 237,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
     },
     {
@@ -4700,6 +4935,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/calbee-prawn-crackers---spicy-13146782",
       "priceKind": "ordinary",
       "unitPriceCents": 237,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
     },
     {
@@ -4712,6 +4948,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/campbell-s-real-stock-beef-salt-reduced-1000ml-13274174",
       "priceKind": "ordinary",
       "unitPriceCents": 605,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4724,6 +4961,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/carnation-evaporated-milk-low-fat-405g-11038936",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 225,
+      "originalPriceCents": 244,
       "excludedPromotions": []
     },
     {
@@ -4736,6 +4974,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/chek-hup-matcha-vanilla-latte",
       "priceKind": "ordinary",
       "unitPriceCents": 749,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4748,6 +4987,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/cirio-chopped-tomatoes-400g-13182258",
       "priceKind": "ordinary",
       "unitPriceCents": 323,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4760,6 +5000,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/cloversoft-2-in-1-bleach-free-toilet-cleaner-rosemary-ginger-500ml-13242723",
       "priceKind": "ordinary",
       "unitPriceCents": 399,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.50"]
     },
     {
@@ -4772,6 +5013,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/cocobella-coconut-water---chocolate-1",
       "priceKind": "ordinary",
       "unitPriceCents": 400,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4784,6 +5026,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colavita-pasta-linguine-500g-13184500",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 225,
+      "originalPriceCents": 259,
       "excludedPromotions": []
     },
     {
@@ -4796,6 +5039,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-gentle-sensitive-expert-toothbrush-1-per-pack-13268326",
       "priceKind": "ordinary",
       "unitPriceCents": 1105,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $13.95"]
     },
     {
@@ -4808,6 +5052,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-m-frsh-peach-passion-100g-13264531",
       "priceKind": "ordinary",
       "unitPriceCents": 595,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.20"]
     },
     {
@@ -4820,6 +5065,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-toothpaste-max-fresh-cool-mint-160g-12472021",
       "priceKind": "ordinary",
       "unitPriceCents": 484,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4832,6 +5078,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-total-breath-health-150g-13266200",
       "priceKind": "ordinary",
       "unitPriceCents": 830,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4844,6 +5091,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-total-gum-care-2-x-150g-13266073",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1450,
+      "originalPriceCents": 1490,
       "excludedPromotions": []
     },
     {
@@ -4856,6 +5104,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-total-toothpaste-charcoal-clean-150g-13056855",
       "priceKind": "ordinary",
       "unitPriceCents": 750,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $12.95"]
     },
     {
@@ -4868,6 +5117,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/colgate-total-toothpaste-fresh-mint-150g-10880056",
       "priceKind": "ordinary",
       "unitPriceCents": 750,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $12.95"]
     },
     {
@@ -4880,6 +5130,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/cowhead-granola-assorted-fruits-250g-13264673",
       "priceKind": "ordinary",
       "unitPriceCents": 695,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4892,6 +5143,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/cowhead-granola-banana-raisin-250g-13264672",
       "priceKind": "ordinary",
       "unitPriceCents": 695,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4904,6 +5156,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/da-gerber-lc-garden-tomato-42g-13251323",
       "priceKind": "ordinary",
       "unitPriceCents": 715,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4916,6 +5169,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/da-heinz-tomato-kchup-n-salt-397g-13252640",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -4928,6 +5182,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/da-nestle-kk-krunch-strwberry-285g-13274379",
       "priceKind": "ordinary",
       "unitPriceCents": 697,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4940,6 +5195,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/davidoff-instant-coffee-fine-aroma-100g-11491319",
       "priceKind": "ordinary",
       "unitPriceCents": 1375,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4952,6 +5208,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/del-monte-sardines-in-lemon-sauce-100g-13206113",
       "priceKind": "ordinary",
       "unitPriceCents": 301,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4964,6 +5221,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/del-monte-sardines-in-teriyaki-sauce-100g-13206114",
       "priceKind": "ordinary",
       "unitPriceCents": 301,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -4976,6 +5234,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/doritos-tortilla-chips-nacho-cheese-190g-10729188",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 535,
       "excludedPromotions": []
     },
     {
@@ -4988,6 +5247,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/dove-anti-bacterial-body-wash-care-protect-1l-13196946",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
+      "originalPriceCents": 995,
       "excludedPromotions": []
     },
     {
@@ -5000,6 +5260,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/dove-body-wash-gentle-exfoliating-1l-13019848",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
+      "originalPriceCents": 995,
       "excludedPromotions": []
     },
     {
@@ -5012,6 +5273,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/dove-body-wash-oxygen-moisture-1l-13098014",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
+      "originalPriceCents": 995,
       "excludedPromotions": []
     },
     {
@@ -5024,6 +5286,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/dove-go-fresh-paraben-free-body-wash---relaxing-lavender-13149674",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 590,
+      "originalPriceCents": 995,
       "excludedPromotions": []
     },
     {
@@ -5036,6 +5299,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ecostore---eucalyptus-antibacterial-toilet-cleaner",
       "priceKind": "ordinary",
       "unitPriceCents": 900,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5048,6 +5312,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ecostore---eucalyptus-laundry-liquid",
       "priceKind": "ordinary",
       "unitPriceCents": 1500,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5060,6 +5325,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ecostore---lemon-laundry-powder",
       "priceKind": "ordinary",
       "unitPriceCents": 1400,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5072,6 +5338,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ecostore---ultra-sensitive-laundry-liquid-2l",
       "priceKind": "ordinary",
       "unitPriceCents": 2410,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5084,6 +5351,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/elgydium-toothpaste-anti-plaque-75ml-11418429",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 900,
+      "originalPriceCents": 1080,
       "excludedPromotions": []
     },
     {
@@ -5096,6 +5364,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/emborg-pasta-cheese-200g-13076163",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
+      "originalPriceCents": 795,
       "excludedPromotions": []
     },
     {
@@ -5108,6 +5377,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/emborg-shredded-cheese-mozzarella-200g-13248358",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
+      "originalPriceCents": 795,
       "excludedPromotions": []
     },
     {
@@ -5120,6 +5390,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/extra-care-ginger-scalp-purify-shampoo",
       "priceKind": "ordinary",
       "unitPriceCents": 990,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5132,6 +5403,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/extra-care-moist-recovery-shampoo",
       "priceKind": "ordinary",
       "unitPriceCents": 1110,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5144,6 +5416,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/extra-care-volume-fortify-shampoo",
       "priceKind": "ordinary",
       "unitPriceCents": 990,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5156,6 +5429,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/fernleaf-milk-powder-full-cream-1-1kg-13206646",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2160,
+      "originalPriceCents": 2265,
       "excludedPromotions": []
     },
     {
@@ -5168,6 +5442,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/gerber-baby-cereal-rice-227g-13226021",
       "priceKind": "ordinary",
       "unitPriceCents": 1146,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5180,6 +5455,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/glo-nature-dishwashing-liquid-pomegranate-yuzu-lemon-900ml-13206086",
       "priceKind": "ordinary",
       "unitPriceCents": 347,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5192,6 +5468,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/glo-squeezy-ultra-concentrated-dishwashing-liquid-lemon-500ml-13289544",
       "priceKind": "ordinary",
       "unitPriceCents": 450,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.95"]
     },
     {
@@ -5204,6 +5481,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/golden-pineapple-thai-fragrant-rice-5-kg-90041954",
       "priceKind": "ordinary",
       "unitPriceCents": 1280,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5216,6 +5494,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/gw-dishwashing-liquid-light-green-5-l-90024491",
       "priceKind": "ordinary",
       "unitPriceCents": 470,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5228,6 +5507,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/gw-disinfectant-floor-cleaner-fresh-pine-2-l-90024492",
       "priceKind": "ordinary",
       "unitPriceCents": 590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5240,6 +5520,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hakubaku-organic-cha-soba-200g-12604071",
       "priceKind": "ordinary",
       "unitPriceCents": 428,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5252,6 +5533,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/heinz-tomato-ketchup-no-added-sugar-369g-13166939",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
+      "originalPriceCents": 590,
       "excludedPromotions": []
     },
     {
@@ -5264,6 +5546,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hershey-s-kisses-chocolate-creamy-milk-146g-13002270",
       "priceKind": "ordinary",
       "unitPriceCents": 750,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5276,6 +5559,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hi-chew-chewy-candy-grape-and-strawberry-100g-13250100",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 280,
+      "originalPriceCents": 305,
       "excludedPromotions": []
     },
     {
@@ -5288,6 +5572,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hipp-organic-fruit-cereal-flakes-200g-13287996",
       "priceKind": "ordinary",
       "unitPriceCents": 920,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5300,6 +5585,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hormel-spam-luncheon-meat-lite-340g-10221464",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
+      "originalPriceCents": 740,
       "excludedPromotions": []
     },
     {
@@ -5312,6 +5598,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hormel-spam-with-bacon-340g-11830173",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 665,
+      "originalPriceCents": 740,
       "excludedPromotions": []
     },
     {
@@ -5324,6 +5611,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/hunt-s-plum-tomatoes-whole-peeled-411g-12650609",
       "priceKind": "ordinary",
       "unitPriceCents": 415,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5336,6 +5624,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/irvins-salted-egg-potato-chips-105g-13187314",
       "priceKind": "ordinary",
       "unitPriceCents": 950,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5348,6 +5637,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/jin-huang-thai-jasmine-fragrant-rice-10-kg-90020895",
       "priceKind": "ordinary",
       "unitPriceCents": 2345,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5360,6 +5650,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/john-west-tempters-salmon-onion-tomato-95g-11383908",
       "priceKind": "ordinary",
       "unitPriceCents": 393,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5372,6 +5663,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kavli-bacon-cheese-spread",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5384,6 +5676,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kavli-blue-cheese-spread",
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5396,6 +5689,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kavli-ham-cheese-spread",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5408,6 +5702,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kavli-jalapeno-cheese-spread",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5420,6 +5715,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kavli-long-live-the-cheddar-cheese-spread",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5432,6 +5728,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kavli-spicy-chilli-cheddar-cheese-spread",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5444,6 +5741,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kct-superior-light-soy-sauce-640ml-10766560",
       "priceKind": "ordinary",
       "unitPriceCents": 550,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5456,6 +5754,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kellogg-s-cereal-rice-krispies-130g-395302",
       "priceKind": "ordinary",
       "unitPriceCents": 390,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5468,6 +5767,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kellogg-s-granola-boost-protein-extra-300g-13257827",
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5480,6 +5780,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kellogg-s-granola-boost-vitamin-d-calcium-300g-13257828",
       "priceKind": "ordinary",
       "unitPriceCents": 1050,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5492,6 +5793,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kellogg-s-strawberry-corn-flakes-250g-13256389",
       "priceKind": "ordinary",
       "unitPriceCents": 500,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5504,6 +5806,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kelloggs-cereal-corn-frosties-300g-395310",
       "priceKind": "ordinary",
       "unitPriceCents": 660,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5516,6 +5819,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/killiney-classic-singapore-black-coffee",
       "priceKind": "ordinary",
       "unitPriceCents": 300,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5528,6 +5832,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kinder-milkcredible-cocoa-candy-108g-13274214",
       "priceKind": "ordinary",
       "unitPriceCents": 460,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.60"]
     },
     {
@@ -5540,6 +5845,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kinmemai-better-brown-rice-5-kg-90089692",
       "priceKind": "ordinary",
       "unitPriceCents": 4750,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5552,6 +5858,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kleen-up-wipes-wet-floor-wood-15-per-pack-13027323",
       "priceKind": "ordinary",
       "unitPriceCents": 423,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $5.00"]
     },
     {
@@ -5564,6 +5871,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/koala-quality-japonica-rice",
       "priceKind": "ordinary",
       "unitPriceCents": 1080,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5576,6 +5884,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kodomo-baby-bottle-accessories-cleanser-750ml-11194584",
       "priceKind": "ordinary",
       "unitPriceCents": 1111,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5588,6 +5897,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kodomo-baby-laundry-detergent-nature-care-2l-10964436",
       "priceKind": "ordinary",
       "unitPriceCents": 1763,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5600,6 +5910,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/kodomo-baby-laundry-detrgt-nat-care-rf-blue-1lt-10069693",
       "priceKind": "ordinary",
       "unitPriceCents": 754,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5612,6 +5923,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/l-ddrnt-scalp-shm450-13251278",
       "priceKind": "ordinary",
       "unitPriceCents": 1590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5624,6 +5936,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lacroix-naturally-essenced-sparkling-water---pure",
       "priceKind": "ordinary",
       "unitPriceCents": 1560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5636,6 +5949,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-maxx-potato-chips-sour-cream-onion-170g-13225870",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
     },
     {
@@ -5648,6 +5962,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-potato-chips-cheddar-sour-cream-170g-13225851",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
     },
     {
@@ -5660,6 +5975,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-potato-chips-hot-spicy-50g-13254871",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 175,
+      "originalPriceCents": 192,
       "excludedPromotions": []
     },
     {
@@ -5672,6 +5988,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-potato-chips-nori-seaweed-170g-13232157",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
     },
     {
@@ -5684,6 +6001,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-potato-chips-salt-vinegar-180g-13219217",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
     },
     {
@@ -5696,6 +6014,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-potato-chips-salted-egg-170g-13255751",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $7.95"]
     },
     {
@@ -5708,6 +6027,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-potato-chips-sour-cream-onion-50g-13253763",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 175,
+      "originalPriceCents": 192,
       "excludedPromotions": []
     },
     {
@@ -5720,6 +6040,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-stax-potato-chips-extra-cheese-100g-13284909",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5732,6 +6053,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-stax-potato-chips-original-100g-13284924",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5744,6 +6066,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-stax-potato-chips-smokin-bbq-100g-13284935",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5756,6 +6079,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lay-s-stax-potato-chips-sour-cream-onion-100g-13284936",
       "priceKind": "ordinary",
       "unitPriceCents": 260,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5768,6 +6092,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lee-kum-kee-abalone-sauce-535g-13095179",
       "priceKind": "ordinary",
       "unitPriceCents": 687,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5780,6 +6105,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lee-kum-kee-gluten-free-soy-sauce-500ml-13105250",
       "priceKind": "ordinary",
       "unitPriceCents": 570,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5792,6 +6118,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lee-kum-kee-golden-veg-oyster-sauce-w-mushroom-510g-12487397",
       "priceKind": "ordinary",
       "unitPriceCents": 403,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5804,6 +6131,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/little-blossom-fruity-sticks-mixed-berry-12g-13250944",
       "priceKind": "ordinary",
       "unitPriceCents": 250,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5816,6 +6144,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/little-blossom-organic-brown-rice-puffs-strawberry-40g-13212833",
       "priceKind": "ordinary",
       "unitPriceCents": 560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5828,6 +6157,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/lurpak-spreadable-butter-unsalted-250g-12199264",
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5840,6 +6170,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/maggi-premium-oyster-sauce-500g-11890846",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5852,6 +6183,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/magiclean-bathroom-stain-mold-remover-light-floral-360ml-13291322",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 535,
+      "originalPriceCents": 596,
       "excludedPromotions": []
     },
     {
@@ -5864,6 +6196,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/magiclean-floor-cleaner-fresh-floral-3l-13278809",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 690,
+      "originalPriceCents": 750,
       "excludedPromotions": []
     },
     {
@@ -5876,6 +6209,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-greek-style-yoghurt-natural-130g-13278921",
       "priceKind": "ordinary",
       "unitPriceCents": 185,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $2.50"]
     },
     {
@@ -5888,6 +6222,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-hl-dark-chocolate-milk-with-plant-sterols-946ml-13222258",
       "priceKind": "ordinary",
       "unitPriceCents": 386,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.80"]
     },
     {
@@ -5900,6 +6235,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-hl-milk-banana-946ml-10977034",
       "priceKind": "ordinary",
       "unitPriceCents": 356,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -5912,6 +6248,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-hl-milk-chocolate-946ml-10054432",
       "priceKind": "ordinary",
       "unitPriceCents": 356,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -5924,6 +6261,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-hl-milk-plain-946ml-131467",
       "priceKind": "ordinary",
       "unitPriceCents": 356,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -5936,6 +6274,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-hl-milk-strawberry-946ml-11641604",
       "priceKind": "ordinary",
       "unitPriceCents": 356,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -5948,6 +6287,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-packet-drink-chrysanthemum-tea-less-sweet-6-x-250ml-11520036",
       "priceKind": "ordinary",
       "unitPriceCents": 319,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5960,6 +6300,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/marigold-peel-fresh-juice-tropical-mango-946ml-443052",
       "priceKind": "ordinary",
       "unitPriceCents": 265,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
     },
     {
@@ -5972,6 +6313,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/megachef-premium-oyster-sauce-600g-90011343",
       "priceKind": "ordinary",
       "unitPriceCents": 590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5984,6 +6326,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/mili-braised-peanuts-170g-747769",
       "priceKind": "ordinary",
       "unitPriceCents": 75,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -5996,6 +6339,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/milklab-soy-milk-plant-based-beverage-for-coffee-1",
       "priceKind": "ordinary",
       "unitPriceCents": 504,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6008,6 +6352,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/milkmaid-condensed-milk-skimmed-low-fat-392g-11140615",
       "priceKind": "ordinary",
       "unitPriceCents": 264,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6020,6 +6365,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/munchy-s-lexus-cookies-dark-chocolate-189g-13217250",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6032,6 +6378,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/munchy-s-lexus-cookies-mixed-nuts-189g-13217249",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -6044,6 +6391,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/myojo-spicy-instant-noodles-hot-chicken-5-x-80g-13196130",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 298,
+      "originalPriceCents": 336,
       "excludedPromotions": []
     },
     {
@@ -6056,6 +6404,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/naturel-organic-brown-rice-2kg-11698846",
       "priceKind": "ordinary",
       "unitPriceCents": 1100,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6068,6 +6417,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/naturel-organic-brown-rice-750g-13098974",
       "priceKind": "ordinary",
       "unitPriceCents": 540,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6080,6 +6430,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/naturel-organic-hommali-mixed-brown-and-red-rice-2kg-13049984",
       "priceKind": "ordinary",
       "unitPriceCents": 1100,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6092,6 +6443,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nescafe-classic-instant-coffee-arabica-bean-200g-10626699",
       "priceKind": "ordinary",
       "unitPriceCents": 1365,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6104,6 +6456,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nespray-instant-fortified-full-cream-milk-powder-18kg-10364529",
       "priceKind": "ordinary",
       "unitPriceCents": 3825,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6116,6 +6469,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/new-moon-low-calorie-konjac-noodles-flat-270g-13244421",
       "priceKind": "ordinary",
       "unitPriceCents": 298,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6128,6 +6482,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/new-moon-low-calorie-konjac-noodles-round-270g-13244422",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 250,
+      "originalPriceCents": 298,
       "excludedPromotions": []
     },
     {
@@ -6140,6 +6495,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/new-moon-premium-oyster-sauce-510g-11099202",
       "priceKind": "ordinary",
       "unitPriceCents": 428,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6152,6 +6508,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nissin-granola-fruit-500g-13180907",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
+      "originalPriceCents": 968,
       "excludedPromotions": []
     },
     {
@@ -6164,6 +6521,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nissin-granola-maple-syrup-500g-13180917",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
+      "originalPriceCents": 968,
       "excludedPromotions": []
     },
     {
@@ -6176,6 +6534,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nissin-granola-matcha-500g-13180916",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
+      "originalPriceCents": 968,
       "excludedPromotions": []
     },
     {
@@ -6188,6 +6547,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nissin-granola-strawberry-400g-13195646",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 910,
+      "originalPriceCents": 968,
       "excludedPromotions": []
     },
     {
@@ -6200,6 +6560,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nivea-dm-spray-defend-150ml-13273640",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 995,
+      "originalPriceCents": 1200,
       "excludedPromotions": []
     },
     {
@@ -6212,6 +6573,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nivea-extra-bright-roll-on-deodorant-fresh-lavier-50ml-13238138",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
+      "originalPriceCents": 680,
       "excludedPromotions": []
     },
     {
@@ -6224,6 +6586,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/nivea-extra-bright-roll-on-deodorant-velvet-romance-50ml-13238137",
       "priceKind": "ordinary",
       "unitPriceCents": 680,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6236,6 +6599,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/okome-shortgrain-rice-1kg-13269991",
       "priceKind": "ordinary",
       "unitPriceCents": 406,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $7.00"]
     },
     {
@@ -6248,6 +6612,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/oral-b-vitality-pro-electric-toothbrush-deep-clean-lilac-1-per-pack-13276756",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 4900,
+      "originalPriceCents": 7000,
       "excludedPromotions": []
     },
     {
@@ -6260,6 +6625,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/paddyking-usa-calrose-rice-5-kg-90041270",
       "priceKind": "ordinary",
       "unitPriceCents": 1250,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6272,6 +6638,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/pantene-shampoo-daily-moisture-renewal-680ml-13194445",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 777,
+      "originalPriceCents": 1191,
       "excludedPromotions": []
     },
     {
@@ -6284,6 +6651,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/pantene-shampoo-total-damage-care-680ml-13194448",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 777,
+      "originalPriceCents": 1191,
       "excludedPromotions": []
     },
     {
@@ -6296,6 +6664,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/parodontax-toothpaste-herbal----90g-13190527",
       "priceKind": "ordinary",
       "unitPriceCents": 965,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6308,6 +6677,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-great-grain-banana-nut-crunch-439g-13020957",
       "priceKind": "ordinary",
       "unitPriceCents": 888,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6320,6 +6690,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-great-grains-cereal-blueberry-morning-382g-13018680",
       "priceKind": "ordinary",
       "unitPriceCents": 888,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6332,6 +6703,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-great-grains-cereal-cranberry-almond-crunch-396g-13021420",
       "priceKind": "ordinary",
       "unitPriceCents": 888,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6344,6 +6716,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-great-grains-cereal-raisins-dates-pecans-453g-13021613",
       "priceKind": "ordinary",
       "unitPriceCents": 888,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6356,6 +6729,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-great-grains-cereal-red-berry-almond-crunch-368g-13224255",
       "priceKind": "ordinary",
       "unitPriceCents": 888,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6368,6 +6742,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-honey-bunches-of-oats-cereal-honey-roasted-340g-13220513",
       "priceKind": "ordinary",
       "unitPriceCents": 767,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6380,6 +6755,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/post-honey-bunches-of-oats-cereal-real-strawberries-311g-13220514",
       "priceKind": "ordinary",
       "unitPriceCents": 767,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6392,6 +6768,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/premium-fragrant-rice-thai-hom-mali-org-rice-2kg-11885318",
       "priceKind": "ordinary",
       "unitPriceCents": 968,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6404,6 +6781,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/president-butter-salted-200g-13228536",
       "priceKind": "ordinary",
       "unitPriceCents": 685,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
     },
     {
@@ -6416,6 +6794,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/president-butter-unsalted-200g-13228537",
       "priceKind": "ordinary",
       "unitPriceCents": 685,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $11.95"]
     },
     {
@@ -6428,6 +6807,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/quaker-instant-oatmeal-plus-vitamin-d-600g-13284934",
       "priceKind": "ordinary",
       "unitPriceCents": 480,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6440,6 +6820,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/quaker-oats-5-red-multigrain-mixed-instant-oatmeal-480g-13226864",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 700,
+      "originalPriceCents": 910,
       "excludedPromotions": []
     },
     {
@@ -6452,6 +6833,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/royal-umbrella-thai-fragarant-brown-rice-2kg-13190074",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 635,
+      "originalPriceCents": 835,
       "excludedPromotions": []
     },
     {
@@ -6464,6 +6846,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/royal-umbrella-thai-hom-mali-rice-13111322",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1625,
+      "originalPriceCents": 1695,
       "excludedPromotions": []
     },
     {
@@ -6476,6 +6859,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ruffles-potato-chips-cheddar-sour-cream-170g-13214949",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $8.45"]
     },
     {
@@ -6488,6 +6872,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ruffles-potato-chips-original-180g-11880752",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $8.45"]
     },
     {
@@ -6500,6 +6885,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ruffles-potato-chips-sour-cream-onion-170g-10729225",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $8.45"]
     },
     {
@@ -6512,6 +6898,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/s-glutinous-rice-1kg-13215764",
       "priceKind": "ordinary",
       "unitPriceCents": 403,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6524,6 +6911,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/s-mould-stain-rmv750-13236988",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 505,
+      "originalPriceCents": 555,
       "excludedPromotions": []
     },
     {
@@ -6536,6 +6924,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/s-pipe-drain-dclg800-13236986",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
+      "originalPriceCents": 742,
       "excludedPromotions": []
     },
     {
@@ -6548,6 +6937,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/scs-slice-cheese-reduced-fat-200g-13281223",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 475,
+      "originalPriceCents": 520,
       "excludedPromotions": []
     },
     {
@@ -6560,6 +6950,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/selleys-bathroom-toilet-cleaner-500ml-13233994",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 505,
+      "originalPriceCents": 555,
       "excludedPromotions": []
     },
     {
@@ -6572,6 +6963,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sensodyne-complete-protection-toothpaste-100g-13041613",
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $16.70"]
     },
     {
@@ -6584,6 +6976,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sensodyne-toothpaste-complete-protection-extra-fresh-100g-13041614",
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $16.70"]
     },
     {
@@ -6596,6 +6989,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sensodyne-toothpaste-repair-protect-100g-13000828",
       "priceKind": "ordinary",
       "unitPriceCents": 1020,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6608,6 +7002,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/shokubutsu-hydro-body-wash-lumi-glow-900ml-13285857",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1320,
+      "originalPriceCents": 1750,
       "excludedPromotions": []
     },
     {
@@ -6620,6 +7015,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/shokubutsu-men-body-foam-recharge-900ml-13073452",
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $13.95"]
     },
     {
@@ -6632,6 +7028,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/shokubutsu-men-body-foam-refill-refresh-600ml-13073427",
       "priceKind": "ordinary",
       "unitPriceCents": 560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6644,6 +7041,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/shokubutsu-men-body-foam-refresh-900ml-13073453",
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $13.95"]
     },
     {
@@ -6656,6 +7054,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sincero-almond-dark-chocolate-380g-13294633",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
+      "originalPriceCents": 1090,
       "excludedPromotions": []
     },
     {
@@ -6668,6 +7067,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sincero-almond-milk-chocolate-380g-13294634",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
+      "originalPriceCents": 1090,
       "excludedPromotions": []
     },
     {
@@ -6680,6 +7080,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/snickers-chocolate-bar-strawberry-40g-13286952",
       "priceKind": "ordinary",
       "unitPriceCents": 200,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $3.80"]
     },
     {
@@ -6692,6 +7093,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/songhe-8020-mixed-fragrant-red-rice-5kg-13255994",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
+      "originalPriceCents": 1880,
       "excludedPromotions": []
     },
     {
@@ -6704,6 +7106,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/songhe-8020-mixed-fragrant-rice-red-rice-2kg-13176689",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 825,
+      "originalPriceCents": 890,
       "excludedPromotions": []
     },
     {
@@ -6716,6 +7119,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/songhe-jasmine-brown-rice-2",
       "priceKind": "ordinary",
       "unitPriceCents": 1650,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6728,6 +7132,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/songhe-noble-red-rice-3",
       "priceKind": "ordinary",
       "unitPriceCents": 1750,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6740,6 +7145,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/songhe-noble-red-rice-4",
       "priceKind": "ordinary",
       "unitPriceCents": 500,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6752,6 +7158,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/splat-toothpaste-biocalcium-100ml-13279170",
       "priceKind": "ordinary",
       "unitPriceCents": 890,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $13.90"]
     },
     {
@@ -6764,6 +7171,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/splat-toothpaste-lavendersept-100ml-13279169",
       "priceKind": "ordinary",
       "unitPriceCents": 890,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $13.90"]
     },
     {
@@ -6776,6 +7184,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/splat-toothpaste-white-plus-100ml-13279171",
       "priceKind": "ordinary",
       "unitPriceCents": 890,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6788,6 +7197,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sunrice-kangaroo-premium-calrose-rice",
       "priceKind": "ordinary",
       "unitPriceCents": 1180,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6800,6 +7210,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sunsilk-shampoo-strong-long-13230356",
       "priceKind": "ordinary",
       "unitPriceCents": 703,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6812,6 +7223,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/sunsweet-prune-juice-946ml-13287420",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6824,6 +7236,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/systema-hi-density-toothbrush-pro-defence-1-per-pack-13257860",
       "priceKind": "ordinary",
       "unitPriceCents": 810,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $9.95"]
     },
     {
@@ -6836,6 +7249,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tabasco-habanero-sauce-60ml-397530",
       "priceKind": "ordinary",
       "unitPriceCents": 350,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6848,6 +7262,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tai-hua-special-soy-sauce-light-640ml-10458138",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
+      "originalPriceCents": 438,
       "excludedPromotions": []
     },
     {
@@ -6860,6 +7275,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tai-hua-special-soy-sauce-light-small-320ml-11052578",
       "priceKind": "ordinary",
       "unitPriceCents": 259,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6872,6 +7288,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tai-hua-superior-soy-sauce-dark-640ml-10458103",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
+      "originalPriceCents": 438,
       "excludedPromotions": []
     },
     {
@@ -6884,6 +7301,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tai-hua-superior-soy-sauce-dark-640ml-160119",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
+      "originalPriceCents": 642,
       "excludedPromotions": []
     },
     {
@@ -6896,6 +7314,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tai-hua-superior-soy-sauce-light-640ml-160101",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
+      "originalPriceCents": 642,
       "excludedPromotions": []
     },
     {
@@ -6908,6 +7327,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/taj-basmati-rice-1kg-13266641",
       "priceKind": "ordinary",
       "unitPriceCents": 489,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $8.40"]
     },
     {
@@ -6920,6 +7340,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/temole-broccoli-puffs-cheese-56g-13206635",
       "priceKind": "ordinary",
       "unitPriceCents": 499,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6932,6 +7353,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/the-laughing-cow-cheese-dippers-original-140g-133942",
       "priceKind": "ordinary",
       "unitPriceCents": 630,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6944,6 +7366,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/toblerone-tiny-chocolate-sharebag-milk-200g-464545",
       "priceKind": "ordinary",
       "unitPriceCents": 675,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6956,6 +7379,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-concentrated-liquid-detergent-blooming-freshness-3-6kg-13169773",
       "priceKind": "ordinary",
       "unitPriceCents": 1282,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6968,6 +7392,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-concentrated-liquid-detergent-refill-blooming-freshness-1-7kg-13285014",
       "priceKind": "ordinary",
       "unitPriceCents": 484,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $8.55"]
     },
     {
@@ -6980,6 +7405,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-anti-bacterial-5kg-13212629",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -6992,6 +7418,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-blooming-freshness-2-1kg-13212625",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7004,6 +7431,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-blooming-freshness-4-6kg-13212626",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7016,6 +7444,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-packet-super-low-suds-colour-protect-4-6kg-13212575",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7028,6 +7457,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-super-colour-2-3kg-13212582",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7040,6 +7470,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-super-white-2-3kg-13212581",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7052,6 +7483,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-detergent-powder-super-white-5kg-13212627",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7064,6 +7496,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/top-super-low-suds-powder-detergent-anti-bact-3kg-13086653",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7076,6 +7509,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/toyo-suisan-red-rice-sekihan-170-g-90045998",
       "priceKind": "ordinary",
       "unitPriceCents": 504,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7088,6 +7522,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/tresemme-shampoo-hair-fall-control-670ml-13148395",
       "priceKind": "ordinary",
       "unitPriceCents": 1464,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7100,6 +7535,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/twinings-english-breakfast-tea-bag-50s-x-2g-13062076",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1575,
+      "originalPriceCents": 1795,
       "excludedPromotions": []
     },
     {
@@ -7112,6 +7548,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/twinings-teabags-earl-grey-50-x-2g-13062073",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1575,
+      "originalPriceCents": 1795,
       "excludedPromotions": []
     },
     {
@@ -7124,6 +7561,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/ufc-refresh-ccw-twist-500ml-13268772",
       "priceKind": "ordinary",
       "unitPriceCents": 250,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.50"]
     },
     {
@@ -7136,6 +7574,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/uic-big-value-dishwashing-liquid-refill-lemon-4-x-600ml-13066595",
       "priceKind": "ordinary",
       "unitPriceCents": 469,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7148,6 +7587,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/uic-big-value-natural-dishwashing-liquid-refill-lime-600ml-12698741",
       "priceKind": "ordinary",
       "unitPriceCents": 143,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7160,6 +7600,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/vatan-se-low-fat-paneer-1",
       "priceKind": "ordinary",
       "unitPriceCents": 650,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7172,6 +7613,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/woh-hup-sauce-oyster-extra-flavour-500g-52572",
       "priceKind": "ordinary",
       "unitPriceCents": 419,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7184,6 +7626,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/woh-hup-vegetarian-sauce-shiitake-mushroom-oyster-500g-52621",
       "priceKind": "ordinary",
       "unitPriceCents": 351,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7196,6 +7639,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/yeo-s-drink-100-natural-coconut-water-1l-13085084",
       "priceKind": "ordinary",
       "unitPriceCents": 396,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $5.95"]
     },
     {
@@ -7208,6 +7652,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/yumearth-organic-pops---vitamin-c",
       "priceKind": "ordinary",
       "unitPriceCents": 650,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7220,6 +7665,7 @@
       "productUrl": "https://www.fairprice.com.sg/product/zenko-ancient-grain-granola-tropical-fruit-300g-13258481",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7232,6 +7678,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i13669042542-s124359779742.html",
       "priceKind": "ordinary",
       "unitPriceCents": 120,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7244,6 +7691,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i13685802003-s124528289129.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1750,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -7256,6 +7704,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i13718441209-s124659334681.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 535,
+      "originalPriceCents": 595,
       "excludedPromotions": []
     },
     {
@@ -7268,6 +7717,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i13747900006-s124705076410.html",
       "priceKind": "ordinary",
       "unitPriceCents": 450,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7280,6 +7730,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1499922444-s6997590236.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 531,
+      "originalPriceCents": 590,
       "excludedPromotions": []
     },
     {
@@ -7292,6 +7743,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1621281798-s7615785334.html",
       "priceKind": "ordinary",
       "unitPriceCents": 989,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
     },
     {
@@ -7304,6 +7756,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1643060745-s7717827871.html",
       "priceKind": "ordinary",
       "unitPriceCents": 259,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 19%"]
     },
     {
@@ -7316,6 +7769,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1682511818-s8125888551.html",
       "priceKind": "ordinary",
       "unitPriceCents": 534,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
     },
     {
@@ -7328,6 +7782,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1683191211-s8128041773.html",
       "priceKind": "ordinary",
       "unitPriceCents": 800,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7340,6 +7795,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1792413605-s9403650384.html",
       "priceKind": "ordinary",
       "unitPriceCents": 348,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7352,6 +7808,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i1874186920-s9996753062.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 735,
+      "originalPriceCents": 750,
       "excludedPromotions": []
     },
     {
@@ -7364,6 +7821,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2035999481-s11118623877.html",
       "priceKind": "ordinary",
       "unitPriceCents": 499,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $7.9"]
     },
     {
@@ -7376,6 +7834,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2161875448-s12322750521.html",
       "priceKind": "ordinary",
       "unitPriceCents": 504,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7388,6 +7847,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2256124647-s12993795238.html",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -7400,6 +7860,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2256140521-s12993854142.html",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.20"]
     },
     {
@@ -7412,6 +7873,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2277374957-s13151460750.html",
       "priceKind": "ordinary",
       "unitPriceCents": 422,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 Save 31%"]
     },
     {
@@ -7424,6 +7886,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2437055547-s14423159838.html",
       "priceKind": "ordinary",
       "unitPriceCents": 387,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.8"]
     },
     {
@@ -7436,6 +7899,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2556934540-s16009517329.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 712,
+      "originalPriceCents": 913,
       "excludedPromotions": []
     },
     {
@@ -7448,6 +7912,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2615970104-s16630771887.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1150,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 Save 20%"]
     },
     {
@@ -7460,6 +7925,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2742796146-s18594995860.html",
       "priceKind": "ordinary",
       "unitPriceCents": 360,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 24%"]
     },
     {
@@ -7472,6 +7938,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2791236407-s19279758674.html",
       "priceKind": "ordinary",
       "unitPriceCents": 191,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $4.50"]
     },
     {
@@ -7484,6 +7951,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2806828394-s19385512491.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1500,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7496,6 +7964,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2806851819-s19385517599.html",
       "priceKind": "ordinary",
       "unitPriceCents": 900,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7508,6 +7977,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2806929593-s19385971247.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1400,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7520,6 +7990,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2813754120-s19421649265.html",
       "priceKind": "ordinary",
       "unitPriceCents": 555,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7532,6 +8003,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2821184772-s19464353298.html",
       "priceKind": "ordinary",
       "unitPriceCents": 790,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
     },
     {
@@ -7544,6 +8016,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2821212439-s19464365332.html",
       "priceKind": "ordinary",
       "unitPriceCents": 790,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
     },
     {
@@ -7556,6 +8029,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2821279080-s19464356322.html",
       "priceKind": "ordinary",
       "unitPriceCents": 790,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
     },
     {
@@ -7568,6 +8042,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i2857681278-s19702839017.html",
       "priceKind": "ordinary",
       "unitPriceCents": 399,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save $2.06"]
     },
     {
@@ -7580,6 +8055,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301072905-s527094683.html",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7592,6 +8068,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301080986-s527102860.html",
       "priceKind": "ordinary",
       "unitPriceCents": 388,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.30"]
     },
     {
@@ -7604,6 +8081,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301084917-s527112314.html",
       "priceKind": "ordinary",
       "unitPriceCents": 353,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.70"]
     },
     {
@@ -7616,6 +8094,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301088904-s527120163.html",
       "priceKind": "ordinary",
       "unitPriceCents": 605,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7628,6 +8107,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301090846-s527090956.html",
       "priceKind": "ordinary",
       "unitPriceCents": 357,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -7640,6 +8120,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301090871-s527132004.html",
       "priceKind": "ordinary",
       "unitPriceCents": 388,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.30"]
     },
     {
@@ -7652,6 +8133,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301100893-s527118178.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 374,
+      "originalPriceCents": 534,
       "excludedPromotions": []
     },
     {
@@ -7664,6 +8146,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3011048035-s20570593221.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 435,
+      "originalPriceCents": 469,
       "excludedPromotions": []
     },
     {
@@ -7676,6 +8159,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301106732-s527076886.html",
       "priceKind": "ordinary",
       "unitPriceCents": 275,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.90"]
     },
     {
@@ -7688,6 +8172,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301116496-s527198231.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -7700,6 +8185,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301118507-s527178834.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
+      "originalPriceCents": 888,
       "excludedPromotions": []
     },
     {
@@ -7712,6 +8198,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301118706-s527230137.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 697,
+      "originalPriceCents": 750,
       "excludedPromotions": []
     },
     {
@@ -7724,6 +8211,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301120349-s527190360.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
+      "originalPriceCents": 888,
       "excludedPromotions": []
     },
     {
@@ -7736,6 +8224,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301120618-s527190764.html",
       "priceKind": "ordinary",
       "unitPriceCents": 360,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 13%"]
     },
     {
@@ -7748,6 +8237,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301122375-s527206003.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 706,
+      "originalPriceCents": 767,
       "excludedPromotions": []
     },
     {
@@ -7760,6 +8250,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301124364-s527162903.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
+      "originalPriceCents": 888,
       "excludedPromotions": []
     },
     {
@@ -7772,6 +8263,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301124598-s527218328.html",
       "priceKind": "ordinary",
       "unitPriceCents": 920,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7784,6 +8276,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301126341-s527158979.html",
       "priceKind": "ordinary",
       "unitPriceCents": 363,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 Save 5%"]
     },
     {
@@ -7796,6 +8289,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301126624-s527208386.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -7808,6 +8302,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301126655-s527208413.html",
       "priceKind": "ordinary",
       "unitPriceCents": 525,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 7%"]
     },
     {
@@ -7820,6 +8315,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301128368-s527164945.html",
       "priceKind": "ordinary",
       "unitPriceCents": 245,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $4.5"]
     },
     {
@@ -7832,6 +8328,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301130405-s527192384.html",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -7844,6 +8341,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301130504-s527192589.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
+      "originalPriceCents": 641,
       "excludedPromotions": []
     },
     {
@@ -7856,6 +8354,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301130995-s527238497.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 991,
+      "originalPriceCents": 1101,
       "excludedPromotions": []
     },
     {
@@ -7868,6 +8367,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301132999-s527262012.html",
       "priceKind": "ordinary",
       "unitPriceCents": 539,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7880,6 +8380,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301134522-s527214284.html",
       "priceKind": "ordinary",
       "unitPriceCents": 237,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
     },
     {
@@ -7892,6 +8393,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301136427-s527194515.html",
       "priceKind": "ordinary",
       "unitPriceCents": 141,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 Save 10%"]
     },
     {
@@ -7904,6 +8406,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301136541-s527194689.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 575,
+      "originalPriceCents": 641,
       "excludedPromotions": []
     },
     {
@@ -7916,6 +8419,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301140303-s527168874.html",
       "priceKind": "ordinary",
       "unitPriceCents": 265,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $7.35"]
     },
     {
@@ -7928,6 +8432,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301140377-s527168985.html",
       "priceKind": "ordinary",
       "unitPriceCents": 390,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
     },
     {
@@ -7940,6 +8445,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301140518-s527216187.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 474,
+      "originalPriceCents": 499,
       "excludedPromotions": []
     },
     {
@@ -7952,6 +8458,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301140675-s527216416.html",
       "priceKind": "ordinary",
       "unitPriceCents": 265,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.95"]
     },
     {
@@ -7964,6 +8471,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301140731-s527216509.html",
       "priceKind": "ordinary",
       "unitPriceCents": 581,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -7976,6 +8484,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301140750-s527216537.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1180,
+      "originalPriceCents": 1610,
       "excludedPromotions": []
     },
     {
@@ -7988,6 +8497,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142242-s527188472.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 826,
+      "originalPriceCents": 888,
       "excludedPromotions": []
     },
     {
@@ -8000,6 +8510,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142294-s527188539.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1395,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8012,6 +8523,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142353-s527188644.html",
       "priceKind": "ordinary",
       "unitPriceCents": 534,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
     },
     {
@@ -8024,6 +8536,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142365-s527188659.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 994,
+      "originalPriceCents": 1105,
       "excludedPromotions": []
     },
     {
@@ -8036,6 +8549,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142641-s527234174.html",
       "priceKind": "ordinary",
       "unitPriceCents": 406,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 Save 14%"]
     },
     {
@@ -8048,6 +8562,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142670-s527234202.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 595,
+      "originalPriceCents": 795,
       "excludedPromotions": []
     },
     {
@@ -8060,6 +8575,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301142675-s527234205.html",
       "priceKind": "ordinary",
       "unitPriceCents": 357,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -8072,6 +8588,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301144308-s527204114.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1764,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8084,6 +8601,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301144365-s527204148.html",
       "priceKind": "ordinary",
       "unitPriceCents": 534,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
     },
     {
@@ -8096,6 +8614,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301144490-s527204430.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
+      "originalPriceCents": 438,
       "excludedPromotions": []
     },
     {
@@ -8108,6 +8627,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301144532-s527204495.html",
       "priceKind": "ordinary",
       "unitPriceCents": 3825,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8120,6 +8640,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301146305-s527180905.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1349,
+      "originalPriceCents": 1754,
       "excludedPromotions": []
     },
     {
@@ -8132,6 +8653,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301146311-s527180909.html",
       "priceKind": "ordinary",
       "unitPriceCents": 418,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8144,6 +8666,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301146480-s527220122.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 395,
+      "originalPriceCents": 438,
       "excludedPromotions": []
     },
     {
@@ -8156,6 +8679,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301146957-s527220979.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 990,
+      "originalPriceCents": 1100,
       "excludedPromotions": []
     },
     {
@@ -8168,6 +8692,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301148279-s527200156.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1365,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8180,6 +8705,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301148438-s527200357.html",
       "priceKind": "ordinary",
       "unitPriceCents": 320,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.50"]
     },
     {
@@ -8192,6 +8718,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301148471-s527200418.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1080,
+      "originalPriceCents": 1350,
       "excludedPromotions": []
     },
     {
@@ -8204,6 +8731,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301148512-s527200480.html",
       "priceKind": "ordinary",
       "unitPriceCents": 469,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8216,6 +8744,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301150387-s527186783.html",
       "priceKind": "ordinary",
       "unitPriceCents": 360,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 13%"]
     },
     {
@@ -8228,6 +8757,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301150658-s527232238.html",
       "priceKind": "ordinary",
       "unitPriceCents": 357,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -8240,6 +8770,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301150660-s527232240.html",
       "priceKind": "ordinary",
       "unitPriceCents": 357,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.55"]
     },
     {
@@ -8252,6 +8783,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301150916-s527232645.html",
       "priceKind": "ordinary",
       "unitPriceCents": 292,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
     },
     {
@@ -8264,6 +8796,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301154196-s527184726.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 706,
+      "originalPriceCents": 767,
       "excludedPromotions": []
     },
     {
@@ -8276,6 +8809,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301154510-s527222243.html",
       "priceKind": "ordinary",
       "unitPriceCents": 360,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 13%"]
     },
     {
@@ -8288,6 +8822,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301154841-s527222858.html",
       "priceKind": "ordinary",
       "unitPriceCents": 425,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8300,6 +8835,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156310-s527210113.html",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8312,6 +8848,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156311-s527210114.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 325,
+      "originalPriceCents": 353,
       "excludedPromotions": []
     },
     {
@@ -8324,6 +8861,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156313-s527210115.html",
       "priceKind": "ordinary",
       "unitPriceCents": 989,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
     },
     {
@@ -8336,6 +8874,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156348-s527210165.html",
       "priceKind": "ordinary",
       "unitPriceCents": 405,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $20 + Free Gift"]
     },
     {
@@ -8348,6 +8887,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156436-s527210289.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 480,
+      "originalPriceCents": 530,
       "excludedPromotions": []
     },
     {
@@ -8360,6 +8900,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156457-s527210390.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8372,6 +8913,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301156623-s527210681.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1505,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8384,6 +8926,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301158117-s527196131.html",
       "priceKind": "ordinary",
       "unitPriceCents": 754,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8396,6 +8939,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301158971-s527244808.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8408,6 +8952,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301164042-s527250279.html",
       "priceKind": "ordinary",
       "unitPriceCents": 200,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Buy 2 At $3.00"]
     },
     {
@@ -8420,6 +8965,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301168041-s527252247.html",
       "priceKind": "ordinary",
       "unitPriceCents": 292,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $4.35"]
     },
     {
@@ -8432,6 +8978,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301174024-s527238567.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 979,
+      "originalPriceCents": 1069,
       "excludedPromotions": []
     },
     {
@@ -8444,6 +8991,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301180170-s527246582.html",
       "priceKind": "ordinary",
       "unitPriceCents": 388,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 At $6.30"]
     },
     {
@@ -8456,6 +9004,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301182107-s527264227.html",
       "priceKind": "ordinary",
       "unitPriceCents": 133,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8468,6 +9017,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301190130-s527274248.html",
       "priceKind": "ordinary",
       "unitPriceCents": 560,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8480,6 +9030,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301194113-s527232922.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1069,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8492,6 +9043,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301198014-s527268204.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1055,
+      "originalPriceCents": 1105,
       "excludedPromotions": []
     },
     {
@@ -8504,6 +9056,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i301200084-s527256674.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 550,
+      "originalPriceCents": 655,
       "excludedPromotions": []
     },
     {
@@ -8516,6 +9069,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i302854359-s536114839.html",
       "priceKind": "ordinary",
       "unitPriceCents": 750,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8528,6 +9082,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i302862256-s536098941.html",
       "priceKind": "ordinary",
       "unitPriceCents": 797,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8540,6 +9095,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303040785-s536358231.html",
       "priceKind": "ordinary",
       "unitPriceCents": 760,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8552,6 +9108,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303054411-s536356288.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 420,
+      "originalPriceCents": 489,
       "excludedPromotions": []
     },
     {
@@ -8564,6 +9121,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303060359-s536344636.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 641,
+      "originalPriceCents": 711,
       "excludedPromotions": []
     },
     {
@@ -8576,6 +9134,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303208813-s536516523.html",
       "priceKind": "ordinary",
       "unitPriceCents": 989,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 40%"]
     },
     {
@@ -8588,6 +9147,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303282111-s536560976.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
+      "originalPriceCents": 785,
       "excludedPromotions": []
     },
     {
@@ -8600,6 +9160,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303316177-s536614607.html",
       "priceKind": "ordinary",
       "unitPriceCents": 792,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8612,6 +9173,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303398510-s536792043.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 516,
+      "originalPriceCents": 555,
       "excludedPromotions": []
     },
     {
@@ -8624,6 +9186,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303408250-s536774346.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 516,
+      "originalPriceCents": 555,
       "excludedPromotions": []
     },
     {
@@ -8636,6 +9199,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303468123-s536852163.html",
       "priceKind": "ordinary",
       "unitPriceCents": 534,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 16%"]
     },
     {
@@ -8648,6 +9212,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303530725-s537166575.html",
       "priceKind": "ordinary",
       "unitPriceCents": 237,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8660,6 +9225,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303534608-s537176201.html",
       "priceKind": "ordinary",
       "unitPriceCents": 237,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8672,6 +9238,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303642217-s537290495.html",
       "priceKind": "ordinary",
       "unitPriceCents": 166,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8684,6 +9251,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303680779-s537396094.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1750,
+      "originalPriceCents": 2070,
       "excludedPromotions": []
     },
     {
@@ -8696,6 +9264,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303686711-s537366869.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
+      "originalPriceCents": 1885,
       "excludedPromotions": []
     },
     {
@@ -8708,6 +9277,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303692576-s537392222.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 4750,
+      "originalPriceCents": 5820,
       "excludedPromotions": []
     },
     {
@@ -8720,6 +9290,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303694474-s537390208.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 531,
+      "originalPriceCents": 590,
       "excludedPromotions": []
     },
     {
@@ -8732,6 +9303,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303702087-s537348726.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 621,
+      "originalPriceCents": 675,
       "excludedPromotions": []
     },
     {
@@ -8744,6 +9316,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303706351-s537352908.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 825,
+      "originalPriceCents": 890,
       "excludedPromotions": []
     },
     {
@@ -8756,6 +9329,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303796892-s537662267.html",
       "priceKind": "ordinary",
       "unitPriceCents": 470,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8768,6 +9342,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i303974524-s538082549.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 336,
+      "originalPriceCents": 402,
       "excludedPromotions": []
     },
     {
@@ -8780,6 +9355,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i304006696-s538126663.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 530,
+      "originalPriceCents": 570,
       "excludedPromotions": []
     },
     {
@@ -8792,6 +9368,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i304094348-s538238164.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1176,
+      "originalPriceCents": 1264,
       "excludedPromotions": []
     },
     {
@@ -8804,6 +9381,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i304340775-s538582383.html",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8816,6 +9394,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i305102136-s541200598.html",
       "priceKind": "ordinary",
       "unitPriceCents": 259,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 15%"]
     },
     {
@@ -8828,6 +9407,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i305126315-s541238206.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 2015,
+      "originalPriceCents": 2256,
       "excludedPromotions": []
     },
     {
@@ -8840,6 +9420,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i305128464-s541218936.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 3487,
+      "originalPriceCents": 4471,
       "excludedPromotions": []
     },
     {
@@ -8852,6 +9433,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3059389971-s20859615142.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1725,
+      "originalPriceCents": 1880,
       "excludedPromotions": []
     },
     {
@@ -8864,6 +9446,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3070472513-s20952486581.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8876,6 +9459,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3070637453-s20952425754.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8888,6 +9472,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3070673268-s20950223757.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8900,6 +9485,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i307604920-s553050916.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 500,
+      "originalPriceCents": 989,
       "excludedPromotions": []
     },
     {
@@ -8912,6 +9498,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3100046246-s21112534908.html",
       "priceKind": "ordinary",
       "unitPriceCents": 2412,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -8924,6 +9511,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3124540792-s21263650836.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 675,
+      "originalPriceCents": 740,
       "excludedPromotions": []
     },
     {
@@ -8936,6 +9524,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3124595778-s21263780148.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 555,
       "excludedPromotions": []
     },
     {
@@ -8948,6 +9537,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3124696154-s21263346642.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 495,
+      "originalPriceCents": 555,
       "excludedPromotions": []
     },
     {
@@ -8960,6 +9550,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3142859485-s21419157334.html",
       "priceKind": "ordinary",
       "unitPriceCents": 815,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8972,6 +9563,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i315052020-s586456663.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1111,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -8984,6 +9576,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3167191152-s21541250285.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 799,
+      "originalPriceCents": 920,
       "excludedPromotions": []
     },
     {
@@ -8996,6 +9589,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i318274395-s611352879.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1030,
+      "originalPriceCents": 1101,
       "excludedPromotions": []
     },
     {
@@ -9008,6 +9602,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3197249342-s21711836119.html",
       "priceKind": "ordinary",
       "unitPriceCents": 650,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $15 + Free Gift"]
     },
     {
@@ -9020,6 +9615,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3209930402-s21782609328.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 245,
+      "originalPriceCents": 350,
       "excludedPromotions": []
     },
     {
@@ -9032,6 +9628,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3218766968-s21827753647.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9044,6 +9641,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3218850453-s21827697547.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1090,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9056,6 +9654,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3263012560-s21970710133.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1290,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9068,6 +9667,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i336622108-s733808899.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1758,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9080,6 +9680,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i337662937-s739148520.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1650,
+      "originalPriceCents": 1665,
       "excludedPromotions": []
     },
     {
@@ -9092,6 +9693,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3395149505-s22644859212.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 496,
+      "originalPriceCents": 695,
       "excludedPromotions": []
     },
     {
@@ -9104,6 +9706,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3395232423-s22644714315.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 496,
+      "originalPriceCents": 695,
       "excludedPromotions": []
     },
     {
@@ -9116,6 +9719,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3474978202-s23006481144.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1560,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9128,6 +9732,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3480645340-s23030330359.html",
       "priceKind": "ordinary",
       "unitPriceCents": 535,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9140,6 +9745,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3502822939-s23141741786.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 950,
+      "originalPriceCents": 1110,
       "excludedPromotions": []
     },
     {
@@ -9152,6 +9758,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3506317581-s23156411762.html",
       "priceKind": "ordinary",
       "unitPriceCents": 995,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9164,6 +9771,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3506908307-s23158694396.html",
       "priceKind": "ordinary",
       "unitPriceCents": 185,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 4 At $5"]
     },
     {
@@ -9176,6 +9784,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3535547421-s23305723977.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 4900,
+      "originalPriceCents": 7000,
       "excludedPromotions": []
     },
     {
@@ -9188,6 +9797,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3548677974-s23429274644.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 805,
+      "originalPriceCents": 895,
       "excludedPromotions": []
     },
     {
@@ -9200,6 +9810,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i358756940-s836000626.html",
       "priceKind": "ordinary",
       "unitPriceCents": 650,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $20 + Free Gift"]
     },
     {
@@ -9212,6 +9823,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3638934417-s24060701839.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 375,
+      "originalPriceCents": 495,
       "excludedPromotions": []
     },
     {
@@ -9224,6 +9836,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i3653682576-s24152560215.html",
       "priceKind": "ordinary",
       "unitPriceCents": 480,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 2 Save 11%"]
     },
     {
@@ -9236,6 +9849,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i378388292-s887448413.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1353,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9248,6 +9862,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i396522632-s957702687.html",
       "priceKind": "ordinary",
       "unitPriceCents": 427,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9260,6 +9875,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i569114388-s1622298642.html",
       "priceKind": "ordinary",
       "unitPriceCents": 402,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9272,6 +9888,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i579418858-s1658118851.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 531,
+      "originalPriceCents": 590,
       "excludedPromotions": []
     },
     {
@@ -9284,6 +9901,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i579710373-s1659228552.html",
       "priceKind": "ordinary",
       "unitPriceCents": 595,
+      "originalPriceCents": null,
       "excludedPromotions": []
     },
     {
@@ -9296,6 +9914,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i610124951-s1788054130.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1176,
+      "originalPriceCents": 1264,
       "excludedPromotions": []
     },
     {
@@ -9308,6 +9927,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i623724188-s1857980116.html",
       "priceKind": "unconditional_sale",
       "unitPriceCents": 234,
+      "originalPriceCents": 260,
       "excludedPromotions": []
     },
     {
@@ -9320,6 +9940,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i846412880-s2890618512.html",
       "priceKind": "ordinary",
       "unitPriceCents": 1282,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Spend $30 + Free Gift"]
     },
     {
@@ -9332,6 +9953,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i888128400-s3073342728.html",
       "priceKind": "ordinary",
       "unitPriceCents": 191,
+      "originalPriceCents": null,
       "excludedPromotions": ["Promotion not applied: Any 3 At $4.50"]
     },
     {
@@ -9344,6 +9966,7 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i900304103-s3131466521.html",
       "priceKind": "ordinary",
       "unitPriceCents": 590,
+      "originalPriceCents": null,
       "excludedPromotions": []
     }
   ]

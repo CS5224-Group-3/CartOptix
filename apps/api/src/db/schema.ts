@@ -86,6 +86,8 @@ export const listings = pgTable(
     productUrl: text("product_url").notNull(),
     priceKind: text("price_kind").$type<"ordinary" | "unconditional_sale">().notNull(),
     unitPriceCents: integer("unit_price_cents").notNull(),
+    /** Pre-sale price of an unconditional sale, for display only; NULL otherwise. */
+    originalPriceCents: integer("original_price_cents"),
     excludedPromotions: text("excluded_promotions").array().notNull().default([]),
   },
   (table) => [

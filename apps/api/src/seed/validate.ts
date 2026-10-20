@@ -95,6 +95,17 @@ export function validateSeed(input: unknown): SeedValidation {
     if (listing.unitPriceCents > MAX_DB_CENTS) {
       errors.push(`Listing ${listing.listingId} has an implausible price`);
     }
+    if (listing.priceKind === "unconditional_sale") {
+      if (listing.originalPriceCents === null || listing.originalPriceCents > MAX_DB_CENTS) {
+        errors.push(`Sale listing ${listing.listingId} needs a plausible original price`);
+      } else if (listing.originalPriceCents <= listing.unitPriceCents) {
+        errors.push(
+          `Sale listing ${listing.listingId} has an original price no higher than its price`,
+        );
+      }
+    } else if (listing.originalPriceCents !== null) {
+      errors.push(`Ordinary listing ${listing.listingId} cannot have an original price`);
+    }
   }
   for (const productId of productIds) {
     const specifications = seed.listings

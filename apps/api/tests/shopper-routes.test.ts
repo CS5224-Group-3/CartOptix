@@ -57,7 +57,11 @@ let loadBasket: Database["loadBasket"] = async (productIds): Promise<BasketData>
     listings: new Map(
       offers.map((o) => [
         o.listingId,
-        { productUrl: `https://example.com/${o.listingId}`, excludedPromotions: [] },
+        {
+          productUrl: `https://example.com/${o.listingId}`,
+          originalPriceCents: null,
+          excludedPromotions: [],
+        },
       ]),
     ),
   };
@@ -228,6 +232,7 @@ describe("shopper routes", () => {
         productUrl: "https://example.com/fairprice-rice",
         priceKind: "ordinary",
         unitPriceCents: 1100,
+        originalPriceCents: null,
         itemCharges: [],
         lineTotalCents: 2200,
         excludedPromotions: [],

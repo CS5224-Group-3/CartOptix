@@ -84,6 +84,8 @@ export const SeedSchema = closed({
       productUrl: HttpsUrlSchema,
       priceKind: Type.Union([Type.Literal("ordinary"), Type.Literal("unconditional_sale")]),
       unitPriceCents: PositiveCentsSchema,
+      /** Pre-sale price of an unconditional sale, for display only; null otherwise. */
+      originalPriceCents: Type.Union([PositiveCentsSchema, Type.Null()]),
       excludedPromotions: Type.Array(text),
     }),
   ),

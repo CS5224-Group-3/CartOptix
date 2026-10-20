@@ -12,6 +12,7 @@ import type { DeliveryRule, OfferRule } from "../pricing/index.ts";
 /** Listing fields the response needs that pricing does not carry. */
 export interface ListingDetails {
   productUrl: string;
+  originalPriceCents: number | null;
   excludedPromotions: string[];
 }
 
@@ -81,7 +82,11 @@ export async function loadBasketData(
         listings: new Map(
           listingRows.map((row) => [
             row.listingId,
-            { productUrl: row.productUrl, excludedPromotions: row.excludedPromotions },
+            {
+              productUrl: row.productUrl,
+              originalPriceCents: row.originalPriceCents,
+              excludedPromotions: row.excludedPromotions,
+            },
           ]),
         ),
       };
