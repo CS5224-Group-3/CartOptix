@@ -8,7 +8,7 @@ This is the closing report for #73: the first snapshot taken with the scrapers i
 | --- | --- | --- |
 | FairPrice | Every page read again (257 listings) | 37 products searched, up to 3 hits each |
 | Cold Storage | Every page read again (189 listings) | 105 products searched, up to 3 hits each |
-| RedMart | **Carried over** unchanged from the previous seed (177 listings) | 34 of 117 products searched, best hit only |
+| RedMart | **Carried over** from the previous seed, with today's rules applied to the recorded observations (177 listings) | 34 of 117 products searched, best hit only |
 
 Lazada answered scripted reads with its slider check and Google reCAPTCHA, often on the first page. The product owner therefore decided to carry RedMart's published listings over rather than read them again, and to search only for the RedMart listings the catalogue was missing.
 
