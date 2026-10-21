@@ -146,29 +146,29 @@ describe.skipIf(connectionString === undefined)(
       }
     });
 
-    it("carries a sale's original price from the seed without changing the total", async () => {
-      const response = await server.inject({
-        method: "GET",
-        url: `${routes.offers.url.replace(":id", "anlene-actifit-3x-plain-milk-powder-1kg")}?quantity=2`,
-      });
-
-      expect(response.statusCode).toBe(200);
-      expect(response.json().offers).toEqual([
-        expect.objectContaining({
-          retailerId: "redmart",
+    it("carries every sale's original price from the seed without changing the total", async () => {
+      // Read from the committed seed, so the check holds whatever a refresh changes.
+      const sales = JSON.parse(committedSeedBytes.toString("utf8")).listings.filter(
+        (listing: { priceKind: string; multibuy: unknown }) =>
+          listing.priceKind === "unconditional_sale",
+      );
+      expect(sales.length).toBeGreaterThan(0);
+      for (const sale of sales) {
+        const response = await server.inject({
+          method: "GET",
+          url: `${routes.offers.url.replace(":id", sale.productId)}?quantity=2`,
+        });
+        expect(response.statusCode).toBe(200);
+        const offer = response
+          .json()
+          .offers.find((o: { listingId: string }) => o.listingId === sale.listingId);
+        expect(offer, sale.listingId).toMatchObject({
           priceKind: "unconditional_sale",
-          unitPriceCents: 2015,
-          originalPriceCents: 2256,
-          lineTotalCents: 4030,
-        }),
-        expect.objectContaining({
-          retailerId: "cold-storage",
-          priceKind: "unconditional_sale",
-          unitPriceCents: 2190,
-          originalPriceCents: 2375,
-          lineTotalCents: 4380,
-        }),
-      ]);
+          unitPriceCents: sale.unitPriceCents,
+          originalPriceCents: sale.originalPriceCents,
+          lineTotalCents: sale.unitPriceCents * 2,
+        });
+      }
     });
 
     it("reprices the seeded offers when quantity changes and handles unknown products", async () => {

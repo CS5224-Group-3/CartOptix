@@ -1,0 +1,1133 @@
+{
+  "products": [
+    {
+      "productId": "aveeno-skin-relief-body-wash-1l",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Aveeno Skin Relief Body Wash 1L",
+      "imageUrl": "https://sg-test-11.slatic.net/p/d5aa90170c8b369607c66c71c42e43e8.jpg"
+    },
+    {
+      "productId": "bcrs-sunsweet-prune-juice-946ml",
+      "categoryId": "drinks",
+      "representativeName": "[BCRS] Sunsweet Prune Juice 946ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F18946336%2F005170821.jpg%3Fv%3D1787280190&w=1200&q=75"
+    },
+    {
+      "productId": "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+      "categoryId": "drinks",
+      "representativeName": "[BCRS] Yeo's First Harvest Green Tea No Sugar 1.5L",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F18946298%2F005170780.jpg%3Fv%3D1786006790&w=1200&q=75"
+    },
+    {
+      "productId": "blue-elephant-hot-red-chilli-sauce-190ml",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Blue Elephant Hot Red Chilli Sauce 190ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F116491%2F005117996.jpg%3Fv%3D1775797977&w=1200&q=75"
+    },
+    {
+      "productId": "blue-elephant-sweet-chilli-sauce-190ml",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Blue Elephant Sweet Chilli Sauce 190ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F116494%2F005117995.jpg%3Fv%3D1775797979&w=1200&q=75"
+    },
+    {
+      "productId": "blue-frog-keto-almond-peanut-and-raspberry-cereal-300g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Blue Frog Keto Almond Peanut & Raspberry Cereal 300g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F266405%2F005154414.jpg%3Fv%3D1775805072&w=1200&q=75"
+    },
+    {
+      "productId": "boxgreen-honey-mustard-soy-crisps-130g",
+      "categoryId": "snacks",
+      "representativeName": "Boxgreen Honey Mustard Soy Crisps 130g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F95900%2F005103636.jpg%3Fv%3D1775789917&w=1200&q=75"
+    },
+    {
+      "productId": "boxgreen-peanut-pretzel-dark-chocolate-130g",
+      "categoryId": "snacks",
+      "representativeName": "Boxgreen Peanut Pretzel Dark Chocolate 130g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F95896%2F005103637.jpg%3Fv%3D1775789916&w=1200&q=75"
+    },
+    {
+      "productId": "campbell-s-real-stock-salt-reduced-beef-stock-1l",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Campbell's Real Stock Salt Reduced Beef Stock 1L",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F273023%2F005163289.jpg%3Fv%3D1775806088&w=1200&q=75"
+    },
+    {
+      "productId": "chek-hup-matcha-vanilla-latte",
+      "categoryId": "drinks",
+      "representativeName": "Chek Hup Matcha Vanilla Latte",
+      "imageUrl": "https://sg-test-11.slatic.net/p/504720ad581ff3942d53d92823fe81ae.jpg"
+    },
+    {
+      "productId": "colgate-max-fresh-peach-passion-toothpaste-100g",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Colgate Max Fresh Peach Passion Toothpaste 100g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F266998%2F005155641.jpg%3Fv%3D1775805240&w=1200&q=75"
+    },
+    {
+      "productId": "colgate-total-fresh-mint-toothpaste-150g",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Colgate Total Fresh Mint Toothpaste 150g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F269144%2F005140266.jpg%3Fv%3D1775805494&w=1200&q=75"
+    },
+    {
+      "productId": "colgate-total-gum-care-toothpaste-2-x-150g",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Colgate Total Gum Care Toothpaste 2 x 150g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F270019%2F005158017.jpg%3Fv%3D1775805620&w=1200&q=75"
+    },
+    {
+      "productId": "cowhead-assorted-fruits-granola-250g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Cowhead Assorted Fruits Granola 250G",
+      "imageUrl": "https://sg-test-11.slatic.net/p/c24b1f4ee251e77acbe9ec2c4a899670.jpg"
+    },
+    {
+      "productId": "cowhead-mozzarella-cheese-block-250g",
+      "categoryId": "dairy",
+      "representativeName": "Cowhead Mozzarella Cheese Block 250g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F26733%2F005026317.png%3Fv%3D1775767436&w=1200&q=75"
+    },
+    {
+      "productId": "dove-oxygen-moisture-body-wash-1l",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Dove Oxygen Moisture Body Wash 1L",
+      "imageUrl": "https://sg-test-11.slatic.net/p/6fcb4ca0073d0278ec9dc5ac734dd749.jpg"
+    },
+    {
+      "productId": "ecostore-eucalyptus-antibacterial-toilet-cleaner",
+      "categoryId": "household-cleaning",
+      "representativeName": "EcoStore Eucalyptus Antibacterial Toilet Cleaner",
+      "imageUrl": "https://sg-test-11.slatic.net/p/360fdbbad1cb1bbc052115d7c774336c.jpg"
+    },
+    {
+      "productId": "ecostore-eucalyptus-laundry-liquid-1l",
+      "categoryId": "household-cleaning",
+      "representativeName": "EcoStore Eucalyptus Laundry Liquid 1L",
+      "imageUrl": "https://sg-test-11.slatic.net/p/282c6fb71f7e2d325abdb4a0abdb254d.jpg"
+    },
+    {
+      "productId": "ecostore-lemon-laundry-powder",
+      "categoryId": "household-cleaning",
+      "representativeName": "EcoStore Lemon Laundry Powder",
+      "imageUrl": "https://sg-test-11.slatic.net/p/d5c8cc7c341f5d5188450a6d072b38ce.jpg"
+    },
+    {
+      "productId": "ecostore-ultra-sensitive-laundry-liquid-2l",
+      "categoryId": "household-cleaning",
+      "representativeName": "EcoStore Ultra Sensitive Laundry Liquid 2L",
+      "imageUrl": "https://sg-test-11.slatic.net/p/f6d0e8395fedfda75533f1e85eb9c87e.jpg"
+    },
+    {
+      "productId": "galbani-shredded-mozzarella-and-emmental-cheese-170g",
+      "categoryId": "dairy",
+      "representativeName": "Galbani Shredded Mozzarella & Emmental Cheese 170g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F27472%2F005027174.jpg%3Fv%3D1775767699&w=1200&q=75"
+    },
+    {
+      "productId": "gerber-lil-crunchies-garden-tomato-42g",
+      "categoryId": "snacks",
+      "representativeName": "Gerber Lil Crunchies Garden Tomato 42g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F265504%2F005152882.jpg%3Fv%3D1775804836&w=1200&q=75"
+    },
+    {
+      "productId": "heinz-no-salt-added-tomato-ketchup-397g",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Heinz No Salt Added Tomato Ketchup 397g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F269761%2F005157796.jpg%3Fv%3D1775805579&w=1200&q=75"
+    },
+    {
+      "productId": "hunt-s-whole-peeled-plum-tomatoes-411g",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Hunt's Whole Peeled Plum Tomatoes 411g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F9825%2F005009562.jpg%3Fv%3D1775761308&w=1200&q=75"
+    },
+    {
+      "productId": "kavli-bacon-cheese-spread",
+      "categoryId": "dairy",
+      "representativeName": "KAVLI Bacon Cheese Spread",
+      "imageUrl": "https://sg-test-11.slatic.net/p/7553a97d1980837888fa9e30c94bc9f4.jpg"
+    },
+    {
+      "productId": "kavli-blue-cheese-spread",
+      "categoryId": "dairy",
+      "representativeName": "KAVLI Blue Cheese Spread",
+      "imageUrl": "https://sg-test-11.slatic.net/p/6a25a44f8e700a34be2347cfb58437fe.jpg"
+    },
+    {
+      "productId": "kavli-ham-cheese-spread",
+      "categoryId": "dairy",
+      "representativeName": "KAVLI Ham Cheese Spread",
+      "imageUrl": "https://sg-test-11.slatic.net/p/3298f1684b95fa977c0922d44617c038.jpg"
+    },
+    {
+      "productId": "kavli-jalapeno-cheese-spread",
+      "categoryId": "dairy",
+      "representativeName": "KAVLI Jalapeno Cheese Spread",
+      "imageUrl": "https://sg-test-11.slatic.net/p/b8b5d6f7bc00d234d0a8911208025826.jpg"
+    },
+    {
+      "productId": "kavli-long-live-the-cheddar-cheese-spread",
+      "categoryId": "dairy",
+      "representativeName": "KAVLI Long Live The Cheddar Cheese Spread",
+      "imageUrl": "https://sg-test-11.slatic.net/p/44fd9c63dfa705c5caecb4e5acde945b.jpg"
+    },
+    {
+      "productId": "kavli-spicy-chilli-cheddar-cheese-spread",
+      "categoryId": "dairy",
+      "representativeName": "KAVLI Spicy Chilli Cheddar Cheese Spread",
+      "imageUrl": "https://sg-test-11.slatic.net/p/5f71a9b01aced68332f089e0b0b94b3b.jpg"
+    },
+    {
+      "productId": "kellogg-s-granola-boost-protein-extra-300g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Kellogg's Granola Boost Protein Extra 300g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F266400%2F005154028.jpg%3Fv%3D1775805070&w=1200&q=75"
+    },
+    {
+      "productId": "killiney-classic-singapore-black-coffee",
+      "categoryId": "drinks",
+      "representativeName": "Killiney Classic Singapore Black Coffee",
+      "imageUrl": "https://sg-test-11.slatic.net/p/a321b15e26b8ed35066ef86bfd90412c.jpg"
+    },
+    {
+      "productId": "kinder-milkredible-cocoa-candy-105-3g",
+      "categoryId": "snacks",
+      "representativeName": "Kinder Milkredible Cocoa Candy 105.3g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F272800%2F005163721.jpg%3Fv%3D1775806046&w=1200&q=75"
+    },
+    {
+      "productId": "lacroix-naturally-essenced-sparkling-water-pure-8-x-355ml",
+      "categoryId": "drinks",
+      "representativeName": "LaCroix Naturally Essenced Sparkling Water - Pure 8 x 355ML",
+      "imageUrl": "https://sg-test-11.slatic.net/p/b63bb2725c081da3803ee69c598b2218.jpg"
+    },
+    {
+      "productId": "laughing-cow-original-cheese-dippers-140g",
+      "categoryId": "dairy",
+      "representativeName": "Laughing Cow Original Cheese Dippers 140g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F14848%2F005014591.jpg%3Fv%3D1775763350&w=1200&q=75"
+    },
+    {
+      "productId": "lay-s-stax-smokin-bbq-potato-chips-100g",
+      "categoryId": "snacks",
+      "representativeName": "Lay's Stax Smokin BBQ Potato Chips 100g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F11563946%2F005168834.jpeg&w=1200&q=75"
+    },
+    {
+      "productId": "little-blossom-organic-strawberry-brown-rice-puffs-40g",
+      "categoryId": "snacks",
+      "representativeName": "Little Blossom Organic Strawberry Brown Rice Puffs 40g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F108010%2F005102208.jpg%3Fv%3D1775794610&w=1200&q=75"
+    },
+    {
+      "productId": "megachef-premium-oyster-sauce-600g",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Megachef Premium Oyster Sauce 600g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F104842%2F005116562.jpg%3Fv%3D1775793297&w=1200&q=75"
+    },
+    {
+      "productId": "milklab-soy-milk-plant-based-beverage-for-coffee",
+      "categoryId": "dairy",
+      "representativeName": "MilkLAB Soy Milk Plant-Based Beverage For Coffee",
+      "imageUrl": "https://sg-test-11.slatic.net/p/9a4302749ad8a5e8aaca3d8256e4f0c3.jpg"
+    },
+    {
+      "productId": "new-moon-low-calorie-flat-konjac-noodles-270g",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "New Moon Low Calorie Flat Konjac Noodles 270g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F263398%2F005148434.jpg%3Fv%3D1775804270&w=1200&q=75"
+    },
+    {
+      "productId": "new-moon-low-calorie-round-konjac-noodles-270g",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "New Moon Low Calorie Round Konjac Noodles 270g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F263400%2F005148435.jpg%3Fv%3D1775804270&w=1200&q=75"
+    },
+    {
+      "productId": "post-great-grains-red-berry-almond-crunch-cereal-368g",
+      "categoryId": "breakfast-foods",
+      "representativeName": "Post Great Grains Red Berry Almond Crunch Cereal 368g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F120797%2F005122080.jpg%3Fv%3D1775799531&w=1200&q=75"
+    },
+    {
+      "productId": "ripe-freshly-squeezed-orange-juice-1l",
+      "categoryId": "drinks",
+      "representativeName": "Ripe Freshly Squeezed Orange Juice 1L",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F15041%2F005014788.jpg%3Fv%3D1775763413&w=1200&q=75"
+    },
+    {
+      "productId": "ripe-freshly-squeezed-pink-grapefruit-juice-1l",
+      "categoryId": "drinks",
+      "representativeName": "Ripe Freshly Squeezed Pink Grapefruit Juice, 1L",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F256212%2F005136715.jpg%3Fv%3D1775802489&w=1200&q=75"
+    },
+    {
+      "productId": "royal-umbrella-thai-hom-mali-rice-5kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "Royal Umbrella Thai Hom Mali Rice 5kg",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F8089%2F005007827.jpg%3Fv%3D1775760499&w=1200&q=75"
+    },
+    {
+      "productId": "schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Schwarzkopf Extra Care Ginger Scalp Purify Shampoo 400ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F252799%2F005132103.jpg%3Fv%3D1775801682&w=1200&q=75"
+    },
+    {
+      "productId": "schwarzkopf-extra-care-moist-recovery-shampoo-400ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Schwarzkopf Extra Care Moist Recovery Shampoo 400ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F252801%2F005132105.jpg%3Fv%3D1775801683&w=1200&q=75"
+    },
+    {
+      "productId": "schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Schwarzkopf Extra Care Volume Fortify Shampoo 400ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F252819%2F005132107.jpg%3Fv%3D1775801691&w=1200&q=75"
+    },
+    {
+      "productId": "scs-sliced-reduced-fat-cheese-200g",
+      "categoryId": "dairy",
+      "representativeName": "SCS Sliced Reduced Fat Cheese 200g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F273362%2F005164368.jpg%3Fv%3D1775806149&w=1200&q=75"
+    },
+    {
+      "productId": "sensodyne-repair-and-protect-toothpaste-100g",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Sensodyne Repair & Protect Toothpaste 100g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F8828%2F005008564.jpg%3Fv%3D1775760829&w=1200&q=75"
+    },
+    {
+      "productId": "sincero-milk-chocolate-almond-380g",
+      "categoryId": "snacks",
+      "representativeName": "Sincero Milk Chocolate Almond 380g",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F21399543%2F005171335.jpg%3Fv%3D1789349423&w=1200&q=75"
+    },
+    {
+      "productId": "splat-biocalcium-toothpaste-100ml",
+      "categoryId": "toiletries-and-personal-care",
+      "representativeName": "Splat Biocalcium Toothpaste 100ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F271229%2F005160048.jpg%3Fv%3D1775805809&w=1200&q=75"
+    },
+    {
+      "productId": "sunrice-kangaroo-premium-calrose-rice-5kg",
+      "categoryId": "rice-and-noodles",
+      "representativeName": "SunRice Kangaroo Premium Calrose Rice 5KG",
+      "imageUrl": "https://sg-test-11.slatic.net/p/ec94a84583a030193ab7ec777a5255c6.jpg"
+    },
+    {
+      "productId": "tabasco-habanero-sauce-60ml",
+      "categoryId": "canned-and-packaged-food",
+      "representativeName": "Tabasco Habanero Sauce 60ml",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F9360%2F005009098.jpg%3Fv%3D1775761092&w=1200&q=75"
+    },
+    {
+      "productId": "top-blooming-freshness-concentrated-liquid-detergent-refill-1-7kg",
+      "categoryId": "household-cleaning",
+      "representativeName": "Top Blooming Freshness Concentrated Liquid Detergent Refill 1.7kg",
+      "imageUrl": "https://coldstorage.com.sg/_next/image?url=https%3A%2F%2Fmcos.coldstorage.com.sg%2Fuploads%2Fproduct%2F265311%2F005152375.jpg%3Fv%3D1775804808&w=1200&q=75"
+    },
+    {
+      "productId": "yumearth-organic-vitamin-c-pops",
+      "categoryId": "snacks",
+      "representativeName": "YumEarth Organic Vitamin C Pops",
+      "imageUrl": "https://sg-test-11.slatic.net/p/c4ec9964f89f68d4ac80525b27b27793.jpg"
+    }
+  ],
+  "listings": [
+    {
+      "listingId": "fairprice-aveeno-body-wash-skin-relief-1l-13148362",
+      "productId": "aveeno-skin-relief-body-wash-1l",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/aveeno-body-wash-skin-relief-1l-13148362",
+      "specification": "1L"
+    },
+    {
+      "listingId": "redmart-pdp-i305128464-s541218936",
+      "productId": "aveeno-skin-relief-body-wash-1l",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i305128464-s541218936.html",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "cold-storage-sunsweet-prune-juice-946ml",
+      "productId": "bcrs-sunsweet-prune-juice-946ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/sunsweet-prune-juice-946ml",
+      "specification": "946ml"
+    },
+    {
+      "listingId": "fairprice-sunsweet-prune-juice-946ml-13287420",
+      "productId": "bcrs-sunsweet-prune-juice-946ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/sunsweet-prune-juice-946ml-13287420",
+      "specification": "946ml"
+    },
+    {
+      "listingId": "cold-storage-yeo-s-first-harvest-green-t-no-suga-1-5l",
+      "productId": "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/yeo-s-first-harvest-green-t-no-suga-1-5l",
+      "specification": "1.5 l"
+    },
+    {
+      "listingId": "fairprice-bcrs-yeo-s-bottle-drink-first-harvest-green-tea-no-sugar-1-5l-13281653",
+      "productId": "bcrs-yeo-s-first-harvest-green-tea-no-sugar-1-5l",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/bcrs-yeo-s-bottle-drink-first-harvest-green-tea-no-sugar-1-5l-13281653",
+      "specification": "1.5L"
+    },
+    {
+      "listingId": "cold-storage-blue-elephant-hot-red-chilli-sauce-190ml",
+      "productId": "blue-elephant-hot-red-chilli-sauce-190ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/blue-elephant-hot-red-chilli-sauce-190ml",
+      "specification": "190ml"
+    },
+    {
+      "listingId": "fairprice-blue-elephant-hot-red-chilli-sauce",
+      "productId": "blue-elephant-hot-red-chilli-sauce-190ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/blue-elephant-hot-red-chilli-sauce",
+      "specification": "190 ML"
+    },
+    {
+      "listingId": "cold-storage-blue-elephant-sweet-chilli-sauce-190ml",
+      "productId": "blue-elephant-sweet-chilli-sauce-190ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/blue-elephant-sweet-chilli-sauce-190ml",
+      "specification": "190ml"
+    },
+    {
+      "listingId": "fairprice-blue-elephant-sweet-chilli-sauce",
+      "productId": "blue-elephant-sweet-chilli-sauce-190ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/blue-elephant-sweet-chilli-sauce",
+      "specification": "190 ML"
+    },
+    {
+      "listingId": "cold-storage-blue-frog-keto-almond-peanut-raspberry-300g",
+      "productId": "blue-frog-keto-almond-peanut-and-raspberry-cereal-300g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/blue-frog-keto-almond-peanut-raspberry-300g",
+      "specification": "300g"
+    },
+    {
+      "listingId": "fairprice-blue-frog-cereal-keto-almond-peanut-raspberry-300g-13270074",
+      "productId": "blue-frog-keto-almond-peanut-and-raspberry-cereal-300g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/blue-frog-cereal-keto-almond-peanut-raspberry-300g-13270074",
+      "specification": "300g"
+    },
+    {
+      "listingId": "cold-storage-boxgreen-honey-mustard-soy-crisps-130g",
+      "productId": "boxgreen-honey-mustard-soy-crisps-130g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/boxgreen-honey-mustard-soy-crisps-130g",
+      "specification": "130g"
+    },
+    {
+      "listingId": "fairprice-boxgreen-honey-mustard-soy-crisps-130-g-90065376",
+      "productId": "boxgreen-honey-mustard-soy-crisps-130g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/boxgreen-honey-mustard-soy-crisps-130-g-90065376",
+      "specification": "130 G"
+    },
+    {
+      "listingId": "cold-storage-boxgreen-peanut-pretzel-dark-chocolate-130g",
+      "productId": "boxgreen-peanut-pretzel-dark-chocolate-130g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/boxgreen-peanut-pretzel-dark-chocolate-130g",
+      "specification": "130g"
+    },
+    {
+      "listingId": "fairprice-boxgreen-peanut-pretzel-dark-chocolate-130-g-90065374",
+      "productId": "boxgreen-peanut-pretzel-dark-chocolate-130g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/boxgreen-peanut-pretzel-dark-chocolate-130-g-90065374",
+      "specification": "130 G"
+    },
+    {
+      "listingId": "cold-storage-campbells-real-stock-beef-salt-reduced-1l",
+      "productId": "campbell-s-real-stock-salt-reduced-beef-stock-1l",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/campbells-real-stock-beef-salt-reduced-1l",
+      "specification": "1L"
+    },
+    {
+      "listingId": "fairprice-campbell-s-real-stock-beef-salt-reduced-1000ml-13274174",
+      "productId": "campbell-s-real-stock-salt-reduced-beef-stock-1l",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/campbell-s-real-stock-beef-salt-reduced-1000ml-13274174",
+      "specification": "1L"
+    },
+    {
+      "listingId": "fairprice-chek-hup-matcha-vanilla-latte",
+      "productId": "chek-hup-matcha-vanilla-latte",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/chek-hup-matcha-vanilla-latte",
+      "specification": "115 G"
+    },
+    {
+      "listingId": "redmart-pdp-i1874186920-s9996753062",
+      "productId": "chek-hup-matcha-vanilla-latte",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i1874186920-s9996753062.html",
+      "specification": "115 g"
+    },
+    {
+      "listingId": "cold-storage-colgate-max-fresh-peach-passion-toothpaste-100g",
+      "productId": "colgate-max-fresh-peach-passion-toothpaste-100g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/colgate-max-fresh-peach-passion-toothpaste-100g",
+      "specification": "100g"
+    },
+    {
+      "listingId": "fairprice-colgate-m-frsh-peach-passion-100g-13264531",
+      "productId": "colgate-max-fresh-peach-passion-toothpaste-100g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/colgate-m-frsh-peach-passion-100g-13264531",
+      "specification": "100g"
+    },
+    {
+      "listingId": "cold-storage-colgate-total-fresh-mint-150g",
+      "productId": "colgate-total-fresh-mint-toothpaste-150g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/colgate-total-fresh-mint-150g",
+      "specification": "150g"
+    },
+    {
+      "listingId": "fairprice-colgate-total-toothpaste-fresh-mint-150g-10880056",
+      "productId": "colgate-total-fresh-mint-toothpaste-150g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/colgate-total-toothpaste-fresh-mint-150g-10880056",
+      "specification": "150g"
+    },
+    {
+      "listingId": "cold-storage-colgate-total-gum-care-2-x-150g",
+      "productId": "colgate-total-gum-care-toothpaste-2-x-150g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/colgate-total-gum-care-2-x-150g",
+      "specification": "2 x 150g"
+    },
+    {
+      "listingId": "fairprice-colgate-total-gum-care-2-x-150g-13266073",
+      "productId": "colgate-total-gum-care-toothpaste-2-x-150g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/colgate-total-gum-care-2-x-150g-13266073",
+      "specification": "2 x 150g"
+    },
+    {
+      "listingId": "fairprice-cowhead-granola-assorted-fruits-250g-13264673",
+      "productId": "cowhead-assorted-fruits-granola-250g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/cowhead-granola-assorted-fruits-250g-13264673",
+      "specification": "250g"
+    },
+    {
+      "listingId": "redmart-pdp-i3395149505-s22644859212",
+      "productId": "cowhead-assorted-fruits-granola-250g",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3395149505-s22644859212.html",
+      "specification": "250 g"
+    },
+    {
+      "listingId": "cold-storage-cowhead-mozzarella-pear-250g",
+      "productId": "cowhead-mozzarella-cheese-block-250g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/cowhead-mozzarella-pear-250g",
+      "specification": "250g"
+    },
+    {
+      "listingId": "redmart-pdp-i303060359-s536344636",
+      "productId": "cowhead-mozzarella-cheese-block-250g",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303060359-s536344636.html",
+      "specification": "250 g"
+    },
+    {
+      "listingId": "fairprice-dove-body-wash-oxygen-moisture-1l-13098014",
+      "productId": "dove-oxygen-moisture-body-wash-1l",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/dove-body-wash-oxygen-moisture-1l-13098014",
+      "specification": "1L"
+    },
+    {
+      "listingId": "redmart-pdp-i303208813-s536516523",
+      "productId": "dove-oxygen-moisture-body-wash-1l",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303208813-s536516523.html",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "fairprice-ecostore---eucalyptus-antibacterial-toilet-cleaner",
+      "productId": "ecostore-eucalyptus-antibacterial-toilet-cleaner",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/ecostore---eucalyptus-antibacterial-toilet-cleaner",
+      "specification": "500 ML"
+    },
+    {
+      "listingId": "redmart-pdp-i2806851819-s19385517599",
+      "productId": "ecostore-eucalyptus-antibacterial-toilet-cleaner",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2806851819-s19385517599.html",
+      "specification": "500 ml"
+    },
+    {
+      "listingId": "fairprice-ecostore---eucalyptus-laundry-liquid",
+      "productId": "ecostore-eucalyptus-laundry-liquid-1l",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/ecostore---eucalyptus-laundry-liquid",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "redmart-pdp-i2806828394-s19385512491",
+      "productId": "ecostore-eucalyptus-laundry-liquid-1l",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2806828394-s19385512491.html",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "fairprice-ecostore---lemon-laundry-powder",
+      "productId": "ecostore-lemon-laundry-powder",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/ecostore---lemon-laundry-powder",
+      "specification": "1 KG"
+    },
+    {
+      "listingId": "redmart-pdp-i2806929593-s19385971247",
+      "productId": "ecostore-lemon-laundry-powder",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2806929593-s19385971247.html",
+      "specification": "1 kg"
+    },
+    {
+      "listingId": "fairprice-ecostore---ultra-sensitive-laundry-liquid-2l",
+      "productId": "ecostore-ultra-sensitive-laundry-liquid-2l",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/ecostore---ultra-sensitive-laundry-liquid-2l",
+      "specification": "2 L"
+    },
+    {
+      "listingId": "redmart-pdp-i3100046246-s21112534908",
+      "productId": "ecostore-ultra-sensitive-laundry-liquid-2l",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3100046246-s21112534908.html",
+      "specification": "2 L"
+    },
+    {
+      "listingId": "cold-storage-galbani-shredded-mozzarella-emmental-170g",
+      "productId": "galbani-shredded-mozzarella-and-emmental-cheese-170g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/galbani-shredded-mozzarella-emmental-170g",
+      "specification": "170g"
+    },
+    {
+      "listingId": "redmart-pdp-i303282111-s536560976",
+      "productId": "galbani-shredded-mozzarella-and-emmental-cheese-170g",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303282111-s536560976.html",
+      "specification": "170 g"
+    },
+    {
+      "listingId": "cold-storage-gerber-lil-crunchies-garden-tomato-42g",
+      "productId": "gerber-lil-crunchies-garden-tomato-42g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/gerber-lil-crunchies-garden-tomato-42g",
+      "specification": "42g"
+    },
+    {
+      "listingId": "fairprice-da-gerber-lc-garden-tomato-42g-13251323",
+      "productId": "gerber-lil-crunchies-garden-tomato-42g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/da-gerber-lc-garden-tomato-42g-13251323",
+      "specification": "42g"
+    },
+    {
+      "listingId": "cold-storage-heinz-no-salt-tomato-ketchup-397g",
+      "productId": "heinz-no-salt-added-tomato-ketchup-397g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/heinz-no-salt-tomato-ketchup-397g",
+      "specification": "397g"
+    },
+    {
+      "listingId": "fairprice-da-heinz-tomato-kchup-n-salt-397g-13252640",
+      "productId": "heinz-no-salt-added-tomato-ketchup-397g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/da-heinz-tomato-kchup-n-salt-397g-13252640",
+      "specification": "397g"
+    },
+    {
+      "listingId": "redmart-pdp-i3480645340-s23030330359",
+      "productId": "heinz-no-salt-added-tomato-ketchup-397g",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3480645340-s23030330359.html",
+      "specification": "397 g"
+    },
+    {
+      "listingId": "cold-storage-hunts-whole-peeled-plum-tomatoes-411g",
+      "productId": "hunt-s-whole-peeled-plum-tomatoes-411g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/hunts-whole-peeled-plum-tomatoes-411g",
+      "specification": "411g"
+    },
+    {
+      "listingId": "fairprice-hunt-s-plum-tomatoes-whole-peeled-411g-12650609",
+      "productId": "hunt-s-whole-peeled-plum-tomatoes-411g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/hunt-s-plum-tomatoes-whole-peeled-411g-12650609",
+      "specification": "411g"
+    },
+    {
+      "listingId": "fairprice-kavli-bacon-cheese-spread",
+      "productId": "kavli-bacon-cheese-spread",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kavli-bacon-cheese-spread",
+      "specification": "275 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3070472513-s20952486581",
+      "productId": "kavli-bacon-cheese-spread",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3070472513-s20952486581.html",
+      "specification": "275 g"
+    },
+    {
+      "listingId": "fairprice-kavli-blue-cheese-spread",
+      "productId": "kavli-blue-cheese-spread",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kavli-blue-cheese-spread",
+      "specification": "175 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3218850453-s21827697547",
+      "productId": "kavli-blue-cheese-spread",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3218850453-s21827697547.html",
+      "specification": "175 g"
+    },
+    {
+      "listingId": "fairprice-kavli-ham-cheese-spread",
+      "productId": "kavli-ham-cheese-spread",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kavli-ham-cheese-spread",
+      "specification": "275 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3070673268-s20950223757",
+      "productId": "kavli-ham-cheese-spread",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3070673268-s20950223757.html",
+      "specification": "275 g"
+    },
+    {
+      "listingId": "fairprice-kavli-jalapeno-cheese-spread",
+      "productId": "kavli-jalapeno-cheese-spread",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kavli-jalapeno-cheese-spread",
+      "specification": "250 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3218766968-s21827753647",
+      "productId": "kavli-jalapeno-cheese-spread",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3218766968-s21827753647.html",
+      "specification": "250 g"
+    },
+    {
+      "listingId": "fairprice-kavli-long-live-the-cheddar-cheese-spread",
+      "productId": "kavli-long-live-the-cheddar-cheese-spread",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kavli-long-live-the-cheddar-cheese-spread",
+      "specification": "250 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3070637453-s20952425754",
+      "productId": "kavli-long-live-the-cheddar-cheese-spread",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3070637453-s20952425754.html",
+      "specification": "250 g"
+    },
+    {
+      "listingId": "fairprice-kavli-spicy-chilli-cheddar-cheese-spread",
+      "productId": "kavli-spicy-chilli-cheddar-cheese-spread",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kavli-spicy-chilli-cheddar-cheese-spread",
+      "specification": "250 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3263012560-s21970710133",
+      "productId": "kavli-spicy-chilli-cheddar-cheese-spread",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3263012560-s21970710133.html",
+      "specification": "250 g"
+    },
+    {
+      "listingId": "cold-storage-kelloggs-granalo-boost-protein-extra-300g",
+      "productId": "kellogg-s-granola-boost-protein-extra-300g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/kelloggs-granalo-boost-protein-extra-300g",
+      "specification": "300g"
+    },
+    {
+      "listingId": "fairprice-kellogg-s-granola-boost-protein-extra-300g-13257827",
+      "productId": "kellogg-s-granola-boost-protein-extra-300g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kellogg-s-granola-boost-protein-extra-300g-13257827",
+      "specification": "300g"
+    },
+    {
+      "listingId": "fairprice-killiney-classic-singapore-black-coffee",
+      "productId": "killiney-classic-singapore-black-coffee",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/killiney-classic-singapore-black-coffee",
+      "specification": "250 ML"
+    },
+    {
+      "listingId": "redmart-pdp-i3209930402-s21782609328",
+      "productId": "killiney-classic-singapore-black-coffee",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3209930402-s21782609328.html",
+      "specification": "250 ml"
+    },
+    {
+      "listingId": "cold-storage-kinder-candy-cocoa-1053g",
+      "productId": "kinder-milkredible-cocoa-candy-105-3g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/kinder-candy-cocoa-1053g",
+      "specification": "105.3g"
+    },
+    {
+      "listingId": "fairprice-kinder-milkcredible-cocoa-candy-108g-13274214",
+      "productId": "kinder-milkredible-cocoa-candy-105-3g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/kinder-milkcredible-cocoa-candy-108g-13274214",
+      "specification": "105.3g"
+    },
+    {
+      "listingId": "fairprice-lacroix-naturally-essenced-sparkling-water---pure",
+      "productId": "lacroix-naturally-essenced-sparkling-water-pure-8-x-355ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/lacroix-naturally-essenced-sparkling-water---pure",
+      "specification": "8 x 355 ML"
+    },
+    {
+      "listingId": "redmart-pdp-i3474978202-s23006481144",
+      "productId": "lacroix-naturally-essenced-sparkling-water-pure-8-x-355ml",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3474978202-s23006481144.html",
+      "specification": "8 × 355 ml"
+    },
+    {
+      "listingId": "cold-storage-laughing-cow-cheez-dippers-original-140g",
+      "productId": "laughing-cow-original-cheese-dippers-140g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/laughing-cow-cheez-dippers-original-140g",
+      "specification": "140g"
+    },
+    {
+      "listingId": "fairprice-the-laughing-cow-cheese-dippers-original-140g-133942",
+      "productId": "laughing-cow-original-cheese-dippers-140g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/the-laughing-cow-cheese-dippers-original-140g-133942",
+      "specification": "140g"
+    },
+    {
+      "listingId": "cold-storage-lay-s-stax-smokin-bbq-100g",
+      "productId": "lay-s-stax-smokin-bbq-potato-chips-100g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/lay-s-stax-smokin-bbq-100g",
+      "specification": "100g"
+    },
+    {
+      "listingId": "fairprice-lay-s-stax-potato-chips-smokin-bbq-100g-13284935",
+      "productId": "lay-s-stax-smokin-bbq-potato-chips-100g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/lay-s-stax-potato-chips-smokin-bbq-100g-13284935",
+      "specification": "100g"
+    },
+    {
+      "listingId": "cold-storage-little-blossom-organic-brown-rice-puffs-strawberry-40g",
+      "productId": "little-blossom-organic-strawberry-brown-rice-puffs-40g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/little-blossom-organic-brown-rice-puffs-strawberry-40g",
+      "specification": "40g"
+    },
+    {
+      "listingId": "fairprice-little-blossom-organic-brown-rice-puffs-strawberry-40g-13212833",
+      "productId": "little-blossom-organic-strawberry-brown-rice-puffs-40g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/little-blossom-organic-brown-rice-puffs-strawberry-40g-13212833",
+      "specification": "40g"
+    },
+    {
+      "listingId": "cold-storage-megachef-premium-oyster-sauce-600g",
+      "productId": "megachef-premium-oyster-sauce-600g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/megachef-premium-oyster-sauce-600g",
+      "specification": "600g"
+    },
+    {
+      "listingId": "fairprice-megachef-premium-oyster-sauce-600g-90011343",
+      "productId": "megachef-premium-oyster-sauce-600g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/megachef-premium-oyster-sauce-600g-90011343",
+      "specification": "600 G"
+    },
+    {
+      "listingId": "fairprice-milklab-soy-milk-plant-based-beverage-for-coffee-1",
+      "productId": "milklab-soy-milk-plant-based-beverage-for-coffee",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/milklab-soy-milk-plant-based-beverage-for-coffee-1",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "redmart-pdp-i2035999481-s11118623877",
+      "productId": "milklab-soy-milk-plant-based-beverage-for-coffee",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2035999481-s11118623877.html",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "cold-storage-new-moon-low-calorie-konjac-flat-noodles-270g",
+      "productId": "new-moon-low-calorie-flat-konjac-noodles-270g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/new-moon-low-calorie-konjac-flat-noodles-270g",
+      "specification": "270g"
+    },
+    {
+      "listingId": "fairprice-new-moon-low-calorie-konjac-noodles-flat-270g-13244421",
+      "productId": "new-moon-low-calorie-flat-konjac-noodles-270g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/new-moon-low-calorie-konjac-noodles-flat-270g-13244421",
+      "specification": "270g"
+    },
+    {
+      "listingId": "cold-storage-new-moon-low-calorie-konjac-round-noodles-270g",
+      "productId": "new-moon-low-calorie-round-konjac-noodles-270g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/new-moon-low-calorie-konjac-round-noodles-270g",
+      "specification": "270g"
+    },
+    {
+      "listingId": "fairprice-new-moon-low-calorie-konjac-noodles-round-270g-13244422",
+      "productId": "new-moon-low-calorie-round-konjac-noodles-270g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/new-moon-low-calorie-konjac-noodles-round-270g-13244422",
+      "specification": "270g"
+    },
+    {
+      "listingId": "cold-storage-post-great-grains-red-berry-almond-crunch-368g",
+      "productId": "post-great-grains-red-berry-almond-crunch-cereal-368g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/post-great-grains-red-berry-almond-crunch-368g",
+      "specification": "368g"
+    },
+    {
+      "listingId": "fairprice-post-great-grains-cereal-red-berry-almond-crunch-368g-13224255",
+      "productId": "post-great-grains-red-berry-almond-crunch-cereal-368g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/post-great-grains-cereal-red-berry-almond-crunch-368g-13224255",
+      "specification": "368g"
+    },
+    {
+      "listingId": "cold-storage-ripe-freshly-squeezed-orange-juice-1l",
+      "productId": "ripe-freshly-squeezed-orange-juice-1l",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/ripe-freshly-squeezed-orange-juice-1l",
+      "specification": "1L"
+    },
+    {
+      "listingId": "redmart-pdp-i301154841-s527222858",
+      "productId": "ripe-freshly-squeezed-orange-juice-1l",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301154841-s527222858.html",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "cold-storage-ripe-freshly-squeezed-pink-grapefruit-juice-1l",
+      "productId": "ripe-freshly-squeezed-pink-grapefruit-juice-1l",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/ripe-freshly-squeezed-pink-grapefruit-juice-1l",
+      "specification": "1L"
+    },
+    {
+      "listingId": "redmart-pdp-i2813754120-s19421649265",
+      "productId": "ripe-freshly-squeezed-pink-grapefruit-juice-1l",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2813754120-s19421649265.html",
+      "specification": "1 L"
+    },
+    {
+      "listingId": "cold-storage-royal-umbrella-hommali-rice-5kg",
+      "productId": "royal-umbrella-thai-hom-mali-rice-5kg",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/royal-umbrella-hommali-rice-5kg",
+      "specification": "5kg"
+    },
+    {
+      "listingId": "fairprice-royal-umbrella-thai-hom-mali-rice-13111322",
+      "productId": "royal-umbrella-thai-hom-mali-rice-5kg",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/royal-umbrella-thai-hom-mali-rice-13111322",
+      "specification": "5kg"
+    },
+    {
+      "listingId": "cold-storage-schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "productId": "schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "specification": "400ml"
+    },
+    {
+      "listingId": "fairprice-extra-care-ginger-scalp-purify-shampoo",
+      "productId": "schwarzkopf-extra-care-ginger-scalp-purify-shampoo-400ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/extra-care-ginger-scalp-purify-shampoo",
+      "specification": "400 ML"
+    },
+    {
+      "listingId": "cold-storage-schwarzkopf-extra-care-moist-recovery-shampoo-400ml",
+      "productId": "schwarzkopf-extra-care-moist-recovery-shampoo-400ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-moist-recovery-shampoo-400ml",
+      "specification": "400ml"
+    },
+    {
+      "listingId": "fairprice-extra-care-moist-recovery-shampoo",
+      "productId": "schwarzkopf-extra-care-moist-recovery-shampoo-400ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/extra-care-moist-recovery-shampoo",
+      "specification": "400 ML"
+    },
+    {
+      "listingId": "cold-storage-schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "productId": "schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "specification": "400ml"
+    },
+    {
+      "listingId": "fairprice-extra-care-volume-fortify-shampoo",
+      "productId": "schwarzkopf-extra-care-volume-fortify-shampoo-400ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/extra-care-volume-fortify-shampoo",
+      "specification": "400 ML"
+    },
+    {
+      "listingId": "cold-storage-scs-sliced-cheese-reduced-fat-200g",
+      "productId": "scs-sliced-reduced-fat-cheese-200g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/scs-sliced-cheese-reduced-fat-200g",
+      "specification": "200g"
+    },
+    {
+      "listingId": "fairprice-scs-slice-cheese-reduced-fat-200g-13281223",
+      "productId": "scs-sliced-reduced-fat-cheese-200g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/scs-slice-cheese-reduced-fat-200g-13281223",
+      "specification": "200g"
+    },
+    {
+      "listingId": "cold-storage-sensodyne-repair-protect-toothpaste-100g",
+      "productId": "sensodyne-repair-and-protect-toothpaste-100g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/sensodyne-repair-protect-toothpaste-100g",
+      "specification": "100g"
+    },
+    {
+      "listingId": "fairprice-sensodyne-toothpaste-repair-protect-100g-13000828",
+      "productId": "sensodyne-repair-and-protect-toothpaste-100g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/sensodyne-toothpaste-repair-protect-100g-13000828",
+      "specification": "100g"
+    },
+    {
+      "listingId": "cold-storage-sincero-milk-chocolate-almond-380g",
+      "productId": "sincero-milk-chocolate-almond-380g",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/sincero-milk-chocolate-almond-380g",
+      "specification": "380g"
+    },
+    {
+      "listingId": "fairprice-sincero-almond-milk-chocolate-380g-13294634",
+      "productId": "sincero-milk-chocolate-almond-380g",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/sincero-almond-milk-chocolate-380g-13294634",
+      "specification": "380g"
+    },
+    {
+      "listingId": "cold-storage-splat-biocalcium-toothpaste-100ml",
+      "productId": "splat-biocalcium-toothpaste-100ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/splat-biocalcium-toothpaste-100ml",
+      "specification": "100ml"
+    },
+    {
+      "listingId": "fairprice-splat-toothpaste-biocalcium-100ml-13279170",
+      "productId": "splat-biocalcium-toothpaste-100ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/splat-toothpaste-biocalcium-100ml-13279170",
+      "specification": "100ml"
+    },
+    {
+      "listingId": "fairprice-sunrice-kangaroo-premium-calrose-rice",
+      "productId": "sunrice-kangaroo-premium-calrose-rice-5kg",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/sunrice-kangaroo-premium-calrose-rice",
+      "specification": "5 KG"
+    },
+    {
+      "listingId": "redmart-pdp-i301140750-s527216537",
+      "productId": "sunrice-kangaroo-premium-calrose-rice-5kg",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301140750-s527216537.html",
+      "specification": "5 kg"
+    },
+    {
+      "listingId": "cold-storage-tabasco-habanero-sauce-60ml",
+      "productId": "tabasco-habanero-sauce-60ml",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/tabasco-habanero-sauce-60ml",
+      "specification": "60ml"
+    },
+    {
+      "listingId": "fairprice-tabasco-habanero-sauce-60ml-397530",
+      "productId": "tabasco-habanero-sauce-60ml",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/tabasco-habanero-sauce-60ml-397530",
+      "specification": "60ml"
+    },
+    {
+      "listingId": "cold-storage-top-concentrated-liquid-detergent-blooming-freshness-refill-15kg-200g",
+      "productId": "top-blooming-freshness-concentrated-liquid-detergent-refill-1-7kg",
+      "retailerId": "cold-storage",
+      "productUrl": "https://coldstorage.com.sg/product/top-concentrated-liquid-detergent-blooming-freshness-refill-15kg-200g",
+      "specification": "1.7kg"
+    },
+    {
+      "listingId": "fairprice-top-concentrated-liquid-detergent-refill-blooming-freshness-1-7kg-13285014",
+      "productId": "top-blooming-freshness-concentrated-liquid-detergent-refill-1-7kg",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/top-concentrated-liquid-detergent-refill-blooming-freshness-1-7kg-13285014",
+      "specification": "1.7kg"
+    },
+    {
+      "listingId": "fairprice-yumearth-organic-pops---vitamin-c",
+      "productId": "yumearth-organic-vitamin-c-pops",
+      "retailerId": "fairprice",
+      "productUrl": "https://www.fairprice.com.sg/product/yumearth-organic-pops---vitamin-c",
+      "specification": "87 G"
+    },
+    {
+      "listingId": "redmart-pdp-i3197249342-s21711836119",
+      "productId": "yumearth-organic-vitamin-c-pops",
+      "retailerId": "redmart",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3197249342-s21711836119.html",
+      "specification": "87 g"
+    }
+  ]
+}
