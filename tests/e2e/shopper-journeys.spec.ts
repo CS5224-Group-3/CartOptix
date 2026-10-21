@@ -1,4 +1,37 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { expect, test } from "@playwright/test";
+
+/** The committed seed, so seed-dependent journeys hold across snapshot refreshes. */
+const seed: {
+  products: { productId: string; representativeName: string }[];
+  listings: { productId: string; retailerId: string }[];
+} = JSON.parse(readFileSync(resolve(import.meta.dirname, "../../data/seed/seed.json"), "utf8"));
+const RETAILER_NAMES: Record<string, string> = {
+  redmart: "RedMart",
+  fairprice: "FairPrice",
+  "cold-storage": "Cold Storage",
+};
+const shopperName = (name: string) => name.replace(/\s*\[BCRS\]\s*/gi, " ").trim();
+
+/**
+ * Two products and a retailer that has only the first, where another retailer
+ * has both, so the basket has a recommended complete option and an incomplete one.
+ */
+function incompleteBasket() {
+  const at = (productId: string) =>
+    new Set(seed.listings.filter((l) => l.productId === productId).map((l) => l.retailerId));
+  for (const present of seed.products)
+    for (const missing of seed.products) {
+      const a = at(present.productId);
+      const b = at(missing.productId);
+      const retailer = [...a].find((r) => !b.has(r));
+      const both = [...a].some((r) => b.has(r));
+      if (retailer && both && present.productId !== missing.productId)
+        return { present, missing, retailer: RETAILER_NAMES[retailer] ?? retailer };
+    }
+  throw new Error("The seed has no incomplete basket to show");
+}
 
 test.describe("CartOptix shopper journeys", () => {
   test("J1: find a product and add it to the basket", async ({ page }) => {
@@ -78,38 +111,38 @@ test.describe("CartOptix shopper journeys", () => {
   });
 
   test("J3/J5: an incomplete basket shows its estimate and missing products", async ({ page }) => {
-    // Pulled chicken is not at RedMart in the seed; Barilla penne is not at Cold Storage.
-    for (const product of [
-      "ayam-brand-pulled-chicken-buffalo-150g",
-      "barilla-italian-pasta-penne-rigate-500g",
-    ]) {
-      await page.goto(`/product/${product}`);
+    const { present, missing, retailer } = incompleteBasket();
+    for (const product of [present, missing]) {
+      await page.goto(`/product/${product.productId}`);
       await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
       await expect(page).toHaveURL(/\/basket$/);
     }
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
-    // FairPrice has both and is recommended; the incomplete cards follow it.
-    await expect(page.locator("article h2").first()).toHaveText("FairPrice");
-    const redmart = page.getByRole("article", { name: "RedMart" });
-    await expect(redmart.getByText("Incomplete basket")).toBeVisible();
-    await expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeVisible();
-    await expect(redmart.getByText(/^Recommended/)).toHaveCount(0);
+    // A complete option is recommended first; the incomplete card follows it.
+    await expect(page.getByText(/^Recommended/)).toHaveCount(1);
+    const card = page.getByRole("article", { name: retailer });
+    await expect(card.getByText("Incomplete basket")).toBeVisible();
+    await expect(card.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(card.getByText(/^Recommended/)).toHaveCount(0);
     // The missing product's link works from the keyboard.
-    const missing = redmart.getByRole("link", { name: "Ayam Brand Pulled Chicken Buffalo 150g" });
-    await missing.focus();
+    const link = card.getByRole("link", { name: shopperName(missing.representativeName) });
+    await link.focus();
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/\/product\/ayam-brand-pulled-chicken-buffalo-150g$/);
+    await expect(page).toHaveURL(new RegExp(`/product/${missing.productId}$`));
   });
 
   test("J3: a retailer with none of the basket shows no estimate", async ({ page }) => {
-    await page.goto("/product/ayam-brand-pulled-chicken-buffalo-150g");
+    const { missing, retailer } = incompleteBasket();
+    await page.goto(`/product/${missing.productId}`);
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    const redmart = page.getByRole("article", { name: "RedMart" });
-    await expect(redmart.getByText("Incomplete basket")).toBeVisible();
-    await expect(redmart.getByText(/Estimated total|S\$/)).toHaveCount(0);
-    await expect(redmart.getByRole("link", { name: /Ayam Brand Pulled Chicken/ })).toBeVisible();
+    const card = page.getByRole("article", { name: retailer });
+    await expect(card.getByText("Incomplete basket")).toBeVisible();
+    await expect(card.getByText(/Estimated total|S\$/)).toHaveCount(0);
+    await expect(
+      card.getByRole("link", { name: shopperName(missing.representativeName) }),
+    ).toBeVisible();
   });
 
   test("J2: changing the basket makes an earlier result stale", async ({ page }) => {
