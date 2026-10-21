@@ -35,8 +35,6 @@ import { ChallengeError, CheckBudgetError, redmart } from "./redmart.ts";
 
 const ROOT = resolve(import.meta.dirname, "../..");
 const SNAPSHOT = resolve(ROOT, "data/snapshot");
-/** Search hits per missing retailer whose pages are read after the name rules. */
-const HITS_PER_SEARCH = 3;
 let options: Options;
 try {
   options = parseOptions(process.argv.slice(2));
@@ -171,6 +169,27 @@ function listings(retailer: Retailer): Promise<string[]> {
 
 const blank = () => Object.fromEntries(COLUMNS.map((column) => [column, ""]));
 
+/**
+ * Records a retailer's catalogue listings as carried over, without reading
+ * them: the build keeps each one exactly as the current seed has it. Used for
+ * RedMart, where Lazada's checks make reading every page impractical; the
+ * product owner accepted earlier prices there in exchange (PR-02).
+ */
+function carry(retailer: Retailer): Promise<string[]> {
+  // Only the seed's listings carry prices; a retired product's have none to keep.
+  const rows: Row[] = current.listings
+    .filter((listing) => listing.retailerId === retailer)
+    .map((listing) => ({
+      ...blank(),
+      status: "carried",
+      retailer,
+      "product url": listing.productUrl,
+    }));
+  writeFileSync(resolve(SNAPSHOT, `listings-${retailer}.csv`), toCsv(LISTING_COLUMNS, rows));
+  console.log(`Wrote data/snapshot/listings-${retailer}.csv (${rows.length} carried over)`);
+  return Promise.resolve([]);
+}
+
 function search(retailer: Retailer): Promise<string[]> {
   const missing = seed.products
     .filter(
@@ -195,7 +214,7 @@ function search(retailer: Retailer): Promise<string[]> {
       const hits = (await client.search(name))
         .filter((hit) => passesNameRules({ name, specification: item.specification }, hit))
         .sort((a, b) => similarity(name, b.name) - similarity(name, a.name))
-        .slice(0, HITS_PER_SEARCH);
+        .slice(0, options.hits);
       const rows: Row[] = [];
       for (const hit of hits) {
         const result = await client.product(hit.url);
@@ -254,8 +273,8 @@ function startSnapshot(): string[] {
   return [];
 }
 
-const step =
-  options.command === "listings" ? listings : options.command === "search" ? search : undefined;
+const steps = { listings, carry, search } as const;
+const step = options.command in steps ? steps[options.command as keyof typeof steps] : undefined;
 const failures = step
   ? (await Promise.all(options.retailers.map(step))).flat()
   : options.command === "new"

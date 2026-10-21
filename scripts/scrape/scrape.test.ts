@@ -310,8 +310,11 @@ describe("refresh options", () => {
       retailers: ["redmart"],
       headed: true,
       maxChecks: 0,
+      hits: 3,
     });
     expect(parseOptions(["search"]).maxChecks).toBeUndefined();
+    expect(parseOptions(["search", "redmart", "--hits", "1"]).hits).toBe(1);
+    expect(parseOptions(["carry", "redmart"]).command).toBe("carry");
   });
 
   it("rejects a malformed budget, an unknown retailer or arguments a command does not take", () => {
@@ -321,6 +324,8 @@ describe("refresh options", () => {
       ["listings", "--max-checks", "1.5"],
       ["listings", "--max-checks"],
       ["listings", "giant"],
+      ["search", "--hits", "0"],
+      ["search", "--hits", "two"],
       ["sellers", "redmart"],
       ["publish"],
     ])

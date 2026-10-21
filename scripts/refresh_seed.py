@@ -66,6 +66,8 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
         return "page gone"
     if row.get("status") == "skipped":
         return "not collected (Lazada check)"
+    if row.get("status") == "carried":
+        return None
     if row["in-stock"] != "Yes":
         return "out of stock"
     if not derive_offer(row)["eligible"]:
@@ -100,8 +102,15 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
     # `identities` keeps every listing's identity, without prices, for retiring it.
     rows: dict[str, list[dict]] = defaultdict(list)
     identities: dict[str, list[dict]] = defaultdict(list)
+    current = {l["productUrl"]: l for l in seed["listings"]}
     for listing in known_listings:
-        rows[listing["productId"]].append(observed[listing["productUrl"]])
+        row = observed[listing["productUrl"]]
+        if row.get("status") == "carried":
+            # Kept exactly as the current seed has it; only the seed's listings can be.
+            if listing["productUrl"] not in current:
+                raise SystemExit(f"Cannot carry over {listing['productUrl']}: it is not in the seed")
+            row = {**row, "carried": current[listing["productUrl"]]}
+        rows[listing["productId"]].append(row)
         identities[listing["productId"]].append({k: listing[k] for k in IDENTITY})
     accepted = 0
     for candidate in sorted(candidates, key=lambda c: -float(c["similarity"])):
@@ -121,6 +130,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
             accepted += 1
 
     reasons: Counter = Counter()
+    carried = 0
     unreadable: list[dict] = []
     products, listings, added = [], [], []
     retired_products, retired_listings = [], []
@@ -146,11 +156,15 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
             {
                 "productId": product_id,
                 "categoryId": product["categoryId"],
-                "representativeName": members[0]["Product Name"],
+                "representativeName": members[0]["Product Name"] or members[0]["carried"]["name"],
                 "imageUrl": image or product["imageUrl"],
             }
         )
         for member in members:
+            if "carried" in member:
+                listings.append(dict(member["carried"]))
+                carried += 1
+                continue
             url = member["product url"].split("?")[0]
             lid = listing_id(SOURCE_KEY[member["retailer"]], url)
             if lid not in registry:
@@ -165,6 +179,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
         "retired": {"products": retired_products, "listings": retired_listings},
         "added": added,
         "accepted": accepted,
+        "carried": carried,
         "reasons": reasons,
         "unreadable": unreadable,
     }
@@ -221,6 +236,8 @@ def write_report(seed, result) -> None:
         f"| Listings on sale | {sum(1 for l in seed['listings'] if l['priceKind'] == 'unconditional_sale')} | {sum(1 for l in listings if l['priceKind'] == 'unconditional_sale')} |",
         "",
         f"Search candidates accepted by the AI review: {accepted}. New listings published: {len(added)}.",
+        "",
+        f"Listings carried over unchanged from the previous seed, not read again: {result['carried']}.",
         "",
         "## Listings not published",
         "",

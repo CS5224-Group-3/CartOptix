@@ -105,3 +105,31 @@ class Build(unittest.TestCase):
         self.assertEqual(dropped["retired"]["listings"], LISTINGS)
         back = run(EMPTY, dropped["retired"], [observation("fairprice", FP), observation("cold-storage", CS)])
         self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])
+
+    def test_a_carried_over_listing_is_kept_exactly_as_the_seed_has_it(self):
+        redmart_url = "https://www.lazada.sg/products/pdp-i1-s2.html"
+        old = {
+            "listingId": "redmart-pdp-i1-s2",
+            "productId": "rice-1kg",
+            "retailerId": "redmart",
+            "sourceRecordId": "redmart_00000002",
+            "name": "Rice 1KG",
+            "specification": "1 kg",
+            "productUrl": redmart_url,
+            "priceKind": "ordinary",
+            "unitPriceCents": 310,
+            "originalPriceCents": None,
+            "multibuy": {"packsPerDeal": 2, "dealPriceCents": 600, "mixAndMatch": True},
+            "excludedPromotions": [],
+        }
+        seed = {"products": [PRODUCT], "listings": [*LISTINGS[:1], old]}
+        carried = {**observation("redmart", redmart_url), "status": "carried", "Product Price": ""}
+        result = run(seed, EMPTY, [observation("fairprice", FP), carried])
+        self.assertIn(old, result["listings"])
+        self.assertEqual(result["carried"], 1)
+
+    def test_only_a_seed_listing_can_be_carried_over(self):
+        retired = {"products": [PRODUCT], "listings": LISTINGS}
+        carried = {**observation("cold-storage", CS), "status": "carried"}
+        with self.assertRaises(SystemExit):
+            run(EMPTY, retired, [observation("fairprice", FP), carried])

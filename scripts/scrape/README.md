@@ -23,11 +23,20 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts listings
    ```
 
+   **RedMart, carried over.** Lazada's checks make reading every RedMart page impractical, so by the product owner's decision RedMart's published listings may be carried over instead of read: the build keeps each exactly as the current seed has it. Run this instead of `listings redmart`:
+
+   ```sh
+   node scripts/scrape/refresh.ts carry redmart
+   ```
+
 2. **Search for missing retailers.** For each product, searches every retailer it is not yet listed at, keeps hits that pass the name rules (`match.ts`: same pack size, the brand's word, similar name) and reads their pages. Writes `data/snapshot/candidates-<retailer>.csv`.
 
    ```sh
-   node scripts/scrape/refresh.ts search
+   node scripts/scrape/refresh.ts search fairprice cold-storage
+   node scripts/scrape/refresh.ts search redmart --hits 1 --headed --max-checks 3
    ```
+
+   `--hits N` reads the pages of the N best hits per product (default 3); for RedMart, read only the best one to keep Lazada's checks down.
 
 3. **Read RedMart sellers again, if needed.** Lazada's catalogue does not say who sells an item, so the scraper reads each RedMart product page for its "Sold by" line. A page that loads without seller data leaves the seller empty; this reads those pages again and records what it finds in `data/snapshot/seller-checks.csv`:
 
