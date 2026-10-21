@@ -10,7 +10,7 @@ import {
   searchResults as fairpriceSearch,
   pageProduct,
 } from "./fairprice.ts";
-import { packKey, passesNameRules } from "./match.ts";
+import { packKey, passesNameRules, searchQuery } from "./match.ts";
 import { fromCsv, needsSeller, toCsv } from "./observation.ts";
 import { isChallenge, observe as redmart, sellerFrom } from "./redmart.ts";
 
@@ -259,6 +259,15 @@ describe("RedMart product pages", () => {
 
 describe("name rules", () => {
   const product = { name: "Ayam Brand Sardines in Tomato Sauce 155g", specification: "155g" };
+
+  it("searches without the pack size, which titles often omit", () => {
+    expect(searchQuery("Ayam Brand Sardines in Tomato Sauce 155g")).toBe(
+      "Ayam Brand Sardines in Tomato Sauce",
+    );
+    expect(searchQuery("[BCRS] Evian Natural Mineral Water 6 x 1.5L")).toBe(
+      "Evian Natural Mineral Water",
+    );
+  });
 
   it("keeps pack count and per-pack size apart", () => {
     expect(packKey("155 g")).toBe("1x155g");

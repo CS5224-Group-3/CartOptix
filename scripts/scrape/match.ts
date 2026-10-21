@@ -82,3 +82,15 @@ export function passesNameRules(
     similarity(product.name, hit.name) >= MIN_SIMILARITY
   );
 }
+
+/**
+ * Search text for a product: its name without the pack size, which retailers
+ * often leave out of a title (the name rules check the size separately).
+ */
+export function searchQuery(name: string): string {
+  return name
+    .replace(/\[bcrs\]/gi, " ")
+    .replace(new RegExp(SIZE.source, "gi"), " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}

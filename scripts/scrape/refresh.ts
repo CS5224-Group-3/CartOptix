@@ -29,7 +29,7 @@ import { type Options, parseOptions } from "./args.ts";
 import { loadCheckpoint, saveCheckpoint } from "./checkpoint.ts";
 import { coldStorage } from "./coldstorage.ts";
 import { fairprice } from "./fairprice.ts";
-import { passesNameRules, similarity } from "./match.ts";
+import { passesNameRules, searchQuery, similarity } from "./match.ts";
 import {
   COLUMNS,
   fromCsv,
@@ -238,7 +238,7 @@ function search(retailer: Retailer): Promise<string[]> {
     (item) => item.product.productId,
     async (client, item) => {
       const name = item.product.representativeName.replace(/\[BCRS\]/gi, "").trim();
-      const hits = (await client.search(name))
+      const hits = (await client.search(searchQuery(name)))
         .filter((hit) => passesNameRules({ name, specification: item.specification }, hit))
         .sort((a, b) => similarity(name, b.name) - similarity(name, a.name))
         .slice(0, options.hits);
