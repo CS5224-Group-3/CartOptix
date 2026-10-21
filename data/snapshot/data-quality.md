@@ -10,7 +10,7 @@ This is the closing report for #73: the first snapshot taken with the scrapers i
 | Cold Storage | Every page read again (189 listings) | 105 products searched, up to 3 hits each |
 | RedMart | **Carried over** unchanged from the previous seed (177 listings) | 14 of 117 products searched, best hit only; **103 skipped** |
 
-Lazada answered scripted reads with its slider check and Google reCAPTCHA, often on the first page. The product owner therefore decided to carry RedMart's published listings over rather than read them again, and to search only for the RedMart listings the catalogue was missing. When the check budget (`--max-checks`) ran out, the remaining RedMart searches were skipped. A skipped search contributes no candidates and is never filled from earlier data. RedMart prices in this seed are therefore those of the previous snapshot, which the fixed-dataset disclaimer covers.
+Lazada answered scripted reads with its slider check and Google reCAPTCHA, often on the first page. The product owner therefore decided to carry RedMart's published listings over rather than read them again, and to search only for the RedMart listings the catalogue was missing. When the check budget (`--max-checks`) ran out, the remaining RedMart searches were skipped. A skipped search contributes no candidates and is never filled from earlier data. Of the 162 RedMart listings in this seed, 153 are carried over with the previous snapshot's prices, which the fixed-dataset disclaimer covers. The other 9 were found by the search and read fresh.
 
 ## Catalogue
 
@@ -40,7 +40,7 @@ Lazada answered scripted reads with its slider check and Google reCAPTCHA, often
 | Household Cleaning | 32 | 32 | 0 | 32 | 0 |
 | Toiletries & Personal Care | 27 | 27 | 18 | 10 | 1 |
 
-Each category previously had 37 products. Household Cleaning has no Cold Storage listing. The previous seed had only one, and the two Kodomo detergents the search matched were out of stock.
+Breakfast Foods previously had 35 products, and every other category 37. Household Cleaning has no Cold Storage listing. The previous seed had only one, and the two Kodomo detergents the search matched were out of stock.
 
 ## Matching
 
@@ -71,7 +71,7 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
 
 ## Shortfalls
 
-1. **RedMart was not refreshed.** RedMart prices, stock and promotions are those of the previous snapshot, by product owner decision, because of Lazada's anti-bot checks.
-2. **Most missing RedMart listings weren't searched.** 103 of 117 searches were skipped, including Ayam Brand Sardines in Tomato Sauce 155g, the QA item that prompted #73, so that gap remains. Resuming the RedMart search, which continues from its checkpoint, is the way to close it.
+1. **RedMart was mostly not refreshed.** The 153 carried-over listings keep the previous snapshot's prices, stock and promotions, by product owner decision, because of Lazada's anti-bot checks. Only the 9 new RedMart listings are fresh.
+2. **Most missing RedMart listings weren't searched.** 103 of 117 searches were skipped, including Ayam Brand Sardines in Tomato Sauce 155g, the QA item that prompted #73, so that gap remains. To close it, run a new RedMart search in the next snapshot (`refresh.ts search redmart --hits 1 --headed`), then review the matches and rebuild. This run's checkpoint was cleared when the skipped searches were recorded.
 3. **The catalogue shrank to 238 products,** mostly because of stock at the time of the snapshot. Retired products return automatically when they are back in stock at two retailers.
 4. **Live checkout evidence for deals is outstanding** (PR-03).
