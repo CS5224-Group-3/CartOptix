@@ -7459,6 +7459,24 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i301078927-s527100860",
+      "productId": "cirio-chopped-tomatoes-400g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301078927-s527100860.html",
+      "name": "Cirio Polpa Chopped Tomatoes",
+      "specification": "400 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301078927-s527100860.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 368,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 677,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": ["Spend $11.00 + free gift"]
+    },
+    {
       "listingId": "redmart-pdp-i301080986-s527102860",
       "productId": "barilla-italian-pasta-penne-rigate-500g",
       "retailerId": "redmart",
@@ -7540,6 +7558,24 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 630,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301094888-s527116234",
+      "productId": "president-unsalted-butter-200g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301094888-s527116234.html",
+      "name": "President Unsalted Butter Block",
+      "specification": "200 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301094888-s527116234.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 685,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1195,
         "mixAndMatch": true
       },
       "excludedPromotions": []
@@ -7634,6 +7670,24 @@
       "unitPriceCents": 826,
       "originalPriceCents": 888,
       "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301118571-s527178930",
+      "productId": "royal-umbrella-thai-hom-mali-rice-1kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301118571-s527178930.html",
+      "name": "Royal Umbrella Thai Hom Mali Rice 1KG",
+      "specification": "1 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301118571-s527178930.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 438,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 761,
+        "mixAndMatch": false
+      },
       "excludedPromotions": []
     },
     {
@@ -7987,6 +8041,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i301142273-s527188528",
+      "productId": "kellogg-s-frosties-cereal-300g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301142273-s527188528.html",
+      "name": "Kellogg's Frosties Kids Cereal 300G",
+      "specification": "300 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301142273-s527188528.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 660,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i301142294-s527188539",
       "productId": "boncafe-colombiana-instant-coffee-200g",
       "retailerId": "redmart",
@@ -8169,6 +8237,24 @@
       "originalPriceCents": null,
       "multibuy": null,
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301146372-s527180994",
+      "productId": "lay-s-salt-and-vinegar-potato-chips-170g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301146372-s527180994.html",
+      "name": "Lay's Salt and Vinegar Potato Chips Snacks 170G",
+      "specification": "170 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301146372-s527180994.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 534,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": ["Spend $105.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i301146480-s527220122",
@@ -8451,6 +8537,20 @@
       "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
+      "listingId": "redmart-pdp-i301156553-s527210554",
+      "productId": "bcrs-volvic-natural-mineral-water-6-x-1-5l",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301156553-s527210554.html",
+      "name": "Volvic Natural Mineral Water 6 x 1.5L - Case",
+      "specification": "6 × 1.5 L",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301156553-s527210554.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1705,
+      "originalPriceCents": 1740,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i301156623-s527210681",
       "productId": "top-detergent-powder-blooming-freshness-4-6kg",
       "retailerId": "redmart",
@@ -8529,6 +8629,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i301164076-s527250313",
+      "productId": "golden-pineapple-thai-fragrant-rice-5kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301164076-s527250313.html",
+      "name": "Golden Pineapple New Crop Thai Fragrant Rice - 5KG",
+      "specification": "5 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301164076-s527250313.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1250,
+      "originalPriceCents": 1525,
+      "multibuy": null,
+      "excludedPromotions": ["Spend $12.00 + free gift"]
+    },
+    {
       "listingId": "redmart-pdp-i301168041-s527252247",
       "productId": "marigold-uht-strawberry-milk-1l",
       "retailerId": "redmart",
@@ -8557,6 +8671,20 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 979,
       "originalPriceCents": 1069,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301176135-s527258355",
+      "productId": "lurpak-spreadable-unsalted-butter-250g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301176135-s527258355.html",
+      "name": "Lurpak Spreadable Unsalted Butter in Tub 250G",
+      "specification": "250 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301176135-s527258355.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 981,
+      "originalPriceCents": 1090,
       "multibuy": null,
       "excludedPromotions": []
     },
@@ -8590,6 +8718,24 @@
       "unitPriceCents": 133,
       "originalPriceCents": null,
       "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301186195-s527248722",
+      "productId": "president-salted-butter-200g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301186195-s527248722.html",
+      "name": "President Salted Butter Block",
+      "specification": "200 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301186195-s527248722.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 685,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1195,
+        "mixAndMatch": true
+      },
       "excludedPromotions": []
     },
     {
@@ -8733,6 +8879,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i303350397-s536692474",
+      "productId": "ayam-brand-sardines-in-tomato-sauce-155g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i303350397-s536692474.html",
+      "name": "Ayam Brand Sardines In Tomato Sauce (Jitney)",
+      "specification": "155 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303350397-s536692474.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 260,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i303398510-s536792043",
       "productId": "post-cocoa-pebbles-cereal-311g",
       "retailerId": "redmart",
@@ -8759,6 +8919,24 @@
       "originalPriceCents": 555,
       "multibuy": null,
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i303460270-s536830758",
+      "productId": "lay-s-cheddar-and-sour-cream-potato-chips-170g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i303460270-s536830758.html",
+      "name": "Lay's Cheddar & Sour Cream Potato Chips Snacks 170G",
+      "specification": "170 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303460270-s536830758.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 534,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": ["Spend $105.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i303468123-s536852163",
@@ -9309,6 +9487,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i3542267798-s23371841340",
+      "productId": "nestle-koko-krunch-strawberry-cereal-285g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i3542267798-s23371841340.html",
+      "name": "Nestle KOKO KRUNCH Strawberry Breakfast Cereal 285G",
+      "specification": "285 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3542267798-s23371841340.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 565,
+      "originalPriceCents": 697,
+      "multibuy": null,
+      "excludedPromotions": ["Spend $28.00 + free gift"]
+    },
+    {
       "listingId": "redmart-pdp-i3548677974-s23429274644",
       "productId": "osk-tokuho-powdered-green-tea-75g",
       "retailerId": "redmart",
@@ -9395,6 +9587,24 @@
       "originalPriceCents": null,
       "multibuy": null,
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i406464405-s1004192125",
+      "productId": "lay-s-stax-extra-cheese-potato-chips-100g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i406464405-s1004192125.html",
+      "name": "Lay's Stax Extra Cheese Flavoured Potato Chips Snacks 100G",
+      "specification": "100 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i406464405-s1004192125.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 260,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 442,
+        "mixAndMatch": true
+      },
+      "excludedPromotions": ["Spend $105.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i569114388-s1622298642",
