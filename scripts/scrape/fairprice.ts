@@ -1,14 +1,16 @@
 /**
  * FairPrice pages carry the product as Next.js data (`__NEXT_DATA__`). The
  * price paid is `mrp` less any `discount`; a discount makes it a sale with
- * `mrp` as the original price. Offers for two or more packs are multibuys,
- * kept in the retailer's wording for curation to interpret.
+ * `mrp` as the original price. Every other offer is kept in the retailer's
+ * wording for curation to interpret: multibuys are applied, the rest shown as
+ * excluded promotions.
  */
 import { fetchText } from "./http.ts";
 import {
   clean,
   dollars,
   type Observation,
+  PROMOTION_SEPARATOR,
   type ProductResult,
   type RetailerScraper,
   type SearchHit,
@@ -51,14 +53,16 @@ const productUrl = (slug: string) => `${ORIGIN}/product/${slug}`;
 const displayUnit = (product: FairPriceProduct) =>
   clean(String(product.metaData?.DisplayUnit ?? ""));
 
-/** A multibuy is an offer for two or more packs, e.g. "*Any 2* At $4.95". */
-function multibuy(product: FairPriceProduct): string {
-  for (const offer of product.offers ?? []) {
-    const text = clean(offer.shortDescriptionA ?? offer.description);
-    const packs = text.match(/^(?:any|buy)\s+(\d+)/i)?.[1];
-    if (packs && Number(packs) >= 2) return text;
-  }
-  return "";
+/**
+ * Every offer in the retailer's wording, except a single-pack offer at the
+ * price already paid: that is the sale itself, shown as its plain saving.
+ */
+function promotions(product: FairPriceProduct, price: string, discount: number): string[] {
+  const offers = (product.offers ?? [])
+    .map((offer) => clean(offer.shortDescriptionA ?? offer.description))
+    .filter(Boolean)
+    .filter((text) => !new RegExp(`^buy 1 at \\$?${price}$`, "i").test(text));
+  return discount > 0 ? [`Save $${dollars(discount)}`, ...offers] : offers;
 }
 
 /** `url` is kept as given, because listing IDs come from it. */
@@ -68,14 +72,15 @@ export function observe(product: FairPriceProduct, url = productUrl(product.slug
   const mrp = Number(store.mrp);
   const discount = Number(store.discount ?? 0);
   const sale = discount > 0;
+  const price = dollars(mrp - discount);
   return {
     retailer: "fairprice",
     "product url": url,
     "Product Name": clean(product.name),
-    "Product Price": dollars(mrp - discount),
+    "Product Price": price,
     "Original Price": sale ? dollars(mrp) : "",
     Specification: displayUnit(product),
-    Savings: multibuy(product) || (sale ? `Save $${dollars(discount)}` : ""),
+    Savings: promotions(product, price, discount).join(PROMOTION_SEPARATOR),
     "in-stock":
       product.status === "ENABLED" && store.status === "ENABLED" && (store.stock ?? 0) > 0
         ? "Yes"
@@ -86,20 +91,37 @@ export function observe(product: FairPriceProduct, url = productUrl(product.slug
   };
 }
 
+/**
+ * The product a page describes. FairPrice answers a removed product with a
+ * product page whose detail layout is empty: that is the only evidence of
+ * removal accepted; any other shape is a failure.
+ */
+export function pageProduct(data: unknown, url: string): FairPriceProduct | "not_found" {
+  const layouts = (
+    data as { props?: { pageProps?: { product?: { data?: { page?: { layouts?: unknown } } } } } }
+  ).props?.pageProps?.product?.data?.page?.layouts;
+  const detail = Array.isArray(layouts)
+    ? (layouts as { name?: string; value?: unknown }[]).find(
+        (layout) => layout.name === "ProductDetail",
+      )
+    : undefined;
+  if (!detail) throw new Error(`FairPrice page ${url} has no product detail layout`);
+  if (detail.value === null) return "not_found";
+  const [product] = products(detail.value);
+  if (!product) throw new Error(`FairPrice page ${url} has an unexpected product detail`);
+  return product;
+}
+
 export const fairprice: RetailerScraper = {
   async product(url): Promise<ProductResult> {
     const html = await fetchText(url);
     if (html === null) return "not_found";
-    // Some listings link by item number alone, e.g. /product/11980278.
-    const segment = new URL(url).pathname.split("/").pop() ?? "";
-    const product = products(nextData(html)).find(
-      (candidate) => candidate.slug === segment || candidate.slug.endsWith(`-${segment}`),
-    );
-    return product ? observe(product, url) : "not_found";
+    const product = pageProduct(nextData(html), url);
+    return product === "not_found" ? product : observe(product, url);
   },
   async search(query): Promise<SearchHit[]> {
     const html = await fetchText(`${ORIGIN}/search?query=${encodeURIComponent(query)}`);
-    if (html === null) return [];
+    if (html === null) throw new Error(`FairPrice search for ${query} is missing`);
     return products(nextData(html)).map((product) => ({
       url: productUrl(product.slug),
       name: clean(product.name),

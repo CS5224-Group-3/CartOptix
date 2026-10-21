@@ -152,7 +152,7 @@ def seed_listing(lid: str, product_id: str, retailer_id: str, source_record_id: 
         "unitPriceCents": offer["unit_price_cents"],
         "originalPriceCents": offer["original_price_cents"],
         "multibuy": offer["multibuy"],
-        "excludedPromotions": [offer["excluded_promotion"]] if offer["excluded_promotion"] else [],
+        "excludedPromotions": offer["excluded_promotions"],
     }
 
 

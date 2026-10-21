@@ -88,25 +88,36 @@ def parse_multibuy(text: str, unit_price: int) -> dict | None:
     }
 
 
+PROMOTION_SEPARATOR = " | "
+
+
 def derive_offer(source) -> dict:
-    """Price, price kind, multibuy and excluded promotion for one workbook row."""
+    """Price, price kind, multibuy and excluded promotions for one source row.
+
+    `Savings` holds one promotion, or several separated by " | " (the scrapers).
+    """
     price = to_cents(source["Product Price"])
     original = to_cents(source["Original Price"])
     savings = source["Savings"].strip()
     is_sale = price is not None and original is not None and original > price
     eligible = price is not None and price > 0
-    terms = DATES.sub("", savings).strip()
-    # A sale price is already a discount; a multibuy never stacks on it (PR-03).
-    multibuy = parse_multibuy(terms, price) if eligible and terms and not is_sale else None
-    promotion = ""
-    if savings and multibuy is None and not (is_sale and PLAIN_SAVING.fullmatch(savings)):
-        promotion = terms
+    multibuy = None
+    excluded = []
+    for term in (DATES.sub("", t).strip() for t in savings.split(PROMOTION_SEPARATOR)):
+        if not term or (is_sale and PLAIN_SAVING.fullmatch(term)):
+            continue
+        # A sale price is already a discount; a multibuy never stacks on it (PR-03).
+        deal = parse_multibuy(term, price) if eligible and not is_sale and multibuy is None else None
+        if deal:
+            multibuy = deal
+        else:
+            excluded.append(term)
     return {
         "unit_price_cents": price if eligible else None,
         "original_price_cents": original if eligible and is_sale else None,
         "price_kind": ("unconditional_sale" if is_sale else "ordinary") if eligible else None,
         "multibuy": multibuy,
-        "excluded_promotion": promotion,
+        "excluded_promotions": excluded,
         "eligible": eligible,
         "savings": savings,
     }
@@ -150,7 +161,7 @@ def main() -> None:
                 "multibuy_packs": (offer["multibuy"] or {}).get("packsPerDeal", ""),
                 "multibuy_price_cents": (offer["multibuy"] or {}).get("dealPriceCents", ""),
                 "multibuy_mix_and_match": (offer["multibuy"] or {}).get("mixAndMatch", ""),
-                "excluded_promotion": offer["excluded_promotion"],
+                "excluded_promotion": PROMOTION_SEPARATOR.join(offer["excluded_promotions"]),
                 "offer_status": "ELIGIBLE" if offer["eligible"] else "EXCLUDED_NO_RELIABLE_PRICE",
                 "raw_product_price": source["Product Price"],
                 "raw_original_price": source["Original Price"],

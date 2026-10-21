@@ -2,7 +2,7 @@
 
 import unittest
 
-from refresh_seed import exclusion
+from refresh_seed import build, exclusion
 
 
 def row(**overrides) -> dict:
@@ -43,3 +43,56 @@ class Exclusion(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+FP = "https://www.fairprice.com.sg/product/rice-1kg-1"
+CS = "https://coldstorage.com.sg/product/rice-1kg"
+
+
+def observation(retailer: str, url: str, **overrides) -> dict:
+    return {
+        "status": "ok",
+        "retailer": retailer,
+        "product url": url,
+        "Product Name": "Rice 1kg",
+        "Product Price": "3.00",
+        "Original Price": "",
+        "Specification": "1kg",
+        "Savings": "",
+        "in-stock": "Yes",
+        "Image URL": "",
+        "seller": "",
+        **overrides,
+    }
+
+
+PRODUCT = {"productId": "rice-1kg", "categoryId": "rice-and-noodles", "representativeName": "Rice 1kg", "imageUrl": None}
+LISTINGS = [
+    {"listingId": "fairprice-rice-1kg-1", "productId": "rice-1kg", "retailerId": "fairprice", "productUrl": FP, "specification": "1kg"},
+    {"listingId": "cold-storage-rice-1kg", "productId": "rice-1kg", "retailerId": "cold-storage", "productUrl": CS, "specification": "1kg"},
+]
+EMPTY = {"products": [], "listings": []}
+
+
+def run(seed, retired, observed):
+    return build(seed, retired, {o["product url"]: o for o in observed}, [], {}, {}, {})
+
+
+class Build(unittest.TestCase):
+    def test_refuses_a_snapshot_missing_an_observation(self):
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+        with self.assertRaises(SystemExit):
+            run(seed, EMPTY, [observation("fairprice", FP)])
+
+    def test_a_dropped_product_returns_under_its_id(self):
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+        dropped = run(seed, EMPTY, [observation("fairprice", FP), observation("cold-storage", CS, **{"in-stock": "No"})])
+        self.assertEqual(dropped["products"], [])
+        self.assertEqual([p["productId"] for p in dropped["retired"]["products"]], ["rice-1kg"])
+        self.assertEqual({l["productUrl"] for l in dropped["retired"]["listings"]}, {FP, CS})
+        self.assertNotIn("unitPriceCents", dropped["retired"]["listings"][0])
+
+        back = run(EMPTY, dropped["retired"], [observation("fairprice", FP), observation("cold-storage", CS)])
+        self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])
+        self.assertEqual(back["products"][0]["categoryId"], "rice-and-noodles")
+        self.assertEqual(back["retired"], EMPTY)

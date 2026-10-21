@@ -18,6 +18,7 @@ import {
   clean,
   dollars,
   type Observation,
+  PROMOTION_SEPARATOR,
   type ProductResult,
   type RetailerScraper,
   type SearchHit,
@@ -58,7 +59,11 @@ export function observe(item: CatalogueItem, url: string, seller: string): Obser
     "Product Price": dollars(price),
     "Original Price": sale ? dollars(original) : "",
     Specification: clean(item.packageInfo),
-    Savings: clean(item.icons?.find((icon) => icon.alias === "p_multibuy")?.text),
+    // Promotion badges ("p_…", such as "p_multibuy") in the retailer's wording.
+    Savings: (item.icons ?? [])
+      .filter((icon) => icon.alias?.startsWith("p_") && clean(icon.text))
+      .map((icon) => clean(icon.text))
+      .join(PROMOTION_SEPARATOR),
     "in-stock": item.inStock ? "Yes" : "No",
     "Image URL": item.image ?? "",
     brand: clean(item.brandName),
@@ -70,14 +75,31 @@ export function observe(item: CatalogueItem, url: string, seller: string): Obser
 export const isChallenge = (url: string) =>
   url.includes("_____tmd_____") || url.includes("/punish");
 
-/** The page's "Sold by" seller, "RedMart" when there is none, or null if not loaded. */
-function readSeller(): string | null {
-  // Runs in the browser.
-  // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
-  const data = (window as any).__moduleData__;
-  if (!data?.data?.root?.fields?.price_grocer) return null;
-  const soldBy = JSON.stringify(data).match(/"subtitle":"([^"]*)","subtitlePrefix":"Sold by:"/);
-  return soldBy?.[1] ?? "RedMart";
+/**
+ * The seller of a product page's data: the "Sold by:" entry when there is one,
+ * "RedMart" when the page's seller module is RedMart's and names no other
+ * seller, and null when the data is incomplete or ambiguous, so the listing
+ * goes to a hand check rather than being assumed RedMart's.
+ */
+export function sellerFrom(data: unknown): string | null {
+  const fields = (data as { data?: { root?: { fields?: Record<string, unknown> } } } | null)?.data
+    ?.root?.fields;
+  if (!fields?.price_grocer) return null;
+  const soldBy = new Set<string>();
+  const walk = (value: unknown): void => {
+    if (Array.isArray(value)) value.forEach(walk);
+    else if (value && typeof value === "object") {
+      const entry = value as { subtitlePrefix?: unknown; subtitle?: unknown };
+      if (entry.subtitlePrefix === "Sold by:" && typeof entry.subtitle === "string") {
+        soldBy.add(clean(entry.subtitle));
+      }
+      Object.values(value).forEach(walk);
+    }
+  };
+  walk(data);
+  if (soldBy.size === 1) return [...soldBy][0] || null;
+  if (soldBy.size > 1) return null;
+  return (fields.seller as { name?: unknown } | undefined)?.name === "RedMart" ? "RedMart" : null;
 }
 
 export interface RedMartScraper extends RetailerScraper {
@@ -115,18 +137,30 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
     return page;
   }
 
+  /** Catalogue results; an answer without the catalogue's structure is a failure. */
   async function catalogue(query: string): Promise<CatalogueItem[]> {
     const loaded = await visit(`${CATALOGUE}${encodeURIComponent(query)}`);
     const body = await loaded.evaluate(() => document.body.innerText);
     const data = JSON.parse(body) as { mods?: { listItems?: CatalogueItem[] } };
-    return data.mods?.listItems ?? [];
+    if (!data.mods || typeof data.mods !== "object") {
+      throw new Error(`Lazada catalogue answered ${query} without results data`);
+    }
+    return data.mods.listItems ?? [];
   }
 
   async function seller(url: string): Promise<string> {
     const loaded = await visit(url);
     // The page data arrives in two steps; the seller comes with the second.
-    await loaded.waitForFunction(readSeller, null, { timeout: 20_000 }).catch(() => undefined);
-    return (await loaded.evaluate(readSeller)) ?? "";
+    await loaded
+      .waitForFunction(
+        // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
+        () => (window as any).__moduleData__?.data?.root?.fields?.price_grocer !== undefined,
+        null,
+        { timeout: 20_000 },
+      )
+      .catch(() => undefined);
+    // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
+    return sellerFrom(await loaded.evaluate(() => (window as any).__moduleData__ ?? null)) ?? "";
   }
 
   return {
@@ -134,6 +168,7 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
     async product(url): Promise<ProductResult> {
       const itemId = url.match(/-i(\d+)-s\d+/)?.[1];
       if (!itemId) throw new Error(`Not a Lazada product link: ${url}`);
+      // A well-formed catalogue answer without the item is the evidence of removal.
       const item = (await catalogue(itemId)).find((candidate) => candidate.itemId === itemId);
       if (!item) return "not_found";
       return observe(item, url, await seller(url));

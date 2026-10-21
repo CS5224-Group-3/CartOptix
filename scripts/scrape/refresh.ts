@@ -2,17 +2,20 @@
  * Collects a snapshot for the published catalogue into data/snapshot (README
  * in scripts/scrape):
  *
- *   node scripts/scrape/refresh.ts listings [retailer…]  # every seed listing's page again
+ *   node scripts/scrape/refresh.ts new                   # start a snapshot: clear the last one's files
+ *   node scripts/scrape/refresh.ts listings [retailer…]  # every catalogue listing's page again
  *   node scripts/scrape/refresh.ts search [retailer…]    # retailers a product is missing from
  *   node scripts/scrape/refresh.ts sellers               # RedMart sellers left unread
  *
- * Retailers run in parallel, each one page at a time, and each writes its own
- * file (`listings-<retailer>.csv`, `candidates-<retailer>.csv`), so a retailer
- * that is challenged can be collected again later the same day. A page that is
- * gone is recorded as such; any other failure leaves that retailer's file
- * unwritten, so a file never mixes new observations with old ones.
+ * The catalogue is the seed plus the products that dropped out of it
+ * (data/seed/retired.json), so a product can come back. Retailers run in
+ * parallel, each one page at a time, and each writes its own file
+ * (`listings-<retailer>.csv`, `candidates-<retailer>.csv`), so a retailer that
+ * is challenged can be collected again later the same day. A page that is gone
+ * is recorded as such; any other failure deletes that retailer's file, so a
+ * failed refresh cannot leave an earlier observation for the build to use.
  */
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { coldStorage } from "./coldstorage.ts";
 import { fairprice } from "./fairprice.ts";
@@ -54,7 +57,17 @@ const CANDIDATE_COLUMNS = [
 ] as const;
 type Row = Record<string, string>;
 
-const seed: Seed = JSON.parse(readFileSync(resolve(ROOT, "data/seed/seed.json"), "utf8"));
+const load = (file: string): Seed =>
+  existsSync(resolve(ROOT, file))
+    ? JSON.parse(readFileSync(resolve(ROOT, file), "utf8"))
+    : { products: [], listings: [] };
+const current = load("data/seed/seed.json");
+const retired = load("data/seed/retired.json");
+/** Every product ever published, and its listings. */
+const seed: Seed = {
+  products: [...retired.products, ...current.products],
+  listings: [...retired.listings, ...current.listings],
+};
 
 function scraper(retailer: Retailer): RetailerScraper {
   if (retailer === "fairprice") return fairprice;
@@ -93,7 +106,10 @@ async function collect<T>(
   if (failures.length === 0) {
     writeFileSync(resolve(SNAPSHOT, file), toCsv(columns, rows));
     console.log(`Wrote data/snapshot/${file}`);
-  } else console.error(`${retailer}: ${failures.length} pages failed; ${file} not written`);
+  } else {
+    rmSync(resolve(SNAPSHOT, file), { force: true });
+    console.error(`${retailer}: ${failures.length} pages failed; ${file} removed, not written`);
+  }
   return failures;
 }
 
@@ -187,19 +203,32 @@ async function sellers(): Promise<string[]> {
   return [];
 }
 
+/** Starts a snapshot: removes every collected file and review from the last one. */
+function startSnapshot(): string[] {
+  for (const file of readdirSync(SNAPSHOT))
+    if (file.endsWith(".csv")) rmSync(resolve(SNAPSHOT, file));
+  console.log("Cleared data/snapshot for a new snapshot");
+  return [];
+}
+
 const [command, ...args] = process.argv.slice(2).filter((arg) => arg !== "--headed");
 const unknown = args.filter((arg) => !(RETAILERS as readonly string[]).includes(arg));
 const chosen =
   args.length > 0 ? RETAILERS.filter((retailer) => args.includes(retailer)) : RETAILERS;
 const step = command === "listings" ? listings : command === "search" ? search : undefined;
-if (command === "sellers" ? args.length > 0 : !step || unknown.length > 0) {
+const bare = command === "sellers" || command === "new";
+if (bare ? args.length > 0 : !step || unknown.length > 0) {
   console.error(
     `Usage: node scripts/scrape/refresh.ts listings|search [${RETAILERS.join("|")}…] [--headed]\n` +
-      "       node scripts/scrape/refresh.ts sellers [--headed]",
+      "       node scripts/scrape/refresh.ts new|sellers [--headed]",
   );
   process.exit(2);
 }
-const failures = step ? (await Promise.all(chosen.map(step))).flat() : await sellers();
+const failures = step
+  ? (await Promise.all(chosen.map(step))).flat()
+  : command === "new"
+    ? startSnapshot()
+    : await sellers();
 if (failures.length > 0) {
   console.error(failures.join("\n"));
   process.exit(1);

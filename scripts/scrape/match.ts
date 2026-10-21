@@ -1,6 +1,6 @@
 /**
  * Name rules for a search hit: the first gate before the AI review (PR-02).
- * A hit passes when its pack size equals the product's exactly and its name
+ * A hit passes when its pack configuration equals the product's exactly and its name
  * shares the brand and most of the product's words. Passing is necessary, not
  * sufficient: only matches the AI also confirms with high confidence publish.
  */
@@ -20,13 +20,28 @@ const UNITS: Record<string, [string, number]> = {
 };
 const SIZE = /(?:(\d+)\s*[x×]\s*)?(\d+(?:\.\d+)?)\s*(kg|gm|g|ml|ltr|litre|l|pcs|pc|sheets|s)\b/i;
 
-/** Total pack size in base units, e.g. "6 x 1.5L" → "9000ml"; null when absent. */
+/**
+ * Pack configuration as pack count and per-pack size in base units, e.g.
+ * "6 x 1.5L" → "6x1500ml" and "1kg" → "1x1000g"; null when absent. Count and
+ * size stay separate, so 2 × 500 g is not 1 kg (PR-01).
+ */
 export function packKey(text: string): string | null {
   const match = text.toLowerCase().match(SIZE);
   if (!match) return null;
   const [, count = "1", amount = "0", unit = ""] = match;
   const [base, factor] = UNITS[unit] ?? [unit, 1];
-  return `${Math.round(Number(count) * Number(amount) * factor * 1000) / 1000}${base}`;
+  return `${Number(count)}x${Math.round(Number(amount) * factor * 1000) / 1000}${base}`;
+}
+
+/**
+ * The pack a listing states, or null when it states none or its title and
+ * specification contradict each other (quarantined, never matched).
+ */
+function statedPack(item: { name: string; specification: string }): string | null {
+  const fromSpec = packKey(item.specification);
+  const fromName = packKey(item.name);
+  if (fromSpec && fromName && fromSpec !== fromName) return null;
+  return fromSpec ?? fromName;
 }
 
 /** Name words, without sizes, punctuation or filler. */
@@ -56,8 +71,8 @@ export function passesNameRules(
   product: { name: string; specification: string },
   hit: { name: string; specification: string },
 ): boolean {
-  const pack = packKey(product.specification) ?? packKey(product.name);
-  const hitPack = packKey(hit.specification) ?? packKey(hit.name);
+  const pack = statedPack(product);
+  const hitPack = statedPack(hit);
   const brand = [...words(product.name)][0];
   return (
     pack !== null &&

@@ -43,6 +43,8 @@ from derive_offer_prices import derive_offer
 
 ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "data" / "snapshot"
+# Products that dropped out, kept so later refreshes read them again (no prices).
+RETIRED = SEED.parent / "retired.json"
 # Seed retailer IDs to the workbook names build_seed.py keys its tables by.
 SOURCE_KEY = {seed_id: key for key, (seed_id, _, _) in RETAILERS.items()}
 
@@ -74,21 +76,26 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
     return None
 
 
-def main() -> None:
-    seed = json.loads(SEED.read_text(encoding="utf-8"))
-    registry = load_registry()
-    retailers = [seed_id for seed_id, _, _ in RETAILERS.values()]
-    observed = {row["product url"]: row for r in retailers for row in read(f"listings-{r}.csv")}
-    candidates = [row for r in retailers for row in read(f"candidates-{r}.csv")]
-    unobserved = [l["productUrl"] for l in seed["listings"] if l["productUrl"] not in observed]
-    if unobserved:
-        raise SystemExit(f"{len(unobserved)} seed listings have no new observation, e.g. {unobserved[0]}")
-    decisions = {(r["product_id"], r["product url"]): r for r in read("match-decisions.csv", required=False)}
-    seller_checks = {r["product url"]: r["seller"] for r in read("seller-checks.csv", required=False)}
+def catalogue(seed: dict, retired: dict) -> tuple[dict, list[dict]]:
+    """Every product ever published, by ID, and their listings: the seed's and the retired ones."""
+    products = {p["productId"]: p for p in [*retired["products"], *seed["products"]]}
+    listings = {l["listingId"]: l for l in [*retired["listings"], *seed["listings"]]}
+    return products, list(listings.values())
 
-    # Each product's rows: its published listings first, then accepted candidates, best first.
+
+def build(seed, retired, observed, candidates, decisions, seller_checks, registry) -> dict:
+    """The refreshed products and listings, the retired ones, and what the report needs.
+
+    Pure apart from updating `registry`, so it can be tested without files.
+    """
+    known, known_listings = catalogue(seed, retired)
+    unobserved = [l["productUrl"] for l in known_listings if l["productUrl"] not in observed]
+    if unobserved:
+        raise SystemExit(f"{len(unobserved)} listings have no new observation, e.g. {unobserved[0]}")
+
+    # Each product's rows: its known listings first, then accepted candidates, best first.
     rows: dict[str, list[dict]] = defaultdict(list)
-    for listing in seed["listings"]:
+    for listing in known_listings:
         rows[listing["productId"]].append(observed[listing["productUrl"]])
     accepted = 0
     for candidate in sorted(candidates, key=lambda c: -float(c["similarity"])):
@@ -99,9 +106,9 @@ def main() -> None:
 
     reasons: Counter = Counter()
     unreadable: list[dict] = []
-    products, listings, dropped, added = [], [], [], []
-    current = {p["productId"]: p for p in seed["products"]}
-    for product_id, product in sorted(current.items()):
+    products, listings, added = [], [], []
+    retired_products, retired_listings = [], []
+    for product_id, product in sorted(known.items()):
         eligible: dict[str, dict] = {}
         for row in rows[product_id]:
             reason = exclusion(row, seller_checks)
@@ -111,10 +118,23 @@ def main() -> None:
                 reasons[(row["retailer"], reason)] += 1
             elif row["retailer"] not in eligible:
                 eligible[row["retailer"]] = row
-        if len(eligible) < 2:
-            dropped.append(product_id)
-            continue
         members = sorted(eligible.values(), key=lambda r: NAME_PREFERENCE.index(SOURCE_KEY[r["retailer"]]))
+        if len(members) < 2:
+            # Kept, without prices, so a later refresh reads its listings again
+            # and can bring it back under the same ID.
+            retired_products.append(product)
+            retired_listings.extend(
+                {
+                    "listingId": listing_id(SOURCE_KEY[r["retailer"]], r["product url"].split("?")[0]),
+                    "productId": product_id,
+                    "retailerId": r["retailer"],
+                    "productUrl": r["product url"].split("?")[0],
+                    "specification": r["Specification"] or r["Product Name"],
+                }
+                for r in rows[product_id]
+                if r.get("status", "ok") == "ok"
+            )
+            continue
         image = next((m["Image URL"] for m in members if m["Image URL"].startswith("https://")), None)
         products.append(
             {
@@ -133,22 +153,51 @@ def main() -> None:
             listings.append(
                 seed_listing(lid, product_id, member["retailer"], f"snapshot:{url}", member, derive_offer(member), url)
             )
+    return {
+        "products": products,
+        "listings": listings,
+        "retired": {"products": retired_products, "listings": retired_listings},
+        "added": added,
+        "accepted": accepted,
+        "reasons": reasons,
+        "unreadable": unreadable,
+    }
 
-    if unreadable:
+
+def main() -> None:
+    seed = json.loads(SEED.read_text(encoding="utf-8"))
+    retired = json.loads(RETIRED.read_text(encoding="utf-8")) if RETIRED.exists() else {"products": [], "listings": []}
+    registry = load_registry()
+    retailers = [seed_id for seed_id, _, _ in RETAILERS.values()]
+    result = build(
+        seed,
+        retired,
+        observed={row["product url"]: row for r in retailers for row in read(f"listings-{r}.csv")},
+        candidates=[row for r in retailers for row in read(f"candidates-{r}.csv")],
+        decisions={(r["product_id"], r["product url"]): r for r in read("match-decisions.csv", required=False)},
+        seller_checks={r["product url"]: r["seller"] for r in read("seller-checks.csv", required=False)},
+        registry=registry,
+    )
+
+    if result["unreadable"]:
         path = SNAPSHOT / "seller-checks-needed.csv"
         with open(path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(["product url", "Product Name", "seller"])
-            writer.writerows([[r["product url"], r["Product Name"], ""] for r in unreadable])
-        print(f"{len(unreadable)} RedMart sellers need a hand check: fill in {path.relative_to(ROOT)},")
-        print("save it as data/snapshot/seller-checks.csv, then run this again.")
+            writer.writerows([[r["product url"], r["Product Name"], ""] for r in result["unreadable"]])
+        print(f"{len(result['unreadable'])} RedMart sellers need a hand check: fill in {path.relative_to(ROOT)},")
+        print("add the rows to data/snapshot/seller-checks.csv, then run this again.")
         raise SystemExit(2)
 
-    write_seed(products, listings, registry)
-    write_report(seed, products, listings, dropped, added, accepted, reasons)
+    write_seed(result["products"], result["listings"], registry)
+    RETIRED.write_text(json.dumps(result["retired"], indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_report(seed, result)
 
 
-def write_report(seed, products, listings, dropped, added, accepted, reasons) -> None:
+def write_report(seed, result) -> None:
+    products, listings = result["products"], result["listings"]
+    added, accepted, reasons = result["added"], result["accepted"], result["reasons"]
+    dropped = [p["productId"] for p in result["retired"]["products"]]
     by_product = Counter(l["productId"] for l in listings)
     per_retailer = Counter(l["retailerId"] for l in listings)
     before = Counter(l["retailerId"] for l in seed["listings"])
@@ -173,7 +222,7 @@ def write_report(seed, products, listings, dropped, added, accepted, reasons) ->
         "| --- | --- | --- |",
         *[f"| {r} | {reason} | {n} |" for (r, reason), n in sorted(reasons.items())],
         "",
-        f"## Products dropped below two retailers ({len(dropped)})",
+        f"## Products not published: fewer than two eligible retailers ({len(dropped)})",
         "",
         *[f"- `{p}`" for p in dropped],
         "",

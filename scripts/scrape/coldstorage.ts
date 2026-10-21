@@ -8,6 +8,7 @@ import {
   clean,
   dollars,
   type Observation,
+  PROMOTION_SEPARATOR,
   type ProductResult,
   type RetailerScraper,
   type SearchHit,
@@ -45,12 +46,18 @@ function products(html: string): ColdStorageProduct[] {
 
 const productUrl = (slug: string) => `${ORIGIN}/product/${slug}`;
 
+/** A single-pack discount label, such as "7% off" or "Save $1": the sale itself. */
+const SALE_LABEL = /^(?:\d+(?:\.\d+)?% off|save \$?[\d.]+|\$[\d.]+ off)$/i;
+
 export function observe(product: ColdStorageProduct, url = productUrl(product.slug)): Observation {
   const sale = product.promoPrice !== null && product.promoPrice < product.price;
   const label = clean(product.discountLabel);
-  // A deal for several packs keeps its wording; a single-pack sale label such as
-  // "7% off" becomes the plain saving the sale price already contains.
-  const multibuy = /^(?:any|buy)\s+([2-9]|\d{2,})\b/i.test(label) ? label : "";
+  // A sale shows as its plain saving; any other label, such as a multibuy, is
+  // kept in the retailer's wording for curation to interpret.
+  const promotions = [
+    ...(sale ? [`Save $${dollars(product.price - (product.promoPrice ?? 0))}`] : []),
+    ...(label && !(sale && SALE_LABEL.test(label)) ? [label] : []),
+  ];
   return {
     retailer: "cold-storage",
     "product url": url,
@@ -58,8 +65,7 @@ export function observe(product: ColdStorageProduct, url = productUrl(product.sl
     "Product Price": dollars(sale ? (product.promoPrice ?? product.price) : product.price),
     "Original Price": sale ? dollars(product.price) : "",
     Specification: clean(product.size),
-    Savings:
-      multibuy || (sale ? `Save $${dollars(product.price - (product.promoPrice ?? 0))}` : ""),
+    Savings: promotions.join(PROMOTION_SEPARATOR),
     "in-stock": product.inventoryStatus === "In Stock" ? "Yes" : "No",
     "Image URL": product.image ?? "",
     brand: "",
@@ -68,16 +74,21 @@ export function observe(product: ColdStorageProduct, url = productUrl(product.sl
 }
 
 export const coldStorage: RetailerScraper = {
+  // Cold Storage answers a removed product with HTTP 404, the only evidence of
+  // removal accepted; a page without the product's data is a failure.
   async product(url): Promise<ProductResult> {
     const html = await fetchText(url);
     if (html === null) return "not_found";
     const slug = new URL(url).pathname.split("/").pop();
     const product = products(html).find((candidate) => candidate.slug === slug);
-    return product ? observe(product, url) : "not_found";
+    if (!product) throw new Error(`Cold Storage page ${url} has no data for ${slug}`);
+    return observe(product, url);
   },
   async search(query): Promise<SearchHit[]> {
     const html = await fetchText(`${ORIGIN}/search?q=${encodeURIComponent(query)}`);
-    if (html === null) return [];
+    if (html === null || !html.includes("self.__next_f")) {
+      throw new Error(`Cold Storage search for ${query} returned no page data`);
+    }
     return products(html).map((product) => ({
       url: productUrl(product.slug),
       name: clean(product.name),

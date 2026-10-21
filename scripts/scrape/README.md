@@ -11,7 +11,13 @@ These scripts take a new snapshot of the published catalogue and rebuild the see
 
 Run everything from the repository root.
 
-1. **Read every published listing again.** Writes `data/snapshot/listings-<retailer>.csv`. Name retailers to collect only those, e.g. `… listings redmart`.
+0. **Start a snapshot.** Removes the previous snapshot's files from `data/snapshot`, so nothing from it can be built into the new seed.
+
+   ```sh
+   node scripts/scrape/refresh.ts new
+   ```
+
+1. **Read every catalogue listing again.** The catalogue is the seed plus the products that dropped out of it (`data/seed/retired.json`), so a product can come back. Writes `data/snapshot/listings-<retailer>.csv`. Name retailers to collect only those, e.g. `… listings redmart`.
 
    ```sh
    node scripts/scrape/refresh.ts listings
@@ -45,9 +51,11 @@ Run everything from the repository root.
 ## Rules
 
 - **Lazada's slider check.** Lazada answers fast or repeated requests with a slider check. The RedMart scraper works through one Chromium profile (`.cache/lazada-profile`, not committed) at one request every eight seconds. Run RedMart steps with `--headed`: when the check appears, the scraper waits up to ten minutes for you to complete it in the window, then carries on. A headless run stops at the first check rather than retrying. Collecting RedMart takes about an hour.
-- **All or nothing, per retailer.** A page that no longer exists is recorded as gone. Any other failure, after backing off, leaves that retailer's file unwritten, so a file never mixes new and old observations. Collect a retailer that failed again the same day: one snapshot covers all three retailers within one short window. A missing file, or a seed listing without a new observation, stops the build.
-- **Columns.** Observations keep the source workbooks' columns (`data/raw/README.md`), so `derive_offer_prices.py` applies the same price, sale and multibuy rules, and add `retailer` and `seller`. Nothing records when they were collected.
-- **Eligibility.** A listing publishes when its page exists, it is in stock, its price is reliable and, at RedMart, RedMart sells it. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable; a product that drops out keeps its ID for when it returns.
+- **All or nothing, per retailer.** A page is recorded as gone only on positive evidence: a 404 at FairPrice or Cold Storage, FairPrice's empty product detail, or a well-formed Lazada catalogue answer without the item. Any other failure, including a page in an unexpected shape, deletes that retailer's file, so a failed refresh cannot leave an earlier observation to build from. Collect a retailer that failed again the same day: one snapshot covers all three retailers within one short window. A missing file, or a seed listing without a new observation, stops the build.
+- **Columns.** Observations keep the source workbooks' columns (`data/raw/README.md`), so `derive_offer_prices.py` applies the same price, sale and multibuy rules, and add `retailer` and `seller`. `Savings` holds every promotion in the retailer's wording, separated by " | ": a multibuy is applied, a sale's plain saving dropped and anything else shown as an excluded promotion. Nothing records when they were collected.
+- **Eligibility.** A listing publishes when its page exists, it is in stock, its price is reliable and, at RedMart, RedMart sells it. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable. A product that drops out moves, without prices, to `data/seed/retired.json`; later refreshes read its listings again and bring it back under the same ID once two retailers have it.
+- **Pack rules.** A search hit must state the same pack count and per-pack size as the product (2 × 500 g is not 1 kg), and a hit whose title and specification disagree is never matched.
+- **Sellers.** The RedMart seller is read from the page data's "Sold by:" entry. With none, a page whose seller module is RedMart's is RedMart's; anything else is left for a hand check.
 
 ## How each retailer is read
 

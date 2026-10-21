@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { observe as coldStorage } from "./coldstorage.ts";
-import { observe as fairprice } from "./fairprice.ts";
+import { observe as fairprice, pageProduct } from "./fairprice.ts";
 import { packKey, passesNameRules } from "./match.ts";
 import { fromCsv, toCsv } from "./observation.ts";
-import { isChallenge, observe as redmart } from "./redmart.ts";
+import { isChallenge, observe as redmart, sellerFrom } from "./redmart.ts";
 
 describe("FairPrice pages", () => {
   const store = { mrp: "3.88", discount: "0", stock: 76, status: "ENABLED" };
@@ -41,15 +41,29 @@ describe("FairPrice pages", () => {
     });
   });
 
-  it("keeps a multibuy offer's wording and ignores single-pack offers", () => {
+  it("keeps every offer's wording except the sale itself", () => {
     const deals = {
       ...product,
+      storeSpecificData: [{ ...store, discount: "0.93" }],
       offers: [
         { shortDescriptionA: "*Buy 1* At $2.95" },
         { shortDescriptionA: "*Any 2* At $4.95" },
+        { shortDescriptionA: "Spend $30 + Free Gift" },
       ],
     };
-    expect(fairprice(deals).Savings).toBe("Any 2 At $4.95");
+    expect(fairprice(deals).Savings).toBe("Save $0.93 | Any 2 At $4.95 | Spend $30 + Free Gift");
+  });
+
+  it("accepts only an empty product detail as evidence of removal", () => {
+    const page = (value: unknown) => ({
+      props: {
+        pageProps: { product: { data: { page: { layouts: [{ name: "ProductDetail", value }] } } } },
+      },
+    });
+    expect(pageProduct(page(null), "u")).toBe("not_found");
+    expect(pageProduct(page(product), "u")).toMatchObject({ slug: product.slug });
+    expect(() => pageProduct(page({ unexpected: true }), "u")).toThrow(/unexpected/);
+    expect(() => pageProduct({ props: {} }, "u")).toThrow(/no product detail/);
   });
 
   it("reads no stock or a disabled product as out of stock", () => {
@@ -94,6 +108,15 @@ describe("Cold Storage pages", () => {
     ).toMatchObject({ "Product Price": "21.90", "Original Price": "23.75", Savings: "Save $1.85" });
   });
 
+  it("keeps a label that is not the sale's own discount", () => {
+    expect(coldStorage({ ...product, discountLabel: "Free Tote Bag with $50 Spend" }).Savings).toBe(
+      "Free Tote Bag with $50 Spend",
+    );
+    expect(
+      coldStorage({ ...product, price: 4, promoPrice: 3, discountLabel: "Any 2 @ $5.50" }).Savings,
+    ).toBe("Save $1.00 | Any 2 @ $5.50");
+  });
+
   it("reads anything but In Stock as out of stock", () => {
     expect(coldStorage({ ...product, inventoryStatus: "Out of Stock" })["in-stock"]).toBe("No");
   });
@@ -136,6 +159,36 @@ describe("RedMart catalogue items", () => {
     });
   });
 
+  it("keeps every promotion badge, not other badges", () => {
+    const badges = {
+      ...item,
+      icons: [
+        { alias: "p_multibuy", text: "Any 2 For $6.30" },
+        { alias: "p_freegift", text: "Free Gift with $30 spend" },
+        { alias: "soldOut", text: "SOLD OUT" },
+      ],
+    };
+    expect(redmart(badges, url, "RedMart").Savings).toBe(
+      "Any 2 For $6.30 | Free Gift with $30 spend",
+    );
+  });
+
+  it("reads the seller structurally, and leaves an unclear page for a hand check", () => {
+    const page = (extra: object, seller = { name: "RedMart" }) => ({
+      data: { root: { fields: { price_grocer: {}, seller, ...extra } } },
+    });
+    const soldBy = { module: { subtitlePrefix: "Sold by:", subtitle: "Sea Boss" } };
+    const reordered = { module: { subtitle: "Delyco", usp: [], subtitlePrefix: "Sold by:" } };
+    expect(sellerFrom(page({}))).toBe("RedMart");
+    expect(sellerFrom(page(soldBy))).toBe("Sea Boss");
+    expect(sellerFrom(page(reordered))).toBe("Delyco");
+    expect(sellerFrom(page({}, { name: "Other" }))).toBeNull();
+    expect(sellerFrom({ data: { root: { fields: { seller: { name: "RedMart" } } } } })).toBeNull();
+    expect(sellerFrom(null)).toBeNull();
+    const two = { a: soldBy.module, b: { subtitlePrefix: "Sold by:", subtitle: "X" } };
+    expect(sellerFrom(page(two))).toBeNull();
+  });
+
   it("recognises Lazada's slider check", () => {
     expect(isChallenge("https://www.lazada.sg//catalog//_____tmd_____/punish?x5secdata=a")).toBe(
       true,
@@ -153,12 +206,21 @@ describe("RedMart catalogue items", () => {
 describe("name rules", () => {
   const product = { name: "Ayam Brand Sardines in Tomato Sauce 155g", specification: "155g" };
 
-  it("normalises pack sizes, keeping multipacks distinct", () => {
-    expect(packKey("155 g")).toBe("155g");
-    expect(packKey("1kg")).toBe("1000g");
-    expect(packKey("6 x 1.5L")).toBe("9000ml");
-    expect(packKey("6 × 155 g")).toBe("930g");
+  it("keeps pack count and per-pack size apart", () => {
+    expect(packKey("155 g")).toBe("1x155g");
+    expect(packKey("1kg")).toBe("1x1000g");
+    expect(packKey("6 x 1.5L")).toBe("6x1500ml");
+    expect(packKey("6 × 155 g")).toBe("6x155g");
     expect(packKey("Family pack")).toBeNull();
+  });
+
+  it("rejects the same total in another configuration, and a self-contradicting listing", () => {
+    const kilo = { name: "Barilla Penne 1kg", specification: "1kg" };
+    const pack = (name: string, specification: string) =>
+      passesNameRules(kilo, { name, specification });
+    expect(pack("Barilla Penne 2 x 500g", "2 x 500g")).toBe(false);
+    expect(pack("Barilla Penne 500g", "1kg")).toBe(false);
+    expect(pack("Barilla Penne", "1000 g")).toBe(true);
   });
 
   it("passes the same product under another retailer's name", () => {

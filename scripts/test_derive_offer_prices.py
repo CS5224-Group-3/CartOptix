@@ -49,23 +49,32 @@ class DeriveOffer(unittest.TestCase):
     def test_applies_a_multibuy_with_its_dates_removed(self):
         offer = derive_offer(row("10.05", "Buy 2 Get 5% Off (1/9 - 30/9)"))
         self.assertEqual(offer["multibuy"]["dealPriceCents"], 1910)
-        self.assertEqual(offer["excluded_promotion"], "")
+        self.assertEqual(offer["excluded_promotions"], [])
 
     def test_never_stacks_a_multibuy_on_a_sale(self):
         offer = derive_offer(row("3.00", "Any 2 Save 10%", original="$4.00"))
         self.assertEqual(offer["price_kind"], "unconditional_sale")
         self.assertEqual(offer["original_price_cents"], 400)
         self.assertIsNone(offer["multibuy"])
-        self.assertEqual(offer["excluded_promotion"], "Any 2 Save 10%")
+        self.assertEqual(offer["excluded_promotions"], ["Any 2 Save 10%"])
 
     def test_keeps_other_promotions_as_the_retailer_worded_them(self):
         offer = derive_offer(row("5.00", "Spend $30 + Free Gift"))
         self.assertIsNone(offer["multibuy"])
-        self.assertEqual(offer["excluded_promotion"], "Spend $30 + Free Gift")
+        self.assertEqual(offer["excluded_promotions"], ["Spend $30 + Free Gift"])
+
+    def test_several_promotions_keep_the_multibuy_and_exclude_the_rest(self):
+        offer = derive_offer(row("3.50", "Spend $30 + Free Gift | Any 2 @ $6.55 | Buy 3 Get Free Bag"))
+        self.assertEqual(offer["multibuy"]["dealPriceCents"], 655)
+        self.assertEqual(offer["excluded_promotions"], ["Spend $30 + Free Gift", "Buy 3 Get Free Bag"])
+
+    def test_a_sale_keeps_its_conditional_offers_as_excluded(self):
+        offer = derive_offer(row("3.00", "Save $1.00 | Spend $15 + Free Gift", original="$4.00"))
+        self.assertEqual(offer["excluded_promotions"], ["Spend $15 + Free Gift"])
 
     def test_a_sales_plain_saving_is_not_a_promotion(self):
         offer = derive_offer(row("3.00", "Save $1.00", original="$4.00"))
-        self.assertEqual(offer["excluded_promotion"], "")
+        self.assertEqual(offer["excluded_promotions"], [])
 
 
 if __name__ == "__main__":

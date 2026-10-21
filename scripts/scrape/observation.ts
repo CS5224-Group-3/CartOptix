@@ -23,6 +23,9 @@ export const COLUMNS = [
 
 export type Observation = Record<(typeof COLUMNS)[number], string> & { retailer: Retailer };
 
+/** Separates several promotions in `Savings`, as derive_offer_prices.py expects. */
+export const PROMOTION_SEPARATOR = " | ";
+
 /** A search hit, before its page is read. */
 export interface SearchHit {
   url: string;
