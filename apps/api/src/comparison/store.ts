@@ -28,7 +28,8 @@ export function offerRule(row: typeof listings.$inferSelect): OfferRule {
       packsPerDeal: row.multibuy.packsPerDeal,
       dealPrice: row.multibuy.dealPriceCents,
       mixAndMatch: row.multibuy.mixAndMatch,
-      percentOff: row.multibuy.percentOff,
+      // Rows imported before percentOff existed lack it; they were all fixed-price deals.
+      percentOff: row.multibuy.percentOff ?? null,
     },
     // Only eligible offers are published, and the MVP models no item charges.
     eligible: true,

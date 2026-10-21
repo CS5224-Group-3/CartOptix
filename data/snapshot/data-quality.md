@@ -77,7 +77,7 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
   - Every fixed-price deal checked in a cart matched, at deal + 1 packs: FairPrice 10 of 10 and RedMart 5 of 5. One more RedMart item, whose deal had ended, matched at its ordinary price.
   - Cold Storage's 10 deals were checked against their live product pages only, not a cart, because its cart needs a login. Its fixed-price deals are applied on the strength of the other two retailers' carts.
   - RedMart's percentage deals: 3 of 4 matched exactly, and all 4 were within their tolerance. The percentage is a rounded label for a fixed price: "Any 2 Save 40%" charged $11.79 for $19.78, 40.4% off, where the label gives $11.87 (8¢ out, tolerance 10¢). Percentage deals are applied as estimates and the shopper is told the checkout may differ by a few cents (PR-03).
-  - Why not exclude them: on this seed, leaving out the 23 percentage deals overstates RedMart by $1.84 per deal on average and would recommend another retailer for 13 products where RedMart is cheapest even at the label's least favourable rounding.
+  - Why not exclude them: on this seed, leaving out the 23 percentage deals overstates RedMart by $1.84 per deal on average and would change the comparison for 13 products, in single-product baskets of 1–20 packs: at some quantity RedMart is cheaper even at the label's least favourable rounding (7 products) or ties for cheapest (6), but would lose to another retailer.
   - No sampled deal produced an exact half cent, so the half-up rounding of that case is untested.
   - Carried-over RedMart listings have today's rules applied to their recorded deal wording.
 

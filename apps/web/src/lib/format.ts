@@ -83,7 +83,10 @@ export function multibuyNotes(
     notes.push(
       `${parts.join(" + ")} · You save ${percentage ? "about " : ""}${formatSgd(multibuy.savingCents)}`,
     );
-  else if (hint) notes.push(`Buy ${terms}`);
+  else if (hint)
+    notes.push(
+      percentage ? `Buy ${multibuy.packsPerDeal}, save ${multibuy.percentOff}%` : `Buy ${terms}`,
+    );
   if (percentage && (multibuy.timesApplied > 0 || hint))
     notes.push("The retailer rounds this percentage, so the checkout may differ by a few cents");
   if (multibuy.mixAndMatch) notes.push("Mixing items in this deal may save more");
