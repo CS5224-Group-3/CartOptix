@@ -66,13 +66,18 @@ interface Fields {
   promotionTags?: { data?: Record<string, { name?: string }[]> };
 }
 
+const fieldsOf = (data: unknown) =>
+  (data as { data?: { root?: { fields?: Fields } } } | null)?.data?.root?.fields;
+
 /** A product page's data as an observation; throws when the price is not there. */
 export function observe(data: unknown, url: string, seller: string): Observation {
-  const fields = (data as { data?: { root?: { fields?: Fields } } } | null)?.data?.root?.fields;
-  const sku = Object.keys(fields?.price_grocer ?? {})[0];
-  const price = sku ? fields?.price_grocer?.[sku]?.data?.price : undefined;
-  if (!fields || !sku || price?.priceNumber === undefined || !fields.product?.title) {
-    throw new Error(`RedMart page ${url} has no price data`);
+  const fields = fieldsOf(data);
+  // A page can list several SKUs; only the one the listing links to counts.
+  const sku = url.match(/-i\d+-s(\d+)/)?.[1];
+  if (!sku) throw new Error(`Not a Lazada product link: ${url}`);
+  const price = fields?.price_grocer?.[sku]?.data?.price;
+  if (!fields || price?.priceNumber === undefined || !fields.product?.title) {
+    throw new Error(`RedMart page ${url} has no price data for SKU ${sku}`);
   }
   const original = price.originalPriceNumber ?? 0;
   const sale = original > price.priceNumber;
@@ -200,7 +205,7 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
       const { data, gone } = await pageData(url);
       // Lazada's own "no longer available" page, without product data, is the
       // evidence of removal; any other page without prices fails in `observe`.
-      if (gone && sellerFrom(data) === null) return "not_found";
+      if (gone && !fieldsOf(data)?.price_grocer) return "not_found";
       return observe(data, url, sellerFrom(data) ?? "");
     },
     async search(query): Promise<SearchHit[]> {

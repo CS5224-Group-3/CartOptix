@@ -211,6 +211,18 @@ describe("RedMart product pages", () => {
     });
   });
 
+  it("reads only the SKU the listing links to", () => {
+    const other = page();
+    const fields = other.data.root.fields as Record<string, unknown>;
+    fields.price_grocer = {
+      "999": { data: { price: { priceNumber: 9.99 } } },
+      "527102860": { data: { price: { priceNumber: 3.88 } } },
+    };
+    expect(redmart(other, url, "RedMart")["Product Price"]).toBe("3.88");
+    fields.price_grocer = { "999": { data: { price: { priceNumber: 9.99 } } } };
+    expect(() => redmart(other, url, "RedMart")).toThrow(/SKU 527102860/);
+  });
+
   it("fails rather than inventing a price", () => {
     expect(() => redmart(page({}), url, "RedMart")).toThrow(/no price data/);
     expect(() => redmart(null, url, "RedMart")).toThrow(/no price data/);
