@@ -8,14 +8,14 @@ This is the closing report for #73: the first snapshot taken with the scrapers i
 | --- | --- | --- |
 | FairPrice | Every page read again (257 listings) | 37 products searched, up to 3 hits each |
 | Cold Storage | Every page read again (189 listings) | 105 products searched, up to 3 hits each |
-| RedMart | **Carried over** from the previous seed, with today's rules applied to the recorded observations (177 listings) | 43 of 117 product searches, best hit only (see below) |
+| RedMart | **Carried over** from the previous seed, with today's rules applied to the recorded observations (177 listings) | 43 searches covering 36–42 of 117 products, best hit only (see below) |
 
 Lazada answered scripted reads with its slider check and Google reCAPTCHA, often on the first page. The product owner therefore decided to carry RedMart's published listings over rather than read them again, and to search only for the RedMart listings the catalogue was missing.
 
 - **First RedMart pass:** 14 products were searched before the check budget (`--max-checks`) ran out. The remaining 103 were skipped; a skipped search contributes no candidates and is never filled from earlier data.
 - **Targeted pass:** 20 more products were then searched with `--products`, chosen where a RedMart listing matters most. They include Ayam Brand Sardines in Tomato Sauce 155g, the QA item that prompted #73.
 - **Second targeted pass:** 10 everyday staples already at FairPrice and Cold Storage, so a RedMart match puts them at all three: Colgate Max Fresh 160g, Sensodyne Complete Protection 100g, Pantene Total Damage Care 680ml, Spam Lite 340g, Tai Hua Special Light Soy Sauce 320ml, Royal Umbrella Thai Fragrant Brown Rice 2kg, Myojo Spicy Hot Chicken noodles 5 × 80g, Fernleaf Full Cream Milk Powder 1.1kg, Twinings English Breakfast 50 teabags and Ruffles Original 170g. Nine were searched before the check budget ran out; Twinings was skipped. Four were published (Colgate, Pantene, Royal Umbrella, Ruffles); Sensodyne's hit was UNSURE; Spam Lite, Tai Hua, Myojo and Fernleaf had no hit that passed the name rules.
-- **Search record:** a targeted search records only products with hits, so the first targeted pass's products without hits are not known, and the second pass may have searched some of them again. Between 38 and 43 distinct products have been searched.
+- **Search record:** a targeted search records only products with hits, so the first targeted pass's products without hits are not known, and the second pass may have searched some of them again. The three passes made 43 searches. The sardines were searched twice, and the first targeted pass's 6 products without hits may repeat others, so they covered between 36 and 42 distinct products.
 
 Of the 179 RedMart listings in this seed, 153 are carried over with the previous snapshot's prices, which the fixed-dataset disclaimer covers. The other 26 were found by search and read fresh.
 
@@ -86,5 +86,5 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
 ## Shortfalls
 
 1. **RedMart was mostly not refreshed.** The 153 carried-over listings keep the previous snapshot's prices, stock and promotions, by product owner decision, because of Lazada's anti-bot checks. Only the 26 new RedMart listings are fresh.
-2. **Most missing RedMart listings weren't searched.** Between 74 and 79 of the 117 products missing at RedMart have not been searched. The two targeted passes covered the sardines and everyday staples. The rest need a RedMart search in the next snapshot (`refresh.ts search redmart --hits 1 --headed`).
+2. **Most missing RedMart listings weren't searched.** Between 75 and 81 of the 117 products missing at RedMart have not been searched. The two targeted passes covered the sardines and everyday staples. The rest need a RedMart search in the next snapshot (`refresh.ts search redmart --hits 1 --headed`).
 3. **The catalogue shrank to 238 products,** mostly because of stock at the time of the snapshot. Retired products return automatically when they are back in stock at two retailers.
