@@ -98,5 +98,7 @@ export function fromCsv(text: string): Record<string, string>[] {
  * read but showed no seller. A gone or skipped listing is never revisited.
  */
 export function needsSeller(row: Record<string, string>): boolean {
-  return row.status === "ok" && row.retailer === "redmart" && !row.seller;
+  // Candidate rows have no status column: their pages were read.
+  const read = row.status === undefined || row.status === "ok";
+  return read && row.retailer === "redmart" && !row.seller;
 }
