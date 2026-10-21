@@ -23,7 +23,7 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts search
    ```
 
-3. **Read RedMart sellers again, if needed.** Lazada's catalogue does not say who sells an item, so the scraper reads each RedMart product page for its "Sold by" line. Lazada challenges browsers that read many pages; after backing off, the scraper leaves the remaining sellers empty rather than failing. Once the challenge has cleared (it can take an hour), read them again, slowly; this records them in `data/snapshot/seller-checks.csv`:
+3. **Read RedMart sellers again, if needed.** Lazada's catalogue does not say who sells an item, so the scraper reads each RedMart product page for its "Sold by" line. A page that loads without seller data leaves the seller empty; this reads those pages again and records what it finds in `data/snapshot/seller-checks.csv`:
 
    ```sh
    node scripts/scrape/refresh.ts sellers --headed
@@ -44,6 +44,7 @@ Run everything from the repository root.
 
 ## Rules
 
+- **Lazada's slider check.** Lazada answers fast or repeated requests with a slider check. The RedMart scraper works through one Chromium profile (`.cache/lazada-profile`, not committed) at one request every eight seconds. Run RedMart steps with `--headed`: when the check appears, the scraper waits up to ten minutes for you to complete it in the window, then carries on. A headless run stops at the first check rather than retrying. Collecting RedMart takes about an hour.
 - **All or nothing, per retailer.** A page that no longer exists is recorded as gone. Any other failure, after backing off, leaves that retailer's file unwritten, so a file never mixes new and old observations. Collect a retailer that failed again the same day: one snapshot covers all three retailers within one short window. A missing file, or a seed listing without a new observation, stops the build.
 - **Columns.** Observations keep the source workbooks' columns (`data/raw/README.md`), so `derive_offer_prices.py` applies the same price, sale and multibuy rules, and add `retailer` and `seller`. Nothing records when they were collected.
 - **Eligibility.** A listing publishes when its page exists, it is in stock, its price is reliable and, at RedMart, RedMart sells it. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable; a product that drops out keeps its ID for when it returns.

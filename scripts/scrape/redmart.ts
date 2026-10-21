@@ -1,14 +1,19 @@
 /**
  * RedMart listings live on Lazada. Lazada's catalogue JSON, restricted to
  * RedMart (`m=redmart`), gives price, crossed-out price, stock, pack size and
- * the multibuy badge without a browser, and a search for an item number finds
- * that item. It does not say who sells an item, so the seller comes from the
- * product page's "Sold by" line, read with Chromium. Lazada challenges
- * browsers that read many pages quickly, so pages are read slowly, and a page
- * still challenged after backing off leaves the seller empty for a hand check.
+ * the multibuy badge, and a search for an item number finds that item. It does
+ * not say who sells an item, so the seller comes from the product page's
+ * "Sold by" line.
+ *
+ * Lazada answers fast or repeated requests with a slider check (a "punish"
+ * page). Everything here goes through one Chromium profile, kept in
+ * `.cache/lazada-profile`, at a slow pace. When the check appears, a headed
+ * run waits for the operator to complete it in the window; a headless run
+ * stops at once, because nothing else will clear it.
  */
-import { type Browser, chromium, type Page } from "@playwright/test";
-import { fetchText, pause, USER_AGENT } from "./http.ts";
+import { resolve } from "node:path";
+import { type BrowserContext, chromium, type Page } from "@playwright/test";
+import { pause, USER_AGENT } from "./http.ts";
 import {
   clean,
   dollars,
@@ -19,10 +24,15 @@ import {
 } from "./observation.ts";
 
 const CATALOGUE = "https://www.lazada.sg/catalog/?ajax=true&m=redmart&q=";
-/** Between product pages, and after a challenge, in milliseconds. */
-const PAGE_INTERVAL = 15_000;
-const CATALOGUE_INTERVAL = 8_000;
-const CHALLENGE_BACKOFF = [60_000, 180_000, 600_000];
+const PROFILE = resolve(import.meta.dirname, "../../.cache/lazada-profile");
+/** Between requests, in milliseconds. */
+const INTERVAL = 8_000;
+/** How long a headed run waits for the operator to complete the check. */
+const OPERATOR_WAIT = 10 * 60_000;
+
+export class ChallengeError extends Error {
+  override readonly name = "ChallengeError";
+}
 
 export interface CatalogueItem {
   itemId: string;
@@ -36,24 +46,6 @@ export interface CatalogueItem {
   brandName?: string;
   icons?: { alias?: string; text?: string }[];
 }
-
-/** Lazada answers too many catalogue requests with a challenge page instead of JSON. */
-async function catalogue(query: string): Promise<CatalogueItem[]> {
-  for (const backoff of [CATALOGUE_INTERVAL, ...CHALLENGE_BACKOFF]) {
-    await pause(backoff);
-    const body = await fetchText(`${CATALOGUE}${encodeURIComponent(query)}`);
-    if (body === null) return [];
-    if (body.trimStart().startsWith("{")) {
-      const data = JSON.parse(body) as { mods?: { listItems?: CatalogueItem[] } };
-      return data.mods?.listItems ?? [];
-    }
-    console.warn(`redmart: catalogue challenged for ${query}; backing off`);
-  }
-  throw new Error(`Lazada catalogue still challenged for ${query}`);
-}
-
-const pdpUrl = (item: CatalogueItem) =>
-  `https://www.lazada.sg${new URL(item.productUrl, "https://www.lazada.sg").pathname}`;
 
 export function observe(item: CatalogueItem, url: string, seller: string): Observation {
   const price = Number(item.price);
@@ -75,7 +67,10 @@ export function observe(item: CatalogueItem, url: string, seller: string): Obser
   };
 }
 
-/** The page's "Sold by" seller, "RedMart" when there is none, or null if unreadable. */
+export const isChallenge = (url: string) =>
+  url.includes("_____tmd_____") || url.includes("/punish");
+
+/** The page's "Sold by" seller, "RedMart" when there is none, or null if not loaded. */
 function readSeller(): string | null {
   // Runs in the browser.
   // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
@@ -86,34 +81,52 @@ function readSeller(): string | null {
 }
 
 export interface RedMartScraper extends RetailerScraper {
-  /** The listing's seller, or "" when its page could not be read. */
+  /** The listing's seller, or "" when its page loaded without seller data. */
   seller(url: string): Promise<string>;
 }
 
 export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
-  let browser: Browser | undefined;
+  let context: BrowserContext | undefined;
   let page: Page | undefined;
-  /** Set once a page stays challenged after every back-off; later pages are not tried. */
-  let blocked = false;
+
+  /** Opens `url` at the pace Lazada tolerates, getting past the check if an operator can. */
+  async function visit(url: string): Promise<Page> {
+    context ??= await chromium.launchPersistentContext(PROFILE, {
+      headless: !options.headed,
+      locale: "en-SG",
+      userAgent: USER_AGENT,
+    });
+    page ??= context.pages()[0] ?? (await context.newPage());
+    await pause(INTERVAL);
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
+    if (isChallenge(page.url())) {
+      if (!options.headed) {
+        throw new ChallengeError("Lazada is showing its slider check; run again with --headed");
+      }
+      console.warn("redmart: complete Lazada's check in the browser window to continue");
+      await page
+        .waitForURL((current) => !isChallenge(current.href), { timeout: OPERATOR_WAIT })
+        .catch(() => {
+          throw new ChallengeError("Lazada's check was not completed");
+        });
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
+      if (isChallenge(page.url())) throw new ChallengeError("Lazada is still showing its check");
+    }
+    return page;
+  }
+
+  async function catalogue(query: string): Promise<CatalogueItem[]> {
+    const loaded = await visit(`${CATALOGUE}${encodeURIComponent(query)}`);
+    const body = await loaded.evaluate(() => document.body.innerText);
+    const data = JSON.parse(body) as { mods?: { listItems?: CatalogueItem[] } };
+    return data.mods?.listItems ?? [];
+  }
 
   async function seller(url: string): Promise<string> {
-    if (blocked) return "";
-    browser ??= await chromium.launch({ headless: !options.headed });
-    page ??= await browser.newPage({ locale: "en-SG", userAgent: USER_AGENT });
-    for (const backoff of [0, ...CHALLENGE_BACKOFF]) {
-      await pause(backoff || PAGE_INTERVAL);
-      try {
-        await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
-        // The page data arrives in two steps; the seller comes with the second.
-        await page.waitForFunction(readSeller, null, { timeout: 20_000 });
-        return (await page.evaluate(readSeller)) ?? "";
-      } catch {
-        console.warn(`redmart: no page data for ${url}; backing off`);
-      }
-    }
-    blocked = true;
-    console.warn("redmart: still challenged; remaining sellers are left for a hand check");
-    return "";
+    const loaded = await visit(url);
+    // The page data arrives in two steps; the seller comes with the second.
+    await loaded.waitForFunction(readSeller, null, { timeout: 20_000 }).catch(() => undefined);
+    return (await loaded.evaluate(readSeller)) ?? "";
   }
 
   return {
@@ -127,13 +140,13 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
     },
     async search(query): Promise<SearchHit[]> {
       return (await catalogue(query)).map((item) => ({
-        url: pdpUrl(item),
+        url: `https://www.lazada.sg${new URL(item.productUrl, "https://www.lazada.sg").pathname}`,
         name: clean(item.name),
         specification: clean(item.packageInfo),
       }));
     },
     async close() {
-      await browser?.close();
+      await context?.close();
     },
   };
 }

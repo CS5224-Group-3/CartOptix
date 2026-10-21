@@ -26,7 +26,7 @@ import {
   type RetailerScraper,
   toCsv,
 } from "./observation.ts";
-import { redmart } from "./redmart.ts";
+import { ChallengeError, redmart } from "./redmart.ts";
 
 const ROOT = resolve(import.meta.dirname, "../..");
 const SNAPSHOT = resolve(ROOT, "data/snapshot");
@@ -82,6 +82,8 @@ async function collect<T>(
         rows.push(...(await task(client, item)));
       } catch (error) {
         failures.push(`${retailer}: ${String(error)}`);
+        // Nothing after a challenge would load either.
+        if (error instanceof ChallengeError) break;
       }
       if ((index + 1) % 25 === 0) console.log(`${retailer}: ${index + 1}/${items.length}`);
     }

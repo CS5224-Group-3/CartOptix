@@ -3,7 +3,7 @@ import { observe as coldStorage } from "./coldstorage.ts";
 import { observe as fairprice } from "./fairprice.ts";
 import { packKey, passesNameRules } from "./match.ts";
 import { fromCsv, toCsv } from "./observation.ts";
-import { observe as redmart } from "./redmart.ts";
+import { isChallenge, observe as redmart } from "./redmart.ts";
 
 describe("FairPrice pages", () => {
   const store = { mrp: "3.88", discount: "0", stock: 76, status: "ENABLED" };
@@ -134,6 +134,13 @@ describe("RedMart catalogue items", () => {
       "Original Price": "5.95",
       Savings: "",
     });
+  });
+
+  it("recognises Lazada's slider check", () => {
+    expect(isChallenge("https://www.lazada.sg//catalog//_____tmd_____/punish?x5secdata=a")).toBe(
+      true,
+    );
+    expect(isChallenge("https://www.lazada.sg/products/pdp-i1-s1.html")).toBe(false);
   });
 
   it("records a third-party seller, an unreadable one as empty, and no stock", () => {
