@@ -127,6 +127,7 @@ async function collect<T>(
           break;
         }
         failures.push(`${retailer}: ${String(error)}`);
+        console.error(failures.at(-1));
         // Nothing after a check would load either; resume later from the checkpoint.
         if (error instanceof ChallengeError) break;
       }

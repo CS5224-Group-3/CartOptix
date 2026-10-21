@@ -114,6 +114,10 @@ export function observe(data: unknown, url: string, seller: string): Observation
 export const isChallenge = (url: string) =>
   url.includes("_____tmd_____") || url.includes("/punish");
 
+/** The check can replace the page or sit in a frame over it (when only its data is held back). */
+const challenged = (page: Page) =>
+  isChallenge(page.url()) || page.frames().some((frame) => isChallenge(frame.url()));
+
 /**
  * The seller of a product page's data: the "Sold by:" entry when there is one,
  * "RedMart" when the page's seller module is RedMart's and names no other
@@ -165,11 +169,11 @@ export function redmart(options: { headed?: boolean; maxChecks?: number } = {}):
       throw new ChallengeError("Lazada is showing its slider check; run again with --headed");
     }
     console.warn("redmart: complete Lazada's check in the browser window to continue");
-    await current
-      .waitForURL((url) => !isChallenge(url.href), { timeout: OPERATOR_WAIT })
-      .catch(() => {
-        throw new ChallengeError("Lazada's check was not completed");
-      });
+    const deadline = Date.now() + OPERATOR_WAIT;
+    while (challenged(current)) {
+      if (Date.now() > deadline) throw new ChallengeError("Lazada's check was not completed");
+      await pause(2_000);
+    }
     interval = Math.min(interval * 2, MAX_INTERVAL);
     console.warn(`redmart: slowing to one request every ${interval / 1000} s`);
   }
@@ -195,7 +199,7 @@ export function redmart(options: { headed?: boolean; maxChecks?: number } = {}):
       await current.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
       if (ready)
         await current.waitForFunction(ready, null, { timeout: 20_000 }).catch(() => undefined);
-      if (!isChallenge(current.url())) return current;
+      if (!challenged(current)) return current;
       await clearChallenge(current);
     }
     throw new ChallengeError("Lazada is still showing its check");
