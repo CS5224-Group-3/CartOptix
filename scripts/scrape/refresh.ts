@@ -176,12 +176,14 @@ const blank = () => Object.fromEntries(COLUMNS.map((column) => [column, ""]));
  * product owner accepted earlier prices there in exchange (PR-02).
  */
 function carry(retailer: Retailer): Promise<string[]> {
-  // Only the seed's listings carry prices; a retired product's have none to keep.
-  const rows: Row[] = current.listings
+  // Only the seed's listings carry prices; a retired product's have none to keep,
+  // so they are recorded as skipped (not read) rather than carried.
+  const inSeed = new Set(current.listings.map((listing) => listing.productUrl));
+  const rows: Row[] = seed.listings
     .filter((listing) => listing.retailerId === retailer)
     .map((listing) => ({
       ...blank(),
-      status: "carried",
+      status: inSeed.has(listing.productUrl) ? "carried" : "skipped",
       retailer,
       "product url": listing.productUrl,
     }));

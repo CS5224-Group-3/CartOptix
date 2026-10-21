@@ -40,6 +40,12 @@ export function parseOptions(argv: string[]): Options {
   if (unknown.length > 0 || ((command === "new" || command === "sellers") && names.length > 0)) {
     throw new Error(USAGE);
   }
+  // Only RedMart's listings may be carried over (PR-02), and only on their own.
+  if (command === "carry" && (names.length !== 1 || names[0] !== "redmart")) {
+    throw new Error(
+      "Only RedMart can be carried over: node scripts/scrape/refresh.ts carry redmart",
+    );
+  }
   const raw = values["max-checks"];
   if (raw !== undefined && !/^\d+$/.test(raw)) {
     throw new Error(`--max-checks needs a whole number of checks, not ${JSON.stringify(raw)}`);

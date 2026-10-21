@@ -106,7 +106,9 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
     for listing in known_listings:
         row = observed[listing["productUrl"]]
         if row.get("status") == "carried":
-            # Kept exactly as the current seed has it; only the seed's listings can be.
+            # Kept exactly as the current seed has it; only the seed's RedMart listings can be (PR-02).
+            if listing["retailerId"] != "redmart":
+                raise SystemExit(f"Only RedMart listings can be carried over, not {listing['productUrl']}")
             if listing["productUrl"] not in current:
                 raise SystemExit(f"Cannot carry over {listing['productUrl']}: it is not in the seed")
             row = {**row, "carried": current[listing["productUrl"]]}
