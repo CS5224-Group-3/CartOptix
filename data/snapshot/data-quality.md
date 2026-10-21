@@ -8,14 +8,16 @@ This is the closing report for #73: the first snapshot taken with the scrapers i
 | --- | --- | --- |
 | FairPrice | Every page read again (257 listings) | 37 products searched, up to 3 hits each |
 | Cold Storage | Every page read again (189 listings) | 105 products searched, up to 3 hits each |
-| RedMart | **Carried over** from the previous seed, with today's rules applied to the recorded observations (177 listings) | 34 of 117 products searched, best hit only |
+| RedMart | **Carried over** from the previous seed, with today's rules applied to the recorded observations (177 listings) | 43 of 117 product searches, best hit only (see below) |
 
 Lazada answered scripted reads with its slider check and Google reCAPTCHA, often on the first page. The product owner therefore decided to carry RedMart's published listings over rather than read them again, and to search only for the RedMart listings the catalogue was missing.
 
 - **First RedMart pass:** 14 products were searched before the check budget (`--max-checks`) ran out. The remaining 103 were skipped; a skipped search contributes no candidates and is never filled from earlier data.
 - **Targeted pass:** 20 more products were then searched with `--products`, chosen where a RedMart listing matters most. They include Ayam Brand Sardines in Tomato Sauce 155g, the QA item that prompted #73.
+- **Second targeted pass:** 10 everyday staples already at FairPrice and Cold Storage, so a RedMart match puts them at all three: Colgate Max Fresh 160g, Sensodyne Complete Protection 100g, Pantene Total Damage Care 680ml, Spam Lite 340g, Tai Hua Special Light Soy Sauce 320ml, Royal Umbrella Thai Fragrant Brown Rice 2kg, Myojo Spicy Hot Chicken noodles 5 × 80g, Fernleaf Full Cream Milk Powder 1.1kg, Twinings English Breakfast 50 teabags and Ruffles Original 170g. Nine were searched before the check budget ran out; Twinings was skipped. Four were published (Colgate, Pantene, Royal Umbrella, Ruffles); Sensodyne's hit was UNSURE; Spam Lite, Tai Hua, Myojo and Fernleaf had no hit that passed the name rules.
+- **Search record:** a targeted search records only products with hits, so the first targeted pass's products without hits are not known, and the second pass may have searched some of them again. Between 38 and 43 distinct products have been searched.
 
-Of the 175 RedMart listings in this seed, 153 are carried over with the previous snapshot's prices, which the fixed-dataset disclaimer covers. The other 22 were found by search and read fresh.
+Of the 179 RedMart listings in this seed, 153 are carried over with the previous snapshot's prices, which the fixed-dataset disclaimer covers. The other 26 were found by search and read fresh.
 
 ## Catalogue
 
@@ -23,10 +25,10 @@ Of the 175 RedMart listings in this seed, 153 are carried over with the previous
 | --- | --- | --- |
 | Products | 294 | **238** |
 | Products with eligible offers at two or more retailers | 294 (100%) | 238 (100%) |
-| Products at all three retailers | 35 | **74** |
-| FairPrice / Cold Storage / RedMart listings | 257 / 189 / 177 | 224 / 151 / 175 |
-| Listings with an applied multibuy | 117 | 122 |
-| Listings on sale | 168 | 156 |
+| Products at all three retailers | 35 | **78** |
+| FairPrice / Cold Storage / RedMart listings | 257 / 189 / 177 | 224 / 151 / 179 |
+| Listings with an applied multibuy | 117 | 124 |
+| Listings on sale | 168 | 157 |
 
 - **Target:** the product specification's provisional target is 200–300 products, at least 70% of them at two or more retailers. The refreshed seed meets both: every published product has two or more eligible retailers by rule.
 - **Catalogue shrinkage:** 56 products fell below two eligible retailers and left the catalogue. They are kept, without prices, in `data/seed/retired.json`, so a later refresh reads them again and can restore them under the same IDs.
@@ -36,14 +38,14 @@ Of the 175 RedMart listings in this seed, 153 are carried over with the previous
 
 | Category | Products | FairPrice | Cold Storage | RedMart | All three |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Rice & Noodles | 33 | 33 | 14 | 30 | 11 |
+| Rice & Noodles | 33 | 33 | 14 | 31 | 12 |
 | Drinks | 30 | 26 | 23 | 20 | 9 |
 | Dairy | 26 | 23 | 18 | 25 | 14 |
 | Breakfast Foods | 31 | 26 | 23 | 22 | 9 |
 | Canned & Packaged Food | 30 | 29 | 29 | 17 | 15 |
-| Snacks | 29 | 28 | 26 | 19 | 15 |
+| Snacks | 29 | 28 | 26 | 20 | 16 |
 | Household Cleaning | 32 | 32 | 0 | 32 | 0 |
-| Toiletries & Personal Care | 27 | 27 | 18 | 10 | 1 |
+| Toiletries & Personal Care | 27 | 27 | 18 | 12 | 3 |
 
 Breakfast Foods previously had 35 products, and every other category 37. Household Cleaning has no Cold Storage listing. The previous seed had only one, and the two Kodomo detergents the search matched were out of stock.
 
@@ -55,23 +57,23 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
 | --- | ---: | ---: | ---: | ---: |
 | FairPrice | 30 | 20 | 9 | 1 |
 | Cold Storage | 17 | 13 | 3 | 1 |
-| RedMart | 25 | 22 | 0 | 3 |
-| **Total** | **72** | **55** | **12** | **5** |
+| RedMart | 30 | 26 | 0 | 4 |
+| **Total** | **77** | **59** | **12** | **6** |
 
 - **Product-owner match (one):** RedMart's "Ayam Brand Sardines In Tomato Sauce (Jitney)" (155 g) was UNSURE only because of RedMart's "(Jitney)" suffix. The product owner identified this exact page as the product in the QA review, so it is recorded as a match with that reason. It is the snapshot's one exception to PR-02's AI-only rule.
 - **Rejections:** NOT_MATCH decisions were all different variants of the same brand and size, such as low fat, a different flavour or scent, less sugar, or plant sterols.
-- **Uncertain matches:** UNSURE cases had evidence that didn't settle identity, such as "Traditional Hard Cheese" for Parmesan, a 3 L name with a 2.8 L link, a formulation the other retailers don't state, or "Salted" against "Slightly Salted". None of them published.
-- **New listings:** 50 were published. The other 5 accepted candidates were out of stock at Cold Storage: the two Kodomo detergents, Marigold Greek-style yoghurt, Marigold HL strawberry milk and Shokubutsu Lumi Glow body wash.
+- **Uncertain matches:** UNSURE cases had evidence that didn't settle identity, such as "Traditional Hard Cheese" for Parmesan, a 3 L name with a 2.8 L link, a formulation or flavour the other retailers don't state (Sensodyne "Cool Mint"), or "Salted" against "Slightly Salted". None of them published.
+- **New listings:** 54 were published. The other 5 accepted candidates were out of stock at Cold Storage: the two Kodomo detergents, Marigold Greek-style yoghurt, Marigold HL strawberry milk and Shokubutsu Lumi Glow body wash.
 - **Limit:** no independent human sample was drawn for this snapshot. The decisions are recorded in `match-decisions.csv` for review.
 
 ## Sellers and fulfilment
 
-- **New RedMart listings:** all 25 candidates were read from their product pages, and every one showed RedMart as the seller. No third-party seller was found, and no seller was unreadable, so no hand check was needed.
+- **New RedMart listings:** all 30 candidates were read from their product pages, and every one showed RedMart as the seller. No third-party seller was found, and no seller was unreadable, so no hand check was needed.
 - **Carried-over RedMart listings:** these keep the seller evidence of the previous seed (the Stage 2H checks), not a fresh reading.
 
 ## Prices and promotions
 
-- **Multibuys:** 122 listings carry an applied same-product multibuy, 23 of them RedMart percentage deals, and 61 carry a promotion shown as not included (mostly "Spend $X + free gift").
+- **Multibuys:** 124 listings carry an applied same-product multibuy, 23 of them RedMart percentage deals, and 63 carry a promotion shown as not included (mostly "Spend $X + free gift").
 - **Reference checker:** the committed-seed integration test prices every listing at 1–20 packs and matches an independent calculation. It passes on this seed in `pnpm check`.
 - **Checkout evidence (PR-03):** recorded in [`checkout-evidence.md`](checkout-evidence.md).
   - Every fixed-price deal checked in a cart matched, at deal + 1 packs: FairPrice 10 of 10 and RedMart 5 of 5. One more RedMart item, whose deal had ended, matched at its ordinary price.
@@ -83,6 +85,6 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
 
 ## Shortfalls
 
-1. **RedMart was mostly not refreshed.** The 153 carried-over listings keep the previous snapshot's prices, stock and promotions, by product owner decision, because of Lazada's anti-bot checks. Only the 22 new RedMart listings are fresh.
-2. **83 missing RedMart listings weren't searched.** The targeted pass covered the products that matter most, including the sardines. The rest need a RedMart search in the next snapshot (`refresh.ts search redmart --hits 1 --headed`).
+1. **RedMart was mostly not refreshed.** The 153 carried-over listings keep the previous snapshot's prices, stock and promotions, by product owner decision, because of Lazada's anti-bot checks. Only the 26 new RedMart listings are fresh.
+2. **Most missing RedMart listings weren't searched.** Between 74 and 79 of the 117 products missing at RedMart have not been searched. The two targeted passes covered the sardines and everyday staples. The rest need a RedMart search in the next snapshot (`refresh.ts search redmart --hits 1 --headed`).
 3. **The catalogue shrank to 238 products,** mostly because of stock at the time of the snapshot. Retired products return automatically when they are back in stock at two retailers.

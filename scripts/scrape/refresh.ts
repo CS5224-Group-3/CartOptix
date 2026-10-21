@@ -104,6 +104,7 @@ function scraper(retailer: Retailer): RetailerScraper {
  * If Lazada shows more checks than `--max-checks` allows, the items not yet
  * collected are recorded as `skip` gives them (a listing as "skipped", which
  * is never published from an earlier observation) and the file is written.
+ * `kept` rows are written too, ahead of what this run collects.
  */
 async function collect<T>(
   retailer: Retailer,
@@ -113,11 +114,12 @@ async function collect<T>(
   key: (item: T) => string,
   task: (scraper: RetailerScraper, item: T) => Promise<Row[]>,
   skip: (item: T) => Row[] = () => [],
+  kept: Row[] = [],
 ): Promise<string[]> {
   const checkpoint = resolve(SNAPSHOT, `${file}.checkpoint.json`);
   const saved = loadCheckpoint(checkpoint);
   const done = new Set(saved.done);
-  const rows: Row[] = saved.rows;
+  const rows: Row[] = saved.done.length > 0 ? saved.rows : [...kept];
   const save = () => saveCheckpoint(checkpoint, { done: [...done], rows });
   const pending = items.filter((item) => !done.has(key(item)));
   if (done.size > 0)
@@ -149,7 +151,9 @@ async function collect<T>(
     await client.close?.();
   }
   if (failures.length > 0) {
-    rmSync(resolve(SNAPSHOT, file), { force: true });
+    // Nothing from a failed run is written; kept rows came from an earlier, complete run.
+    if (kept.length > 0) writeFileSync(resolve(SNAPSHOT, file), toCsv(columns, kept));
+    else rmSync(resolve(SNAPSHOT, file), { force: true });
     console.error(
       `${retailer}: ${failures.length} items failed; ${file} not written. Run again to resume.`,
     );
@@ -229,7 +233,9 @@ function search(retailer: Retailer): Promise<string[]> {
     }
   }
   // A targeted search adds its own file beside the full one; the build reads both.
+  // A later targeted search keeps the earlier one's rows for other products.
   const file = only ? `candidates-${retailer}-targeted.csv` : `candidates-${retailer}.csv`;
+  const kept = only ? read(file).filter((row) => !only.includes(row.product_id ?? "")) : [];
   return collect(
     retailer,
     file,
@@ -256,6 +262,8 @@ function search(retailer: Retailer): Promise<string[]> {
       }
       return rows;
     },
+    undefined,
+    kept,
   );
 }
 

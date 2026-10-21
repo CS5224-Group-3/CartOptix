@@ -7130,6 +7130,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i1142416062-s4458832234",
+      "productId": "royal-umbrella-thai-fragrant-brown-rice-2kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i1142416062-s4458832234.html",
+      "name": "Royal Umbrella Thai Fragrant Brown Rice 2KG",
+      "specification": "2 kg",
+      "productUrl": "https://www.lazada.sg/products/pdp-i1142416062-s4458832234.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 655,
+      "originalPriceCents": 835,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i13669042542-s124359779742",
       "productId": "yeo-s-oolong-tea-no-sugar-330ml",
       "retailerId": "redmart",
@@ -7941,6 +7955,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i301128387-s527164998",
+      "productId": "colgate-max-fresh-cool-mint-toothpaste-160g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301128387-s527164998.html",
+      "name": "Colgate Max Fresh Cool Mint Toothpaste 160 G",
+      "specification": "160 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301128387-s527164998.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 484,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": ["Spend $60.00 + free gift"]
+    },
+    {
       "listingId": "redmart-pdp-i301130405-s527192384",
       "productId": "top-detergent-powder-super-colour-2-3kg",
       "retailerId": "redmart",
@@ -8042,6 +8070,25 @@
       "originalPriceCents": 641,
       "multibuy": null,
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301138381-s527172882",
+      "productId": "ruffles-original-potato-chips-170g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301138381-s527172882.html",
+      "name": "Ruffles Original Potato Chips Snacks 170G",
+      "specification": "170 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301138381-s527172882.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 534,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 795,
+        "mixAndMatch": true,
+        "percentOff": null
+      },
+      "excludedPromotions": ["Spend $105.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i301140303-s527168874",
@@ -8535,6 +8582,25 @@
       "unitPriceCents": 706,
       "originalPriceCents": 767,
       "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301154356-s527222010",
+      "productId": "pantene-total-damage-care-shampoo-680ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301154356-s527222010.html",
+      "name": "Pantene Total Damage Care Shampoo 680ml",
+      "specification": "680 ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301154356-s527222010.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1170,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1550,
+        "mixAndMatch": true,
+        "percentOff": null
+      },
       "excludedPromotions": []
     },
     {

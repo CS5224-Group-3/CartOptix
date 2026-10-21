@@ -36,7 +36,7 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts search redmart --hits 1 --headed --max-checks 3
    ```
 
-   `--products a,b` searches only those products and writes `candidates-<retailer>-targeted.csv`, which the build reads alongside the full file; use it to target the products that matter most when a retailer's checks make a full search impractical.
+   `--products a,b` searches only those products and writes `candidates-<retailer>-targeted.csv`, which the build reads alongside the full file (a later targeted search keeps the earlier one's rows for other products, even if it fails); use it to target the products that matter most when a retailer's checks make a full search impractical.
 
    `--hits N` reads the pages of the N best hits per product (default 3); for RedMart, read only the best one to keep Lazada's checks down.
 
