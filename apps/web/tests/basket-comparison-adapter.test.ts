@@ -170,6 +170,7 @@ describe("shared comparison contract adapter", () => {
       packsPerDeal: 2,
       dealPriceCents: 2 * unit - 100,
       mixAndMatch: false,
+      percentOff: null,
       timesApplied: 1,
       savingCents: 100,
       ...change,

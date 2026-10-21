@@ -60,7 +60,9 @@ export function orderChargeLabel(charge: Order["orderCharges"][number]): string 
 /**
  * How a line's multibuy is described: the deals and leftover packs it was priced
  * as and, with `hint`, what the shopper would need to buy to qualify. Wording
- * only; amounts come from the API. The basket shows no hint (PR-03).
+ * only; amounts come from the API. The basket shows no hint (PR-03). A
+ * percentage deal keeps the retailer's wording, because its price is an
+ * estimate from a rounded label.
  */
 export function multibuyNotes(
   multibuy: Multibuy | null,
@@ -69,14 +71,21 @@ export function multibuyNotes(
   hint = false,
 ): string[] {
   if (!multibuy) return [];
-  const terms = `${multibuy.packsPerDeal} for ${formatSgd(multibuy.dealPriceCents)}`;
+  const percentage = multibuy.percentOff !== null;
+  const terms = percentage
+    ? `${multibuy.packsPerDeal} save ${multibuy.percentOff}%`
+    : `${multibuy.packsPerDeal} for ${formatSgd(multibuy.dealPriceCents)}`;
   const rest = quantity - multibuy.timesApplied * multibuy.packsPerDeal;
   const parts = [`${multibuy.timesApplied} × deal (${terms})`];
   if (rest > 0) parts.push(`${rest} × ${formatSgd(unitPriceCents)}`);
   const notes = [];
   if (multibuy.timesApplied > 0)
-    notes.push(`${parts.join(" + ")} · You save ${formatSgd(multibuy.savingCents)}`);
+    notes.push(
+      `${parts.join(" + ")} · You save ${percentage ? "about " : ""}${formatSgd(multibuy.savingCents)}`,
+    );
   else if (hint) notes.push(`Buy ${terms}`);
+  if (percentage && (multibuy.timesApplied > 0 || hint))
+    notes.push("The retailer rounds this percentage, so the checkout may differ by a few cents");
   if (multibuy.mixAndMatch) notes.push("Mixing items in this deal may save more");
   return notes;
 }

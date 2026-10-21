@@ -25,7 +25,7 @@ Of the 175 RedMart listings in this seed, 153 are carried over with the previous
 | Products with eligible offers at two or more retailers | 294 (100%) | 238 (100%) |
 | Products at all three retailers | 35 | **74** |
 | FairPrice / Cold Storage / RedMart listings | 257 / 189 / 177 | 224 / 151 / 175 |
-| Listings with an applied multibuy | 117 | 99 |
+| Listings with an applied multibuy | 117 | 122 |
 | Listings on sale | 168 | 156 |
 
 - **Target:** the product specification's provisional target is 200–300 products, at least 70% of them at two or more retailers. The refreshed seed meets both: every published product has two or more eligible retailers by rule.
@@ -71,14 +71,15 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
 
 ## Prices and promotions
 
-- **Multibuys:** 99 listings carry an applied fixed-price multibuy, and 81 carry a promotion shown as not included: mostly "Spend $X + free gift", plus 23 RedMart percentage deals.
+- **Multibuys:** 122 listings carry an applied same-product multibuy, 23 of them RedMart percentage deals, and 61 carry a promotion shown as not included (mostly "Spend $X + free gift").
 - **Reference checker:** the committed-seed integration test prices every listing at 1–20 packs and matches an independent calculation. It passes on this seed in `pnpm check`.
 - **Checkout evidence (PR-03):** recorded in [`checkout-evidence.md`](checkout-evidence.md).
   - Every fixed-price deal checked in a cart matched, at deal + 1 packs: FairPrice 10 of 10 and RedMart 5 of 5. One more RedMart item, whose deal had ended, matched at its ordinary price.
   - Cold Storage's 10 deals were checked against their live product pages only, not a cart, because its cart needs a login. Its fixed-price deals are applied on the strength of the other two retailers' carts.
-  - No sampled deal produced an exact half cent, so that rounding case is untested; fixed-price deals do not round.
-  - RedMart's percentage labels did not reliably give the cart price ("Any 2 Save 40%" charged $11.79, not $11.87), so percentage deals are no longer applied, at any retailer.
-  - Carried-over RedMart listings have today's rules applied to their recorded deal wording, so none keeps a percentage deal.
+  - RedMart's percentage deals: 3 of 4 matched exactly, and all 4 were within their tolerance. The percentage is a rounded label for a fixed price: "Any 2 Save 40%" charged $11.79 for $19.78, 40.4% off, where the label gives $11.87 (8¢ out, tolerance 10¢). Percentage deals are applied as estimates and the shopper is told the checkout may differ by a few cents (PR-03).
+  - Why not exclude them: on this seed, leaving out the 23 percentage deals overstates RedMart by $1.84 per deal on average and would recommend another retailer for 13 products where RedMart is cheapest even at the label's least favourable rounding.
+  - No sampled deal produced an exact half cent, so the half-up rounding of that case is untested.
+  - Carried-over RedMart listings have today's rules applied to their recorded deal wording.
 
 ## Shortfalls
 

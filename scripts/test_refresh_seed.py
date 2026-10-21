@@ -121,7 +121,7 @@ class Build(unittest.TestCase):
             "priceKind": "ordinary",
             "unitPriceCents": 310,
             "originalPriceCents": None,
-            "multibuy": {"packsPerDeal": 2, "dealPriceCents": 600, "mixAndMatch": True},
+            "multibuy": {"packsPerDeal": 2, "dealPriceCents": 600, "mixAndMatch": True, "percentOff": None},
             "excludedPromotions": [],
         }
         seed = {"products": [PRODUCT], "listings": [*LISTINGS[:1], old]}
@@ -132,12 +132,12 @@ class Build(unittest.TestCase):
             result = run(seed, EMPTY, [observation("fairprice", FP), carried])
             self.assertIn(old, result["listings"])
             self.assertEqual(result["carried"], 1)
-            # Today's rules reach the recorded wording: a percentage deal is no longer applied.
+            # Today's rules are applied to the recorded wording, not to the old seed's reading of it.
             refresh_seed.RECORDED["redmart_00000002"] = {**recorded, "raw_savings": "Any 2 Save 40%"}
             result = run(seed, EMPTY, [observation("fairprice", FP), carried])
             again = next(l for l in result["listings"] if l["listingId"] == "redmart-pdp-i1-s2")
-            self.assertIsNone(again["multibuy"])
-            self.assertEqual(again["excludedPromotions"], ["Any 2 Save 40%"])
+            self.assertEqual(again["multibuy"]["percentOff"], 40)
+            self.assertEqual(again["multibuy"]["dealPriceCents"], 372)
         finally:
             refresh_seed.RECORDED.clear()
 

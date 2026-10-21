@@ -65,6 +65,7 @@ export interface LineMultibuy {
   packsPerDeal: number;
   dealPrice: Cents;
   mixAndMatch: boolean;
+  percentOff: number | null;
   deals: number;
   /** Saving against the unit price across the line. */
   saving: Cents;

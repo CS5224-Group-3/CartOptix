@@ -101,7 +101,12 @@
       "priceKind": "ordinary",
       "unitPriceCents": 331,
       "originalPriceCents": null,
-      "multibuy": { "packsPerDeal": 2, "dealPriceCents": 600, "mixAndMatch": true },
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 600,
+        "mixAndMatch": true,
+        "percentOff": null
+      },
       "excludedPromotions": []
     },
     {

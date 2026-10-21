@@ -120,7 +120,7 @@ Product mappings may be decided with AI assistance. As a proof of concept, publi
 
 Use ordinary prices and clearly unconditional sale prices. Show an unconditional sale's original price struck through beside the price paid, so shoppers can see the discount. It is for display only and never changes a total.
 
-Apply same-product multibuys with a fixed price: deals of the form "N at $X" and "N save $X". Curation turns each into a deal of N packs for one price. Pricing then follows these rules:
+Apply same-product multibuys: deals of the form "N at $X", "N save $X", "N save X%" and "Buy N get X% off". Curation turns each into a deal of N packs for one price; a percentage comes off N packs at the unit price and is rounded half-up to the cent. Pricing then follows these rules:
 
 1. A deal applies floor(quantity ÷ N) times. Remaining packs are charged at the unit price.
 2. A deal applies only when it is cheaper than its packs at the unit price, and never stacks with another discount.
@@ -133,7 +133,7 @@ Other promotions stay out of the estimate and are shown as the retailer worded t
 
 Promotions have no date handling. Curation strips validity wording and does not record or evaluate dates. Every approved deal in a snapshot applies while that snapshot is the seed, and changes only when the seed is replaced. The fixed-dataset disclaimer applies to these promotions as well as prices and availability.
 
-Before a snapshot ships, check about ten deals per retailer against the live checkout, recording the quantities and the expected and observed amounts. A deal type whose checkout disagrees stays excluded. Percentage deals ("N save X%", "Buy N get X% off") are excluded on that evidence: the first snapshot's RedMart carts charged a fixed deal price for which the percentage is only a rounded label ("Any 2 Save 40%" charged $11.79 for $19.78, 40.4% off), so the price cannot be worked out from the wording (`data/snapshot/checkout-evidence.md`).
+Before a snapshot ships, check about ten deals per retailer against the live checkout, recording the quantities and the expected and observed amounts. A fixed-price deal must match the checkout exactly; a deal type whose checkout disagrees stays excluded. A percentage deal is an estimate, because the retailer charges a fixed deal price and the percentage is its rounded label: in the first snapshot, RedMart's "Any 2 Save 40%" charged $11.79 for $19.78, 40.4% off (`data/snapshot/checkout-evidence.md`). It must be within 0.5% of the deal's packs at the unit price, per deal. It is still applied, because leaving it out overstates the price by the whole saving and can recommend the wrong retailer. The shopper sees the retailer's percentage wording, not a computed deal price, and is told the checkout may differ by a few cents.
 
 ### PR-04 — Delivery and mandatory charges
 

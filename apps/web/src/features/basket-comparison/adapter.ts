@@ -67,7 +67,11 @@ function packsCost({ quantity, unitPriceCents, priceKind, multibuy }: PlanLine):
       cents(dealPriceCents) &&
       dealPriceCents > 0 &&
       dealPriceCents < unitPriceCents * packsPerDeal &&
-      typeof multibuy.mixAndMatch === "boolean",
+      typeof multibuy.mixAndMatch === "boolean" &&
+      (multibuy.percentOff === null ||
+        (typeof multibuy.percentOff === "number" &&
+          multibuy.percentOff > 0 &&
+          multibuy.percentOff < 100)),
   );
   requireData(timesApplied === Math.floor(quantity / packsPerDeal));
   requireData(savingCents === timesApplied * (unitPriceCents * packsPerDeal - dealPriceCents));

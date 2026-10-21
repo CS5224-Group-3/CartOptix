@@ -1604,7 +1604,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1622,7 +1623,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1640,7 +1642,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1658,7 +1661,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1732,7 +1736,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1590,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1848,7 +1853,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 690,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1880,7 +1886,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 1995,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1898,7 +1905,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 1750,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -1986,7 +1994,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1745,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2270,7 +2279,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 800,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2484,7 +2494,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 640,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2642,7 +2653,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 680,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2660,7 +2672,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2678,7 +2691,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2696,7 +2710,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -2798,7 +2813,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 640,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3054,7 +3070,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1780,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3072,7 +3089,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1780,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3118,7 +3136,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 640,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3220,7 +3239,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1195,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3238,7 +3258,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1195,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3606,7 +3627,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 500,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3722,7 +3744,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 595,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3866,7 +3889,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 780,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -3954,7 +3978,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4028,7 +4053,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4046,7 +4072,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4064,7 +4091,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4082,7 +4110,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4212,7 +4241,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 665,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4230,7 +4260,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 520,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4388,7 +4419,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4406,7 +4438,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4452,7 +4485,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 650,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $150 Free gift"]
     },
@@ -4484,7 +4518,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 395,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4502,7 +4537,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1395,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4548,7 +4584,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1295,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4636,7 +4673,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 845,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $40 Save $7"]
     },
@@ -4738,7 +4776,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -4798,7 +4837,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 695,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5040,7 +5080,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 800,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5086,7 +5127,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 500,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5118,7 +5160,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1710,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5150,7 +5193,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1230,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5210,7 +5254,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 350,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $40 Save $7"]
     },
@@ -5270,7 +5315,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 350,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $40 Save $7"]
     },
@@ -5386,7 +5432,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 690,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5488,7 +5535,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 250,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5506,7 +5554,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 680,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5524,7 +5573,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5542,7 +5592,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5560,7 +5611,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5578,7 +5630,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5610,7 +5663,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 495,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5628,7 +5682,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5646,7 +5701,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5846,7 +5902,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 298,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5962,7 +6019,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 700,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -5980,7 +6038,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 7000,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6222,7 +6281,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1195,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6240,7 +6300,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1195,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6440,7 +6501,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1325,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $25 Free gift"]
     },
@@ -6472,7 +6534,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1325,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $25 Free gift"]
     },
@@ -6588,7 +6651,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1390,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6606,7 +6670,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1390,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6638,7 +6703,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 995,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6950,7 +7016,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 450,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -6982,7 +7049,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 390,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7042,7 +7110,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 595,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7141,8 +7210,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 40%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1187,
+        "mixAndMatch": true,
+        "percentOff": 40
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i1643060745-s7717827871",
@@ -7155,8 +7229,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 19%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 420,
+        "mixAndMatch": true,
+        "percentOff": 19
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i1682511818-s8125888551",
@@ -7169,8 +7248,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true,
+        "percentOff": 16
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i1683191211-s8128041773",
@@ -7214,7 +7298,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 510,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $70.00 + free gift"]
     },
@@ -7246,7 +7331,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 620,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7264,7 +7350,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 620,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7279,8 +7366,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 422,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Buy 2 Save 31%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 582,
+        "mixAndMatch": false,
+        "percentOff": 31
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2437055547-s14423159838",
@@ -7296,7 +7388,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 680,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7325,8 +7418,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1150,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Buy 2 Save 20%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1840,
+        "mixAndMatch": false,
+        "percentOff": 20
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2742796146-s18594995860",
@@ -7339,8 +7437,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 24%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 547,
+        "mixAndMatch": true,
+        "percentOff": 24
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i2791236407-s19279758674",
@@ -7356,7 +7459,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 450,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7416,7 +7520,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 592,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7445,8 +7550,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 368,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Spend $11.00 + free gift", "Any 2 Save 8%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 677,
+        "mixAndMatch": true,
+        "percentOff": 8
+      },
+      "excludedPromotions": ["Spend $11.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i301080986-s527102860",
@@ -7462,7 +7572,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 630,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7480,7 +7591,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 670,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7512,7 +7624,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7530,7 +7643,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 630,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7548,7 +7662,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1195,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7594,7 +7709,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 490,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7612,7 +7728,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1350,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7658,7 +7775,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 761,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7701,8 +7819,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 13%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 626,
+        "mixAndMatch": true,
+        "percentOff": 13
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301122375-s527206003",
@@ -7757,8 +7880,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 3 Save 5%"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1035,
+        "mixAndMatch": true,
+        "percentOff": 5
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301126624-s527208386",
@@ -7785,8 +7913,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 525,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 7%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 977,
+        "mixAndMatch": true,
+        "percentOff": 7
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301128368-s527164945",
@@ -7802,7 +7935,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 450,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7887,8 +8021,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 141,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 3 Save 10%"]
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 381,
+        "mixAndMatch": true,
+        "percentOff": 10
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301136541-s527194689",
@@ -7918,7 +8057,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 735,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -7964,7 +8104,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 495,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8035,8 +8176,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true,
+        "percentOff": 16
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301142365-s527188659",
@@ -8063,8 +8209,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 406,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Buy 2 Save 14%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 698,
+        "mixAndMatch": false,
+        "percentOff": 14
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301142670-s527234202",
@@ -8094,7 +8245,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8123,8 +8275,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true,
+        "percentOff": 16
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301144490-s527204430",
@@ -8196,7 +8353,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 795,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $105.00 + free gift"]
     },
@@ -8256,7 +8414,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 450,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8299,8 +8458,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 13%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 626,
+        "mixAndMatch": true,
+        "percentOff": 13
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301150658-s527232238",
@@ -8316,7 +8480,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8334,7 +8499,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8352,7 +8518,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8381,8 +8548,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 13%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 626,
+        "mixAndMatch": true,
+        "percentOff": 13
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301156310-s527210113",
@@ -8423,8 +8595,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 40%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1187,
+        "mixAndMatch": true,
+        "percentOff": 40
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i301156348-s527210165",
@@ -8535,8 +8712,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 395,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Spend $10.00 + free gift", "Any 2 Save 6%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 743,
+        "mixAndMatch": true,
+        "percentOff": 6
+      },
+      "excludedPromotions": ["Spend $10.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i301164042-s527250279",
@@ -8552,7 +8734,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 300,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8584,7 +8767,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 435,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8630,7 +8814,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 630,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8662,7 +8847,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 1195,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -8862,7 +9048,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPriceCents": 795,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": ["Spend $105.00 + free gift"]
     },
@@ -8877,8 +9064,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 16%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 897,
+        "mixAndMatch": true,
+        "percentOff": 16
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i303530725-s537166575",
@@ -9087,8 +9279,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 15%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 440,
+        "mixAndMatch": true,
+        "percentOff": 15
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i305126315-s541238206",
@@ -9143,8 +9340,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 10%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 450,
+        "mixAndMatch": true,
+        "percentOff": 10
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i3124540792-s21263650836",
@@ -9384,7 +9586,8 @@
       "multibuy": {
         "packsPerDeal": 4,
         "dealPriceCents": 500,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },
@@ -9469,8 +9672,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 480,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Any 2 Save 11%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 854,
+        "mixAndMatch": true,
+        "percentOff": 11
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i378388292-s887448413",
@@ -9511,8 +9719,13 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
-      "multibuy": null,
-      "excludedPromotions": ["Spend $105.00 + free gift", "Any 2 Save 15%"]
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 442,
+        "mixAndMatch": true,
+        "percentOff": 15
+      },
+      "excludedPromotions": ["Spend $105.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i569114388-s1622298642",
@@ -9612,7 +9825,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPriceCents": 450,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "excludedPromotions": []
     },

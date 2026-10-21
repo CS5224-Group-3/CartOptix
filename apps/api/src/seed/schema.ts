@@ -50,13 +50,18 @@ const UnverifiedDeliveryRule = closed({
   note: Type.Optional(text),
 });
 
-/** `packsPerDeal` packs for `dealPriceCents`, from a fixed-price wording;
- * curation has checked that it is cheaper (PR-03). */
+/** `packsPerDeal` packs for `dealPriceCents`; curation has checked that it is
+ * cheaper and rounded any percentage deal (PR-03). */
 const MultibuySchema = closed({
   packsPerDeal: Type.Integer({ minimum: 2, maximum: MAX_PACKS_PER_LINE }),
   dealPriceCents: PositiveCentsSchema,
   /** The retailer's wording was "Any N". */
   mixAndMatch: Type.Boolean(),
+  /** The labelled percentage of a "N save X%" deal; null for a fixed price. */
+  percentOff: Type.Union([
+    Type.Number({ exclusiveMinimum: 0, exclusiveMaximum: 100 }),
+    Type.Null(),
+  ]),
 });
 export type SeedMultibuy = Static<typeof MultibuySchema>;
 

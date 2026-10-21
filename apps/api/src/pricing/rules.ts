@@ -49,9 +49,10 @@ export interface OfferRule {
 /**
  * `packsPerDeal` packs of one listing for `dealPrice` (PR-03).
  *
- * Curation reduces every supported wording ("N At $X", "N Save $X") to this
- * one shape; percentage deals are not applied (PR-03), so
- * the module never rounds. A deal is counted against packs of its own listing
+ * Curation reduces every supported wording ("N At $X", "N Save X%", "N Save
+ * $X") to this one shape, rounding any percentage when it builds the seed, so
+ * the module never rounds. A percentage deal keeps its label in `percentOff`,
+ * because its price is an estimate (PR-03). A deal is counted against packs of its own listing
  * only, even when the retailer would also accept other products.
  */
 export interface MultibuyRule {
@@ -59,6 +60,8 @@ export interface MultibuyRule {
   dealPrice: Cents;
   /** The retailer's wording was "Any N": other products also qualify. */
   mixAndMatch: boolean;
+  /** The labelled percentage of a "N save X%" deal, whose price is an estimate; null for a fixed price. */
+  percentOff: number | null;
 }
 
 /**

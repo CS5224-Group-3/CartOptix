@@ -69,6 +69,7 @@ describe("complete retailer comparison", () => {
         packsPerDeal: 2,
         dealPriceCents: 700,
         mixAndMatch: true,
+        percentOff: null,
         timesApplied: 1,
         savingCents: 100,
       },
@@ -79,6 +80,42 @@ describe("complete retailer comparison", () => {
     expect(card.getByText("1 × deal (2 for S$7.00) + 1 × S$4.00 · You save S$1.00")).toBeDefined();
     expect(card.getByText("Mixing items in this deal may save more")).toBeDefined();
     expect(card.getByText("Spend $30 + Free Gift — not included in this estimate")).toBeDefined();
+  });
+
+  it("keeps a percentage deal's wording and says its price may differ slightly", () => {
+    const result = structuredClone(scenario("complete"));
+    const option = result.options.find((candidate) => candidate.retailer.name === "FairPrice");
+    const line = option?.kind === "complete" ? option.lines[0] : undefined;
+    if (!line) throw new Error("Missing line");
+    line.pricing = {
+      ...line.pricing,
+      unitPriceCents: 400,
+      originalPriceCents: null,
+      multibuy: {
+        packsPerDeal: 2,
+        dealPriceCents: 700,
+        mixAndMatch: false,
+        percentOff: 12.5,
+        timesApplied: 1,
+        savingCents: 100,
+      },
+    };
+    if (line.quantity !== 2) {
+      for (const product of result.submittedBasket.products)
+        if (product.productId === line.productId) product.quantity = 2;
+      for (const candidate of result.options)
+        if (candidate.kind === "complete")
+          for (const other of candidate.lines)
+            if (other.productId === line.productId) other.quantity = 2;
+    }
+    render(<BasketComparisonPage result={result} />);
+    const card = within(screen.getByRole("article", { name: "FairPrice" }));
+    expect(card.getByText("1 × deal (2 save 12.5%) · You save about S$1.00")).toBeDefined();
+    expect(
+      card.getByText(
+        "The retailer rounds this percentage, so the checkout may differ by a few cents",
+      ),
+    ).toBeDefined();
   });
 
   it("does not hint at buying more to reach a deal", () => {
@@ -92,6 +129,7 @@ describe("complete retailer comparison", () => {
         packsPerDeal: 2,
         dealPriceCents: 700,
         mixAndMatch: false,
+        percentOff: null,
         timesApplied: 0,
         savingCents: 0,
       },

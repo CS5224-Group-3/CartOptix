@@ -101,6 +101,10 @@ export const MultibuySchema = closedObject({
   /** The retailer's deal also accepts other products ("Any N"). CartOptix counts
    * packs of this product only, so mixing items may save more than shown. */
   mixAndMatch: Type.Boolean(),
+  /** The retailer's percentage for a deal worded "N save X%"; null for a
+   * fixed-price deal. The percentage is the retailer's rounded label, so the
+   * deal price is an estimate that may differ from the checkout by a few cents. */
+  percentOff: nullable(Type.Number({ exclusiveMinimum: 0, exclusiveMaximum: 100 })),
   /** Deals in this line: floor(quantity / packsPerDeal). */
   timesApplied: Type.Integer({ minimum: 0, maximum: MAX_PACKS_PER_LINE }),
   /** Saving against the unit price for the whole line; 0 when no deal applies. */

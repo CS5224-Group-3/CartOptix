@@ -9,10 +9,12 @@ in `checkout-redmart.csv`; Cold Storage's cart needs a login, so its deals were 
 their live product pages only.
 
 **Finding.** Fixed-price deals ("N for $X") checked in a cart all matched: fairprice 10 of 10, redmart 5 of 5. cold-storage was checked against product-page terms only, not a cart.
-Percentage deals did not reliably match: the cart charges a fixed deal price and the percentage is a
-rounded label for it ("Any 2 Save 40%" charged $11.79 for $19.78, 40.4% off). Under PR-03 a deal
-type the checkout disagrees with stays excluded, so percentage deals are no longer applied; they
-show as not included in the estimate.
+
+Percentage deals ("N save X%") checked in a cart: redmart 3 of 4 exact and 4 within tolerance. The cart charges a fixed
+deal price and the percentage is the retailer's rounded label for it ("Any 2 Save 40%" charged
+$11.79 for $19.78, 40.4% off), so the true saving can be up to half a percentage point either side.
+We apply the labelled percentage, and the tolerance is 0.5% of a deal's packs at the unit price, per
+deal; the shopper is told a percentage deal's price may differ by a few cents (PR-03).
 
 ## fairprice
 
@@ -52,15 +54,15 @@ Fixed-price deals in a cart: 10 of 10 match.
 
 | Product | Qty | Unit | Deal wording | Our deal | Expected | Cart | Result |
 | --- | ---: | ---: | --- | --- | ---: | ---: | --- |
-| pdp-i301126655-s527208413 | 3 | 5.25 | Any 2 Save 22% | not applied (percentage) | 13.44 | 13.44 | former percentage rule matched |
-| pdp-i1621281798-s7615785334 | 3 | 9.89 | Any 2 Save 40% | not applied (percentage) | 21.76 | 21.68 | **former percentage rule off by -8¢** (cart line: Any 2 Save 40% $11.79 (was $19.78, -40%)) |
-| pdp-i1643060745-s7717827871 | 3 | 2.59 | Any 2 Save 13% | not applied (percentage) | 7.10 | 7.10 | former percentage rule matched |
+| pdp-i301126655-s527208413 | 3 | 5.25 | Any 2 Save 22% | 2 for 8.19 (22% off) | 13.44 | 13.44 | match |
+| pdp-i1621281798-s7615785334 | 3 | 9.89 | Any 2 Save 40% | 2 for 11.87 (40% off) | 21.76 | 21.68 | within ±10¢ (-8¢) (cart line: Any 2 Save 40% $11.79 (was $19.78, -40%)) |
+| pdp-i1643060745-s7717827871 | 3 | 2.59 | Any 2 Save 13% | 2 for 4.51 (13% off) | 7.10 | 7.10 | match |
 | pdp-i1682511818-s8125888551 | 3 | 5.34 | Any 2 For $7.95 | 2 for 7.95 | 13.29 | 13.29 | match |
-| pdp-i2277374957-s13151460750 | 3 | 4.22 | Any 2 Save 32% | not applied (percentage) | 9.96 | 9.96 | former percentage rule matched |
+| pdp-i2277374957-s13151460750 | 3 | 4.22 | Any 2 Save 32% | 2 for 5.74 (32% off) | 9.96 | 9.96 | match |
 | pdp-i301106732-s527076886 | 3 | 2.55 |  | no deal applied | 7.65 | 7.65 | match (deal ended; no promotion on the page) |
 | pdp-i888128400-s3073342728 | 4 | 1.91 | Any 3 For $4.50 | 3 for 4.50 | 6.41 | 6.41 | match (page showed "Multiple Promo"; cart line: Any 3 For $4.50 (was $5.73)) |
 | pdp-i301168041-s527252247 | 3 | 2.92 | Any 2 for $4.35 | 2 for 4.35 | 7.27 | 7.27 | match |
 | pdp-i301140675-s527216416 | 3 | 2.65 | Any 2 For $4.95 | 2 for 4.95 | 7.60 | 7.60 | match |
 | pdp-i301164042-s527250279 | 3 | 2.00 | Buy 2 For $3 | 2 for 3.00 | 5.00 | 5.00 | match |
 
-Fixed-price deals in a cart: 5 of 5 match. Items whose deal had ended, in a cart: 1 of 1 match. Percentage deals in a cart: the former percentage rule matched 3 of 4, so percentage deals are no longer applied.
+Fixed-price deals in a cart: 5 of 5 match. Items whose deal had ended, in a cart: 1 of 1 match. Percentage deals in a cart: 3 of 4 match exactly, 4 of 4 within their tolerance.
