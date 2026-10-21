@@ -69,6 +69,7 @@ describe("product offer view", () => {
     expect(screen.getByText("S$7.20").closest("s")).not.toBeNull();
     expect(screen.getByText(/S\$6.00 per pack · Sale price/)).toBeDefined();
     expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
+    expect(screen.getByText("Not available at Cold Storage")).toBeDefined();
     expect(
       screen.getByRole("link", { name: "View FairPrice product page" }).getAttribute("href"),
     ).toBe("https://example.com/fixture-rice-fairprice");

@@ -171,12 +171,75 @@ describe("compareBasket", () => {
 
   it("marks a retailer missing a product unavailable, naming the product", () => {
     const result = compare({ offers: offers.filter((o) => o.listingId !== "redmart-milk") });
-    expect(result.options.find((option) => option.retailerId === "redmart")).toEqual({
+    const redmart = result.options.find((option) => option.retailerId === "redmart");
+    expect(redmart).toMatchObject({
       status: "unavailable",
       retailerId: "redmart",
       reasons: [{ code: "missing_products", productIds: ["milk"] }],
     });
+    // The rice it has, priced as a checkout: 2 × 1000 + 500 delivery.
+    if (redmart?.status !== "unavailable") throw new Error("Expected RedMart unavailable");
+    expect(redmart.partialOrder?.lines.map((line) => [line.productId, line.packs])).toEqual([
+      ["rice", 2],
+    ]);
+    expect(redmart.partialOrder?.total).toBe(2500);
     expect(result.status).toBe("recommended");
+    // Never ranked against, or recommended over, the complete options.
+    expect(result.options.map((option) => option.retailerId)).toEqual([
+      "fairprice",
+      "cold-storage",
+      "redmart",
+    ]);
+  });
+
+  it("estimates nothing for a retailer with none of the basket", () => {
+    const result = compare({ offers: offers.filter((o) => o.retailerId !== "redmart") });
+    expect(result.options.find((option) => option.retailerId === "redmart")).toEqual({
+      status: "unavailable",
+      retailerId: "redmart",
+      reasons: [{ code: "missing_products", productIds: ["rice", "milk"] }],
+    });
+  });
+
+  it("orders unavailable options by fewest missing products, then retailer ID", () => {
+    const result = compare({
+      offers: offers.filter(
+        (o) => o.listingId !== "redmart-milk" && !o.listingId.startsWith("cold-storage"),
+      ),
+      deliveryRules: [
+        rule("redmart"),
+        rule("fairprice", { verified: false }),
+        rule("cold-storage"),
+      ],
+    });
+    // FairPrice misses nothing (its rule is unverified), RedMart misses one, Cold Storage two.
+    expect(result.status).toBe("no_feasible_plan");
+    expect(result.options.map((option) => option.retailerId)).toEqual([
+      "fairprice",
+      "redmart",
+      "cold-storage",
+    ]);
+    expect(result.options.find((o) => o.retailerId === "fairprice")).not.toHaveProperty(
+      "partialOrder",
+    );
+  });
+
+  it("reports missing products and a short minimum together, with the estimate", () => {
+    const result = compare({
+      offers: offers.filter((o) => o.listingId !== "redmart-milk"),
+      deliveryRules: [
+        rule("redmart", { minimumOrder: 3000 }),
+        rule("fairprice"),
+        rule("cold-storage"),
+      ],
+    });
+    expect(result.options.find((option) => option.retailerId === "redmart")).toMatchObject({
+      reasons: [
+        { code: "missing_products", productIds: ["milk"] },
+        { code: "below_minimum_order", minimumOrderCents: 3000, spendCents: 2000 },
+      ],
+      partialOrder: { total: 2500 },
+    });
   });
 
   it("marks an unverified or missing delivery rule unavailable, never free", () => {
@@ -215,11 +278,16 @@ describe("compareBasket", () => {
       deliveryRules: rules.map((r) => ({ ...r, minimumOrder: 4000 })),
     });
     expect(result.status).toBe("no_feasible_plan");
-    expect(result.options.find((option) => option.retailerId === "fairprice")).toEqual({
+    const fairprice = result.options.find((option) => option.retailerId === "fairprice");
+    expect(fairprice).toMatchObject({
       status: "unavailable",
       retailerId: "fairprice",
       reasons: [{ code: "below_minimum_order", minimumOrderCents: 4000, spendCents: 2700 }],
     });
+    // The whole basket, priced as the checkout the retailer would refuse.
+    if (fairprice?.status !== "unavailable") throw new Error("Expected FairPrice unavailable");
+    expect(fairprice.partialOrder?.lines).toHaveLength(2);
+    expect(fairprice.partialOrder?.total).toBe(3200);
   });
 
   it("applies an order-charge waiver, so a waived fee can change the winner", () => {

@@ -55,20 +55,25 @@ export interface CompareBasketInput {
 
 /**
  * A complete option carries the priced order, which `response.ts` maps onto the
- * contract. Unavailable options and their reasons are already contract values,
- * so they pass straight through.
+ * contract. An unavailable option's reasons are already contract values; its
+ * partial order, the lines it can supply priced as a checkout, is mapped too.
  */
 export type CompleteOption = {
   status: "complete";
   retailerId: RetailerId;
   order: PricedRetailerOrder;
 };
-export type RetailerOption = CompleteOption | UnavailableOption;
+export type UnavailableRetailerOption = Omit<UnavailableOption, "partialOrder"> & {
+  partialOrder?: PricedRetailerOrder;
+};
+export type RetailerOption = CompleteOption | UnavailableRetailerOption;
 
 /**
  * `options` holds one entry per compared retailer: complete options, cheapest
- * first with ties by `compareRetailerIds`, then unavailable ones in that order. A
- * recommendation is always the first option.
+ * first with ties by `compareRetailerIds`, then unavailable ones, fewest
+ * missing products first, then by `compareRetailerIds`. A recommendation is
+ * always the first option; an unavailable option is never ranked against a
+ * complete one.
  */
 export type BasketComparison =
   | {
@@ -78,7 +83,7 @@ export type BasketComparison =
     }
   | {
       status: Extract<BasketCompareResponse["status"], "no_feasible_plan">;
-      options: UnavailableOption[];
+      options: UnavailableRetailerOption[];
     };
 
 /**
@@ -101,7 +106,9 @@ export function compareBasket(input: CompareBasketInput): BasketComparison {
     );
   const unavailable = options
     .filter((option) => option.status === "unavailable")
-    .sort((a, b) => compareRetailerIds(a.retailerId, b.retailerId));
+    .sort(
+      (a, b) => missingCount(a) - missingCount(b) || compareRetailerIds(a.retailerId, b.retailerId),
+    );
 
   const [cheapest] = complete;
   const result: BasketComparison = cheapest
@@ -139,31 +146,33 @@ function priceRetailer(input: CompareBasketInput, retailerId: RetailerId): Retai
   const delivery = input.deliveryRules.find((rule) => rule.retailerId === retailerId);
   if (!delivery?.verified) reasons.push({ code: "delivery_rule_unverified" });
 
-  // Both reasons above are reported together, so the shopper sees every one;
-  // pricing the order is only meaningful once the basket is whole.
-  if (reasons.length > 0 || !delivery) return { status: "unavailable", retailerId, reasons };
+  // Every reason is reported together. Without a verified delivery rule, or a
+  // line to price, there is nothing to estimate (never a zero fee).
+  if (!delivery?.verified || offers.length === 0) {
+    return { status: "unavailable", retailerId, reasons };
+  }
 
   const lines = offers.map(({ offer, quantity }) => priceOrThrow(offer, quantity));
-  const result = priceRetailerOrder({
-    retailerId,
-    lines,
-    delivery,
-  });
+  const result = priceRetailerOrder({ retailerId, lines, delivery });
 
   switch (result.status) {
     case "priced":
-      return { status: "complete", retailerId, order: result.order };
+      return reasons.length === 0
+        ? { status: "complete", retailerId, order: result.order }
+        : { status: "unavailable", retailerId, reasons, partialOrder: result.order };
     case "infeasible":
       return {
         status: "unavailable",
         retailerId,
         reasons: [
+          ...reasons,
           {
             code: "below_minimum_order",
             minimumOrderCents: result.reason.minimumOrder,
             spendCents: result.reason.measuredAmount,
           },
         ],
+        partialOrder: result.order,
       };
     case "unavailable":
       // An unresolved fee is an unverified rule; any other gap is bad data.
@@ -171,11 +180,20 @@ function priceRetailer(input: CompareBasketInput, retailerId: RetailerId): Retai
         return {
           status: "unavailable",
           retailerId,
-          reasons: [{ code: "delivery_rule_unverified" }],
+          reasons: [...reasons, { code: "delivery_rule_unverified" }],
         };
       }
       throw new ComparisonDataError(result.reason.detail);
   }
+}
+
+/** Distinct basket lines a retailer cannot supply; 0 when only the minimum or delivery blocks it. */
+function missingCount(option: UnavailableRetailerOption): number {
+  return option.reasons.reduce(
+    (count, reason) =>
+      reason.code === "missing_products" ? count + reason.productIds.length : count,
+    0,
+  );
 }
 
 function priceOrThrow(offer: OfferRule, quantity: number): PricedLine {
@@ -215,12 +233,7 @@ function validateComparison(lines: readonly BasketLine[], result: BasketComparis
         fail(`${retailerId} prices ${productId} at the wrong quantity`);
       }
     }
-    const charges = sumCents(
-      order.orderCharges.filter((charge) => !charge.waived).map((charge) => charge.amount),
-    );
-    if (order.total !== order.itemsTotal + order.delivery.amount + charges) {
-      fail(`${retailerId}'s total does not reconcile`);
-    }
+    if (!reconciles(order)) fail(`${retailerId}'s total does not reconcile`);
   }
 
   for (let i = 1; i < complete.length; i += 1) {
@@ -232,8 +245,37 @@ function validateComparison(lines: readonly BasketLine[], result: BasketComparis
   }
 
   for (const option of options) {
-    if (option.status === "unavailable" && option.reasons.length === 0) {
-      fail(`${option.retailerId} is unavailable without a reason`);
+    if (option.status !== "unavailable") continue;
+    if (option.reasons.length === 0) fail(`${option.retailerId} is unavailable without a reason`);
+    const partial = option.partialOrder;
+    if (!partial) continue;
+    // A partial order prices every line the retailer has, at its quantity, and
+    // together with the missing products covers the basket exactly once.
+    const missing = new Set(
+      option.reasons.flatMap((reason) =>
+        reason.code === "missing_products" ? reason.productIds : [],
+      ),
+    );
+    const priced = new Map(partial.lines.map((line) => [line.productId, line.packs]));
+    if (priced.size !== partial.lines.length || priced.size + missing.size !== requested.size) {
+      fail(`${option.retailerId}'s partial order does not cover the basket exactly once`);
+    }
+    for (const [productId, quantity] of requested) {
+      if (!missing.has(productId) && priced.get(productId) !== quantity) {
+        fail(`${option.retailerId}'s partial order prices ${productId} wrongly`);
+      }
+    }
+    if (!reconciles(partial)) fail(`${option.retailerId}'s partial total does not reconcile`);
+  }
+  for (let i = 1; i < options.length; i += 1) {
+    const previous = options[i - 1];
+    const current = options[i];
+    if (
+      previous?.status === "unavailable" &&
+      current?.status === "unavailable" &&
+      missingCount(previous) > missingCount(current)
+    ) {
+      fail("unavailable options are not fewest missing first");
     }
   }
 
@@ -244,4 +286,11 @@ function validateComparison(lines: readonly BasketLine[], result: BasketComparis
   } else if (complete.length > 0) {
     fail("no feasible plan is reported alongside a complete option");
   }
+}
+
+function reconciles(order: PricedRetailerOrder): boolean {
+  const charges = sumCents(
+    order.orderCharges.filter((charge) => !charge.waived).map((charge) => charge.amount),
+  );
+  return order.total === order.itemsTotal + order.delivery.amount + charges;
 }

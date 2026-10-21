@@ -258,6 +258,33 @@ describe("shopper routes", () => {
       options: [
         {
           status: "unavailable",
+          retailerId: "fairprice",
+          reasons: [{ code: "below_minimum_order", minimumOrderCents: 1000, spendCents: 300 }],
+          // What checking out the noodles would cost: 300 + 500 delivery.
+          partialOrder: {
+            retailerId: "fairprice",
+            lines: [
+              {
+                productId: "noodles",
+                quantity: 1,
+                listingId: "fairprice-noodles",
+                productUrl: "https://example.com/fairprice-noodles",
+                priceKind: "ordinary",
+                unitPriceCents: 300,
+                originalPriceCents: null,
+                multibuy: null,
+                itemCharges: [],
+                lineTotalCents: 300,
+                excludedPromotions: [],
+              },
+            ],
+            orderCharges: [],
+            deliveryCents: 500,
+            totalCents: 800,
+          },
+        },
+        {
+          status: "unavailable",
           retailerId: "cold-storage",
           reasons: [
             { code: "missing_products", productIds: ["noodles"] },
@@ -266,16 +293,12 @@ describe("shopper routes", () => {
         },
         {
           status: "unavailable",
-          retailerId: "fairprice",
-          reasons: [{ code: "below_minimum_order", minimumOrderCents: 1000, spendCents: 300 }],
-        },
-        {
-          status: "unavailable",
           retailerId: "redmart",
           reasons: [{ code: "missing_products", productIds: ["noodles"] }],
         },
       ],
     });
+    expect(Value.Check(BasketCompareResponseSchema, response.json())).toBe(true);
   });
 
   it("reports a failed database read as a service error, not a business outcome", async () => {

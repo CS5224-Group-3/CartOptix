@@ -139,6 +139,14 @@ export const UnavailableOptionSchema = closedObject({
   status: Type.Literal("unavailable"),
   retailerId: RetailerIdSchema,
   reasons: Type.Array(UnavailableReasonSchema, { minItems: 1 }),
+  /**
+   * What checking out the lines this retailer can supply would cost, as if the
+   * shopper did so: with delivery and order charges for that spend. Its total
+   * is an estimate for an incomplete or unacceptable order, never ranked
+   * against or recommended over a complete option. Absent when the retailer
+   * can supply no line or its delivery rule is unverified.
+   */
+  partialOrder: Type.Optional(OrderSchema),
 });
 export type UnavailableOption = Static<typeof UnavailableOptionSchema>;
 
@@ -146,9 +154,10 @@ export const RetailerOptionSchema = Type.Union([CompleteOptionSchema, Unavailabl
 export type RetailerOption = Static<typeof RetailerOptionSchema>;
 
 /** One option per retailer: complete options first, cheapest first, then
- * unavailable ones. Ties between equal totals, and the order of unavailable
- * options, follow retailer ID in code-point order ("cold-storage" <
- * "fairprice" < "redmart"). The API orders them; schemas cannot compare totals. */
+ * unavailable ones, fewest missing products first. Ties between equal totals,
+ * and between equal missing counts, follow retailer ID in code-point order
+ * ("cold-storage" < "fairprice" < "redmart"). The API orders them; schemas
+ * cannot compare totals. */
 const options = (item: typeof RetailerOptionSchema | typeof UnavailableOptionSchema) =>
   Type.Array(item, { minItems: 1, maxItems: 3 });
 

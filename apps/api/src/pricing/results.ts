@@ -196,7 +196,8 @@ export type LinePricingResult =
  */
 export type RetailerOrderPricingResult =
   | { status: "priced"; order: PricedRetailerOrder }
-  | { status: "infeasible"; reason: OrderInfeasibility }
+  /** `order` is what the order would cost if the retailer accepted it. */
+  | { status: "infeasible"; reason: OrderInfeasibility; order: PricedRetailerOrder }
   | { status: "unavailable"; reason: PricingUnavailable };
 
 /**

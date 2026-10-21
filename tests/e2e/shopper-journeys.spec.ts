@@ -28,9 +28,9 @@ test.describe("CartOptix shopper journeys", () => {
 
     await expect(page).toHaveURL(/\/results$/);
     await expect(page.getByRole("heading", { name: "Retailer basket comparison" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "RedMart" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "FairPrice" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Cold Storage" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "RedMart", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "FairPrice", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Cold Storage", exact: true })).toBeVisible();
     await expect(page.getByText(/fixed retailer dataset/i).first()).toBeVisible();
   });
 
@@ -75,6 +75,26 @@ test.describe("CartOptix shopper journeys", () => {
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
     await expect(page.getByText(deal).first()).toBeVisible();
+  });
+
+  test("J3/J5: an incomplete basket shows its estimate and missing products", async ({ page }) => {
+    // Pulled chicken is not at RedMart in the seed; Barilla penne is not at Cold Storage.
+    for (const product of [
+      "ayam-brand-pulled-chicken-buffalo-150g",
+      "barilla-italian-pasta-penne-rigate-500g",
+    ]) {
+      await page.goto(`/product/${product}`);
+      await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+      await expect(page).toHaveURL(/\/basket$/);
+    }
+    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+    await expect(page).toHaveURL(/\/results$/);
+    const incomplete = page.locator("article", { hasText: "Incomplete basket" }).first();
+    await expect(incomplete.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(incomplete.getByRole("heading", { name: /^Not available at / })).toBeVisible();
+    await expect(
+      incomplete.getByRole("link", { name: /Ayam Brand|Barilla/ }).first(),
+    ).toBeVisible();
   });
 
   test("J2: changing the basket makes an earlier result stale", async ({ page }) => {

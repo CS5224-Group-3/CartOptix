@@ -115,9 +115,13 @@ describe("normal API comparison flow", () => {
         expect(
           screen.getByRole("heading", { name: "No feasible purchasing plan available" }),
         ).toBeDefined();
-        expect(screen.getByText(/No eligible offer for Fixture White Rice/)).toBeDefined();
-        expect(screen.getByText(/Qualifying spend of S\$6.50.*S\$15.00/)).toBeDefined();
+        expect(screen.getByText(/Not available at RedMart: Fixture White Rice/)).toBeDefined();
+        expect(screen.getByText(/Below FairPrice's S\$15.00 minimum order/)).toBeDefined();
         expect(screen.queryByText(/^Recommended/)).toBeNull();
+        // RedMart's partial checkout, labelled as such, with the missing product listed.
+        const redmart = within(screen.getByRole("article", { name: "RedMart" }));
+        expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeDefined();
+        expect(redmart.getByRole("link", { name: "Fixture White Rice" })).toBeDefined();
       } else {
         expect(
           within(screen.getByRole("article", { name: "FairPrice" })).getByText(
@@ -130,7 +134,7 @@ describe("normal API comparison flow", () => {
         expect(screen.getByText("S$1.60")).toBeDefined();
       }
       const unavailable = within(screen.getByRole("article", { name: "Cold Storage" }));
-      expect(unavailable.getByText(/Delivery charges could not be verified/)).toBeDefined();
+      expect(unavailable.getByText(/delivery charges could not be confirmed/)).toBeDefined();
       expect(unavailable.queryByText(/Estimated total|Recommended/)).toBeNull();
     },
   );

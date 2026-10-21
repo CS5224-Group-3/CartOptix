@@ -5,6 +5,7 @@ import {
   type DeliveryCharge,
   type OrderCharge,
   type PricedLine,
+  type PricedRetailerOrder,
   PricingContractError,
   type PricingDisclosure,
   type RetailerOrderPricingResult,
@@ -81,22 +82,6 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
   const itemsTotal = sumCents(lines.map((line) => line.total));
   const measuredAmount = measureAgainstThresholds(lines, delivery.thresholdBasis);
 
-  // Checked before the fee, because an order below the minimum cannot be
-  // placed whatever delivery would have cost. This is a fact about the basket,
-  // not missing data, so it is reported as infeasible rather than unavailable.
-  if (delivery.minimumOrder !== null && measuredAmount < delivery.minimumOrder) {
-    return {
-      status: "infeasible",
-      reason: {
-        code: "minimum-order-not-met",
-        detail: `Retailer ${retailerId} requires a minimum order of ${delivery.minimumOrder} cents`,
-        minimumOrder: delivery.minimumOrder,
-        measuredAmount,
-        shortfall: delivery.minimumOrder - measuredAmount,
-      },
-    };
-  }
-
   const free = qualifiesForFreeDelivery(measuredAmount, delivery.freeDeliveryThreshold);
   const fee = free ? 0 : delivery.fee;
   if (fee === null || !isCents(fee) || fee < 0) {
@@ -121,21 +106,38 @@ export function priceRetailerOrder(input: PriceRetailerOrderInput): RetailerOrde
     return orderCharges;
   }
 
-  return {
-    status: "priced",
-    order: {
-      retailerId,
-      lines: [...lines],
-      itemsTotal,
-      delivery: deliveryCharge,
-      orderCharges: orderCharges.charges,
-      total:
-        itemsTotal +
-        deliveryCharge.amount +
-        sumCents(orderCharges.charges.filter((c) => !c.waived).map((charge) => charge.amount)),
-      disclosures: mergeDisclosures(lines, orderCharges.disclosures),
-    },
+  const order: PricedRetailerOrder = {
+    retailerId,
+    lines: [...lines],
+    itemsTotal,
+    delivery: deliveryCharge,
+    orderCharges: orderCharges.charges,
+    total:
+      itemsTotal +
+      deliveryCharge.amount +
+      sumCents(orderCharges.charges.filter((c) => !c.waived).map((charge) => charge.amount)),
+    disclosures: mergeDisclosures(lines, orderCharges.disclosures),
   };
+
+  // The retailer will not accept an order below its minimum, whatever it
+  // costs. That is a fact about the basket, not missing data, so it is
+  // infeasible rather than unavailable, and still carries what checking out
+  // would cost so the shopper can see how far short it falls.
+  if (delivery.minimumOrder !== null && measuredAmount < delivery.minimumOrder) {
+    return {
+      status: "infeasible",
+      reason: {
+        code: "minimum-order-not-met",
+        detail: `Retailer ${retailerId} requires a minimum order of ${delivery.minimumOrder} cents`,
+        minimumOrder: delivery.minimumOrder,
+        measuredAmount,
+        shortfall: delivery.minimumOrder - measuredAmount,
+      },
+      order,
+    };
+  }
+
+  return { status: "priced", order };
 }
 
 /**

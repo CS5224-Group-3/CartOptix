@@ -32,6 +32,7 @@ export async function resolveSubmissionMetadata(
         ...line,
         name: line.name?.trim() ? line.name : product.name,
         packDescription: line.packDescription?.trim() ? line.packDescription : product.packSize,
+        imageUrl: line.imageUrl ?? product.imageUrl,
       };
     }),
   );

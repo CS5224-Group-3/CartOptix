@@ -1,5 +1,5 @@
 import { SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { comparisonFixtures } from "../src/features/basket-comparison/fixtures";
 import type { BasketComparisonPresentation } from "../src/features/basket-comparison/model";
@@ -284,7 +284,9 @@ describe("complete retailer comparison", () => {
     const card = within(screen.getByRole("article", { name: "Cold Storage" }));
     expect(card.getByText("Unavailable")).toBeDefined();
     expect(
-      card.getByText("Delivery charges could not be verified, so a complete total is not shown."),
+      card.getByText(
+        "Cold Storage's delivery charges could not be confirmed, so no total is shown.",
+      ),
     ).toBeDefined();
     expect(card.queryByText(/Recommended|S\$|Estimated total/)).toBeNull();
     expect(card.queryByRole("link")).toBeNull();
@@ -299,7 +301,35 @@ describe("complete retailer comparison", () => {
     for (const option of result.options)
       if (option.kind === "unavailable")
         for (const reason of option.reasons) expect(screen.getByText(reason)).toBeDefined();
-    expect(screen.queryByText(/Recommended|Estimated total/)).toBeNull();
+    expect(screen.queryByText(/Recommended/)).toBeNull();
+    // Partial checkouts are estimated and labelled; the one with no rule is not.
+    const fairprice = within(screen.getByRole("article", { name: "FairPrice" }));
+    expect(fairprice.getByText("Below minimum order")).toBeDefined();
+    expect(fairprice.getByText("Estimated total")).toBeDefined();
+    expect(fairprice.getByText("S$11.50")).toBeDefined();
+    const redmart = within(screen.getByRole("article", { name: "RedMart" }));
+    expect(redmart.getByText("Incomplete basket")).toBeDefined();
+    expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeDefined();
+    expect(redmart.getByText("S$8.09")).toBeDefined();
+    expect(redmart.getByRole("heading", { name: "Not available at RedMart" })).toBeDefined();
+    expect(redmart.getByRole("link", { name: "Fixture White Rice" }).getAttribute("href")).toBe(
+      "/product/fixture-rice",
+    );
+    const coldStorage = within(screen.getByRole("article", { name: "Cold Storage" }));
+    expect(coldStorage.queryByText(/Estimated total|S\$/)).toBeNull();
+  });
+
+  it("shows a missing product's image, and nothing broken when it fails to load", () => {
+    const result = structuredClone(scenario("infeasible"));
+    const redmart = result.options.find((option) => option.retailer.name === "RedMart");
+    if (redmart?.kind !== "unavailable" || !redmart.missingProducts?.[0])
+      throw new Error("Missing product");
+    redmart.missingProducts[0].imageUrl = "https://example.com/rice.jpg";
+    const { container } = render(<BasketComparisonPage result={result} />);
+    const image = container.querySelector("img.retailer-option__thumb");
+    expect(image?.getAttribute("src")).toBe("https://example.com/rice.jpg");
+    if (image) fireEvent.error(image);
+    expect(container.querySelector("img.retailer-option__thumb")).toBeNull();
   });
 
   it("provides purchase links, manual guidance and fixed-dataset disclosure", () => {

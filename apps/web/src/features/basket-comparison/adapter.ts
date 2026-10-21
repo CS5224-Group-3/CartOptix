@@ -3,7 +3,9 @@ import {
   MAX_BASKET_LINES,
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
+  type Order,
   type PlanLine,
+  type UnavailableOption,
   type UnavailableReason,
 } from "@cartoptix/contracts";
 import { formatSgd, orderChargeLabel, RETAILER_DISPLAY } from "../../lib/format";
@@ -11,7 +13,11 @@ import {
   type BasketComparisonPresentation,
   type BasketSnapshot,
   type ComparisonProvenance,
+  type OrderPresentation,
   PresentationDataFailure,
+  type RetailerPresentation,
+  type SubmittedProduct,
+  type UnavailableRetailerOption,
 } from "./model";
 import { validateRecommendation } from "./validation";
 
@@ -78,19 +84,150 @@ function packsCost({ quantity, unitPriceCents, priceKind, multibuy }: PlanLine):
   return timesApplied * dealPriceCents + (quantity - timesApplied * packsPerDeal) * unitPriceCents;
 }
 
-function explain(reason: UnavailableReason, names: Map<string, string>): string {
+function explain(reason: UnavailableReason, names: Map<string, string>, retailer: string): string {
   switch (reason.code) {
     case "missing_products":
       requireData(strings(reason.productIds) && reason.productIds.length > 0);
-      return `No eligible offer for ${reason.productIds.map((id) => names.get(id) ?? id).join(", ")}.`;
+      return `Not available at ${retailer}: ${reason.productIds.map((id) => names.get(id) ?? id).join(", ")}.`;
     case "below_minimum_order":
       requireData(cents(reason.minimumOrderCents) && cents(reason.spendCents));
-      return `Qualifying spend of ${formatSgd(reason.spendCents)} is below the ${formatSgd(reason.minimumOrderCents)} minimum order.`;
+      requireData(reason.spendCents < reason.minimumOrderCents);
+      return `Below ${retailer}'s ${formatSgd(reason.minimumOrderCents)} minimum order — ${formatSgd(reason.minimumOrderCents - reason.spendCents)} more needed.`;
     case "delivery_rule_unverified":
-      return "Delivery charges could not be verified, so a complete total is not shown.";
+      return `${retailer}'s delivery charges could not be confirmed, so no total is shown.`;
     default:
       throw new PresentationDataFailure();
   }
+}
+
+/** One order's lines, charges and total, checked to reconcile. */
+function adaptOrder(order: Order, metadata: Map<string, SubmittedProduct>): OrderPresentation {
+  requireData(Array.isArray(order.lines) && order.lines.length > 0);
+  requireData(Array.isArray(order.orderCharges));
+  requireData(cents(order.deliveryCents) && cents(order.totalCents));
+  requireData(new Set(order.lines.map((line) => line.productId)).size === order.lines.length);
+  const lines = order.lines.map((line) => {
+    const product = metadata.get(line.productId);
+    requireData(product && text(product.name) && text(product.packDescription));
+    requireData(
+      Number.isInteger(line.quantity) &&
+        line.quantity >= MIN_PACKS_PER_LINE &&
+        line.quantity <= MAX_PACKS_PER_LINE,
+    );
+    requireData(text(line.listingId) && cents(line.unitPriceCents) && line.unitPriceCents > 0);
+    requireData(cents(line.lineTotalCents) && line.lineTotalCents > 0);
+    requireData(line.priceKind === "ordinary" || line.priceKind === "unconditional_sale");
+    const original = line.originalPriceCents;
+    requireData(
+      line.priceKind === "unconditional_sale"
+        ? original !== null && cents(original) && original > line.unitPriceCents
+        : original === null,
+    );
+    requireData(text(line.productUrl) && new URL(line.productUrl).protocol === "https:");
+    requireData(Array.isArray(line.itemCharges) && strings(line.excludedPromotions));
+    for (const charge of line.itemCharges)
+      requireData(
+        text(charge.label) &&
+          cents(charge.amountCents) &&
+          typeof charge.includedInPrice === "boolean",
+      );
+    // Reconciliation checks reject data; they never replace API amounts.
+    requireData(
+      line.lineTotalCents ===
+        packsCost(line) +
+          line.itemCharges.reduce(
+            (sum, charge) => sum + (charge.includedInPrice ? 0 : charge.amountCents),
+            0,
+          ),
+    );
+    return {
+      productId: line.productId,
+      quantity: line.quantity,
+      name: product.name,
+      packDescription: product.packDescription,
+      amountCents: line.lineTotalCents,
+      purchaseUrl: line.productUrl,
+      pricing: structuredClone({
+        unitPriceCents: line.unitPriceCents,
+        originalPriceCents: line.originalPriceCents,
+        priceKind: line.priceKind,
+        multibuy: line.multibuy,
+        itemCharges: line.itemCharges,
+        excludedPromotions: line.excludedPromotions,
+      }),
+    };
+  });
+  for (const charge of order.orderCharges) {
+    requireData(
+      text(charge.label) && cents(charge.amountCents) && typeof charge.waived === "boolean",
+    );
+    requireData(charge.waivedFromCents === null || cents(charge.waivedFromCents));
+    requireData(!charge.waived || charge.waivedFromCents !== null);
+  }
+  const productSubtotalCents = lines.reduce((sum, line) => sum + line.amountCents, 0);
+  const charges = [
+    { label: "Delivery", amountCents: order.deliveryCents },
+    ...order.orderCharges.map((charge) => ({
+      label: orderChargeLabel(charge),
+      amountCents: charge.waived ? 0 : charge.amountCents,
+    })),
+  ];
+  requireData(cents(productSubtotalCents));
+  requireData(
+    productSubtotalCents + charges.reduce((sum, charge) => sum + charge.amountCents, 0) ===
+      order.totalCents,
+  );
+  return {
+    lines,
+    productSubtotalCents,
+    charges,
+    orderCharges: structuredClone(order.orderCharges),
+    deliveryCents: order.deliveryCents,
+    estimatedTotalCents: order.totalCents,
+  };
+}
+
+/**
+ * An unavailable option, with what checking out what the retailer has would
+ * cost. Its partial order and its missing products must cover the basket
+ * exactly, each at the quantity submitted.
+ */
+function adaptUnavailable(
+  option: UnavailableOption,
+  retailer: RetailerPresentation,
+  metadata: Map<string, SubmittedProduct>,
+): UnavailableRetailerOption {
+  requireData(Array.isArray(option.reasons) && option.reasons.length > 0);
+  const names = new Map([...metadata].map(([id, product]) => [id, product.name]));
+  const explanations = option.reasons.map((reason) => ({
+    reason: structuredClone(reason),
+    text: explain(reason, names, retailer.name),
+  }));
+  const missingIds = option.reasons.flatMap((reason) =>
+    reason.code === "missing_products" ? reason.productIds : [],
+  );
+  requireData(new Set(missingIds).size === missingIds.length);
+  const missingProducts = missingIds.map((id) => {
+    const product = metadata.get(id);
+    requireData(product);
+    return structuredClone(product);
+  });
+  const result: UnavailableRetailerOption = {
+    kind: "unavailable",
+    retailer,
+    explanations,
+    reasons: explanations.map(({ text }) => text),
+    missingProducts,
+  };
+  if (option.partialOrder === undefined) return result;
+  requireData(option.partialOrder.retailerId === option.retailerId);
+  const partial = adaptOrder(option.partialOrder, metadata);
+  const priced = partial.lines.map((line) => line.productId);
+  requireData(priced.every((id) => !missingIds.includes(id)));
+  requireData(priced.length + missingIds.length === metadata.size);
+  for (const line of partial.lines)
+    requireData(metadata.get(line.productId)?.quantity === line.quantity);
+  return { ...result, partial };
 }
 
 /** Display adaptation, not pricing. Input amounts, identities, order and recommendation are retained.
@@ -106,7 +243,6 @@ export function adaptComparison(
     requireData(response.status === "recommended" || response.status === "no_feasible_plan");
     requireData(Array.isArray(response.options) && response.options.length > 0);
     const metadata = new Map(basket.products.map((product) => [product.productId, product]));
-    const names = new Map(basket.products.map((product) => [product.productId, product.name]));
     const result: BasketComparisonPresentation = {
       submittedBasket: structuredClone(basket),
       provenance: structuredClone(provenance),
@@ -117,105 +253,10 @@ export function adaptComparison(
       options: response.options.map((option) => {
         requireData(Object.hasOwn(RETAILER_DISPLAY, option.retailerId));
         const retailer = { id: option.retailerId, name: RETAILER_DISPLAY[option.retailerId].name };
-        if (option.status === "unavailable") {
-          requireData(Array.isArray(option.reasons) && option.reasons.length > 0);
-          const explanations = option.reasons.map((reason) => ({
-            reason: structuredClone(reason),
-            text: explain(reason, names),
-          }));
-          return {
-            kind: "unavailable",
-            retailer,
-            explanations,
-            reasons: explanations.map(({ text }) => text),
-          };
-        }
+        if (option.status === "unavailable") return adaptUnavailable(option, retailer, metadata);
         requireData(option.status === "complete" && response.status === "recommended");
-        requireData(Array.isArray(option.lines) && Array.isArray(option.orderCharges));
-        requireData(cents(option.deliveryCents) && cents(option.totalCents));
-        const lines = option.lines.map((line) => {
-          const product = metadata.get(line.productId);
-          requireData(product && text(product.name) && text(product.packDescription));
-          requireData(
-            Number.isInteger(line.quantity) &&
-              line.quantity >= MIN_PACKS_PER_LINE &&
-              line.quantity <= MAX_PACKS_PER_LINE,
-          );
-          requireData(
-            text(line.listingId) && cents(line.unitPriceCents) && line.unitPriceCents > 0,
-          );
-          requireData(cents(line.lineTotalCents) && line.lineTotalCents > 0);
-          requireData(line.priceKind === "ordinary" || line.priceKind === "unconditional_sale");
-          const original = line.originalPriceCents;
-          requireData(
-            line.priceKind === "unconditional_sale"
-              ? original !== null && cents(original) && original > line.unitPriceCents
-              : original === null,
-          );
-          requireData(text(line.productUrl) && new URL(line.productUrl).protocol === "https:");
-          requireData(Array.isArray(line.itemCharges) && strings(line.excludedPromotions));
-          for (const charge of line.itemCharges)
-            requireData(
-              text(charge.label) &&
-                cents(charge.amountCents) &&
-                typeof charge.includedInPrice === "boolean",
-            );
-          // Reconciliation checks reject data; they never replace API amounts.
-          requireData(
-            line.lineTotalCents ===
-              packsCost(line) +
-                line.itemCharges.reduce(
-                  (sum, charge) => sum + (charge.includedInPrice ? 0 : charge.amountCents),
-                  0,
-                ),
-          );
-          return {
-            productId: line.productId,
-            quantity: line.quantity,
-            name: product.name,
-            packDescription: product.packDescription,
-            amountCents: line.lineTotalCents,
-            purchaseUrl: line.productUrl,
-            pricing: structuredClone({
-              unitPriceCents: line.unitPriceCents,
-              originalPriceCents: line.originalPriceCents,
-              priceKind: line.priceKind,
-              multibuy: line.multibuy,
-              itemCharges: line.itemCharges,
-              excludedPromotions: line.excludedPromotions,
-            }),
-          };
-        });
-        for (const charge of option.orderCharges) {
-          requireData(
-            text(charge.label) && cents(charge.amountCents) && typeof charge.waived === "boolean",
-          );
-          requireData(charge.waivedFromCents === null || cents(charge.waivedFromCents));
-          requireData(!charge.waived || charge.waivedFromCents !== null);
-        }
-        const productSubtotalCents = lines.reduce((sum, line) => sum + line.amountCents, 0);
-        const charges = [
-          { label: "Delivery", amountCents: option.deliveryCents },
-          ...option.orderCharges.map((charge) => ({
-            label: orderChargeLabel(charge),
-            amountCents: charge.waived ? 0 : charge.amountCents,
-          })),
-        ];
-        requireData(cents(productSubtotalCents));
-        requireData(
-          productSubtotalCents + charges.reduce((sum, charge) => sum + charge.amountCents, 0) ===
-            option.totalCents,
-        );
-        return {
-          kind: "complete",
-          retailer,
-          lines,
-          productSubtotalCents,
-          charges,
-          orderCharges: structuredClone(option.orderCharges),
-          deliveryCents: option.deliveryCents,
-          estimatedTotalCents: option.totalCents,
-        };
+        requireData(option.retailerId === retailer.id);
+        return { kind: "complete", retailer, ...adaptOrder(option, metadata) };
       }),
     };
     requireData(validateRecommendation(result).kind !== "invalid");

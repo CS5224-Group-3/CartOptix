@@ -11,6 +11,7 @@ import type {
   CompleteOption,
   ErrorResponse,
   OffersResponse,
+  Order,
   ProductsResponse,
   UnavailableOption,
 } from "./api.ts";
@@ -92,13 +93,12 @@ const line = (productId: string, retailerId: RetailerId, cents: number): PlanLin
   excludedPromotions: [],
 });
 
-const complete = (
+const order = (
   retailerId: RetailerId,
   lines: PlanLine[],
   deliveryCents = 0,
   orderCharges: OrderCharge[] = [],
-): CompleteOption => ({
-  status: "complete",
+): Order => ({
   retailerId,
   lines,
   orderCharges,
@@ -106,6 +106,11 @@ const complete = (
   totalCents:
     lines.reduce((sum, { lineTotalCents }) => sum + lineTotalCents, deliveryCents) +
     orderCharges.reduce((sum, charge) => (charge.waived ? sum : sum + charge.amountCents), 0),
+});
+
+const complete = (...args: Parameters<typeof order>): CompleteOption => ({
+  status: "complete",
+  ...order(...args),
 });
 
 /** A synthetic service fee, waived once an order's qualifying spend reaches the threshold. */
@@ -217,6 +222,8 @@ export const oneRetailerCompleteExample = {
       status: "unavailable",
       retailerId: "fairprice",
       reasons: [{ code: "missing_products", productIds: ["fixture-drink"] }],
+      // Checking out just the rice: 400, below the 600-cent waiver, so the fee applies.
+      partialOrder: order("fairprice", [riceAtFairprice], 0, [serviceFee(399, 600, false)]),
     },
   ],
 } satisfies BasketCompareResponse;
@@ -234,7 +241,9 @@ export const tieExample = {
   ],
 } satisfies BasketCompareResponse;
 
-/** No retailer can supply the whole basket, each for its own reason. */
+/** No retailer can supply the whole basket, each for its own reason. FairPrice's and
+ * RedMart's partial orders show what checking out what they have would cost. Unavailable
+ * options come fewest missing products first, then by retailer ID. */
 export const noFeasiblePlanExample = {
   status: "no_feasible_plan",
   options: [
@@ -243,11 +252,13 @@ export const noFeasiblePlanExample = {
       status: "unavailable",
       retailerId: "fairprice",
       reasons: [{ code: "below_minimum_order", minimumOrderCents: 1500, spendCents: 650 }],
+      partialOrder: order("fairprice", [drinkAtFairprice, riceAtFairprice], 500),
     },
     {
       status: "unavailable",
       retailerId: "redmart",
       reasons: [{ code: "missing_products", productIds: ["fixture-rice"] }],
+      partialOrder: order("redmart", [drinkAtRedmart], 599),
     },
   ],
 } satisfies BasketCompareResponse;
