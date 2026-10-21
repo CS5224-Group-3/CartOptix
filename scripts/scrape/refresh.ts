@@ -17,14 +17,16 @@
  */
 import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { type Options, parseOptions } from "./args.ts";
+import { loadCheckpoint, saveCheckpoint } from "./checkpoint.ts";
 import { coldStorage } from "./coldstorage.ts";
 import { fairprice } from "./fairprice.ts";
 import { passesNameRules, similarity } from "./match.ts";
 import {
   COLUMNS,
   fromCsv,
+  needsSeller,
   type Observation,
-  RETAILERS,
   type Retailer,
   type RetailerScraper,
   toCsv,
@@ -35,10 +37,14 @@ const ROOT = resolve(import.meta.dirname, "../..");
 const SNAPSHOT = resolve(ROOT, "data/snapshot");
 /** Search hits per missing retailer whose pages are read after the name rules. */
 const HITS_PER_SEARCH = 3;
-const headed = process.argv.includes("--headed");
-/** `--max-checks N`: after N of Lazada's checks, skip the rest of the run's items. */
-const maxChecksArg = process.argv.indexOf("--max-checks");
-const maxChecks = maxChecksArg > 0 ? Number(process.argv[maxChecksArg + 1]) : undefined;
+let options: Options;
+try {
+  options = parseOptions(process.argv.slice(2));
+} catch (error) {
+  console.error((error as Error).message);
+  process.exit(2);
+}
+const { headed, maxChecks } = options;
 
 interface Seed {
   products: { productId: string; representativeName: string }[];
@@ -97,12 +103,10 @@ async function collect<T>(
   skip: (item: T) => Row[] = () => [],
 ): Promise<string[]> {
   const checkpoint = resolve(SNAPSHOT, `${file}.checkpoint.json`);
-  const saved: { done: string[]; rows: Row[] } = existsSync(checkpoint)
-    ? JSON.parse(readFileSync(checkpoint, "utf8"))
-    : { done: [], rows: [] };
+  const saved = loadCheckpoint(checkpoint);
   const done = new Set(saved.done);
-  const rows = saved.rows;
-  const save = () => writeFileSync(checkpoint, JSON.stringify({ done: [...done], rows }));
+  const rows: Row[] = saved.rows;
+  const save = () => saveCheckpoint(checkpoint, { done: [...done], rows });
   const pending = items.filter((item) => !done.has(key(item)));
   if (done.size > 0)
     console.log(`${retailer}: resuming, ${done.size} done, ${pending.length} to go`);
@@ -220,10 +224,7 @@ async function sellers(): Promise<string[]> {
   const checks = new Map(read("seller-checks.csv").map((row) => [row["product url"] ?? "", row]));
   const pending = ["listings-redmart.csv", "candidates-redmart.csv"]
     .flatMap(read)
-    .filter(
-      (row) =>
-        row.status !== "not_found" && !row.seller && !checks.get(row["product url"] ?? "")?.seller,
-    );
+    .filter((row) => needsSeller(row) && !checks.get(row["product url"] ?? "")?.seller);
   const client = redmart({ headed, maxChecks });
   try {
     for (const row of pending) {
@@ -247,31 +248,16 @@ async function sellers(): Promise<string[]> {
 /** Starts a snapshot: removes every collected file and review from the last one. */
 function startSnapshot(): string[] {
   for (const file of readdirSync(SNAPSHOT))
-    if (file.endsWith(".csv") || file.endsWith(".checkpoint.json")) rmSync(resolve(SNAPSHOT, file));
+    if (/\.csv$|\.checkpoint\.json(\.tmp)?$/.test(file)) rmSync(resolve(SNAPSHOT, file));
   console.log("Cleared data/snapshot for a new snapshot");
   return [];
 }
 
-const [command, ...args] = process.argv
-  .slice(2)
-  .filter(
-    (arg, i, all) => arg !== "--headed" && arg !== "--max-checks" && all[i - 1] !== "--max-checks",
-  );
-const unknown = args.filter((arg) => !(RETAILERS as readonly string[]).includes(arg));
-const chosen =
-  args.length > 0 ? RETAILERS.filter((retailer) => args.includes(retailer)) : RETAILERS;
-const step = command === "listings" ? listings : command === "search" ? search : undefined;
-const bare = command === "sellers" || command === "new";
-if (bare ? args.length > 0 : !step || unknown.length > 0) {
-  console.error(
-    `Usage: node scripts/scrape/refresh.ts listings|search [${RETAILERS.join("|")}…] [--headed]\n` +
-      "       node scripts/scrape/refresh.ts new|sellers [--headed]",
-  );
-  process.exit(2);
-}
+const step =
+  options.command === "listings" ? listings : options.command === "search" ? search : undefined;
 const failures = step
-  ? (await Promise.all(chosen.map(step))).flat()
-  : command === "new"
+  ? (await Promise.all(options.retailers.map(step))).flat()
+  : options.command === "new"
     ? startSnapshot()
     : await sellers();
 if (failures.length > 0) {

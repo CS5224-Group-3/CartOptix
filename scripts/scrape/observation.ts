@@ -92,3 +92,11 @@ export function fromCsv(text: string): Record<string, string>[] {
   const [header = [], ...rows] = records;
   return rows.map((row) => Object.fromEntries(header.map((name, i) => [name, row[i] ?? ""])));
 }
+
+/**
+ * Whether a collected RedMart row still needs its seller read: its page was
+ * read but showed no seller. A gone or skipped listing is never revisited.
+ */
+export function needsSeller(row: Record<string, string>): boolean {
+  return row.status === "ok" && row.retailer === "redmart" && !row.seller;
+}

@@ -112,7 +112,7 @@ Each complete-basket option places every line with the same retailer. Do not div
 
 Use the source `in-stock = Yes` flag for the real snapshot comparison; exclude `No` offers. Do not overwrite observed unavailability to make a plan feasible. The flag is a snapshot observation, not verification of current availability or sufficient stock for the requested quantity. The MVP does not model stock counts.
 
-Each snapshot refresh reads every published listing again and searches the retailers a product is missing from. A refresh never fills a missing or failed observation with an earlier one.
+Each snapshot refresh reads every published listing again and searches the retailers a product is missing from. A refresh never fills a missing or failed observation with an earlier one. The one exception to reading every listing: when a retailer keeps showing an anti-bot check, the engineer may cap the checks a run accepts; listings left unread then are skipped, not published, so their products publish only if two other retailers have them.
 
 Product mappings may be decided with AI assistance. As a proof of concept, publish only matches the AI confirms with high confidence and that agree with the name rules; exclude the rest rather than reviewing them by hand. Manual match review is out of scope. Treat a listing as directly fulfilled unless the evidence clearly shows otherwise, remove it only then, and record this as a known limitation. At RedMart the scraper records the page's "Sold by" line; a listing with one is third-party and excluded, and a page whose seller cannot be read is checked by hand. Quarantine unresolved contradictions rather than letting either the title or specification automatically win. Preserve source references and correction reasons. Synthetic data is for development and tests.
 
@@ -155,7 +155,7 @@ Do **not** display collection dates on the website. Display this notice near com
 
 > Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
 
-Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Engineers refresh it by taking a new snapshot of all three retailers within one short window (`scripts/scrape/README.md`); each refresh replaces the previous snapshot entirely and stays a fixed dataset until the next one. If any retailer's collection fails, the previous seed stays. Neither the seed nor the site records when a snapshot was taken, and source references are not presented as collection dates. There is no scheduled or live refresh.
+Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Engineers refresh it by taking a new snapshot of all three retailers within one short window (`scripts/scrape/README.md`); each refresh replaces the previous snapshot entirely and stays a fixed dataset until the next one. If any retailer's collection fails, the previous seed stays; listings skipped under a check cap (PR-02) are not a failure, and are left out rather than carried over. Neither the seed nor the site records when a snapshot was taken, and source references are not presented as collection dates. There is no scheduled or live refresh.
 
 ### PR-07 — Usage measurement
 

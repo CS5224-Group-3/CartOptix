@@ -1,4 +1,9 @@
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { parseOptions } from "./args.ts";
+import { loadCheckpoint, saveCheckpoint } from "./checkpoint.ts";
 import { observe as coldStorage, searchResults as coldStorageSearch } from "./coldstorage.ts";
 import {
   observe as fairprice,
@@ -6,7 +11,7 @@ import {
   pageProduct,
 } from "./fairprice.ts";
 import { packKey, passesNameRules } from "./match.ts";
-import { fromCsv, toCsv } from "./observation.ts";
+import { fromCsv, needsSeller, toCsv } from "./observation.ts";
 import { isChallenge, observe as redmart, sellerFrom } from "./redmart.ts";
 
 describe("FairPrice pages", () => {
@@ -295,5 +300,45 @@ describe("snapshot CSV", () => {
       { a: "plain", b: "x\ny" },
     ];
     expect(fromCsv(toCsv(["a", "b"], rows))).toEqual(rows);
+  });
+});
+
+describe("refresh options", () => {
+  it("accepts a whole number of checks, including zero, and retailer names", () => {
+    expect(parseOptions(["listings", "redmart", "--headed", "--max-checks", "0"])).toEqual({
+      command: "listings",
+      retailers: ["redmart"],
+      headed: true,
+      maxChecks: 0,
+    });
+    expect(parseOptions(["search"]).maxChecks).toBeUndefined();
+  });
+
+  it("rejects a malformed budget, an unknown retailer or arguments a command does not take", () => {
+    for (const argv of [
+      ["listings", "--max-checks", "x"],
+      ["listings", "--max-checks", "-1"],
+      ["listings", "--max-checks", "1.5"],
+      ["listings", "--max-checks"],
+      ["listings", "giant"],
+      ["sellers", "redmart"],
+      ["publish"],
+    ])
+      expect(() => parseOptions(argv), argv.join(" ")).toThrow();
+  });
+});
+
+describe("checkpoints", () => {
+  it("survives a save stopped mid-write, and never revisits skipped sellers", () => {
+    const dir = mkdtempSync(join(tmpdir(), "checkpoint-"));
+    const path = join(dir, "listings-redmart.csv.checkpoint.json");
+    saveCheckpoint(path, { done: ["a"], rows: [{ "product url": "a" }] });
+    writeFileSync(`${path}.tmp`, '{"done": ["a", "b"], "ro');
+    expect(loadCheckpoint(path)).toEqual({ done: ["a"], rows: [{ "product url": "a" }] });
+    expect(loadCheckpoint(join(dir, "none.json"))).toEqual({ done: [], rows: [] });
+    const row = { retailer: "redmart", seller: "" };
+    expect(needsSeller({ ...row, status: "ok" })).toBe(true);
+    expect(needsSeller({ ...row, status: "skipped" })).toBe(false);
+    expect(needsSeller({ ...row, status: "not_found" })).toBe(false);
   });
 });
