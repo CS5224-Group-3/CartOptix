@@ -25,6 +25,7 @@ class Exclusion(unittest.TestCase):
 
     def test_gone_out_of_stock_and_unpriced_listings_are_not(self):
         self.assertEqual(exclusion(row(status="not_found"), {}), "page gone")
+        self.assertEqual(exclusion(row(status="skipped"), {}), "not collected (Lazada check)")
         self.assertEqual(exclusion(row(**{"in-stock": "No"}), {}), "out of stock")
         self.assertEqual(exclusion(row(**{"Product Price": "0"}), {}), "no reliable price")
 

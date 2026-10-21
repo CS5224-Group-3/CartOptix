@@ -43,7 +43,12 @@ async function launch(headed: boolean): Promise<BrowserContext> {
 }
 
 export class ChallengeError extends Error {
-  override readonly name = "ChallengeError";
+  override readonly name: string = "ChallengeError";
+}
+
+/** The run has met as many checks as the operator allowed (`--max-checks`). */
+export class CheckBudgetError extends ChallengeError {
+  override readonly name = "CheckBudgetError";
 }
 
 export interface CatalogueItem {
@@ -141,15 +146,21 @@ export interface RedMartScraper extends RetailerScraper {
   seller(url: string): Promise<string>;
 }
 
-export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
+export function redmart(options: { headed?: boolean; maxChecks?: number } = {}): RedMartScraper {
   let context: BrowserContext | undefined;
   let page: Page | undefined;
 
   /** Milliseconds between requests; doubles after each check, up to MAX_INTERVAL. */
   let interval = INTERVAL;
+  /** Checks the operator has completed in this run. */
+  let checks = 0;
 
   /** Waits for the operator to complete Lazada's check, then slows down. */
   async function clearChallenge(current: Page): Promise<void> {
+    if (checks >= (options.maxChecks ?? Number.POSITIVE_INFINITY)) {
+      throw new CheckBudgetError(`Lazada showed ${checks} checks, the most this run allows`);
+    }
+    checks += 1;
     if (!options.headed) {
       throw new ChallengeError("Lazada is showing its slider check; run again with --headed");
     }

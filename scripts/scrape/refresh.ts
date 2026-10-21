@@ -29,13 +29,16 @@ import {
   type RetailerScraper,
   toCsv,
 } from "./observation.ts";
-import { ChallengeError, redmart } from "./redmart.ts";
+import { ChallengeError, CheckBudgetError, redmart } from "./redmart.ts";
 
 const ROOT = resolve(import.meta.dirname, "../..");
 const SNAPSHOT = resolve(ROOT, "data/snapshot");
 /** Search hits per missing retailer whose pages are read after the name rules. */
 const HITS_PER_SEARCH = 3;
 const headed = process.argv.includes("--headed");
+/** `--max-checks N`: after N of Lazada's checks, skip the rest of the run's items. */
+const maxChecksArg = process.argv.indexOf("--max-checks");
+const maxChecks = maxChecksArg > 0 ? Number(process.argv[maxChecksArg + 1]) : undefined;
 
 interface Seed {
   products: { productId: string; representativeName: string }[];
@@ -72,45 +75,73 @@ const seed: Seed = {
 function scraper(retailer: Retailer): RetailerScraper {
   if (retailer === "fairprice") return fairprice;
   if (retailer === "cold-storage") return coldStorage;
-  return redmart({ headed });
+  return redmart({ headed, maxChecks });
 }
 
 /**
- * Runs `task` for each item, in order, and writes the retailer's file only if
- * every item succeeded. Returns the failures.
+ * Runs `task` for each item, in order, saving progress after each one to
+ * `<file>.checkpoint.json`, so a stopped run resumes where it left off. The
+ * retailer's file is written only once every item has succeeded.
+ *
+ * If Lazada shows more checks than `--max-checks` allows, the items not yet
+ * collected are recorded as `skip` gives them (a listing as "skipped", which
+ * is never published from an earlier observation) and the file is written.
  */
 async function collect<T>(
   retailer: Retailer,
   file: string,
   columns: readonly string[],
   items: T[],
+  key: (item: T) => string,
   task: (scraper: RetailerScraper, item: T) => Promise<Row[]>,
+  skip: (item: T) => Row[] = () => [],
 ): Promise<string[]> {
+  const checkpoint = resolve(SNAPSHOT, `${file}.checkpoint.json`);
+  const saved: { done: string[]; rows: Row[] } = existsSync(checkpoint)
+    ? JSON.parse(readFileSync(checkpoint, "utf8"))
+    : { done: [], rows: [] };
+  const done = new Set(saved.done);
+  const rows = saved.rows;
+  const save = () => writeFileSync(checkpoint, JSON.stringify({ done: [...done], rows }));
+  const pending = items.filter((item) => !done.has(key(item)));
+  if (done.size > 0)
+    console.log(`${retailer}: resuming, ${done.size} done, ${pending.length} to go`);
   const client = scraper(retailer);
-  const rows: Row[] = [];
   const failures: string[] = [];
+  let skipped = 0;
   try {
-    for (const [index, item] of items.entries()) {
+    for (const [index, item] of pending.entries()) {
       try {
         rows.push(...(await task(client, item)));
+        done.add(key(item));
+        save();
       } catch (error) {
+        if (error instanceof CheckBudgetError) {
+          for (const rest of pending.slice(index)) rows.push(...skip(rest));
+          skipped = pending.length - index;
+          console.warn(`${retailer}: ${String(error)}; skipping the ${skipped} items left`);
+          break;
+        }
         failures.push(`${retailer}: ${String(error)}`);
-        // Nothing after a challenge would load either.
+        // Nothing after a check would load either; resume later from the checkpoint.
         if (error instanceof ChallengeError) break;
       }
-      if ((index + 1) % 25 === 0) console.log(`${retailer}: ${index + 1}/${items.length}`);
+      if ((index + 1) % 25 === 0) console.log(`${retailer}: ${index + 1}/${pending.length}`);
     }
   } finally {
     await client.close?.();
   }
-  if (failures.length === 0) {
-    writeFileSync(resolve(SNAPSHOT, file), toCsv(columns, rows));
-    console.log(`Wrote data/snapshot/${file}`);
-  } else {
+  if (failures.length > 0) {
     rmSync(resolve(SNAPSHOT, file), { force: true });
-    console.error(`${retailer}: ${failures.length} pages failed; ${file} removed, not written`);
+    console.error(
+      `${retailer}: ${failures.length} items failed; ${file} not written. Run again to resume.`,
+    );
+    return failures;
   }
-  return failures;
+  writeFileSync(resolve(SNAPSHOT, file), toCsv(columns, rows));
+  rmSync(checkpoint, { force: true });
+  console.log(`Wrote data/snapshot/${file}${skipped ? ` (${skipped} skipped)` : ""}`);
+  return [];
 }
 
 function listings(retailer: Retailer): Promise<string[]> {
@@ -120,17 +151,20 @@ function listings(retailer: Retailer): Promise<string[]> {
     `listings-${retailer}.csv`,
     LISTING_COLUMNS,
     items,
+    (l) => l.productUrl,
     async (client, l) => {
       const result = await client.product(l.productUrl);
-      const gone = Object.fromEntries(COLUMNS.map((column) => [column, ""]));
       return [
         result === "not_found"
-          ? { ...gone, status: "not_found", retailer, "product url": l.productUrl }
+          ? { ...blank(), status: "not_found", retailer, "product url": l.productUrl }
           : { status: "ok", ...result },
       ];
     },
+    (l) => [{ ...blank(), status: "skipped", retailer, "product url": l.productUrl }],
   );
 }
+
+const blank = () => Object.fromEntries(COLUMNS.map((column) => [column, ""]));
 
 function search(retailer: Retailer): Promise<string[]> {
   const missing = seed.products
@@ -145,26 +179,33 @@ function search(retailer: Retailer): Promise<string[]> {
         "",
     }));
   const file = `candidates-${retailer}.csv`;
-  return collect(retailer, file, CANDIDATE_COLUMNS, missing, async (client, item) => {
-    const name = item.product.representativeName.replace(/\[BCRS\]/gi, "").trim();
-    const hits = (await client.search(name))
-      .filter((hit) => passesNameRules({ name, specification: item.specification }, hit))
-      .sort((a, b) => similarity(name, b.name) - similarity(name, a.name))
-      .slice(0, HITS_PER_SEARCH);
-    const rows: Row[] = [];
-    for (const hit of hits) {
-      const result = await client.product(hit.url);
-      if (result === "not_found") continue;
-      rows.push({
-        product_id: item.product.productId,
-        target_name: name,
-        target_specification: item.specification,
-        similarity: similarity(name, hit.name).toFixed(3),
-        ...(result satisfies Observation),
-      });
-    }
-    return rows;
-  });
+  return collect(
+    retailer,
+    file,
+    CANDIDATE_COLUMNS,
+    missing,
+    (item) => item.product.productId,
+    async (client, item) => {
+      const name = item.product.representativeName.replace(/\[BCRS\]/gi, "").trim();
+      const hits = (await client.search(name))
+        .filter((hit) => passesNameRules({ name, specification: item.specification }, hit))
+        .sort((a, b) => similarity(name, b.name) - similarity(name, a.name))
+        .slice(0, HITS_PER_SEARCH);
+      const rows: Row[] = [];
+      for (const hit of hits) {
+        const result = await client.product(hit.url);
+        if (result === "not_found") continue;
+        rows.push({
+          product_id: item.product.productId,
+          target_name: name,
+          target_specification: item.specification,
+          similarity: similarity(name, hit.name).toFixed(3),
+          ...(result satisfies Observation),
+        });
+      }
+      return rows;
+    },
+  );
 }
 
 const read = (file: string): Row[] =>
@@ -183,7 +224,7 @@ async function sellers(): Promise<string[]> {
       (row) =>
         row.status !== "not_found" && !row.seller && !checks.get(row["product url"] ?? "")?.seller,
     );
-  const client = redmart({ headed });
+  const client = redmart({ headed, maxChecks });
   try {
     for (const row of pending) {
       const url = row["product url"] ?? "";
@@ -206,12 +247,16 @@ async function sellers(): Promise<string[]> {
 /** Starts a snapshot: removes every collected file and review from the last one. */
 function startSnapshot(): string[] {
   for (const file of readdirSync(SNAPSHOT))
-    if (file.endsWith(".csv")) rmSync(resolve(SNAPSHOT, file));
+    if (file.endsWith(".csv") || file.endsWith(".checkpoint.json")) rmSync(resolve(SNAPSHOT, file));
   console.log("Cleared data/snapshot for a new snapshot");
   return [];
 }
 
-const [command, ...args] = process.argv.slice(2).filter((arg) => arg !== "--headed");
+const [command, ...args] = process.argv
+  .slice(2)
+  .filter(
+    (arg, i, all) => arg !== "--headed" && arg !== "--max-checks" && all[i - 1] !== "--max-checks",
+  );
 const unknown = args.filter((arg) => !(RETAILERS as readonly string[]).includes(arg));
 const chosen =
   args.length > 0 ? RETAILERS.filter((retailer) => args.includes(retailer)) : RETAILERS;

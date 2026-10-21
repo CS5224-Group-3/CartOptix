@@ -64,6 +64,8 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
     """Why a listing cannot publish, or None when it is eligible."""
     if row.get("status", "ok") == "not_found":
         return "page gone"
+    if row.get("status") == "skipped":
+        return "not collected (Lazada check)"
     if row["in-stock"] != "Yes":
         return "out of stock"
     if not derive_offer(row)["eligible"]:
