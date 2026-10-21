@@ -6,6 +6,8 @@
  *
  * Cold Storage's cart needs a login, so its deals are checked as terms only:
  * the live price and deal wording from each product page, with no cart total.
+ * RedMart's carts are filled by hand in a logged-in session (Lazada blocks
+ * scripted logins) and recorded in data/snapshot/checkout-redmart.csv.
  *
  *   node scripts/scrape/checkout.ts fairprice|cold-storage [--headed]
  *
@@ -69,37 +71,9 @@ async function setQuantity(page: Page, qty: number): Promise<void> {
   if (Number(await box.inputValue()) !== qty) throw new Error(`Could not set quantity ${qty}`);
 }
 
-/** Logged-in browser profiles; RedMart shares the scraper's Lazada profile. */
-const PROFILES: Record<string, string> = {
-  "cold-storage": resolve(ROOT, ".cache/checkout-profile"),
-  redmart: resolve(ROOT, ".cache/lazada-profile"),
-};
-const LOGIN: Record<string, string> = {
-  "cold-storage": "https://coldstorage.com.sg/",
-  redmart: "https://member.lazada.sg/user/login",
-};
-
 const retailer = process.argv[2];
-if (retailer === "login") {
-  // Opens a window on the profile the logged-in checks use; log in, then close it.
-  const site = LOGIN[process.argv[3] ?? ""];
-  const profile = PROFILES[process.argv[3] ?? ""];
-  if (!site || !profile) {
-    throw new Error("Usage: node scripts/scrape/checkout.ts login cold-storage|redmart");
-  }
-  const context = await chromium.launchPersistentContext(profile, {
-    channel: "chrome",
-    headless: false,
-  });
-  await (context.pages()[0] ?? (await context.newPage())).goto(site);
-  console.log("Log in in the window, then close it.");
-  await new Promise((done) => context.on("close", done));
-  process.exit(0);
-}
 if (retailer !== "fairprice" && retailer !== "cold-storage") {
-  console.error(
-    "Usage: node scripts/scrape/checkout.ts fairprice|cold-storage | login cold-storage|redmart",
-  );
+  console.error("Usage: node scripts/scrape/checkout.ts fairprice|cold-storage [--headed]");
   process.exit(2);
 }
 const scraper = retailer === "fairprice" ? fairprice : coldStorage;

@@ -74,8 +74,9 @@ Search hits first had to pass the name rules: the same pack count and per-pack s
 - **Multibuys:** 99 listings carry an applied fixed-price multibuy, and 81 carry a promotion shown as not included: mostly "Spend $X + free gift", plus 23 RedMart percentage deals.
 - **Reference checker:** the committed-seed integration test prices every listing at 1–20 packs and matches an independent calculation. It passes on this seed in `pnpm check`.
 - **Checkout evidence (PR-03):** recorded in [`checkout-evidence.md`](checkout-evidence.md).
-  - Every fixed-price deal matched the live cart: FairPrice 10 of 10 and RedMart 6 of 6, at deal + 1 packs.
-  - Cold Storage's 10 deals were checked against their live product pages only, because its cart needs a login.
+  - Every fixed-price deal checked in a cart matched, at deal + 1 packs: FairPrice 10 of 10 and RedMart 5 of 5. One more RedMart item, whose deal had ended, matched at its ordinary price.
+  - Cold Storage's 10 deals were checked against their live product pages only, not a cart, because its cart needs a login. Its fixed-price deals are applied on the strength of the other two retailers' carts.
+  - No sampled deal produced an exact half cent, so that rounding case is untested; fixed-price deals do not round.
   - RedMart's percentage labels did not reliably give the cart price ("Any 2 Save 40%" charged $11.79, not $11.87), so percentage deals are no longer applied, at any retailer.
   - Carried-over RedMart listings have today's rules applied to their recorded deal wording, so none keeps a percentage deal.
 

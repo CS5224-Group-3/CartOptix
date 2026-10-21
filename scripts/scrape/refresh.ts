@@ -300,7 +300,7 @@ async function sellers(): Promise<string[]> {
 function startSnapshot(): string[] {
   rmSync(resolve(SNAPSHOT, "base"), { recursive: true, force: true });
   mkdirSync(resolve(SNAPSHOT, "base"));
-  for (const file of ["seed.json", "retired.json", "product_ids.csv"])
+  for (const file of ["seed.json", "retired.json", "product_ids.csv", "observations.csv"])
     if (existsSync(resolve(ROOT, "data/seed", file)))
       copyFileSync(resolve(ROOT, "data/seed", file), resolve(SNAPSHOT, "base", file));
   for (const file of readdirSync(SNAPSHOT))

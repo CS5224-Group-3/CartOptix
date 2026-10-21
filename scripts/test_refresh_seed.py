@@ -161,3 +161,27 @@ RETIRED_WITH_REDMART = {
     "listings": [*LISTINGS, {**LISTINGS[0], "listingId": "redmart-pdp-i9-s9", "retailerId": "redmart", "productUrl": RM}],
 }
 FRESH = [observation("fairprice", FP), observation("cold-storage", CS)]
+
+
+class SuccessiveSnapshots(unittest.TestCase):
+    def test_a_listing_a_snapshot_found_can_be_carried_over_by_the_next(self):
+        # First snapshot: a fresh RedMart observation publishes a listing and records it.
+        rm = "https://www.lazada.sg/products/pdp-i7-s7.html"
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+        candidate = {**observation("redmart", rm, seller="RedMart", Savings="Any 2 For $5.00"), "product_id": "rice-1kg", "similarity": "1.0"}
+        decisions = {("rice-1kg", rm): {"decision": "MATCH", "confidence": "HIGH"}}
+        observed = {o["product url"]: o for o in FRESH}
+        first = build(seed, EMPTY, observed, [candidate], decisions, {}, {})
+        found = next(l for l in first["listings"] if l["retailerId"] == "redmart")
+        recorded = {o["source_record_id"]: o for o in first["observations"]}
+        self.assertEqual(recorded[found["sourceRecordId"]]["raw_savings"], "Any 2 For $5.00")
+
+        # Next snapshot carries RedMart over, using that recorded observation.
+        next_seed = {"products": first["products"], "listings": first["listings"]}
+        refresh_seed.RECORDED.update(recorded)
+        try:
+            second = run(next_seed, EMPTY, [*FRESH, {**observation("redmart", rm), "status": "carried"}])
+        finally:
+            refresh_seed.RECORDED.clear()
+        self.assertIn(found, second["listings"])
+        self.assertEqual(second["carried"], 1)

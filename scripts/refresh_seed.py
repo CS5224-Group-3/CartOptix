@@ -83,13 +83,21 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
     return None
 
 
-# The source observations behind every listing built from the original exports.
+# The source observations behind every listing built from the original exports,
+# and, for listings a snapshot found, the observations it recorded beside the
+# seed (data/seed/observations.csv, copied into the snapshot's base).
 OFFER_PRICES = ROOT / "data" / "curated" / "stage2g_offer_prices.csv"
+OBSERVATIONS = SEED.parent / "observations.csv"
+OBSERVATION_COLUMNS = ["source_record_id", "raw_product_price", "raw_original_price", "raw_savings"]
 
 
-def recorded_offers() -> dict[str, dict]:
-    with open(OFFER_PRICES, encoding="utf-8") as f:
-        return {r["source_record_id"]: r for r in csv.DictReader(f)}
+def recorded_offers(base: Path) -> dict[str, dict]:
+    recorded = {}
+    for path in [OFFER_PRICES, base / "observations.csv"]:
+        if path.exists():
+            with open(path, encoding="utf-8") as f:
+                recorded.update({r["source_record_id"]: r for r in csv.DictReader(f)})
+    return recorded
 
 
 def reapply(listing: dict, recorded: dict[str, dict] | None = None) -> dict:
@@ -119,6 +127,14 @@ def reapply(listing: dict, recorded: dict[str, dict] | None = None) -> dict:
         "multibuy": offer["multibuy"],
         "excludedPromotions": offer["excluded_promotions"],
     }
+
+
+def recorded_observation(source_record_id: str) -> dict:
+    """A carried listing's recorded observation, to record again beside the new seed."""
+    source = RECORDED.get(source_record_id)
+    if source is None:
+        raise SystemExit(f"No recorded observation for {source_record_id}")
+    return {"source_record_id": source_record_id, **{k: source[k] for k in OBSERVATION_COLUMNS[1:]}}
 
 
 def catalogue(seed: dict, retired: dict) -> tuple[dict, list[dict]]:
@@ -173,6 +189,8 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
 
     reasons: Counter = Counter()
     carried = 0
+    # What each published listing was observed as, so a later snapshot can carry it over.
+    observations: list[dict] = []
     unreadable: list[dict] = []
     products, listings, added = [], [], []
     retired_products, retired_listings = [], []
@@ -204,7 +222,9 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
         )
         for member in members:
             if "carried" in member:
-                listings.append(dict(member["carried"]))
+                listing = dict(member["carried"])
+                listings.append(listing)
+                observations.append(recorded_observation(listing["sourceRecordId"]))
                 carried += 1
                 continue
             url = member["product url"].split("?")[0]
@@ -215,7 +235,16 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
             listings.append(
                 seed_listing(lid, product_id, member["retailer"], f"snapshot:{url}", member, derive_offer(member), url)
             )
+            observations.append(
+                {
+                    "source_record_id": f"snapshot:{url}",
+                    "raw_product_price": member["Product Price"],
+                    "raw_original_price": member["Original Price"],
+                    "raw_savings": member["Savings"],
+                }
+            )
     return {
+        "observations": observations,
         "products": products,
         "listings": listings,
         "retired": {"products": retired_products, "listings": retired_listings},
@@ -228,10 +257,10 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
 
 
 def main() -> None:
-    RECORDED.update(recorded_offers())
     # The seed this snapshot replaces (copied by `refresh.ts new`), so the
     # build repeats exactly however often it runs.
     base = SNAPSHOT / "base" if (SNAPSHOT / "base" / "seed.json").exists() else SEED.parent
+    RECORDED.update(recorded_offers(base))
     seed = json.loads((base / "seed.json").read_text(encoding="utf-8"))
     retired_path = base / "retired.json"
     retired = json.loads(retired_path.read_text(encoding="utf-8")) if retired_path.exists() else {"products": [], "listings": []}
@@ -262,6 +291,10 @@ def main() -> None:
         raise SystemExit(2)
 
     write_seed(result["products"], result["listings"], registry)
+    with open(OBSERVATIONS, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=OBSERVATION_COLUMNS)
+        writer.writeheader()
+        writer.writerows(sorted(result["observations"], key=lambda o: o["source_record_id"]))
     RETIRED.write_text(json.dumps(result["retired"], indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     write_report(seed, result)
 

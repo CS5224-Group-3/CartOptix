@@ -23,7 +23,7 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts listings
    ```
 
-   **RedMart, carried over.** Lazada's checks make reading every RedMart page impractical, so by the product owner's decision RedMart's published listings may be carried over instead of read: the build keeps each exactly as the current seed has it. Run this instead of `listings redmart`:
+   **RedMart, carried over.** Lazada's checks make reading every RedMart page impractical, so by the product owner's decision RedMart's published listings may be carried over instead of read: the build keeps each listing's recorded observation (price, original price and deal wording, from `data/seed/observations.csv` or the original exports) and applies today's curation rules to it. Run this instead of `listings redmart`:
 
    ```sh
    node scripts/scrape/refresh.ts carry redmart
