@@ -315,6 +315,7 @@ describe("refresh options", () => {
     expect(parseOptions(["search"]).maxChecks).toBeUndefined();
     expect(parseOptions(["search", "redmart", "--hits", "1"]).hits).toBe(1);
     expect(parseOptions(["carry", "redmart"]).command).toBe("carry");
+    expect(parseOptions(["search", "redmart", "--products", "a, b"]).products).toEqual(["a", "b"]);
   });
 
   it("rejects a malformed budget, an unknown retailer or arguments a command does not take", () => {
@@ -326,6 +327,8 @@ describe("refresh options", () => {
       ["listings", "giant"],
       ["search", "--hits", "0"],
       ["carry"],
+      ["listings", "--products", "a"],
+      ["search", "--products", ","],
       ["carry", "fairprice"],
       ["carry", "redmart", "fairprice"],
       ["search", "--hits", "two"],

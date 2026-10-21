@@ -11,7 +11,7 @@ These scripts take a new snapshot of the published catalogue and rebuild the see
 
 Run everything from the repository root.
 
-0. **Start a snapshot.** Removes the previous snapshot's files from `data/snapshot`, so nothing from it can be built into the new seed.
+0. **Start a snapshot.** Removes the previous snapshot's files from `data/snapshot`, so nothing from it can be built into the new seed, and copies the current seed to `data/snapshot/base`: every step and the build work from that catalogue, so rebuilding repeats exactly.
 
    ```sh
    node scripts/scrape/refresh.ts new
@@ -35,6 +35,8 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts search fairprice cold-storage
    node scripts/scrape/refresh.ts search redmart --hits 1 --headed --max-checks 3
    ```
+
+   `--products a,b` searches only those products and writes `candidates-<retailer>-targeted.csv`, which the build reads alongside the full file; use it to target the products that matter most when a retailer's checks make a full search impractical.
 
    `--hits N` reads the pages of the N best hits per product (default 3); for RedMart, read only the best one to keep Lazada's checks down.
 

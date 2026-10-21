@@ -2,7 +2,8 @@
 
 Inputs, all in data/snapshot, one file per retailer for the first two:
 - listings-<retailer>.csv: every published listing's page, read again by refresh.ts.
-- candidates-<retailer>.csv: search hits for retailers a product is missing
+- base/: the seed this snapshot replaces, which the build starts from.
+- candidates-<retailer>.csv (and an optional -targeted.csv): search hits for retailers a product is missing
   from, already through the name rules.
 - match-decisions.csv: the AI review of those candidates. Only MATCH with HIGH
   confidence publishes (PR-02).
@@ -188,15 +189,23 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
 
 
 def main() -> None:
-    seed = json.loads(SEED.read_text(encoding="utf-8"))
-    retired = json.loads(RETIRED.read_text(encoding="utf-8")) if RETIRED.exists() else {"products": [], "listings": []}
-    registry = load_registry()
+    # The seed this snapshot replaces (copied by `refresh.ts new`), so the
+    # build repeats exactly however often it runs.
+    base = SNAPSHOT / "base" if (SNAPSHOT / "base" / "seed.json").exists() else SEED.parent
+    seed = json.loads((base / "seed.json").read_text(encoding="utf-8"))
+    retired_path = base / "retired.json"
+    retired = json.loads(retired_path.read_text(encoding="utf-8")) if retired_path.exists() else {"products": [], "listings": []}
+    registry = load_registry(base / "product_ids.csv")
     retailers = [seed_id for seed_id, _, _ in RETAILERS.values()]
     result = build(
         seed,
         retired,
         observed={row["product url"]: row for r in retailers for row in read(f"listings-{r}.csv")},
-        candidates=[row for r in retailers for row in read(f"candidates-{r}.csv")],
+        candidates=[
+            row
+            for r in retailers
+            for row in [*read(f"candidates-{r}.csv"), *read(f"candidates-{r}-targeted.csv", required=False)]
+        ],
         decisions={(r["product_id"], r["product url"]): r for r in read("match-decisions.csv", required=False)},
         seller_checks={r["product url"]: r["seller"] for r in read("seller-checks.csv", required=False)},
         registry=registry,

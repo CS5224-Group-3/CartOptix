@@ -73,10 +73,10 @@ def listing_id(retailer: str, url: str) -> str:
     return f"{RETAILERS[retailer][0]}-{segment}"
 
 
-def load_registry() -> dict[str, str]:
-    if not REGISTRY.exists():
+def load_registry(path: Path = REGISTRY) -> dict[str, str]:
+    if not path.exists():
         return {}
-    with open(REGISTRY, encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return {row["listing_id"]: row["product_id"] for row in csv.DictReader(f)}
 
 

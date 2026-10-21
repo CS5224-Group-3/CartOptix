@@ -15,7 +15,15 @@
  * is recorded as such; any other failure deletes that retailer's file, so a
  * failed refresh cannot leave an earlier observation for the build to use.
  */
-import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { resolve } from "node:path";
 import { type Options, parseOptions } from "./args.ts";
 import { loadCheckpoint, saveCheckpoint } from "./checkpoint.ts";
@@ -68,8 +76,14 @@ const load = (file: string): Seed =>
   existsSync(resolve(ROOT, file))
     ? JSON.parse(readFileSync(resolve(ROOT, file), "utf8"))
     : { products: [], listings: [] };
-const current = load("data/seed/seed.json");
-const retired = load("data/seed/retired.json");
+/**
+ * The seed this snapshot replaces. `new` copies it to data/snapshot/base, so
+ * every step, and the build, works from the same catalogue even after the seed
+ * is rebuilt; before that, the seed itself is the base.
+ */
+const BASE = existsSync(resolve(SNAPSHOT, "base/seed.json")) ? "data/snapshot/base" : "data/seed";
+const current = load(`${BASE}/seed.json`);
+const retired = load(`${BASE}/retired.json`);
 /** Every product ever published, and its listings. */
 const seed: Seed = {
   products: [...retired.products, ...current.products],
@@ -193,18 +207,29 @@ function carry(retailer: Retailer): Promise<string[]> {
 }
 
 function search(retailer: Retailer): Promise<string[]> {
+  const only = options.products;
   const missing = seed.products
     .filter(
       (product) =>
         !seed.listings.some((l) => l.productId === product.productId && l.retailerId === retailer),
     )
+    .filter((product) => !only || only.includes(product.productId))
     .map((product) => ({
       product,
       specification:
         seed.listings.find((listing) => listing.productId === product.productId)?.specification ??
         "",
     }));
-  const file = `candidates-${retailer}.csv`;
+  if (only) {
+    const unknown = only.filter((id) => !missing.some((m) => m.product.productId === id));
+    if (unknown.length > 0) {
+      throw new Error(
+        `Not missing at ${retailer} in this snapshot's catalogue: ${unknown.join(", ")}`,
+      );
+    }
+  }
+  // A targeted search adds its own file beside the full one; the build reads both.
+  const file = only ? `candidates-${retailer}-targeted.csv` : `candidates-${retailer}.csv`;
   return collect(
     retailer,
     file,
@@ -244,7 +269,11 @@ const read = (file: string): Row[] =>
  */
 async function sellers(): Promise<string[]> {
   const checks = new Map(read("seller-checks.csv").map((row) => [row["product url"] ?? "", row]));
-  const pending = ["listings-redmart.csv", "candidates-redmart.csv"]
+  const pending = [
+    "listings-redmart.csv",
+    "candidates-redmart.csv",
+    "candidates-redmart-targeted.csv",
+  ]
     .flatMap(read)
     .filter((row) => needsSeller(row) && !checks.get(row["product url"] ?? "")?.seller);
   const client = redmart({ headed, maxChecks });
@@ -269,6 +298,11 @@ async function sellers(): Promise<string[]> {
 
 /** Starts a snapshot: removes every collected file and review from the last one. */
 function startSnapshot(): string[] {
+  rmSync(resolve(SNAPSHOT, "base"), { recursive: true, force: true });
+  mkdirSync(resolve(SNAPSHOT, "base"));
+  for (const file of ["seed.json", "retired.json", "product_ids.csv"])
+    if (existsSync(resolve(ROOT, "data/seed", file)))
+      copyFileSync(resolve(ROOT, "data/seed", file), resolve(SNAPSHOT, "base", file));
   for (const file of readdirSync(SNAPSHOT))
     if (/\.csv$|\.checkpoint\.json(\.tmp)?$/.test(file)) rmSync(resolve(SNAPSHOT, file));
   console.log("Cleared data/snapshot for a new snapshot");
