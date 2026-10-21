@@ -23,15 +23,11 @@ class ParseMultibuy(unittest.TestCase):
     def test_each_retailers_wording(self):
         self.assertEqual(parse_multibuy("Any 2 @ $6.55", 350)["dealPriceCents"], 655)
         self.assertEqual(parse_multibuy("Any 2 For $6.30", 388)["dealPriceCents"], 630)
-        self.assertEqual(parse_multibuy("Buy 2 Save 13%", 635)["dealPriceCents"], 1105)
 
-    def test_percentage_rounds_half_up_once_per_deal(self):
-        # 2 × 333 = 666; 15% off = 566.1 → 566.
-        self.assertEqual(parse_multibuy("Any 2 Save 15%", 333)["dealPriceCents"], 566)
-        # 3 × 335 = 1005; 10% off = 904.5 → 905, not 904.
-        self.assertEqual(parse_multibuy("Any 3 Save 10%", 335)["dealPriceCents"], 905)
-        # 2 × 1005 = 2010; 5% off = 1909.5 → 1910.
-        self.assertEqual(parse_multibuy("Buy 2 Get 5% Off", 1005)["dealPriceCents"], 1910)
+    def test_percentage_deals_are_not_applied(self):
+        # The checkout charged a fixed price the percentage only labels (PR-03).
+        for text in ["Any 2 Save 40%", "Buy 2 Save 13%", "Buy 2 Get 5% Off"]:
+            self.assertIsNone(parse_multibuy(text, 989), text)
 
     def test_fixed_saving(self):
         self.assertEqual(parse_multibuy("Any 2 Save $2.06", 500)["dealPriceCents"], 794)
@@ -39,7 +35,6 @@ class ParseMultibuy(unittest.TestCase):
     def test_rejects_deals_that_are_not_cheaper_or_not_multibuys(self):
         self.assertIsNone(parse_multibuy("Any 2 At $9", 400))
         self.assertIsNone(parse_multibuy("Any 2 At $8", 400))
-        self.assertIsNone(parse_multibuy("Any 2 Save 5%", 1))
         self.assertIsNone(parse_multibuy("Any 1 At $1", 400))
         self.assertIsNone(parse_multibuy("Spend $30 + Free Gift", 100))
         self.assertIsNone(parse_multibuy("Save $1.00", 400))
@@ -47,16 +42,21 @@ class ParseMultibuy(unittest.TestCase):
 
 class DeriveOffer(unittest.TestCase):
     def test_applies_a_multibuy_with_its_dates_removed(self):
-        offer = derive_offer(row("10.05", "Buy 2 Get 5% Off (1/9 - 30/9)"))
-        self.assertEqual(offer["multibuy"]["dealPriceCents"], 1910)
+        offer = derive_offer(row("3.50", "Any 2 @ $6.55 (1/9 - 30/9)"))
+        self.assertEqual(offer["multibuy"]["dealPriceCents"], 655)
         self.assertEqual(offer["excluded_promotions"], [])
 
+    def test_shows_a_percentage_deal_as_not_included(self):
+        offer = derive_offer(row("9.89", "Any 2 Save 40%"))
+        self.assertIsNone(offer["multibuy"])
+        self.assertEqual(offer["excluded_promotions"], ["Any 2 Save 40%"])
+
     def test_never_stacks_a_multibuy_on_a_sale(self):
-        offer = derive_offer(row("3.00", "Any 2 Save 10%", original="$4.00"))
+        offer = derive_offer(row("3.00", "Any 2 At $5.40", original="$4.00"))
         self.assertEqual(offer["price_kind"], "unconditional_sale")
         self.assertEqual(offer["original_price_cents"], 400)
         self.assertIsNone(offer["multibuy"])
-        self.assertEqual(offer["excluded_promotions"], ["Any 2 Save 10%"])
+        self.assertEqual(offer["excluded_promotions"], ["Any 2 At $5.40"])
 
     def test_keeps_other_promotions_as_the_retailer_worded_them(self):
         offer = derive_offer(row("5.00", "Spend $30 + Free Gift"))

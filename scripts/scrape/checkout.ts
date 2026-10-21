@@ -69,7 +69,11 @@ async function setQuantity(page: Page, qty: number): Promise<void> {
   if (Number(await box.inputValue()) !== qty) throw new Error(`Could not set quantity ${qty}`);
 }
 
-const PROFILE = resolve(ROOT, ".cache/checkout-profile");
+/** Logged-in browser profiles; RedMart shares the scraper's Lazada profile. */
+const PROFILES: Record<string, string> = {
+  "cold-storage": resolve(ROOT, ".cache/checkout-profile"),
+  redmart: resolve(ROOT, ".cache/lazada-profile"),
+};
 const LOGIN: Record<string, string> = {
   "cold-storage": "https://coldstorage.com.sg/",
   redmart: "https://member.lazada.sg/user/login",
@@ -79,8 +83,11 @@ const retailer = process.argv[2];
 if (retailer === "login") {
   // Opens a window on the profile the logged-in checks use; log in, then close it.
   const site = LOGIN[process.argv[3] ?? ""];
-  if (!site) throw new Error("Usage: node scripts/scrape/checkout.ts login cold-storage|redmart");
-  const context = await chromium.launchPersistentContext(PROFILE, {
+  const profile = PROFILES[process.argv[3] ?? ""];
+  if (!site || !profile) {
+    throw new Error("Usage: node scripts/scrape/checkout.ts login cold-storage|redmart");
+  }
+  const context = await chromium.launchPersistentContext(profile, {
     channel: "chrome",
     headless: false,
   });

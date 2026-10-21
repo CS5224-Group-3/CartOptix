@@ -48,7 +48,7 @@ redmart_00002275,redmart,2730,ordinary,,,,,ELIGIBLE,27.3,,
 fairprice_00059898,fairprice,2190,ordinary,,,,,ELIGIBLE,21.9,,
 redmart_00002278,redmart,1971,unconditional_sale,,,,,ELIGIBLE,19.71,$21.90,Save $2.19
 fairprice_00059897,fairprice,2790,ordinary,,,,,ELIGIBLE,27.9,,
-redmart_00002337,redmart,2790,ordinary,2,5301,True,,ELIGIBLE,27.9,,Any 2 Save 5%
+redmart_00002337,redmart,2790,ordinary,,,,Any 2 Save 5%,ELIGIBLE,27.9,,Any 2 Save 5%
 fairprice_00060767,fairprice,850,ordinary,,,,,ELIGIBLE,8.5,,
 redmart_00002694,redmart,650,unconditional_sale,,,,,ELIGIBLE,6.5,$8.50,Save $2.00
 coldstorage_00000655,coldstorage,345,ordinary,,,,,ELIGIBLE,3.45,,
@@ -176,15 +176,15 @@ redmart_00004935,redmart,360,ordinary,,,,,ELIGIBLE,3.6,,
 fairprice_00000990,fairprice,348,ordinary,,,,,ELIGIBLE,3.48,,
 redmart_00005045,redmart,330,unconditional_sale,,,,,ELIGIBLE,3.3,$3.49,Save $0.19
 coldstorage_00000976,coldstorage,370,ordinary,,,,,ELIGIBLE,3.7,,
-redmart_00004683,redmart,360,ordinary,2,547,True,,ELIGIBLE,3.6,,Any 2 Save 24%
+redmart_00004683,redmart,360,ordinary,,,,Any 2 Save 24%,ELIGIBLE,3.6,,Any 2 Save 24%
 coldstorage_00000963,coldstorage,370,ordinary,2,640,True,,ELIGIBLE,3.7,,Any 2 At $6.40
-redmart_00004695,redmart,360,ordinary,2,626,True,,ELIGIBLE,3.6,,Any 2 Save 13%
+redmart_00004695,redmart,360,ordinary,,,,Any 2 Save 13%,ELIGIBLE,3.6,,Any 2 Save 13%
 coldstorage_00000962,coldstorage,370,ordinary,2,640,True,,ELIGIBLE,3.7,,Any 2 At $6.40
-redmart_00004701,redmart,360,ordinary,2,626,True,,ELIGIBLE,3.6,,Any 2 Save 13%
+redmart_00004701,redmart,360,ordinary,,,,Any 2 Save 13%,ELIGIBLE,3.6,,Any 2 Save 13%
 coldstorage_00000965,coldstorage,370,ordinary,2,640,True,,ELIGIBLE,3.7,,Any 2 At $6.40
-redmart_00004732,redmart,360,ordinary,2,626,True,,ELIGIBLE,3.6,,Any 2 Save 13%
+redmart_00004732,redmart,360,ordinary,,,,Any 2 Save 13%,ELIGIBLE,3.6,,Any 2 Save 13%
 coldstorage_00000961,coldstorage,370,ordinary,2,640,True,,ELIGIBLE,3.7,,Any 2 At $6.40
-redmart_00005286,redmart,360,ordinary,2,626,True,,ELIGIBLE,3.6,,Any 2 Save 13%
+redmart_00005286,redmart,360,ordinary,,,,Any 2 Save 13%,ELIGIBLE,3.6,,Any 2 Save 13%
 coldstorage_00000980,coldstorage,125,ordinary,,,,,ELIGIBLE,1.25,,
 redmart_00004718,redmart,120,ordinary,,,,,ELIGIBLE,1.2,,
 coldstorage_00000983,coldstorage,125,ordinary,,,,,ELIGIBLE,1.25,,
@@ -204,7 +204,7 @@ redmart_00004752,redmart,1200,ordinary,,,,,ELIGIBLE,12,,
 fairprice_00059406,fairprice,1590,ordinary,,,,,ELIGIBLE,15.9,,
 redmart_00005845,redmart,1590,ordinary,,,,,ELIGIBLE,15.9,,
 fairprice_00060663,fairprice,355,ordinary,,,,,ELIGIBLE,3.55,,
-redmart_00004774,redmart,365,ordinary,3,1062,True,,ELIGIBLE,3.65,,Any 3 Save 3%
+redmart_00004774,redmart,365,ordinary,,,,Any 3 Save 3%,ELIGIBLE,3.65,,Any 3 Save 3%
 coldstorage_00000931,coldstorage,250,ordinary,,,,,ELIGIBLE,2.5,,
 fairprice_00059718,fairprice,185,unconditional_sale,,,,,ELIGIBLE,1.85,$2.29 ,Save $0.44
 coldstorage_00004166,coldstorage,295,ordinary,,,,,ELIGIBLE,2.95,,
@@ -362,7 +362,7 @@ fairprice_00036974,fairprice,685,ordinary,2,1195,True,,ELIGIBLE,6.85,,Any 2 At $
 coldstorage_00003690,coldstorage,685,ordinary,2,1195,True,,ELIGIBLE,6.85,,Any 2 At $11.95
 fairprice_00036975,fairprice,685,ordinary,2,1195,True,,ELIGIBLE,6.85,,Any 2 At $11.95
 fairprice_00037555,fairprice,475,unconditional_sale,,,,,ELIGIBLE,4.75,$5.20 ,Save $0.45
-redmart_00008147,redmart,520,ordinary,2,946,True,,ELIGIBLE,5.2,,Any 2 Save 9%
+redmart_00008147,redmart,520,ordinary,,,,Any 2 Save 9%,ELIGIBLE,5.2,,Any 2 Save 9%
 coldstorage_00003856,coldstorage,520,ordinary,,,,,ELIGIBLE,5.2,,
 fairprice_00037556,fairprice,475,unconditional_sale,,,,,ELIGIBLE,4.75,$5.20 ,Save $0.45
 fairprice_00037552,fairprice,760,ordinary,2,780,True,,ELIGIBLE,7.6,,Any 2 At $7.80
@@ -488,7 +488,7 @@ redmart_00010719,redmart,295,ordinary,,,,,ELIGIBLE,2.95,,
 coldstorage_00004094,coldstorage,375,unconditional_sale,,,,,ELIGIBLE,3.75,$4.95,Save $1.20
 redmart_00010784,redmart,375,unconditional_sale,,,,,ELIGIBLE,3.75,$4.95,Save $1.20
 fairprice_00036969,fairprice,550,unconditional_sale,,,,,ELIGIBLE,5.5,$6.35 ,Save $0.85
-redmart_00010807,redmart,635,ordinary,2,1054,True,,ELIGIBLE,6.35,,Any 2 Save 17%
+redmart_00010807,redmart,635,ordinary,,,,Any 2 Save 17%,ELIGIBLE,6.35,,Any 2 Save 17%
 fairprice_00036970,fairprice,550,unconditional_sale,,,,,ELIGIBLE,5.5,$6.35 ,Save $0.85
 redmart_00010813,redmart,498,unconditional_sale,,,,,ELIGIBLE,4.98,$6.40,Save $1.42
 coldstorage_00003698,coldstorage,570,unconditional_sale,,,,,ELIGIBLE,5.7,$6.30,Save $0.60
@@ -500,9 +500,9 @@ redmart_00010812,redmart,761,unconditional_sale,,,,,ELIGIBLE,7.61,$8.10,Save $0.
 coldstorage_00003689,coldstorage,1000,unconditional_sale,,,,,ELIGIBLE,10,$10.90,Save $0.90
 fairprice_00036988,fairprice,1090,ordinary,,,,,ELIGIBLE,10.9,,
 coldstorage_00003681,coldstorage,600,unconditional_sale,,,,,ELIGIBLE,6,$6.65,Save $0.65
-redmart_00010822,redmart,670,ordinary,2,1206,True,,ELIGIBLE,6.7,,Any 2 Save 10%
+redmart_00010822,redmart,670,ordinary,,,,Any 2 Save 10%,ELIGIBLE,6.7,,Any 2 Save 10%
 coldstorage_00003682,coldstorage,600,unconditional_sale,,,,,ELIGIBLE,6,$6.65,Save $0.65
-redmart_00010825,redmart,670,ordinary,2,1206,True,,ELIGIBLE,6.7,,Any 2 Save 10%
+redmart_00010825,redmart,670,ordinary,,,,Any 2 Save 10%,ELIGIBLE,6.7,,Any 2 Save 10%
 coldstorage_00003688,coldstorage,1795,unconditional_sale,,,,,ELIGIBLE,17.95,$19.95,Save $2.00
 fairprice_00002484,fairprice,1795,unconditional_sale,,,,,ELIGIBLE,17.95,$19.95 ,Save $2.00
 coldstorage_00010378,coldstorage,620,ordinary,,,,,ELIGIBLE,6.2,,
@@ -584,9 +584,9 @@ redmart_00012668,redmart,734,ordinary,,,,,ELIGIBLE,7.34,,
 fairprice_00014079,fairprice,198,ordinary,,,,,ELIGIBLE,1.98,,
 redmart_00015332,redmart,198,ordinary,,,,,ELIGIBLE,1.98,,
 fairprice_00063952,fairprice,1099,ordinary,,,,,ELIGIBLE,10.99,,
-redmart_00011853,redmart,1099,ordinary,2,2088,True,,ELIGIBLE,10.99,,Any 2 Save 5%
+redmart_00011853,redmart,1099,ordinary,,,,Any 2 Save 5%,ELIGIBLE,10.99,,Any 2 Save 5%
 fairprice_00011514,fairprice,2190,ordinary,,,,,ELIGIBLE,21.9,,
-redmart_00011997,redmart,2190,ordinary,2,4161,True,,ELIGIBLE,21.9,,Any 2 Save 5%
+redmart_00011997,redmart,2190,ordinary,,,,Any 2 Save 5%,ELIGIBLE,21.9,,Any 2 Save 5%
 fairprice_00011531,fairprice,1621,ordinary,,,,,ELIGIBLE,16.21,,
 redmart_00012037,redmart,1619,unconditional_sale,,,,,ELIGIBLE,16.19,$17.99,Save $1.80
 fairprice_00065493,fairprice,640,ordinary,,,,,ELIGIBLE,6.4,,
@@ -638,7 +638,7 @@ redmart_00016860,redmart,590,ordinary,,,,Spend $20 + Free Gift,ELIGIBLE,5.9,,Spe
 fairprice_00013682,fairprice,590,ordinary,,,,,ELIGIBLE,5.9,,
 redmart_00044280,redmart,590,ordinary,,,,Spend $20 + Free Gift,ELIGIBLE,5.9,,Spend $20 + Free Gift
 coldstorage_00007608,coldstorage,505,ordinary,,,,,ELIGIBLE,5.05,,
-redmart_00011661,redmart,520,ordinary,3,1513,True,,ELIGIBLE,5.2,,Any 3 Save 3%
+redmart_00011661,redmart,520,ordinary,,,,Any 3 Save 3%,ELIGIBLE,5.2,,Any 3 Save 3%
 fairprice_00011480,fairprice,565,ordinary,,,,,ELIGIBLE,5.65,,
 redmart_00012068,redmart,565,ordinary,,,,Spend $15 + Free Gift,ELIGIBLE,5.65,,Spend $15 + Free Gift
 fairprice_00011522,fairprice,1150,ordinary,,,,,ELIGIBLE,11.5,,
@@ -674,7 +674,7 @@ redmart_00011786,redmart,625,ordinary,,,,,ELIGIBLE,6.25,,
 fairprice_00001506,fairprice,209,ordinary,,,,,ELIGIBLE,2.09,,
 redmart_00012249,redmart,208,ordinary,,,,,ELIGIBLE,2.08,,
 fairprice_00065438,fairprice,559,ordinary,,,,,ELIGIBLE,5.59,,
-redmart_00012029,redmart,559,ordinary,2,1062,True,,ELIGIBLE,5.59,,Any 2 Save 5%
+redmart_00012029,redmart,559,ordinary,,,,Any 2 Save 5%,ELIGIBLE,5.59,,Any 2 Save 5%
 fairprice_00065403,fairprice,484,ordinary,,,,,ELIGIBLE,4.84,,
 redmart_00011846,redmart,480,ordinary,,,,,ELIGIBLE,4.8,,
 fairprice_00065434,fairprice,1490,ordinary,,,,,ELIGIBLE,14.9,,
@@ -701,27 +701,27 @@ fairprice_00012744,fairprice,420,ordinary,,,,,ELIGIBLE,4.2,,
 redmart_00016747,redmart,420,ordinary,,,,,ELIGIBLE,4.2,,
 coldstorage_00008661,coldstorage,535,ordinary,,,,,ELIGIBLE,5.35,,
 fairprice_00013860,fairprice,535,ordinary,2,845,True,,ELIGIBLE,5.35,,Any 2 At $8.45
-redmart_00012563,redmart,534,ordinary,2,897,True,,ELIGIBLE,5.34,,Any 2 Save 16%
+redmart_00012563,redmart,534,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.34,,Any 2 Save 16%
 coldstorage_00008660,coldstorage,535,ordinary,,,,,ELIGIBLE,5.35,,
 fairprice_00013866,fairprice,535,ordinary,2,845,True,,ELIGIBLE,5.35,,Any 2 At $8.45
 coldstorage_00008658,coldstorage,535,ordinary,,,,,ELIGIBLE,5.35,,
 fairprice_00013869,fairprice,535,ordinary,2,845,True,,ELIGIBLE,5.35,,Any 2 At $8.45
 coldstorage_00008568,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
 fairprice_00013874,fairprice,535,ordinary,2,795,True,,ELIGIBLE,5.35,,Any 2 At $7.95
-redmart_00012581,redmart,534,ordinary,2,897,True,,ELIGIBLE,5.34,,Any 2 Save 16%
+redmart_00012581,redmart,534,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.34,,Any 2 Save 16%
 coldstorage_00008570,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
 fairprice_00013862,fairprice,535,ordinary,2,795,True,,ELIGIBLE,5.35,,Any 2 At $7.95
-redmart_00012590,redmart,534,ordinary,2,897,True,,ELIGIBLE,5.34,,Any 2 Save 16%
+redmart_00012590,redmart,534,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.34,,Any 2 Save 16%
 coldstorage_00008567,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
 fairprice_00013885,fairprice,535,ordinary,2,795,True,,ELIGIBLE,5.35,,Any 2 At $7.95
-redmart_00012606,redmart,534,ordinary,2,897,True,,ELIGIBLE,5.34,,Any 2 Save 16%
+redmart_00012606,redmart,534,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.34,,Any 2 Save 16%
 coldstorage_00008565,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
-redmart_00012626,redmart,534,ordinary,2,897,True,,ELIGIBLE,5.34,,Any 2 Save 16%
+redmart_00012626,redmart,534,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.34,,Any 2 Save 16%
 coldstorage_00008564,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
-redmart_00012630,redmart,535,ordinary,2,899,True,,ELIGIBLE,5.35,,Any 2 Save 16%
+redmart_00012630,redmart,535,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.35,,Any 2 Save 16%
 coldstorage_00008569,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
 fairprice_00013926,fairprice,535,ordinary,2,795,True,,ELIGIBLE,5.35,,Any 2 At $7.95
-redmart_00012633,redmart,534,ordinary,2,897,True,,ELIGIBLE,5.34,,Any 2 Save 16%
+redmart_00012633,redmart,534,ordinary,,,,Any 2 Save 16%,ELIGIBLE,5.34,,Any 2 Save 16%
 coldstorage_00008562,coldstorage,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.35,Save $0.40
 fairprice_00013882,fairprice,535,ordinary,2,795,True,,ELIGIBLE,5.35,,Any 2 At $7.95
 redmart_00013035,redmart,534,ordinary,,,,,ELIGIBLE,5.34,,
@@ -759,9 +759,9 @@ redmart_00012763,redmart,240,ordinary,,,,,ELIGIBLE,2.4,,
 coldstorage_00008586,coldstorage,160,ordinary,,,,,ELIGIBLE,1.6,,
 redmart_00012679,redmart,175,ordinary,,,,,ELIGIBLE,1.75,,
 coldstorage_00008620,coldstorage,115,ordinary,,,,,ELIGIBLE,1.15,,
-redmart_00012607,redmart,101,ordinary,6,576,True,,ELIGIBLE,1.01,,Any 6 Save 5%
+redmart_00012607,redmart,101,ordinary,,,,Any 6 Save 5%,ELIGIBLE,1.01,,Any 6 Save 5%
 coldstorage_00008685,coldstorage,115,ordinary,,,,,ELIGIBLE,1.15,,
-redmart_00012641,redmart,101,ordinary,6,576,True,,ELIGIBLE,1.01,,Any 6 Save 5%
+redmart_00012641,redmart,101,ordinary,,,,Any 6 Save 5%,ELIGIBLE,1.01,,Any 6 Save 5%
 coldstorage_00008624,coldstorage,195,ordinary,,,,,ELIGIBLE,1.95,,
 fairprice_00013925,fairprice,175,unconditional_sale,,,,,ELIGIBLE,1.75,$1.92 ,Save $0.17
 redmart_00012608,redmart,191,ordinary,3,450,True,,ELIGIBLE,1.91,,Any 3 At $4.50
@@ -800,7 +800,7 @@ redmart_00012733,redmart,389,unconditional_sale,,,,,ELIGIBLE,3.89,$4.75,Save $0.
 fairprice_00014003,fairprice,405,ordinary,,,,,ELIGIBLE,4.05,,
 redmart_00012973,redmart,405,ordinary,,,,,ELIGIBLE,4.05,,
 fairprice_00013982,fairprice,150,ordinary,,,,,ELIGIBLE,1.5,,
-redmart_00013015,redmart,160,ordinary,4,608,True,,ELIGIBLE,1.6,,Any 4 Save 5%
+redmart_00013015,redmart,160,ordinary,,,,Any 4 Save 5%,ELIGIBLE,1.6,,Any 4 Save 5%
 fairprice_00014002,fairprice,595,ordinary,,,,,ELIGIBLE,5.95,,
 redmart_00012914,redmart,595,ordinary,,,,,ELIGIBLE,5.95,,
 fairprice_00014006,fairprice,595,ordinary,,,,,ELIGIBLE,5.95,,
@@ -1161,11 +1161,11 @@ fairprice_00014856,fairprice,550,ordinary,2,900,True,,ELIGIBLE,5.5,,Any 2 At $9.
 fairprice_00001469,fairprice,655,ordinary,2,800,True,,ELIGIBLE,6.55,,Any 2 At $8.00
 redmart_00017908,redmart,655,ordinary,,,,,ELIGIBLE,6.55,,
 fairprice_00012455,fairprice,1130,ordinary,,,,,ELIGIBLE,11.3,,
-redmart_00018506,redmart,1130,ordinary,2,1989,True,,ELIGIBLE,11.3,,Any 2 Save 12%
+redmart_00018506,redmart,1130,ordinary,,,,Any 2 Save 12%,ELIGIBLE,11.3,,Any 2 Save 12%
 fairprice_00012489,fairprice,760,ordinary,,,,,ELIGIBLE,7.6,,
 redmart_00018516,redmart,684,unconditional_sale,,,,,ELIGIBLE,6.84,$7.60,Save $0.76
 fairprice_00012519,fairprice,1130,ordinary,,,,,ELIGIBLE,11.3,,
-redmart_00018548,redmart,1130,ordinary,2,1989,True,,ELIGIBLE,11.3,,Any 2 Save 12%
+redmart_00018548,redmart,1130,ordinary,,,,Any 2 Save 12%,ELIGIBLE,11.3,,Any 2 Save 12%
 fairprice_00012281,fairprice,362,ordinary,,,,,ELIGIBLE,3.62,,
 redmart_00017877,redmart,390,unconditional_sale,,,,,ELIGIBLE,3.9,$8.50,Save $4.60
 fairprice_00012527,fairprice,852,ordinary,,,,,ELIGIBLE,8.52,,
@@ -1176,7 +1176,7 @@ fairprice_00001505,fairprice,230,ordinary,2,370,True,,ELIGIBLE,2.3,,Any 2 At $3.
 redmart_00017838,redmart,230,ordinary,,,,,ELIGIBLE,2.3,,
 coldstorage_00007948,coldstorage,1105,ordinary,,,,,ELIGIBLE,11.05,,
 fairprice_00012330,fairprice,1150,ordinary,,,,,ELIGIBLE,11.5,,
-redmart_00017842,redmart,1300,ordinary,2,2210,True,,ELIGIBLE,13,,Any 2 Save 15%
+redmart_00017842,redmart,1300,ordinary,,,,Any 2 Save 15%,ELIGIBLE,13,,Any 2 Save 15%
 fairprice_00012472,fairprice,200,ordinary,2,380,True,,ELIGIBLE,2,,Any 2 At $3.80
 redmart_00017865,redmart,200,ordinary,,,,,ELIGIBLE,2,,
 coldstorage_00008057,coldstorage,180,ordinary,,,,,ELIGIBLE,1.8,,
@@ -1239,11 +1239,11 @@ fairprice_00012741,fairprice,789,ordinary,,,,,ELIGIBLE,7.89,,
 coldstorage_00008060,coldstorage,750,ordinary,,,,,ELIGIBLE,7.5,,
 fairprice_00012792,fairprice,789,ordinary,,,,,ELIGIBLE,7.89,,
 coldstorage_00008170,coldstorage,365,ordinary,,,,,ELIGIBLE,3.65,,
-redmart_00018962,redmart,348,ordinary,2,654,True,,ELIGIBLE,3.48,,Any 2 Save 6%
+redmart_00018962,redmart,348,ordinary,,,,Any 2 Save 6%,ELIGIBLE,3.48,,Any 2 Save 6%
 coldstorage_00008157,coldstorage,365,ordinary,,,,,ELIGIBLE,3.65,,
-redmart_00018964,redmart,348,ordinary,2,654,True,,ELIGIBLE,3.48,,Any 2 Save 6%
+redmart_00018964,redmart,348,ordinary,,,,Any 2 Save 6%,ELIGIBLE,3.48,,Any 2 Save 6%
 coldstorage_00008158,coldstorage,365,ordinary,,,,,ELIGIBLE,3.65,,
-redmart_00019009,redmart,348,ordinary,2,654,True,,ELIGIBLE,3.48,,Any 2 Save 6%
+redmart_00019009,redmart,348,ordinary,,,,Any 2 Save 6%,ELIGIBLE,3.48,,Any 2 Save 6%
 fairprice_00011988,fairprice,590,ordinary,,,,,ELIGIBLE,5.9,,
 redmart_00018978,redmart,590,ordinary,,,,,ELIGIBLE,5.9,,
 fairprice_00011987,fairprice,590,ordinary,,,,,ELIGIBLE,5.9,,
@@ -1319,7 +1319,7 @@ redmart_00033586,redmart,275,unconditional_sale,,,,,ELIGIBLE,2.75,$3.10,Save $0.
 coldstorage_00002940,coldstorage,595,ordinary,,,,,ELIGIBLE,5.95,,
 redmart_00033714,redmart,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.95,Save $1.00
 fairprice_00066308,fairprice,500,ordinary,,,,,ELIGIBLE,5,,
-redmart_00030895,redmart,500,ordinary,2,950,True,,ELIGIBLE,5,,Any 2 Save 5%
+redmart_00030895,redmart,500,ordinary,,,,Any 2 Save 5%,ELIGIBLE,5,,Any 2 Save 5%
 fairprice_00066256,fairprice,570,ordinary,,,,,ELIGIBLE,5.7,,
 redmart_00030909,redmart,535,unconditional_sale,,,,,ELIGIBLE,5.35,$7.15,Save $1.80
 fairprice_00066446,fairprice,405,ordinary,,,,,ELIGIBLE,4.05,,
@@ -1501,7 +1501,7 @@ fairprice_00066306,fairprice,600,ordinary,,,,,ELIGIBLE,6,,
 redmart_00034388,redmart,540,unconditional_sale,,,,,ELIGIBLE,5.4,$6.00,Save $0.60
 coldstorage_00002884,coldstorage,375,ordinary,,,,,ELIGIBLE,3.75,,
 fairprice_00066529,fairprice,363,ordinary,,,,,ELIGIBLE,3.63,,
-redmart_00035256,redmart,363,ordinary,3,1035,True,,ELIGIBLE,3.63,,Any 3 Save 5%
+redmart_00035256,redmart,363,ordinary,,,,Any 3 Save 5%,ELIGIBLE,3.63,,Any 3 Save 5%
 coldstorage_00002936,coldstorage,400,ordinary,,,,,ELIGIBLE,4,,
 fairprice_00066305,fairprice,350,ordinary,,,,,ELIGIBLE,3.5,,
 coldstorage_00002933,coldstorage,260,unconditional_sale,,,,,ELIGIBLE,2.6,$3.20,Save $0.60
@@ -1527,7 +1527,7 @@ coldstorage_00002813,coldstorage,500,unconditional_sale,,,,,ELIGIBLE,5,$5.45,Sav
 fairprice_00066355,fairprice,500,unconditional_sale,,,,,ELIGIBLE,5,$5.35 ,Save $0.35
 redmart_00034875,redmart,535,ordinary,,,,,ELIGIBLE,5.35,,
 fairprice_00066369,fairprice,2198,ordinary,,,,,ELIGIBLE,21.98,,
-redmart_00034908,redmart,2198,ordinary,2,4176,True,,ELIGIBLE,21.98,,Any 2 Save 5%
+redmart_00034908,redmart,2198,ordinary,,,,Any 2 Save 5%,ELIGIBLE,21.98,,Any 2 Save 5%
 coldstorage_00002817,coldstorage,505,ordinary,,,,,ELIGIBLE,5.05,,
 redmart_00034946,redmart,500,ordinary,,,,,ELIGIBLE,5,,
 coldstorage_00002818,coldstorage,785,unconditional_sale,,,,,ELIGIBLE,7.85,$8.45,Save $0.60
@@ -1662,7 +1662,7 @@ redmart_00044737,redmart,995,ordinary,,,,,ELIGIBLE,9.95,,
 coldstorage_00001737,coldstorage,500,ordinary,2,750,True,,ELIGIBLE,5,,Any 2 At $7.50
 fairprice_00009514,fairprice,500,ordinary,,,,,ELIGIBLE,5,,
 fairprice_00009392,fairprice,817,ordinary,,,,,ELIGIBLE,8.17,,
-redmart_00044712,redmart,817,ordinary,2,1552,True,,ELIGIBLE,8.17,,Any 2 Save 5%
+redmart_00044712,redmart,817,ordinary,,,,Any 2 Save 5%,ELIGIBLE,8.17,,Any 2 Save 5%
 fairprice_00009396,fairprice,779,ordinary,,,,,ELIGIBLE,7.79,,
 redmart_00044819,redmart,779,ordinary,,,,,ELIGIBLE,7.79,,
 fairprice_00009537,fairprice,700,unconditional_sale,,,,,ELIGIBLE,7,$9.10 ,Save $2.10
@@ -1686,7 +1686,7 @@ redmart_00044745,redmart,742,unconditional_sale,,,,,ELIGIBLE,7.42,$9.90,Save $2.
 fairprice_00009379,fairprice,795,ordinary,,,,,ELIGIBLE,7.95,,
 redmart_00044870,redmart,742,unconditional_sale,,,,,ELIGIBLE,7.42,$9.90,Save $2.48
 fairprice_00009552,fairprice,480,ordinary,,,,,ELIGIBLE,4.8,,
-redmart_00044851,redmart,480,ordinary,2,854,True,,ELIGIBLE,4.8,,Any 2 Save 11%
+redmart_00044851,redmart,480,ordinary,,,,Any 2 Save 11%,ELIGIBLE,4.8,,Any 2 Save 11%
 coldstorage_00001702,coldstorage,1010,ordinary,,,,,ELIGIBLE,10.1,,
 fairprice_00009330,fairprice,910,unconditional_sale,,,,,ELIGIBLE,9.1,$9.68 ,Save $0.58
 coldstorage_00001704,coldstorage,1010,ordinary,,,,,ELIGIBLE,10.1,,
@@ -1718,9 +1718,9 @@ redmart_00045411,redmart,1341,unconditional_sale,,,,,ELIGIBLE,13.41,$14.90,Save 
 fairprice_00009421,fairprice,1490,ordinary,,,,,ELIGIBLE,14.9,,
 redmart_00045437,redmart,1266,unconditional_sale,,,,,ELIGIBLE,12.66,$14.90,Save $2.24
 fairprice_00009411,fairprice,1490,ordinary,,,,,ELIGIBLE,14.9,,
-redmart_00045441,redmart,1490,ordinary,2,2831,True,,ELIGIBLE,14.9,,Any 2 Save 5%
+redmart_00045441,redmart,1490,ordinary,,,,Any 2 Save 5%,ELIGIBLE,14.9,,Any 2 Save 5%
 fairprice_00009397,fairprice,1479,ordinary,,,,,ELIGIBLE,14.79,,
-redmart_00045449,redmart,1479,ordinary,2,2810,True,,ELIGIBLE,14.79,,Any 2 Save 5%
+redmart_00045449,redmart,1479,ordinary,,,,Any 2 Save 5%,ELIGIBLE,14.79,,Any 2 Save 5%
 coldstorage_00001603,coldstorage,390,ordinary,,,,,ELIGIBLE,3.9,,
 fairprice_00009473,fairprice,390,ordinary,,,,,ELIGIBLE,3.9,,
 redmart_00045557,redmart,390,ordinary,,,,Spend $15 + Free Gift,ELIGIBLE,3.9,,Spend $15 + Free Gift
@@ -1751,9 +1751,9 @@ redmart_00093949,redmart,495,unconditional_sale,,,,,ELIGIBLE,4.95,$5.55,Save $0.
 fairprice_00042620,fairprice,370,ordinary,,,,,ELIGIBLE,3.7,,
 redmart_00093950,redmart,345,unconditional_sale,,,,,ELIGIBLE,3.45,$3.75,Save $0.30
 fairprice_00042312,fairprice,423,ordinary,2,500,False,,ELIGIBLE,4.23,,Buy 2 At $5.00
-redmart_00054591,redmart,422,ordinary,2,582,False,,ELIGIBLE,4.22,,Buy 2 Save 31%
+redmart_00054591,redmart,422,ordinary,,,,Buy 2 Save 31%,ELIGIBLE,4.22,,Buy 2 Save 31%
 fairprice_00042302,fairprice,351,ordinary,2,550,True,,ELIGIBLE,3.51,,Any 2 At $5.50
-redmart_00054609,redmart,351,ordinary,2,527,True,,ELIGIBLE,3.51,,Any 2 Save 25%
+redmart_00054609,redmart,351,ordinary,,,,Any 2 Save 25%,ELIGIBLE,3.51,,Any 2 Save 25%
 fairprice_00042097,fairprice,900,ordinary,,,,,ELIGIBLE,9,,
 redmart_00054570,redmart,900,unconditional_sale,,,,,ELIGIBLE,9,$10.00,Save $1.00
 fairprice_00042706,fairprice,900,ordinary,,,,,ELIGIBLE,9,,
@@ -1799,11 +1799,11 @@ redmart_00055326,redmart,484,ordinary,,,,,ELIGIBLE,4.84,,
 coldstorage_00006049,coldstorage,490,ordinary,,,,,ELIGIBLE,4.9,,
 redmart_00055303,redmart,484,ordinary,,,,,ELIGIBLE,4.84,,
 fairprice_00053610,fairprice,524,ordinary,,,,,ELIGIBLE,5.24,,
-redmart_00055280,redmart,525,ordinary,2,977,True,,ELIGIBLE,5.25,,Any 2 Save 7%
+redmart_00055280,redmart,525,ordinary,,,,Any 2 Save 7%,ELIGIBLE,5.25,,Any 2 Save 7%
 fairprice_00053658,fairprice,524,ordinary,,,,,ELIGIBLE,5.24,,
-redmart_00055300,redmart,525,ordinary,2,977,True,,ELIGIBLE,5.25,,Any 2 Save 7%
+redmart_00055300,redmart,525,ordinary,,,,Any 2 Save 7%,ELIGIBLE,5.25,,Any 2 Save 7%
 fairprice_00053634,fairprice,524,ordinary,,,,,ELIGIBLE,5.24,,
-redmart_00055314,redmart,525,ordinary,2,735,True,,ELIGIBLE,5.25,,Any 2 Save 30%
+redmart_00055314,redmart,525,ordinary,,,,Any 2 Save 30%,ELIGIBLE,5.25,,Any 2 Save 30%
 fairprice_00053671,fairprice,1140,unconditional_sale,,,,,ELIGIBLE,11.4,$12.63 ,Save $1.23
 redmart_00055281,redmart,1176,unconditional_sale,,,,,ELIGIBLE,11.76,$12.64,Save $0.88
 fairprice_00053645,fairprice,1140,unconditional_sale,,,,,ELIGIBLE,11.4,$12.63 ,Save $1.23
@@ -1935,15 +1935,15 @@ redmart_00064631,redmart,490,ordinary,,,,,ELIGIBLE,4.9,,
 fairprice_00058831,fairprice,490,ordinary,,,,,ELIGIBLE,4.9,,
 redmart_00064655,redmart,490,ordinary,,,,,ELIGIBLE,4.9,,
 fairprice_00058983,fairprice,570,ordinary,,,,,ELIGIBLE,5.7,,
-redmart_00064662,redmart,570,ordinary,3,1625,True,,ELIGIBLE,5.7,,Any 3 Save 5%
+redmart_00064662,redmart,570,ordinary,,,,Any 3 Save 5%,ELIGIBLE,5.7,,Any 3 Save 5%
 fairprice_00058982,fairprice,570,ordinary,,,,,ELIGIBLE,5.7,,
-redmart_00064874,redmart,570,ordinary,3,1625,True,,ELIGIBLE,5.7,,Any 3 Save 5%
+redmart_00064874,redmart,570,ordinary,,,,Any 3 Save 5%,ELIGIBLE,5.7,,Any 3 Save 5%
 fairprice_00058849,fairprice,890,ordinary,,,,,ELIGIBLE,8.9,,
-redmart_00064859,redmart,890,ordinary,3,2403,True,,ELIGIBLE,8.9,,Any 3 Save 10%
+redmart_00064859,redmart,890,ordinary,,,,Any 3 Save 10%,ELIGIBLE,8.9,,Any 3 Save 10%
 fairprice_00058879,fairprice,890,ordinary,,,,,ELIGIBLE,8.9,,
-redmart_00064887,redmart,890,ordinary,3,2403,True,,ELIGIBLE,8.9,,Any 3 Save 10%
+redmart_00064887,redmart,890,ordinary,,,,Any 3 Save 10%,ELIGIBLE,8.9,,Any 3 Save 10%
 fairprice_00058854,fairprice,540,ordinary,,,,,ELIGIBLE,5.4,,
-redmart_00064709,redmart,540,ordinary,3,1539,True,,ELIGIBLE,5.4,,Any 3 Save 5%
+redmart_00064709,redmart,540,ordinary,,,,Any 3 Save 5%,ELIGIBLE,5.4,,Any 3 Save 5%
 fairprice_00058850,fairprice,790,ordinary,,,,,ELIGIBLE,7.9,,
 redmart_00064902,redmart,790,ordinary,,,,,ELIGIBLE,7.9,,
 fairprice_00058994,fairprice,490,ordinary,,,,,ELIGIBLE,4.9,,
@@ -1963,7 +1963,7 @@ redmart_00064917,redmart,3200,ordinary,,,,,ELIGIBLE,32,,
 fairprice_00058872,fairprice,3290,ordinary,,,,,ELIGIBLE,32.9,,
 redmart_00064939,redmart,3200,ordinary,,,,,ELIGIBLE,32,,
 fairprice_00058449,fairprice,1146,ordinary,,,,,ELIGIBLE,11.46,,
-redmart_00065411,redmart,1150,ordinary,2,1840,False,,ELIGIBLE,11.5,,Buy 2 Save 20%
+redmart_00065411,redmart,1150,ordinary,,,,Buy 2 Save 20%,ELIGIBLE,11.5,,Buy 2 Save 20%
 fairprice_00058467,fairprice,920,ordinary,,,,,ELIGIBLE,9.2,,
 redmart_00065439,redmart,799,unconditional_sale,,,,,ELIGIBLE,7.99,$9.20,Save $1.21
 fairprice_00058716,fairprice,390,ordinary,,,,,ELIGIBLE,3.9,,
@@ -1973,15 +1973,15 @@ redmart_00065635,redmart,4200,ordinary,,,,,ELIGIBLE,42,,
 fairprice_00018465,fairprice,590,unconditional_sale,,,,,ELIGIBLE,5.9,$9.95 ,Save $4.05
 redmart_00072702,redmart,500,unconditional_sale,,,,,ELIGIBLE,5,$9.89,Save $4.89
 fairprice_00018483,fairprice,590,unconditional_sale,,,,,ELIGIBLE,5.9,$9.95 ,Save $4.05
-redmart_00072715,redmart,989,ordinary,2,1187,True,,ELIGIBLE,9.89,,Any 2 Save 40%
+redmart_00072715,redmart,989,ordinary,,,,Any 2 Save 40%,ELIGIBLE,9.89,,Any 2 Save 40%
 fairprice_00018491,fairprice,590,unconditional_sale,,,,,ELIGIBLE,5.9,$9.95 ,Save $4.05
-redmart_00072738,redmart,989,ordinary,2,1187,True,,ELIGIBLE,9.89,,Any 2 Save 40%
+redmart_00072738,redmart,989,ordinary,,,,Any 2 Save 40%,ELIGIBLE,9.89,,Any 2 Save 40%
 fairprice_00018478,fairprice,590,unconditional_sale,,,,,ELIGIBLE,5.9,$9.95 ,Save $4.05
-redmart_00072739,redmart,989,ordinary,2,1187,True,,ELIGIBLE,9.89,,Any 2 Save 40%
+redmart_00072739,redmart,989,ordinary,,,,Any 2 Save 40%,ELIGIBLE,9.89,,Any 2 Save 40%
 fairprice_00018470,fairprice,590,unconditional_sale,,,,,ELIGIBLE,5.9,$9.95 ,Save $4.05
-redmart_00072742,redmart,989,ordinary,2,1187,True,,ELIGIBLE,9.89,,Any 2 Save 40%
+redmart_00072742,redmart,989,ordinary,,,,Any 2 Save 40%,ELIGIBLE,9.89,,Any 2 Save 40%
 fairprice_00018487,fairprice,590,unconditional_sale,,,,,ELIGIBLE,5.9,$9.95 ,Save $4.05
-redmart_00072746,redmart,989,ordinary,2,1187,True,,ELIGIBLE,9.89,,Any 2 Save 40%
+redmart_00072746,redmart,989,ordinary,,,,Any 2 Save 40%,ELIGIBLE,9.89,,Any 2 Save 40%
 fairprice_00018646,fairprice,1069,ordinary,2,1395,True,,ELIGIBLE,10.69,,Any 2 At $13.95
 redmart_00072704,redmart,1069,ordinary,,,,,ELIGIBLE,10.69,,
 fairprice_00018576,fairprice,1069,ordinary,2,1395,True,,ELIGIBLE,10.69,,Any 2 At $13.95
@@ -2097,7 +2097,7 @@ redmart_00083863,redmart,355,unconditional_sale,,,,,ELIGIBLE,3.55,$3.95,Save $0.
 fairprice_00062782,fairprice,395,ordinary,,,,,ELIGIBLE,3.95,,
 redmart_00083892,redmart,355,unconditional_sale,,,,,ELIGIBLE,3.55,$3.95,Save $0.40
 fairprice_00062781,fairprice,495,ordinary,,,,,ELIGIBLE,4.95,,
-redmart_00083870,redmart,495,ordinary,3,743,True,,ELIGIBLE,4.95,,Any 3 Save 50%
+redmart_00083870,redmart,495,ordinary,,,,Any 3 Save 50%,ELIGIBLE,4.95,,Any 3 Save 50%
 fairprice_00062537,fairprice,878,ordinary,,,,,ELIGIBLE,8.78,,
 redmart_00082169,redmart,870,ordinary,,,,,ELIGIBLE,8.7,,
 coldstorage_00006212,coldstorage,355,ordinary,,,,,ELIGIBLE,3.55,,
@@ -2133,9 +2133,9 @@ redmart_00082919,redmart,388,ordinary,2,630,True,,ELIGIBLE,3.88,,Any 2 At $6.30
 coldstorage_00010420,coldstorage,360,ordinary,,,,,ELIGIBLE,3.6,,
 redmart_00082916,redmart,352,ordinary,2,630,True,,ELIGIBLE,3.52,,Any 2 At $6.30
 fairprice_00062326,fairprice,225,unconditional_sale,,,,,ELIGIBLE,2.25,$2.59 ,Save $0.34
-redmart_00082759,redmart,259,ordinary,2,420,True,,ELIGIBLE,2.59,,Any 2 Save 19%
+redmart_00082759,redmart,259,ordinary,,,,Any 2 Save 19%,ELIGIBLE,2.59,,Any 2 Save 19%
 fairprice_00062329,fairprice,225,unconditional_sale,,,,,ELIGIBLE,2.25,$2.59 ,Save $0.34
-redmart_00082796,redmart,259,ordinary,2,420,True,,ELIGIBLE,2.59,,Any 2 Save 19%
+redmart_00082796,redmart,259,ordinary,,,,Any 2 Save 19%,ELIGIBLE,2.59,,Any 2 Save 19%
 fairprice_00062344,fairprice,315,ordinary,,,,,ELIGIBLE,3.15,,
 redmart_00082935,redmart,315,unconditional_sale,,,,,ELIGIBLE,3.15,$4.20,Save $1.05
 fairprice_00062349,fairprice,360,ordinary,,,,,ELIGIBLE,3.6,,
@@ -2145,15 +2145,15 @@ redmart_00082772,redmart,336,unconditional_sale,,,,,ELIGIBLE,3.36,$4.02,Save $0.
 coldstorage_00010436,coldstorage,330,unconditional_sale,,,,,ELIGIBLE,3.3,$4.25,Save $0.95
 redmart_00082793,redmart,336,unconditional_sale,,,,,ELIGIBLE,3.36,$4.02,Save $0.66
 fairprice_00062514,fairprice,203,ordinary,,,,,ELIGIBLE,2.03,,
-redmart_00082803,redmart,203,ordinary,2,386,True,,ELIGIBLE,2.03,,Any 2 Save 5%
+redmart_00082803,redmart,203,ordinary,,,,Any 2 Save 5%,ELIGIBLE,2.03,,Any 2 Save 5%
 fairprice_00062332,fairprice,631,ordinary,,,,,ELIGIBLE,6.31,,
 redmart_00082879,redmart,581,ordinary,,,,,ELIGIBLE,5.81,,
 fairprice_00001933,fairprice,230,ordinary,,,,,ELIGIBLE,2.3,,
-redmart_00082849,redmart,259,ordinary,2,440,True,,ELIGIBLE,2.59,,Any 2 Save 15%
+redmart_00082849,redmart,259,ordinary,,,,Any 2 Save 15%,ELIGIBLE,2.59,,Any 2 Save 15%
 fairprice_00002032,fairprice,230,ordinary,,,,,ELIGIBLE,2.3,,
-redmart_00082937,redmart,259,ordinary,2,440,True,,ELIGIBLE,2.59,,Any 2 Save 15%
+redmart_00082937,redmart,259,ordinary,,,,Any 2 Save 15%,ELIGIBLE,2.59,,Any 2 Save 15%
 fairprice_00002015,fairprice,179,ordinary,,,,,ELIGIBLE,1.79,,
-redmart_00082887,redmart,179,ordinary,2,304,True,,ELIGIBLE,1.79,,Any 2 Save 15%
+redmart_00082887,redmart,179,ordinary,,,,Any 2 Save 15%,ELIGIBLE,1.79,,Any 2 Save 15%
 fairprice_00062277,fairprice,520,ordinary,,,,,ELIGIBLE,5.2,,
 redmart_00083062,redmart,520,ordinary,,,,,ELIGIBLE,5.2,,
 fairprice_00062360,fairprice,720,ordinary,,,,,ELIGIBLE,7.2,,
@@ -2303,7 +2303,7 @@ redmart_00083996,redmart,980,unconditional_sale,,,,,ELIGIBLE,9.8,$12.80,Save $3.
 fairprice_00067157,fairprice,1180,ordinary,,,,,ELIGIBLE,11.8,,
 redmart_00084041,redmart,1180,unconditional_sale,,,,,ELIGIBLE,11.8,$16.10,Save $4.30
 fairprice_00067099,fairprice,406,ordinary,2,700,False,,ELIGIBLE,4.06,,Buy 2 At $7.00
-redmart_00084001,redmart,406,ordinary,2,698,False,,ELIGIBLE,4.06,,Buy 2 Save 14%
+redmart_00084001,redmart,406,ordinary,,,,Buy 2 Save 14%,ELIGIBLE,4.06,,Buy 2 Save 14%
 fairprice_00067136,fairprice,1780,unconditional_sale,,,,,ELIGIBLE,17.8,$19.00 ,Save $1.20
 redmart_00084002,redmart,1780,unconditional_sale,,,,,ELIGIBLE,17.8,$19.00,Save $1.20
 coldstorage_00007541,coldstorage,485,ordinary,,,,,ELIGIBLE,4.85,,
@@ -2434,7 +2434,7 @@ redmart_00097336,redmart,435,unconditional_sale,,,,,ELIGIBLE,4.35,$4.69,Save $0.
 fairprice_00052897,fairprice,469,ordinary,,,,,ELIGIBLE,4.69,,
 redmart_00097369,redmart,435,unconditional_sale,,,,,ELIGIBLE,4.35,$4.69,Save $0.34
 fairprice_00052880,fairprice,143,ordinary,,,,,ELIGIBLE,1.43,,
-redmart_00097384,redmart,141,ordinary,3,381,True,,ELIGIBLE,1.41,,Any 3 Save 10%
+redmart_00097384,redmart,141,ordinary,,,,Any 3 Save 10%,ELIGIBLE,1.41,,Any 3 Save 10%
 fairprice_00052950,fairprice,479,ordinary,,,,,ELIGIBLE,4.79,,
 redmart_00097414,redmart,479,ordinary,,,,Spend $68 + Free Gift,ELIGIBLE,4.79,,Spend $68 + Free Gift
 fairprice_00052938,fairprice,347,ordinary,,,,,ELIGIBLE,3.47,,

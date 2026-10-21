@@ -47,6 +47,7 @@ SNAPSHOT = ROOT / "data" / "snapshot"
 # Products that dropped out, kept so later refreshes read them again (no prices).
 IDENTITY = ("listingId", "productId", "retailerId", "productUrl", "specification")
 RETIRED = SEED.parent / "retired.json"
+RECORDED: dict[str, dict] = {}
 # Seed retailer IDs to the workbook names build_seed.py keys its tables by.
 SOURCE_KEY = {seed_id: key for key, (seed_id, _, _) in RETAILERS.items()}
 
@@ -82,6 +83,44 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
     return None
 
 
+# The source observations behind every listing built from the original exports.
+OFFER_PRICES = ROOT / "data" / "curated" / "stage2g_offer_prices.csv"
+
+
+def recorded_offers() -> dict[str, dict]:
+    with open(OFFER_PRICES, encoding="utf-8") as f:
+        return {r["source_record_id"]: r for r in csv.DictReader(f)}
+
+
+def reapply(listing: dict, recorded: dict[str, dict] | None = None) -> dict:
+    """A carried-over listing with today's curation rules applied to its recorded observation.
+
+    Carrying over keeps what was observed (price, original price, deal wording),
+    not how an earlier rule read it, so a rule change such as excluding
+    percentage deals reaches carried listings too.
+    """
+    source = (recorded if recorded is not None else RECORDED).get(listing["sourceRecordId"])
+    if source is None:
+        raise SystemExit(f"No recorded observation for carried listing {listing['listingId']}")
+    offer = derive_offer(
+        {
+            "Product Price": source["raw_product_price"],
+            "Original Price": source["raw_original_price"],
+            "Savings": source["raw_savings"],
+        }
+    )
+    if not offer["eligible"]:
+        raise SystemExit(f"Carried listing {listing['listingId']} has no reliable recorded price")
+    return {
+        **listing,
+        "priceKind": offer["price_kind"],
+        "unitPriceCents": offer["unit_price_cents"],
+        "originalPriceCents": offer["original_price_cents"],
+        "multibuy": offer["multibuy"],
+        "excludedPromotions": offer["excluded_promotions"],
+    }
+
+
 def catalogue(seed: dict, retired: dict) -> tuple[dict, list[dict]]:
     """Every product ever published, by ID, and their listings: the seed's and the retired ones."""
     products = {p["productId"]: p for p in [*retired["products"], *seed["products"]]}
@@ -112,7 +151,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
                 raise SystemExit(f"Only RedMart listings can be carried over, not {listing['productUrl']}")
             if listing["productUrl"] not in current:
                 raise SystemExit(f"Cannot carry over {listing['productUrl']}: it is not in the seed")
-            row = {**row, "carried": current[listing["productUrl"]]}
+            row = {**row, "carried": reapply(current[listing["productUrl"]])}
         rows[listing["productId"]].append(row)
         identities[listing["productId"]].append({k: listing[k] for k in IDENTITY})
     accepted = 0
@@ -189,6 +228,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
 
 
 def main() -> None:
+    RECORDED.update(recorded_offers())
     # The seed this snapshot replaces (copied by `refresh.ts new`), so the
     # build repeats exactly however often it runs.
     base = SNAPSHOT / "base" if (SNAPSHOT / "base" / "seed.json").exists() else SEED.parent
@@ -248,7 +288,7 @@ def write_report(seed, result) -> None:
         "",
         f"Search candidates accepted by the AI review: {accepted}. New listings published: {len(added)}.",
         "",
-        f"Listings carried over unchanged from the previous seed, not read again: {result['carried']}.",
+        f"Listings carried over from the previous seed, not read again (today's rules applied to their recorded observation): {result['carried']}.",
         "",
         "## Listings not published",
         "",

@@ -2,6 +2,8 @@
 
 import unittest
 
+import refresh_seed
+
 from refresh_seed import build, exclusion
 
 
@@ -124,9 +126,20 @@ class Build(unittest.TestCase):
         }
         seed = {"products": [PRODUCT], "listings": [*LISTINGS[:1], old]}
         carried = {**observation("redmart", redmart_url), "status": "carried", "Product Price": ""}
-        result = run(seed, EMPTY, [observation("fairprice", FP), carried])
-        self.assertIn(old, result["listings"])
-        self.assertEqual(result["carried"], 1)
+        recorded = {"raw_product_price": "3.10", "raw_original_price": "", "raw_savings": "Any 2 At $6.00"}
+        refresh_seed.RECORDED.update({"redmart_00000002": recorded})
+        try:
+            result = run(seed, EMPTY, [observation("fairprice", FP), carried])
+            self.assertIn(old, result["listings"])
+            self.assertEqual(result["carried"], 1)
+            # Today's rules reach the recorded wording: a percentage deal is no longer applied.
+            refresh_seed.RECORDED["redmart_00000002"] = {**recorded, "raw_savings": "Any 2 Save 40%"}
+            result = run(seed, EMPTY, [observation("fairprice", FP), carried])
+            again = next(l for l in result["listings"] if l["listingId"] == "redmart-pdp-i1-s2")
+            self.assertIsNone(again["multibuy"])
+            self.assertEqual(again["excludedPromotions"], ["Any 2 Save 40%"])
+        finally:
+            refresh_seed.RECORDED.clear()
 
     def test_only_seed_redmart_listings_can_be_carried_over(self):
         seed = {"products": [PRODUCT], "listings": LISTINGS}

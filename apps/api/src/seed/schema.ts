@@ -50,8 +50,8 @@ const UnverifiedDeliveryRule = closed({
   note: Type.Optional(text),
 });
 
-/** `packsPerDeal` packs for `dealPriceCents`; curation has already rounded any
- * percentage deal and checked that it is cheaper (PR-03). */
+/** `packsPerDeal` packs for `dealPriceCents`, from a fixed-price wording;
+ * curation has checked that it is cheaper (PR-03). */
 const MultibuySchema = closed({
   packsPerDeal: Type.Integer({ minimum: 2, maximum: MAX_PACKS_PER_LINE }),
   dealPriceCents: PositiveCentsSchema,

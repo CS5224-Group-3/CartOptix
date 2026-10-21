@@ -49,8 +49,8 @@ export interface OfferRule {
 /**
  * `packsPerDeal` packs of one listing for `dealPrice` (PR-03).
  *
- * Curation reduces every supported wording ("N At $X", "N Save X%", "N Save
- * $X") to this one shape, rounding any percentage when it builds the seed, so
+ * Curation reduces every supported wording ("N At $X", "N Save $X") to this
+ * one shape; percentage deals are not applied (PR-03), so
  * the module never rounds. A deal is counted against packs of its own listing
  * only, even when the retailer would also accept other products.
  */

@@ -7141,12 +7141,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 1187,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 40%"]
     },
     {
       "listingId": "redmart-pdp-i1643060745-s7717827871",
@@ -7159,12 +7155,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 420,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 19%"]
     },
     {
       "listingId": "redmart-pdp-i1682511818-s8125888551",
@@ -7177,12 +7169,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 897,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 16%"]
     },
     {
       "listingId": "redmart-pdp-i1683191211-s8128041773",
@@ -7291,12 +7279,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 422,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 582,
-        "mixAndMatch": false
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Buy 2 Save 31%"]
     },
     {
       "listingId": "redmart-pdp-i2437055547-s14423159838",
@@ -7341,12 +7325,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 1150,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 1840,
-        "mixAndMatch": false
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Buy 2 Save 20%"]
     },
     {
       "listingId": "redmart-pdp-i2742796146-s18594995860",
@@ -7359,12 +7339,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 547,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 24%"]
     },
     {
       "listingId": "redmart-pdp-i2791236407-s19279758674",
@@ -7469,12 +7445,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 368,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 677,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": ["Spend $11.00 + free gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $11.00 + free gift", "Any 2 Save 8%"]
     },
     {
       "listingId": "redmart-pdp-i301080986-s527102860",
@@ -7729,12 +7701,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 626,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 13%"]
     },
     {
       "listingId": "redmart-pdp-i301122375-s527206003",
@@ -7789,12 +7757,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 363,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 3,
-        "dealPriceCents": 1035,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 3 Save 5%"]
     },
     {
       "listingId": "redmart-pdp-i301126624-s527208386",
@@ -7821,12 +7785,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 525,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 977,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 7%"]
     },
     {
       "listingId": "redmart-pdp-i301128368-s527164945",
@@ -7927,12 +7887,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 141,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 3,
-        "dealPriceCents": 381,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 3 Save 10%"]
     },
     {
       "listingId": "redmart-pdp-i301136541-s527194689",
@@ -8079,12 +8035,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 897,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 16%"]
     },
     {
       "listingId": "redmart-pdp-i301142365-s527188659",
@@ -8111,12 +8063,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 406,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 698,
-        "mixAndMatch": false
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Buy 2 Save 14%"]
     },
     {
       "listingId": "redmart-pdp-i301142670-s527234202",
@@ -8175,12 +8123,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 897,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 16%"]
     },
     {
       "listingId": "redmart-pdp-i301144490-s527204430",
@@ -8355,12 +8299,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 626,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 13%"]
     },
     {
       "listingId": "redmart-pdp-i301150658-s527232238",
@@ -8441,12 +8381,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 360,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 626,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 13%"]
     },
     {
       "listingId": "redmart-pdp-i301156310-s527210113",
@@ -8487,12 +8423,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 989,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 1187,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 40%"]
     },
     {
       "listingId": "redmart-pdp-i301156348-s527210165",
@@ -8603,12 +8535,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 395,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 743,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": ["Spend $10.00 + free gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $10.00 + free gift", "Any 2 Save 6%"]
     },
     {
       "listingId": "redmart-pdp-i301164042-s527250279",
@@ -8949,12 +8877,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 534,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 897,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 16%"]
     },
     {
       "listingId": "redmart-pdp-i303530725-s537166575",
@@ -9163,12 +9087,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 259,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 440,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 15%"]
     },
     {
       "listingId": "redmart-pdp-i305126315-s541238206",
@@ -9223,12 +9143,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 250,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 450,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 10%"]
     },
     {
       "listingId": "redmart-pdp-i3124540792-s21263650836",
@@ -9553,12 +9469,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 480,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 854,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": []
+      "multibuy": null,
+      "excludedPromotions": ["Any 2 Save 11%"]
     },
     {
       "listingId": "redmart-pdp-i378388292-s887448413",
@@ -9599,12 +9511,8 @@
       "priceKind": "ordinary",
       "unitPriceCents": 260,
       "originalPriceCents": null,
-      "multibuy": {
-        "packsPerDeal": 2,
-        "dealPriceCents": 442,
-        "mixAndMatch": true
-      },
-      "excludedPromotions": ["Spend $105.00 + free gift"]
+      "multibuy": null,
+      "excludedPromotions": ["Spend $105.00 + free gift", "Any 2 Save 15%"]
     },
     {
       "listingId": "redmart-pdp-i569114388-s1622298642",

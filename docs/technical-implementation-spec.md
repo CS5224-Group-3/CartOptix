@@ -148,7 +148,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Canonical product | ID, category, brand, variant, pack count, per-pack size/unit or equivalent non-food identity, display name. |
 | Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, direct-fulfilment status and any evidence reference. |
 | Offer | Listing ID, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
-| Supported promotion | A listing's same-product multibuy: packs per deal, deal price in cents (any percentage already rounded half-up by curation) and whether the retailer's wording was "Any N". Deals repeat; remaining packs use the unit price. No validity terms are kept. Rules are fixed in the committed seed. |
+| Supported promotion | A listing's same-product multibuy: packs per deal, deal price in cents (fixed-price wordings only; percentage deals are excluded, PR-03) and whether the retailer's wording was "Any N". Deals repeat; remaining packs use the unit price. No validity terms are kept. Rules are fixed in the committed seed. |
 | Delivery rule | Retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. Unused in the MVP, which does not model BCRS deposits. |
 | Click event | Event ID, retailer/listing/product and the server-recorded timestamp; no user identity. |
@@ -161,7 +161,7 @@ Freezing evaluation data is best-effort; record material changes and rerun affec
 
 ### Shared pricing kernel
 
-One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Percentage deals are rounded once, half-up to the cent per deal, when curation builds the seed, so the module never rounds; the live-checkout evidence for PR-03 must confirm the convention, and a deal type that disagrees stays excluded.
+One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Only fixed-price deals are applied, so the module never rounds. Percentage deals are excluded because the live checkout showed the percentage is a rounded label for a fixed price (PR-03).
 
 - Compute the verified ordinary or unconditional sale cost for the exact pack quantity.
 - Apply a listing's same-product multibuy: floor(quantity ÷ packs per deal) deals, the rest at the unit price, and only when the deal is cheaper. Never count packs from another line, and never stack promotions.
@@ -342,7 +342,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C1 — Implement the shared pricing kernel
 - **Blocked by:** A2.
 - **Work:** Implement product, promotion, mandatory-charge and retailer-order pricing against explicit fixtures. Return itemised explanations and excluded-promotion notices.
-- **Acceptance:** Independent reference tests cover cents, multibuy deals and remainders, deals that are not cheaper, minimum orders, threshold boundaries and charge inclusion; percentage rounding happens once in curation and is checked against the live checkout (PR-03). A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed. Product and basket paths use the same module. Real rules are validated later in C5.
+- **Acceptance:** Independent reference tests cover cents, multibuy deals and remainders, deals that are not cheaper, minimum orders, threshold boundaries and charge inclusion; fixed-price deals are checked against the live checkout (PR-03). A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed. Product and basket paths use the same module. Real rules are validated later in C5.
 
 #### C2 — Price every retailer's complete basket and validate plans
 - **Blocked by:** C1.
