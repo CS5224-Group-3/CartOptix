@@ -1,15 +1,15 @@
 /**
- * RedMart listings live on Lazada. Lazada's catalogue JSON, restricted to
- * RedMart (`m=redmart`), gives price, crossed-out price, stock, pack size and
- * the multibuy badge, and a search for an item number finds that item. It does
- * not say who sells an item, so the seller comes from the product page's
- * "Sold by" line.
+ * RedMart listings live on Lazada. A product page's data
+ * (`window.__moduleData__`) gives price, crossed-out price, stock, pack size,
+ * promotion tags and the "Sold by" seller, so each listing costs one page.
+ * Search uses Lazada's catalogue JSON restricted to RedMart (`m=redmart`).
  *
  * Lazada answers fast or repeated requests with a slider check (a "punish"
- * page). Everything here goes through one Chromium profile, kept in
- * `.cache/lazada-profile`, at a slow pace. When the check appears, a headed
- * run waits for the operator to complete it in the window; a headless run
- * stops at once, because nothing else will clear it.
+ * page). Everything here goes through one browser profile, kept in
+ * `.cache/lazada-profile`, at a slow pace, using the installed Google Chrome
+ * when there is one, as an ordinary visitor would. When the check appears, a
+ * headed run waits for the operator to complete it in the window; a headless
+ * run stops at once. Nothing here solves or evades the check.
  */
 import { resolve } from "node:path";
 import { type BrowserContext, chromium, type Page } from "@playwright/test";
@@ -31,43 +31,71 @@ const INTERVAL = 8_000;
 /** How long a headed run waits for the operator to complete the check. */
 const OPERATOR_WAIT = 10 * 60_000;
 
+/** The installed Google Chrome when there is one, else Playwright's Chromium. */
+async function launch(headed: boolean): Promise<BrowserContext> {
+  const settings = { headless: !headed, locale: "en-SG" };
+  try {
+    return await chromium.launchPersistentContext(PROFILE, { ...settings, channel: "chrome" });
+  } catch {
+    return chromium.launchPersistentContext(PROFILE, { ...settings, userAgent: USER_AGENT });
+  }
+}
+
 export class ChallengeError extends Error {
   override readonly name = "ChallengeError";
 }
 
 export interface CatalogueItem {
-  itemId: string;
   name: string;
   productUrl: string;
-  price: string;
-  originalPrice?: string | null;
-  inStock: boolean;
   packageInfo?: string;
-  image?: string;
-  brandName?: string;
-  icons?: { alias?: string; text?: string }[];
 }
 
-export function observe(item: CatalogueItem, url: string, seller: string): Observation {
-  const price = Number(item.price);
-  const original = Number(item.originalPrice ?? 0);
-  const sale = original > price;
+/** What one SKU's page data says, read from Lazada's untyped page modules. */
+interface Fields {
+  product?: { title?: string; brand?: { name?: string } };
+  price_grocer?: Record<
+    string,
+    { data?: { price?: { priceNumber?: number; originalPriceNumber?: number } } }
+  >;
+  skuInfos?: Record<string, { stock?: number; image?: string }>;
+  product_attributes_grocer?: Record<
+    string,
+    { data?: { attributes?: { name: string; value: string }[] } }
+  >;
+  promotionTags?: { data?: Record<string, { name?: string }[]> };
+}
+
+/** A product page's data as an observation; throws when the price is not there. */
+export function observe(data: unknown, url: string, seller: string): Observation {
+  const fields = (data as { data?: { root?: { fields?: Fields } } } | null)?.data?.root?.fields;
+  const sku = Object.keys(fields?.price_grocer ?? {})[0];
+  const price = sku ? fields?.price_grocer?.[sku]?.data?.price : undefined;
+  if (!fields || !sku || price?.priceNumber === undefined || !fields.product?.title) {
+    throw new Error(`RedMart page ${url} has no price data`);
+  }
+  const original = price.originalPriceNumber ?? 0;
+  const sale = original > price.priceNumber;
+  const image = fields.skuInfos?.[sku]?.image;
   return {
     retailer: "redmart",
     "product url": url,
-    "Product Name": clean(item.name),
-    "Product Price": dollars(price),
+    "Product Name": clean(fields.product.title),
+    "Product Price": dollars(price.priceNumber),
     "Original Price": sale ? dollars(original) : "",
-    Specification: clean(item.packageInfo),
-    // Promotion badges ("p_…", such as "p_multibuy") in the retailer's wording.
-    Savings: (item.icons ?? [])
-      .filter((icon) => icon.alias?.startsWith("p_") && clean(icon.text))
-      .map((icon) => clean(icon.text))
+    Specification: clean(
+      fields.product_attributes_grocer?.[sku]?.data?.attributes?.find((a) => a.name === "Pack Size")
+        ?.value,
+    ),
+    // Promotion tags, such as "Any 2 For $6.30", in the retailer's wording.
+    Savings: (fields.promotionTags?.data?.[sku] ?? [])
+      .map((tag) => clean(tag.name))
+      .filter(Boolean)
       .join(PROMOTION_SEPARATOR),
-    "in-stock": item.inStock ? "Yes" : "No",
-    "Image URL": item.image ?? "",
-    brand: clean(item.brandName),
-    // Empty when the page could not be read; such a listing needs a hand check.
+    "in-stock": (fields.skuInfos?.[sku]?.stock ?? 0) > 0 ? "Yes" : "No",
+    "Image URL": image ? new URL(image, "https://www.lazada.sg").href : "",
+    brand: clean(fields.product.brand?.name),
+    // Empty when the seller could not be read; such a listing needs a hand check.
     seller,
   };
 }
@@ -113,11 +141,7 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
 
   /** Opens `url` at the pace Lazada tolerates, getting past the check if an operator can. */
   async function visit(url: string): Promise<Page> {
-    context ??= await chromium.launchPersistentContext(PROFILE, {
-      headless: !options.headed,
-      locale: "en-SG",
-      userAgent: USER_AGENT,
-    });
+    context ??= await launch(options.headed ?? false);
     page ??= context.pages()[0] ?? (await context.newPage());
     await pause(INTERVAL);
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
@@ -148,9 +172,9 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
     return data.mods.listItems ?? [];
   }
 
-  async function seller(url: string): Promise<string> {
+  /** A product page's data once its second step (prices, seller) has arrived, or null. */
+  async function pageData(url: string): Promise<{ data: unknown; gone: boolean }> {
     const loaded = await visit(url);
-    // The page data arrives in two steps; the seller comes with the second.
     await loaded
       .waitForFunction(
         // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
@@ -159,19 +183,25 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
         { timeout: 20_000 },
       )
       .catch(() => undefined);
-    // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
-    return sellerFrom(await loaded.evaluate(() => (window as any).__moduleData__ ?? null)) ?? "";
+    return loaded.evaluate(() => ({
+      // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
+      data: (window as any).__moduleData__ ?? null,
+      gone: /this product is no longer available/i.test(document.body.innerText),
+    }));
+  }
+
+  async function seller(url: string): Promise<string> {
+    return sellerFrom((await pageData(url)).data) ?? "";
   }
 
   return {
     seller,
     async product(url): Promise<ProductResult> {
-      const itemId = url.match(/-i(\d+)-s\d+/)?.[1];
-      if (!itemId) throw new Error(`Not a Lazada product link: ${url}`);
-      // A well-formed catalogue answer without the item is the evidence of removal.
-      const item = (await catalogue(itemId)).find((candidate) => candidate.itemId === itemId);
-      if (!item) return "not_found";
-      return observe(item, url, await seller(url));
+      const { data, gone } = await pageData(url);
+      // Lazada's own "no longer available" page, without product data, is the
+      // evidence of removal; any other page without prices fails in `observe`.
+      if (gone && sellerFrom(data) === null) return "not_found";
+      return observe(data, url, sellerFrom(data) ?? "");
     },
     async search(query): Promise<SearchHit[]> {
       return (await catalogue(query)).map((item) => ({

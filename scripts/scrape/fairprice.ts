@@ -93,13 +93,19 @@ export function observe(product: FairPriceProduct, url = productUrl(product.slug
 
 /**
  * The product a page describes. FairPrice answers a removed product with a
- * product page whose detail layout is empty: that is the only evidence of
- * removal accepted; any other shape is a failure.
+ * product page whose detail layout is empty, or, for an old link it no longer
+ * resolves, with a product page that has no product data. Those are the only
+ * evidence of removal accepted; any other shape is a failure.
  */
 export function pageProduct(data: unknown, url: string): FairPriceProduct | "not_found" {
-  const layouts = (
-    data as { props?: { pageProps?: { product?: { data?: { page?: { layouts?: unknown } } } } } }
-  ).props?.pageProps?.product?.data?.page?.layouts;
+  const page = data as {
+    page?: string;
+    props?: { pageProps?: { product?: { data?: { page?: { layouts?: unknown } } } } };
+  };
+  // A product page for a slug FairPrice no longer knows carries no product at all.
+  const props = page.props?.pageProps;
+  if (page.page === "/productDetails" && props && !("product" in props)) return "not_found";
+  const layouts = props?.product?.data?.page?.layouts;
   const detail = Array.isArray(layouts)
     ? (layouts as { name?: string; value?: unknown }[]).find(
         (layout) => layout.name === "ProductDetail",

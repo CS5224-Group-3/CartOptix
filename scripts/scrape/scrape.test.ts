@@ -68,6 +68,9 @@ describe("FairPrice pages", () => {
     expect(pageProduct(page(product), "u")).toMatchObject({ slug: product.slug });
     expect(() => pageProduct(page({ unexpected: true }), "u")).toThrow(/unexpected/);
     expect(() => pageProduct({ props: {} }, "u")).toThrow(/no product detail/);
+    const unresolved = { page: "/productDetails", props: { pageProps: { query: {} } } };
+    expect(pageProduct(unresolved, "u")).toBe("not_found");
+    expect(() => pageProduct({ page: "/_error", props: { pageProps: {} } }, "u")).toThrow();
   });
 
   it("reads search results only from a results page, empty or not", () => {
@@ -154,71 +157,79 @@ describe("Cold Storage pages", () => {
   });
 });
 
-describe("RedMart catalogue items", () => {
-  const item = {
-    itemId: "301080986",
-    name: "Barilla Italian Pasta Penne Rigate - 500G",
-    productUrl: "//www.lazada.sg/products/pdp-i301080986-s527102860.html?search=1",
-    price: "3.88",
-    originalPrice: null,
-    inStock: true,
-    packageInfo: "500 g",
-    image: "https://sg-test-11.slatic.net/p/a.jpg",
-    brandName: "Barilla",
-    icons: [{ alias: "p_multibuy", text: "Any 2 For $6.30" }],
-  };
+describe("RedMart product pages", () => {
   const url = "https://www.lazada.sg/products/pdp-i301080986-s527102860.html";
+  const page = (
+    price: { priceNumber?: number; originalPriceNumber?: number } = { priceNumber: 3.88 },
+    stock = 194,
+    tags = [{ name: "Any 2 For $6.30" }],
+  ) => ({
+    data: {
+      root: {
+        fields: {
+          product: {
+            title: "Barilla Italian Pasta Penne Rigate - 500G",
+            brand: { name: "Barilla" },
+          },
+          price_grocer: { "527102860": { data: { price } } },
+          skuInfos: { "527102860": { stock, image: "//laz-img-sg.alicdn.com/p/a.jpg" } },
+          product_attributes_grocer: {
+            "527102860": { data: { attributes: [{ name: "Pack Size", value: "500 g" }] } },
+          },
+          promotionTags: { data: { "527102860": tags } },
+          seller: { name: "RedMart" },
+        },
+      },
+    },
+  });
 
-  it("reads price, pack size, multibuy badge, stock and the page's seller", () => {
-    expect(redmart(item, url, "RedMart")).toMatchObject({
+  it("reads price, pack size, promotion tags, stock and the seller", () => {
+    expect(redmart(page(), url, "RedMart")).toMatchObject({
       "product url": url,
+      "Product Name": "Barilla Italian Pasta Penne Rigate - 500G",
       "Product Price": "3.88",
       "Original Price": "",
       Specification: "500 g",
       Savings: "Any 2 For $6.30",
       "in-stock": "Yes",
+      "Image URL": "https://laz-img-sg.alicdn.com/p/a.jpg",
       brand: "Barilla",
       seller: "RedMart",
     });
   });
 
-  it("reads a crossed-out price as a sale and ignores other badges", () => {
-    const sale = { ...item, price: "5.35", originalPrice: "5.95", icons: [{ alias: "soldOut" }] };
+  it("reads a crossed-out price as a sale, every promotion tag, and no stock", () => {
+    const sale = page({ priceNumber: 5.35, originalPriceNumber: 5.95 }, 0, [
+      { name: "Any 2 For $10" },
+      { name: "Free Gift with $30 spend" },
+    ]);
     expect(redmart(sale, url, "RedMart")).toMatchObject({
       "Product Price": "5.35",
       "Original Price": "5.95",
-      Savings: "",
+      Savings: "Any 2 For $10 | Free Gift with $30 spend",
+      "in-stock": "No",
     });
   });
 
-  it("keeps every promotion badge, not other badges", () => {
-    const badges = {
-      ...item,
-      icons: [
-        { alias: "p_multibuy", text: "Any 2 For $6.30" },
-        { alias: "p_freegift", text: "Free Gift with $30 spend" },
-        { alias: "soldOut", text: "SOLD OUT" },
-      ],
-    };
-    expect(redmart(badges, url, "RedMart").Savings).toBe(
-      "Any 2 For $6.30 | Free Gift with $30 spend",
-    );
+  it("fails rather than inventing a price", () => {
+    expect(() => redmart(page({}), url, "RedMart")).toThrow(/no price data/);
+    expect(() => redmart(null, url, "RedMart")).toThrow(/no price data/);
   });
 
   it("reads the seller structurally, and leaves an unclear page for a hand check", () => {
-    const page = (extra: object, seller = { name: "RedMart" }) => ({
+    const withSeller = (extra: object, seller = { name: "RedMart" }) => ({
       data: { root: { fields: { price_grocer: {}, seller, ...extra } } },
     });
     const soldBy = { module: { subtitlePrefix: "Sold by:", subtitle: "Sea Boss" } };
     const reordered = { module: { subtitle: "Delyco", usp: [], subtitlePrefix: "Sold by:" } };
-    expect(sellerFrom(page({}))).toBe("RedMart");
-    expect(sellerFrom(page(soldBy))).toBe("Sea Boss");
-    expect(sellerFrom(page(reordered))).toBe("Delyco");
-    expect(sellerFrom(page({}, { name: "Other" }))).toBeNull();
+    expect(sellerFrom(withSeller({}))).toBe("RedMart");
+    expect(sellerFrom(withSeller(soldBy))).toBe("Sea Boss");
+    expect(sellerFrom(withSeller(reordered))).toBe("Delyco");
+    expect(sellerFrom(withSeller({}, { name: "Other" }))).toBeNull();
     expect(sellerFrom({ data: { root: { fields: { seller: { name: "RedMart" } } } } })).toBeNull();
     expect(sellerFrom(null)).toBeNull();
     const two = { a: soldBy.module, b: { subtitlePrefix: "Sold by:", subtitle: "X" } };
-    expect(sellerFrom(page(two))).toBeNull();
+    expect(sellerFrom(withSeller(two))).toBeNull();
   });
 
   it("recognises Lazada's slider check", () => {
@@ -226,12 +237,6 @@ describe("RedMart catalogue items", () => {
       true,
     );
     expect(isChallenge("https://www.lazada.sg/products/pdp-i1-s1.html")).toBe(false);
-  });
-
-  it("records a third-party seller, an unreadable one as empty, and no stock", () => {
-    expect(redmart(item, url, "Sea Boss").seller).toBe("Sea Boss");
-    expect(redmart(item, url, "").seller).toBe("");
-    expect(redmart({ ...item, inStock: false }, url, "RedMart")["in-stock"]).toBe("No");
   });
 });
 
