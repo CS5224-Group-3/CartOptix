@@ -175,3 +175,44 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .offer-list__caption { margin: 0 0 3px; color: #71817d; font-size: 11px; }
 .offer-row__price > span, .offer-row__promotion { color: #71817d; font-size: 11px; line-height: 1.45; }
 .offer-row__promotion { color: #9b6711; }
+
+/* Basket product details navigation */
+.basket-row__image-link {
+  display: inline-block;
+  width: fit-content;
+  border-radius: 11px;
+  text-decoration: none;
+}
+
+.basket-row__product-link {
+  display: inline-block;
+  max-width: 100%;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.basket-row__product-link:hover {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+.basket-row__image-link:hover {
+  opacity: 0.85;
+}
+
+.basket-row__image-link:focus-visible,
+.basket-row__product-link:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+/* Preserve product title truncation inside the link */
+.basket-row__product-link strong {
+  display: block;
+}
+
+/* Highlight product title on hover or keyboard focus */
+.basket-row__product-link:hover strong,
+.basket-row__product-link:focus-visible strong {
+  color: var(--green);
+}

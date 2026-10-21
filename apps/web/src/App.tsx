@@ -1162,11 +1162,32 @@ function BasketRow({
   onChange: (quantity: number) => void;
   onRemove: () => void;
 }) {
+  // Product details URL for real catalogue products.
+  // Synthetic demo products do not have catalogue detail pages.
+  const productHref = product.categoryId === "synthetic" ? null : `/product/${product.productId}`;
+
   return (
     <div className="basket-row">
-      <ProductImage product={product} className="product-image--basket" />
+      {productHref ? (
+        <Link
+          href={productHref}
+          className="basket-row__image-link"
+          aria-label={`View details for ${product.name}`}
+        >
+          <ProductImage product={product} className="product-image--basket" />
+        </Link>
+      ) : (
+        <ProductImage product={product} className="product-image--basket" />
+      )}
+
       <div className="basket-row__identity">
-        <strong>{product.name}</strong>
+        {productHref ? (
+          <Link href={productHref} className="basket-row__product-link">
+            <strong>{product.name}</strong>
+          </Link>
+        ) : (
+          <strong>{product.name}</strong>
+        )}
         <span>{product.packSize}</span>
         <span>{categoryName}</span>
       </div>
