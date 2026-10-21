@@ -138,7 +138,9 @@ def main() -> None:
         "in `checkout-redmart.csv`; Cold Storage's cart needs a login, so its deals were checked against",
         "their live product pages only.",
         "",
-        f"**Finding.** Fixed-price deals (\"N for $X\") checked in a cart all matched: {deal_line}."
+        f"**Finding.** Fixed-price deals (\"N for $X\") checked in a cart "
+        + ("all matched" if all(t["deal agree"] == t["deal"] for t in carted.values()) else "did not all match")
+        + f": {deal_line}."
         + (f" {', '.join(terms_only)} was checked against product-page terms only, not a cart." if terms_only else ""),
         "Percentage deals did not reliably match: the cart charges a fixed deal price and the percentage is a",
         "rounded label for it (\"Any 2 Save 40%\" charged $11.79 for $19.78, 40.4% off). Under PR-03 a deal",
