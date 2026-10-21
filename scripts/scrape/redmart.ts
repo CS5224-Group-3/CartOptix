@@ -28,6 +28,7 @@ const CATALOGUE = "https://www.lazada.sg/catalog/?ajax=true&m=redmart&q=";
 const PROFILE = resolve(import.meta.dirname, "../../.cache/lazada-profile");
 /** Between requests, in milliseconds. */
 const INTERVAL = 8_000;
+const MAX_INTERVAL = 60_000;
 /** How long a headed run waits for the operator to complete the check. */
 const OPERATOR_WAIT = 10 * 60_000;
 
@@ -144,26 +145,49 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
   let context: BrowserContext | undefined;
   let page: Page | undefined;
 
-  /** Opens `url` at the pace Lazada tolerates, getting past the check if an operator can. */
-  async function visit(url: string): Promise<Page> {
-    context ??= await launch(options.headed ?? false);
-    page ??= context.pages()[0] ?? (await context.newPage());
-    await pause(INTERVAL);
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
-    if (isChallenge(page.url())) {
-      if (!options.headed) {
-        throw new ChallengeError("Lazada is showing its slider check; run again with --headed");
-      }
-      console.warn("redmart: complete Lazada's check in the browser window to continue");
-      await page
-        .waitForURL((current) => !isChallenge(current.href), { timeout: OPERATOR_WAIT })
-        .catch(() => {
-          throw new ChallengeError("Lazada's check was not completed");
-        });
-      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
-      if (isChallenge(page.url())) throw new ChallengeError("Lazada is still showing its check");
+  /** Milliseconds between requests; doubles after each check, up to MAX_INTERVAL. */
+  let interval = INTERVAL;
+
+  /** Waits for the operator to complete Lazada's check, then slows down. */
+  async function clearChallenge(current: Page): Promise<void> {
+    if (!options.headed) {
+      throw new ChallengeError("Lazada is showing its slider check; run again with --headed");
     }
-    return page;
+    console.warn("redmart: complete Lazada's check in the browser window to continue");
+    await current
+      .waitForURL((url) => !isChallenge(url.href), { timeout: OPERATOR_WAIT })
+      .catch(() => {
+        throw new ChallengeError("Lazada's check was not completed");
+      });
+    interval = Math.min(interval * 2, MAX_INTERVAL);
+    console.warn(`redmart: slowing to one request every ${interval / 1000} s`);
+  }
+
+  /**
+   * Opens `url` at the pace Lazada tolerates and waits for `ready`. The check
+   * can appear on arrival or after the page's own scripts run, so the URL is
+   * checked after waiting too, and the page loaded again once it is cleared.
+   */
+  async function visit(url: string, ready?: () => boolean): Promise<Page> {
+    if (!context) {
+      const opened = await launch(options.headed ?? false);
+      // If the window is closed (or the browser exits), open a new one next time.
+      opened.on("close", () => {
+        if (context === opened) context = page = undefined;
+      });
+      context = opened;
+    }
+    page ??= context.pages()[0] ?? (await context.newPage());
+    const current = page;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      await pause(interval);
+      await current.goto(url, { waitUntil: "domcontentloaded", timeout: 45_000 });
+      if (ready)
+        await current.waitForFunction(ready, null, { timeout: 20_000 }).catch(() => undefined);
+      if (!isChallenge(current.url())) return current;
+      await clearChallenge(current);
+    }
+    throw new ChallengeError("Lazada is still showing its check");
   }
 
   /** Catalogue results; an answer without the catalogue's structure is a failure. */
@@ -179,15 +203,11 @@ export function redmart(options: { headed?: boolean } = {}): RedMartScraper {
 
   /** A product page's data once its second step (prices, seller) has arrived, or null. */
   async function pageData(url: string): Promise<{ data: unknown; gone: boolean }> {
-    const loaded = await visit(url);
-    await loaded
-      .waitForFunction(
-        // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
-        () => (window as any).__moduleData__?.data?.root?.fields?.price_grocer !== undefined,
-        null,
-        { timeout: 20_000 },
-      )
-      .catch(() => undefined);
+    const loaded = await visit(
+      url,
+      // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
+      () => (window as any).__moduleData__?.data?.root?.fields?.price_grocer !== undefined,
+    );
     return loaded.evaluate(() => ({
       // biome-ignore lint/suspicious/noExplicitAny: Lazada's page data is untyped.
       data: (window as any).__moduleData__ ?? null,
