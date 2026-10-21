@@ -89,12 +89,27 @@ test.describe("CartOptix shopper journeys", () => {
     }
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
-    const incomplete = page.locator("article", { hasText: "Incomplete basket" }).first();
-    await expect(incomplete.getByText("Estimated total for 1 of 2 items")).toBeVisible();
-    await expect(incomplete.getByRole("heading", { name: /^Not available at / })).toBeVisible();
-    await expect(
-      incomplete.getByRole("link", { name: /Ayam Brand|Barilla/ }).first(),
-    ).toBeVisible();
+    // FairPrice has both and is recommended; the incomplete cards follow it.
+    await expect(page.locator("article h2").first()).toHaveText("FairPrice");
+    const redmart = page.getByRole("article", { name: "RedMart" });
+    await expect(redmart.getByText("Incomplete basket")).toBeVisible();
+    await expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(redmart.getByText(/^Recommended/)).toHaveCount(0);
+    // The missing product's link works from the keyboard.
+    const missing = redmart.getByRole("link", { name: "Ayam Brand Pulled Chicken Buffalo 150g" });
+    await missing.focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/product\/ayam-brand-pulled-chicken-buffalo-150g$/);
+  });
+
+  test("J3: a retailer with none of the basket shows no estimate", async ({ page }) => {
+    await page.goto("/product/ayam-brand-pulled-chicken-buffalo-150g");
+    await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+    const redmart = page.getByRole("article", { name: "RedMart" });
+    await expect(redmart.getByText("Incomplete basket")).toBeVisible();
+    await expect(redmart.getByText(/Estimated total|S\$/)).toHaveCount(0);
+    await expect(redmart.getByRole("link", { name: /Ayam Brand Pulled Chicken/ })).toBeVisible();
   });
 
   test("J2: changing the basket makes an earlier result stale", async ({ page }) => {
@@ -119,6 +134,18 @@ test.describe("CartOptix shopper journeys", () => {
     await page.getByRole("button", { name: "No feasible purchasing plan" }).click();
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page.getByText(/No feasible purchasing plan available/i)).toBeVisible();
+    // Fewest missing first: Cold Storage (no estimate: unverified delivery), FairPrice
+    // (whole basket below its minimum), then RedMart (missing one product).
+    await expect(page.locator("article h2")).toHaveText(["Cold Storage", "FairPrice", "RedMart"]);
+    const coldStorage = page.getByRole("article", { name: "Cold Storage" });
+    await expect(coldStorage.getByText(/Estimated total/)).toHaveCount(0);
+    const fairprice = page.getByRole("article", { name: "FairPrice" });
+    await expect(fairprice.getByText("Below minimum order")).toBeVisible();
+    await expect(fairprice.getByText(/minimum order — S\$8\.50 more needed/)).toBeVisible();
+    await expect(fairprice.getByText("Estimated total", { exact: true })).toBeVisible();
+    const redmart = page.getByRole("article", { name: "RedMart" });
+    await expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(page.getByText(/^Recommended/)).toHaveCount(0);
   });
 
   test("J5: temporary service failure can be retried successfully", async ({ page }) => {

@@ -224,6 +224,61 @@ describe("compareBasket", () => {
     );
   });
 
+  it("prices a partial order on the partial spend alone, with its multibuys", () => {
+    // FairPrice: free delivery from 2500 and a 399 fee waived from 2500. With its
+    // 3 milk (900) the basket would reach 2500; milk is missing, so only the rice
+    // counts towards both thresholds.
+    const deal = { packsPerDeal: 2, dealPrice: 1500, mixAndMatch: false };
+    const result = compare({
+      offers: offers
+        .filter((o) => o.listingId !== "fairprice-milk")
+        .map((o) => (o.listingId === "fairprice-rice" ? { ...o, multibuy: deal } : o)),
+      deliveryRules: [
+        rule("redmart"),
+        rule("fairprice", {
+          freeDeliveryThreshold: 2500,
+          orderCharges: [
+            { label: "Service fee", amount: 399, includedInPrice: false, waivedFrom: 2500 },
+          ],
+        }),
+        rule("cold-storage"),
+      ],
+    });
+    const fairprice = result.options.find((option) => option.retailerId === "fairprice");
+    if (fairprice?.status !== "unavailable") throw new Error("Expected FairPrice unavailable");
+    // Rice: one deal, 1500 (not 1800). 1500 is below both thresholds: 500 delivery, 399 fee.
+    expect(fairprice.partialOrder?.lines[0]?.total).toBe(1500);
+    expect(fairprice.partialOrder?.delivery).toMatchObject({ amount: 500, free: false });
+    expect(fairprice.partialOrder?.orderCharges).toEqual([
+      { label: "Service fee", amount: 399, waivedFrom: 2500, waived: false },
+    ]);
+    expect(fairprice.partialOrder?.total).toBe(2399);
+  });
+
+  it("estimates a below-minimum order with its delivery and charges", () => {
+    // RedMart has only rice (2000): below its 2500 minimum, with 500 delivery and a 100 fee.
+    const result = compare({
+      offers: offers.filter((o) => o.listingId !== "redmart-milk"),
+      deliveryRules: [
+        rule("redmart", {
+          minimumOrder: 2500,
+          orderCharges: [
+            { label: "Packing", amount: 100, includedInPrice: false, waivedFrom: null },
+          ],
+        }),
+        rule("fairprice"),
+        rule("cold-storage"),
+      ],
+    });
+    expect(result.options.find((option) => option.retailerId === "redmart")).toMatchObject({
+      reasons: [
+        { code: "missing_products", productIds: ["milk"] },
+        { code: "below_minimum_order", minimumOrderCents: 2500, spendCents: 2000 },
+      ],
+      partialOrder: { itemsTotal: 2000, delivery: { amount: 500 }, total: 2600 },
+    });
+  });
+
   it("reports missing products and a short minimum together, with the estimate", () => {
     const result = compare({
       offers: offers.filter((o) => o.listingId !== "redmart-milk"),

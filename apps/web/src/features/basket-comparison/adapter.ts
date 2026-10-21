@@ -220,6 +220,8 @@ function adaptUnavailable(
     missingProducts,
   };
   if (option.partialOrder === undefined) return result;
+  // Without a verified delivery rule there is no total to estimate (never a zero fee).
+  requireData(option.reasons.every((reason) => reason.code !== "delivery_rule_unverified"));
   requireData(option.partialOrder.retailerId === option.retailerId);
   const partial = adaptOrder(option.partialOrder, metadata);
   const priced = partial.lines.map((line) => line.productId);

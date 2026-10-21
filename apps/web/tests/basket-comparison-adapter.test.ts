@@ -276,6 +276,12 @@ describe("shared comparison contract adapter", () => {
       },
     ],
     [
+      "an estimate alongside an unverified delivery rule",
+      (option: UnavailableOption) => {
+        option.reasons.push({ code: "delivery_rule_unverified" });
+      },
+    ],
+    [
       "a partial total that does not reconcile",
       (option: UnavailableOption) => {
         if (option.partialOrder) option.partialOrder.totalCents += 1;
