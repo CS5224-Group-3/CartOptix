@@ -29,8 +29,8 @@ export async function fetchText(url: string): Promise<string | null> {
   throw new Error(`Could not fetch ${url}: ${String(lastError)}`);
 }
 
-/** Finds the JSON object that starts at `start`, honouring strings and escapes. */
-export function objectAt(text: string, start: number): string {
+/** The JSON object or array that starts at `start`, honouring strings and escapes. */
+export function jsonAt(text: string, start: number): string {
   let depth = 0;
   let inString = false;
   for (let i = start; i < text.length; i += 1) {
@@ -39,11 +39,11 @@ export function objectAt(text: string, start: number): string {
       if (char === "\\") i += 1;
       else if (char === '"') inString = false;
     } else if (char === '"') inString = true;
-    else if (char === "{") depth += 1;
-    else if (char === "}") {
+    else if (char === "{" || char === "[") depth += 1;
+    else if (char === "}" || char === "]") {
       depth -= 1;
       if (depth === 0) return text.slice(start, i + 1);
     }
   }
-  throw new Error("Unbalanced JSON object");
+  throw new Error("Unbalanced JSON");
 }

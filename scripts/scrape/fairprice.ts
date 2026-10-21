@@ -112,6 +112,23 @@ export function pageProduct(data: unknown, url: string): FairPriceProduct | "not
   return product;
 }
 
+/**
+ * A search page's results: the products in its ProductCollection layout, which
+ * a search with no results still has (empty). Any other page is a failure.
+ */
+export function searchResults(data: unknown, query: string): FairPriceProduct[] {
+  const layouts = (
+    data as { props?: { pageProps?: { data?: { data?: { page?: { layouts?: unknown } } } } } }
+  ).props?.pageProps?.data?.data?.page?.layouts;
+  const collection = Array.isArray(layouts)
+    ? (layouts as { name?: string; value?: { collection?: { product?: unknown } } }[]).find(
+        (layout) => layout.name === "ProductCollection",
+      )?.value?.collection
+    : undefined;
+  if (!collection) throw new Error(`FairPrice search for ${query} returned an unexpected page`);
+  return products(collection.product ?? []);
+}
+
 export const fairprice: RetailerScraper = {
   async product(url): Promise<ProductResult> {
     const html = await fetchText(url);
@@ -122,7 +139,7 @@ export const fairprice: RetailerScraper = {
   async search(query): Promise<SearchHit[]> {
     const html = await fetchText(`${ORIGIN}/search?query=${encodeURIComponent(query)}`);
     if (html === null) throw new Error(`FairPrice search for ${query} is missing`);
-    return products(nextData(html)).map((product) => ({
+    return searchResults(nextData(html), query).map((product) => ({
       url: productUrl(product.slug),
       name: clean(product.name),
       specification: displayUnit(product),

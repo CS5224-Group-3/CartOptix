@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { observe as coldStorage } from "./coldstorage.ts";
-import { observe as fairprice, pageProduct } from "./fairprice.ts";
+import { observe as coldStorage, searchResults as coldStorageSearch } from "./coldstorage.ts";
+import {
+  observe as fairprice,
+  searchResults as fairpriceSearch,
+  pageProduct,
+} from "./fairprice.ts";
 import { packKey, passesNameRules } from "./match.ts";
 import { fromCsv, toCsv } from "./observation.ts";
 import { isChallenge, observe as redmart, sellerFrom } from "./redmart.ts";
@@ -66,6 +70,20 @@ describe("FairPrice pages", () => {
     expect(() => pageProduct({ props: {} }, "u")).toThrow(/no product detail/);
   });
 
+  it("reads search results only from a results page, empty or not", () => {
+    const page = (layouts: unknown) => ({
+      props: { pageProps: { data: { data: { page: { layouts } } } } },
+    });
+    const results = page([
+      { name: "ProductCollection", value: { collection: { product: [product] } } },
+    ]);
+    const none = page([{ name: "ProductCollection", value: { collection: { count: 0 } } }]);
+    expect(fairpriceSearch(results, "q")).toHaveLength(1);
+    expect(fairpriceSearch(none, "q")).toEqual([]);
+    expect(() => fairpriceSearch(page([{ name: "Error" }]), "q")).toThrow(/unexpected/);
+    expect(() => fairpriceSearch({}, "q")).toThrow(/unexpected/);
+  });
+
   it("reads no stock or a disabled product as out of stock", () => {
     expect(fairprice({ ...product, status: "DISABLED" })["in-stock"]).toBe("No");
     const empty = {
@@ -115,6 +133,20 @@ describe("Cold Storage pages", () => {
     expect(
       coldStorage({ ...product, price: 4, promoPrice: 3, discountLabel: "Any 2 @ $5.50" }).Savings,
     ).toBe("Save $1.00 | Any 2 @ $5.50");
+  });
+
+  it("reads search results only from a results page, empty or not", () => {
+    const page = (text: string) =>
+      `<script>self.__next_f.push([1,${JSON.stringify(text)}])</script>`;
+    expect(
+      coldStorageSearch(page(`x{"initialProducts":[${JSON.stringify(product)}]}`), "q"),
+    ).toHaveLength(1);
+    expect(
+      coldStorageSearch(page('{"className":"page_search-results__empty__dyvDv"}'), "q"),
+    ).toEqual([]);
+    expect(() => coldStorageSearch(page('{"error":"Internal Server Error"}'), "q")).toThrow(
+      /unexpected/,
+    );
   });
 
   it("reads anything but In Stock as out of stock", () => {

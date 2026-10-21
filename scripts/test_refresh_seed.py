@@ -96,3 +96,11 @@ class Build(unittest.TestCase):
         self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])
         self.assertEqual(back["products"][0]["categoryId"], "rice-and-noodles")
         self.assertEqual(back["retired"], EMPTY)
+
+    def test_a_product_whose_pages_all_vanished_keeps_them_and_can_return(self):
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+        gone = [{**observation("fairprice", FP), "status": "not_found"}, {**observation("cold-storage", CS), "status": "not_found"}]
+        dropped = run(seed, EMPTY, gone)
+        self.assertEqual(dropped["retired"]["listings"], LISTINGS)
+        back = run(EMPTY, dropped["retired"], [observation("fairprice", FP), observation("cold-storage", CS)])
+        self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])

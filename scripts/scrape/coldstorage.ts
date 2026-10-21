@@ -3,7 +3,7 @@
  * product is a JSON object with `price`, a `promoPrice` below it during a sale,
  * an `inventoryStatus` and a `discountLabel` such as "Any 2 @ $6.55".
  */
-import { fetchText, objectAt } from "./http.ts";
+import { fetchText, jsonAt } from "./http.ts";
 import {
   clean,
   dollars,
@@ -38,13 +38,26 @@ function products(html: string): ColdStorageProduct[] {
   const text = payload(html);
   const found = new Map<string, ColdStorageProduct>();
   for (const match of text.matchAll(/\{"productId":/g)) {
-    const product = JSON.parse(objectAt(text, match.index)) as ColdStorageProduct;
+    const product = JSON.parse(jsonAt(text, match.index)) as ColdStorageProduct;
     if (product.slug && !found.has(product.slug)) found.set(product.slug, product);
   }
   return [...found.values()];
 }
 
 const productUrl = (slug: string) => `${ORIGIN}/product/${slug}`;
+
+/**
+ * A search page's results: its `initialProducts`, or none when the page shows
+ * its "no results" state. Any other page is a failure, not an empty result.
+ */
+export function searchResults(html: string, query: string): ColdStorageProduct[] {
+  const text = payload(html);
+  const key = '"initialProducts":';
+  const at = text.indexOf(key);
+  if (at >= 0) return JSON.parse(jsonAt(text, at + key.length)) as ColdStorageProduct[];
+  if (text.includes("page_search-results__empty")) return [];
+  throw new Error(`Cold Storage search for ${query} returned an unexpected page`);
+}
 
 /** A single-pack discount label, such as "7% off" or "Save $1": the sale itself. */
 const SALE_LABEL = /^(?:\d+(?:\.\d+)?% off|save \$?[\d.]+|\$[\d.]+ off)$/i;
@@ -86,10 +99,8 @@ export const coldStorage: RetailerScraper = {
   },
   async search(query): Promise<SearchHit[]> {
     const html = await fetchText(`${ORIGIN}/search?q=${encodeURIComponent(query)}`);
-    if (html === null || !html.includes("self.__next_f")) {
-      throw new Error(`Cold Storage search for ${query} returned no page data`);
-    }
-    return products(html).map((product) => ({
+    if (html === null) throw new Error(`Cold Storage search for ${query} is missing`);
+    return searchResults(html, query).map((product) => ({
       url: productUrl(product.slug),
       name: clean(product.name),
       specification: clean(product.size),

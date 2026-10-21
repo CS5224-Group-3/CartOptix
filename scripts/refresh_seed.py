@@ -44,6 +44,7 @@ from derive_offer_prices import derive_offer
 ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "data" / "snapshot"
 # Products that dropped out, kept so later refreshes read them again (no prices).
+IDENTITY = ("listingId", "productId", "retailerId", "productUrl", "specification")
 RETIRED = SEED.parent / "retired.json"
 # Seed retailer IDs to the workbook names build_seed.py keys its tables by.
 SOURCE_KEY = {seed_id: key for key, (seed_id, _, _) in RETAILERS.items()}
@@ -94,14 +95,27 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
         raise SystemExit(f"{len(unobserved)} listings have no new observation, e.g. {unobserved[0]}")
 
     # Each product's rows: its known listings first, then accepted candidates, best first.
+    # `identities` keeps every listing's identity, without prices, for retiring it.
     rows: dict[str, list[dict]] = defaultdict(list)
+    identities: dict[str, list[dict]] = defaultdict(list)
     for listing in known_listings:
         rows[listing["productId"]].append(observed[listing["productUrl"]])
+        identities[listing["productId"]].append({k: listing[k] for k in IDENTITY})
     accepted = 0
     for candidate in sorted(candidates, key=lambda c: -float(c["similarity"])):
         decision = decisions.get((candidate["product_id"], candidate["product url"]), {})
         if decision.get("decision") == "MATCH" and decision.get("confidence") == "HIGH":
             rows[candidate["product_id"]].append({**candidate, "status": "ok"})
+            url = candidate["product url"].split("?")[0]
+            identities[candidate["product_id"]].append(
+                {
+                    "listingId": listing_id(SOURCE_KEY[candidate["retailer"]], url),
+                    "productId": candidate["product_id"],
+                    "retailerId": candidate["retailer"],
+                    "productUrl": url,
+                    "specification": candidate["Specification"] or candidate["Product Name"],
+                }
+            )
             accepted += 1
 
     reasons: Counter = Counter()
@@ -120,20 +134,10 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
                 eligible[row["retailer"]] = row
         members = sorted(eligible.values(), key=lambda r: NAME_PREFERENCE.index(SOURCE_KEY[r["retailer"]]))
         if len(members) < 2:
-            # Kept, without prices, so a later refresh reads its listings again
-            # and can bring it back under the same ID.
+            # Kept, with every listing it had but no prices, so a later refresh
+            # reads them again and can bring it back under the same ID.
             retired_products.append(product)
-            retired_listings.extend(
-                {
-                    "listingId": listing_id(SOURCE_KEY[r["retailer"]], r["product url"].split("?")[0]),
-                    "productId": product_id,
-                    "retailerId": r["retailer"],
-                    "productUrl": r["product url"].split("?")[0],
-                    "specification": r["Specification"] or r["Product Name"],
-                }
-                for r in rows[product_id]
-                if r.get("status", "ok") == "ok"
-            )
+            retired_listings.extend(identities[product_id])
             continue
         image = next((m["Image URL"] for m in members if m["Image URL"].startswith("https://")), None)
         products.append(
