@@ -31,7 +31,8 @@ Of the 179 RedMart listings in this seed, 153 are carried over with the previous
 | Listings on sale | 168 | 157 |
 
 - **Target:** the product specification's provisional target is 200–300 products, at least 70% of them at two or more retailers. The refreshed seed meets both: every published product has two or more eligible retailers by rule.
-- **Catalogue shrinkage:** 56 products fell below two eligible retailers and left the catalogue. They are kept, without prices, in `data/seed/retired.json`, so a later refresh reads them again and can restore them under the same IDs.
+- **Catalogue shrinkage:** 56 products fell below two eligible retailers and left the catalogue. They are kept, without prices, in `data/seed/retired.json`, so a later refresh reads them again and can restore them under the same IDs. So are the 15 listings of published products that did not publish this time, such as Cold Storage's Magnolia Fresh Milk 946ml (out of stock), so the next refresh can bring each back under its listing ID.
+- **Identity check:** every listing read again showed the same name and pack size as before (ignoring case, punctuation and the BCRS tag), so none was quarantined.
 - **Causes:** listings out of stock (FairPrice 31, Cold Storage 39) or gone (FairPrice 4, Cold Storage 3).
 
 ### By category

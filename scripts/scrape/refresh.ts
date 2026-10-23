@@ -7,8 +7,8 @@
  *   node scripts/scrape/refresh.ts search [retailer…]    # retailers a product is missing from
  *   node scripts/scrape/refresh.ts sellers               # RedMart sellers left unread
  *
- * The catalogue is the seed plus the products that dropped out of it
- * (data/seed/retired.json), so a product can come back. Retailers run in
+ * The catalogue is the seed plus every listing that did not publish last time
+ * (data/seed/retired.json), so a listing or product can come back. Retailers run in
  * parallel, each one page at a time, and each writes its own file
  * (`listings-<retailer>.csv`, `candidates-<retailer>.csv`), so a retailer that
  * is challenged can be collected again later the same day. A page that is gone

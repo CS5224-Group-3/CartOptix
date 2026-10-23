@@ -17,7 +17,7 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts new
    ```
 
-1. **Read every catalogue listing again.** The catalogue is the seed plus the products that dropped out of it (`data/seed/retired.json`), so a product can come back. Writes `data/snapshot/listings-<retailer>.csv`. Name retailers to collect only those, e.g. `… listings redmart`.
+1. **Read every catalogue listing again.** The catalogue is the seed plus every listing that did not publish last time, including those of products that dropped out (`data/seed/retired.json`), so a listing or product can come back. Writes `data/snapshot/listings-<retailer>.csv`. Name retailers to collect only those, e.g. `… listings redmart`.
 
    ```sh
    node scripts/scrape/refresh.ts listings
@@ -46,7 +46,7 @@ Run everything from the repository root.
    node scripts/scrape/refresh.ts sellers --headed
    ```
 
-4. **AI review of the candidates (PR-02).** An AI reviewer judges each candidate against its product with the Stage 2F rubric (same brand, product line, variant, per-pack size and pack count) and records `product_id`, `product url`, `decision` (MATCH, NOT_MATCH or UNSURE), `confidence` (HIGH, MEDIUM or LOW) and `reason` in `data/snapshot/match-decisions.csv`. Only MATCH with HIGH confidence publishes.
+4. **AI review of the candidates (PR-02).** An AI reviewer judges each candidate against its product with the Stage 2F rubric (same brand, product line, variant, per-pack size and pack count) and records `product_id`, `product url`, `decision` (MATCH, NOT_MATCH or UNSURE), `confidence` (HIGH, MEDIUM or LOW) and `reason` in `data/snapshot/match-decisions.csv`. Only MATCH with HIGH confidence publishes. Decisions belong to one snapshot (`refresh.ts new` deletes them); if you read a page again after reviewing it, review it again.
 
 5. **Build the seed.** Writes `data/seed/seed.json`, `data/seed/product_ids.csv` and `data/snapshot/report.md`.
 
@@ -66,7 +66,9 @@ Run everything from the repository root.
 - **Check budget.** `--max-checks N` lets Lazada show N checks in a run; after that the RedMart items not yet collected are skipped: a skipped listing is recorded as such and not published (never from an earlier observation), and a skipped search finds no candidates.
 - **All or nothing, per retailer.** A page is recorded as gone only on positive evidence: a 404 at FairPrice or Cold Storage; FairPrice's empty product detail, or its product page with no product for an old link; or Lazada's "no longer available" page without product data. Any other failure, including a page in an unexpected shape, deletes that retailer's file, so a failed refresh cannot leave an earlier observation to build from. Collect a retailer that failed again the same day: one snapshot covers all three retailers within one short window. A missing file, or a seed listing without a new observation, stops the build.
 - **Columns.** Observations keep the source workbooks' columns (`data/raw/README.md`), so `derive_offer_prices.py` applies the same price, sale and multibuy rules, and add `retailer` and `seller`. `Savings` holds every promotion in the retailer's wording, separated by " | ": a multibuy is applied, a sale's plain saving dropped and anything else shown as an excluded promotion. Nothing records when they were collected.
-- **Eligibility.** A listing publishes when its page exists, it is in stock, its price is reliable and, at RedMart, RedMart sells it. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable. A product that drops out moves, without prices, to `data/seed/retired.json`; later refreshes read its listings again and bring it back under the same ID once two retailers have it.
+- **Eligibility.** A listing publishes when its page exists, it is in stock, its price is reliable and, at RedMart, RedMart sells it. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable. A listing that does not publish, and a product that drops out, move without prices to `data/seed/retired.json`; later refreshes read them again and bring them back under the same IDs.
+- **Identity.** A listing read again must still show the product it was matched to: the same name and pack size, ignoring case, spacing, punctuation and the BCRS tag. Otherwise it is quarantined as "identity changed" until the AI review records MATCH/HIGH for its `product_id` and `product url`, judging the page as it reads now. A listing recorded without a name (an older `retired.json`) always needs that review.
+- **Precedence.** Where a targeted search read a page the full search also read, the build uses the targeted reading. A targeted search that finds nothing does not remove an earlier hit.
 - **Pack rules.** A search hit must state the same pack count and per-pack size as the product (2 × 500 g is not 1 kg), and a hit whose title and specification disagree is never matched.
 - **Sellers.** The RedMart seller is read from the page data's "Sold by:" entry. With none, a page whose seller module is RedMart's is RedMart's; anything else is left for a hand check.
 

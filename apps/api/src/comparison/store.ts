@@ -24,13 +24,17 @@ export function offerRule(row: typeof listings.$inferSelect): OfferRule {
     retailerId: row.retailerId,
     priceKind: row.priceKind,
     unitPrice: row.unitPriceCents,
-    multibuy: row.multibuy && {
-      packsPerDeal: row.multibuy.packsPerDeal,
-      dealPrice: row.multibuy.dealPriceCents,
-      mixAndMatch: row.multibuy.mixAndMatch,
-      // Rows imported before percentOff existed lack it; they were all fixed-price deals.
-      percentOff: row.multibuy.percentOff ?? null,
-    },
+    // A deal imported before percentOff existed may be a percentage deal, which
+    // cannot be shown as exact, so it is left out until the seed is re-imported.
+    multibuy:
+      row.multibuy?.percentOff === undefined
+        ? null
+        : {
+            packsPerDeal: row.multibuy.packsPerDeal,
+            dealPrice: row.multibuy.dealPriceCents,
+            mixAndMatch: row.multibuy.mixAndMatch,
+            percentOff: row.multibuy.percentOff,
+          },
     // Only eligible offers are published, and the MVP models no item charges.
     eligible: true,
     charges: [],

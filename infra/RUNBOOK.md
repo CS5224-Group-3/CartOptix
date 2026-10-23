@@ -143,7 +143,9 @@ pnpm --filter @cartoptix/api seed:import data/seed/seed.json
 ```
 
 Run `db:migrate` again whenever a new release adds a migration. Re-importing the
-seed replaces the catalogue in one transaction.
+seed replaces the catalogue in one transaction. When a release changes the seed's
+shape, import its seed straight after migrating and before the smoke checks: until
+then the API leaves out multibuys stored in the older shape.
 
 ## Smoke checks
 

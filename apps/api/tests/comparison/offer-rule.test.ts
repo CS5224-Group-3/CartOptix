@@ -23,14 +23,17 @@ describe("offerRule", () => {
     expect(offerRule({ ...row, multibuy }).multibuy?.percentOff).toBe(40);
   });
 
-  it("reads a deal imported before percentOff existed as a fixed-price deal", () => {
-    const { percentOff: _, ...legacy } = row.multibuy ?? {};
-    const rule = offerRule({ ...row, multibuy: legacy as typeof row.multibuy });
-    expect(rule.multibuy).toEqual({
+  it("keeps a fixed-price deal", () => {
+    expect(offerRule(row).multibuy).toEqual({
       packsPerDeal: 2,
       dealPrice: 655,
       mixAndMatch: true,
       percentOff: null,
     });
+  });
+
+  it("leaves out a deal imported before percentOff existed, which may be a percentage deal", () => {
+    const { percentOff: _, ...legacy } = row.multibuy ?? {};
+    expect(offerRule({ ...row, multibuy: legacy as typeof row.multibuy }).multibuy).toBeNull();
   });
 });

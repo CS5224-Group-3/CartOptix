@@ -71,8 +71,8 @@ def observation(retailer: str, url: str, **overrides) -> dict:
 
 PRODUCT = {"productId": "rice-1kg", "categoryId": "rice-and-noodles", "representativeName": "Rice 1kg", "imageUrl": None}
 LISTINGS = [
-    {"listingId": "fairprice-rice-1kg-1", "productId": "rice-1kg", "retailerId": "fairprice", "productUrl": FP, "specification": "1kg"},
-    {"listingId": "cold-storage-rice-1kg", "productId": "rice-1kg", "retailerId": "cold-storage", "productUrl": CS, "specification": "1kg"},
+    {"listingId": "fairprice-rice-1kg-1", "productId": "rice-1kg", "retailerId": "fairprice", "productUrl": FP, "name": "Rice 1kg", "specification": "1kg"},
+    {"listingId": "cold-storage-rice-1kg", "productId": "rice-1kg", "retailerId": "cold-storage", "productUrl": CS, "name": "Rice 1kg", "specification": "1kg"},
 ]
 EMPTY = {"products": [], "listings": []}
 
@@ -185,3 +185,80 @@ class SuccessiveSnapshots(unittest.TestCase):
             refresh_seed.RECORDED.clear()
         self.assertIn(found, second["listings"])
         self.assertEqual(second["carried"], 1)
+
+
+RM = "https://www.lazada.sg/products/pdp-i9-s9.html"
+REDMART = {"listingId": "redmart-pdp-i9-s9", "productId": "rice-1kg", "retailerId": "redmart", "productUrl": RM, "name": "Rice 1kg", "specification": "1kg"}
+THREE = {"products": [PRODUCT], "listings": [*LISTINGS, REDMART]}
+
+
+def three(**cold_storage) -> list[dict]:
+    return [
+        observation("fairprice", FP),
+        observation("cold-storage", CS, **cold_storage),
+        observation("redmart", RM, seller="RedMart"),
+    ]
+
+
+class Identity(unittest.TestCase):
+    """A page read again must still show the product it was matched to (#77 review)."""
+
+    def published(self, result) -> set[str]:
+        return {l["retailerId"] for l in result["listings"]}
+
+    def test_a_changed_product_at_the_same_url_is_quarantined(self):
+        for change in [
+            {"Product Name": "Chocolate cereal 1kg"},
+            {"Product Name": "Rice Low Fat 1kg"},
+            {"Specification": "2kg"},
+        ]:
+            result = run(THREE, EMPTY, three(**change))
+            self.assertEqual(self.published(result), {"fairprice", "redmart"}, change)
+            self.assertEqual(result["reasons"][("cold-storage", "identity changed")], 1)
+
+    def test_a_changed_pack_configuration_is_quarantined(self):
+        listings = [{**l, "specification": "6 x 250ml"} for l in THREE["listings"]]
+        observed = [{**o, "Specification": "6 x 250ml"} for o in three()]
+        observed[1]["Specification"] = "4 x 250ml"
+        result = run({**THREE, "listings": listings}, EMPTY, observed)
+        self.assertEqual(self.published(result), {"fairprice", "redmart"})
+
+    def test_formatting_changes_are_the_same_product(self):
+        result = run(THREE, EMPTY, three(**{"Product Name": "[BCRS] RICE  1KG", "Specification": "1 KG"}))
+        self.assertEqual(self.published(result), {"fairprice", "cold-storage", "redmart"})
+
+    def test_a_listing_recorded_without_a_name_needs_a_review(self):
+        retired = {"products": [PRODUCT], "listings": [{k: v for k, v in l.items() if k != "name"} for l in LISTINGS]}
+        observed = {o["product url"]: o for o in [observation("fairprice", FP), observation("cold-storage", CS)]}
+        self.assertEqual(build(EMPTY, retired, observed, [], {}, {}, {})["products"], [])
+        decisions = {("rice-1kg", url): {"decision": "MATCH", "confidence": "HIGH"} for url in (FP, CS)}
+        back = build(EMPTY, retired, observed, [], decisions, {}, {})
+        self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])
+
+    def test_a_new_match_decision_approves_the_page_as_it_reads_now(self):
+        observed = {o["product url"]: o for o in three(**{"Product Name": "Rice Jasmine 1kg"})}
+        decisions = {("rice-1kg", CS): {"decision": "MATCH", "confidence": "HIGH"}}
+        result = build(THREE, EMPTY, observed, [], decisions, {}, {})
+        self.assertEqual(self.published(result), {"fairprice", "cold-storage", "redmart"})
+
+
+class Precedence(unittest.TestCase):
+    def test_a_targeted_reading_replaces_the_earlier_one_of_the_same_page(self):
+        url = "https://www.lazada.sg/products/pdp-i5-s5.html"
+        earlier = {"product_id": "rice-1kg", "product url": url, "Product Price": "3.00", "in-stock": "Yes"}
+        other = {"product_id": "oats-1kg", "product url": url, "Product Price": "4.00", "in-stock": "Yes"}
+        newer = {"product_id": "rice-1kg", "product url": url + "?x=1", "Product Price": "8.00", "in-stock": "No"}
+        self.assertEqual(refresh_seed.latest_candidates([earlier, other], [newer]), [other, newer])
+
+
+class InactiveListings(unittest.TestCase):
+    def test_a_listing_that_drops_out_of_a_published_product_returns_under_its_id(self):
+        two = run(THREE, EMPTY, three(**{"in-stock": "No"}))
+        self.assertEqual({l["retailerId"] for l in two["listings"]}, {"fairprice", "redmart"})
+        self.assertEqual([l["listingId"] for l in two["retired"]["listings"]], ["cold-storage-rice-1kg"])
+        self.assertEqual(two["retired"]["products"], [])
+
+        seed = {"products": two["products"], "listings": two["listings"]}
+        back = run(seed, two["retired"], three())
+        self.assertIn("cold-storage-rice-1kg", {l["listingId"] for l in back["listings"]})
+        self.assertEqual(back["retired"], EMPTY)

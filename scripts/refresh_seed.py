@@ -15,9 +15,17 @@ Rules:
   its new observation, and a missing file or listing stops the build.
 - A listing is eligible when its page exists, it is in stock, it has a reliable
   price (derive_offer_prices.py) and, at RedMart, RedMart sells it.
+- A listing read again must still show the product it was matched to: the same
+  name and pack size, ignoring case, spacing, punctuation and the BCRS tag.
+  Otherwise it is quarantined ("identity changed") until a new MATCH/HIGH
+  decision in match-decisions.csv approves the page as it reads now.
+- Where a targeted search read a page the full search also read, the targeted
+  reading is the one used.
 - A product publishes when two or more retailers have an eligible listing.
-  Its ID, category and listing IDs stay stable; a product that drops out keeps
-  its ID in the registry for when it returns.
+  Its ID, category and listing IDs stay stable. Every listing that does not
+  publish, and every product that drops out, is kept without prices in
+  data/seed/retired.json, so a later refresh reads it again and it returns
+  under the same ID.
 
 Writes data/seed/seed.json, data/seed/product_ids.csv and
 data/snapshot/report.md. Exits with status 2, writing nothing, when RedMart
@@ -28,6 +36,7 @@ Run from the repository root: python3 scripts/refresh_seed.py
 
 import csv
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -44,8 +53,8 @@ from derive_offer_prices import derive_offer
 
 ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "data" / "snapshot"
-# Products that dropped out, kept so later refreshes read them again (no prices).
-IDENTITY = ("listingId", "productId", "retailerId", "productUrl", "specification")
+# Listings that are not published, kept so later refreshes read them again (no prices).
+IDENTITY = ("listingId", "productId", "retailerId", "productUrl", "name", "specification")
 RETIRED = SEED.parent / "retired.json"
 RECORDED: dict[str, dict] = {}
 # Seed retailer IDs to the workbook names build_seed.py keys its tables by.
@@ -68,6 +77,8 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
         return "page gone"
     if row.get("status") == "skipped":
         return "not collected (Lazada check)"
+    if row.get("status") == "identity_changed":
+        return "identity changed"
     if row.get("status") == "carried":
         return None
     if row["in-stock"] != "Yes":
@@ -81,6 +92,39 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
         if seller != "RedMart":
             return "third-party seller"
     return None
+
+
+def identity_text(text: str) -> str:
+    """Name or pack size as it identifies a product: case, spacing, punctuation and the BCRS tag ignored."""
+    return re.sub(r"[^a-z0-9.]", "", text.lower().replace("[bcrs]", ""))
+
+
+def same_identity(listing: dict, row: dict) -> bool:
+    """Whether a page read again still shows the product its listing was matched to (PR-02).
+
+    A listing recorded without a name (an older retired.json) cannot be checked.
+    """
+    name, observed_name = listing.get("name"), row["Product Name"].strip()
+    observed_spec = row["Specification"].strip() or observed_name
+    return (
+        name is not None
+        and identity_text(name) == identity_text(observed_name)
+        and identity_text(listing["specification"]) == identity_text(observed_spec)
+    )
+
+
+def approved(decisions: dict, product_id: str, url: str) -> bool:
+    decision = decisions.get((product_id, url), {})
+    return decision.get("decision") == "MATCH" and decision.get("confidence") == "HIGH"
+
+
+def latest_candidates(full: list[dict], targeted: list[dict]) -> list[dict]:
+    """A retailer's search hits; a page's targeted reading replaces its earlier one."""
+    def key(row: dict) -> tuple[str, str]:
+        return row["product_id"], row["product url"].split("?")[0]
+
+    newer = {key(r) for r in targeted}
+    return [r for r in full if key(r) not in newer] + targeted
 
 
 # The source observations behind every listing built from the original exports,
@@ -168,12 +212,18 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
             if listing["productUrl"] not in current:
                 raise SystemExit(f"Cannot carry over {listing['productUrl']}: it is not in the seed")
             row = {**row, "carried": reapply(current[listing["productUrl"]])}
+        identity = {k: listing[k] for k in IDENTITY if k in listing}
+        if row.get("status", "ok") == "ok" and not same_identity(listing, row):
+            # A changed page publishes again only on a new MATCH/HIGH review.
+            if approved(decisions, listing["productId"], listing["productUrl"]):
+                identity["name"] = row["Product Name"].strip()
+            else:
+                row = {**row, "status": "identity_changed"}
         rows[listing["productId"]].append(row)
-        identities[listing["productId"]].append({k: listing[k] for k in IDENTITY})
+        identities[listing["productId"]].append(identity)
     accepted = 0
     for candidate in sorted(candidates, key=lambda c: -float(c["similarity"])):
-        decision = decisions.get((candidate["product_id"], candidate["product url"]), {})
-        if decision.get("decision") == "MATCH" and decision.get("confidence") == "HIGH":
+        if approved(decisions, candidate["product_id"], candidate["product url"]):
             rows[candidate["product_id"]].append({**candidate, "status": "ok"})
             url = candidate["product url"].split("?")[0]
             identities[candidate["product_id"]].append(
@@ -182,7 +232,8 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
                     "productId": candidate["product_id"],
                     "retailerId": candidate["retailer"],
                     "productUrl": url,
-                    "specification": candidate["Specification"] or candidate["Product Name"],
+                    "name": candidate["Product Name"].strip(),
+                    "specification": candidate["Specification"].strip() or candidate["Product Name"].strip(),
                 }
             )
             accepted += 1
@@ -193,7 +244,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
     observations: list[dict] = []
     unreadable: list[dict] = []
     products, listings, added = [], [], []
-    retired_products, retired_listings = [], []
+    retired_products = []
     for product_id, product in sorted(known.items()):
         eligible: dict[str, dict] = {}
         for row in rows[product_id]:
@@ -206,10 +257,9 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
                 eligible[row["retailer"]] = row
         members = sorted(eligible.values(), key=lambda r: NAME_PREFERENCE.index(SOURCE_KEY[r["retailer"]]))
         if len(members) < 2:
-            # Kept, with every listing it had but no prices, so a later refresh
-            # reads them again and can bring it back under the same ID.
+            # Kept without prices, so a later refresh reads its listings again
+            # and can bring it back under the same ID.
             retired_products.append(product)
-            retired_listings.extend(identities[product_id])
             continue
         image = next((m["Image URL"] for m in members if m["Image URL"].startswith("https://")), None)
         products.append(
@@ -243,6 +293,12 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
                     "raw_savings": member["Savings"],
                 }
             )
+    # Every listing not published this time, so a later refresh reads it again
+    # and it can return under the same ID, whether or not its product published.
+    published = {l["listingId"] for l in listings}
+    retired_listings = list(
+        {i["listingId"]: i for ids in identities.values() for i in ids if i["listingId"] not in published}.values()
+    )
     return {
         "observations": observations,
         "products": products,
@@ -273,7 +329,7 @@ def main() -> None:
         candidates=[
             row
             for r in retailers
-            for row in [*read(f"candidates-{r}.csv"), *read(f"candidates-{r}-targeted.csv", required=False)]
+            for row in latest_candidates(read(f"candidates-{r}.csv"), read(f"candidates-{r}-targeted.csv", required=False))
         ],
         decisions={(r["product_id"], r["product url"]): r for r in read("match-decisions.csv", required=False)},
         seller_checks={r["product url"]: r["seller"] for r in read("seller-checks.csv", required=False)},
