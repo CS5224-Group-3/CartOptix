@@ -96,7 +96,10 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
 
 def identity_text(text: str) -> str:
     """Name or pack size as it identifies a product: case, spacing, punctuation and the BCRS tag ignored."""
-    return re.sub(r"[^a-z0-9.]", "", text.lower().replace("[bcrs]", ""))
+    text = text.lower().replace("[bcrs]", " ").replace("×", " x ")
+    # Numbers apart from units and words, so "1kg" equals "1 kg" but "2 x 500g" never equals "2500g".
+    text = re.sub(r"(?<=\d)(?=[a-z])|(?<=[a-z])(?=\d)", " ", text)
+    return " ".join(re.findall(r"[a-z0-9.]+", text))
 
 
 def same_identity(listing: dict, row: dict) -> bool:
@@ -217,6 +220,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
             # A changed page publishes again only on a new MATCH/HIGH review.
             if approved(decisions, listing["productId"], listing["productUrl"]):
                 identity["name"] = row["Product Name"].strip()
+                identity["specification"] = row["Specification"].strip() or identity["name"]
             else:
                 row = {**row, "status": "identity_changed"}
         rows[listing["productId"]].append(row)

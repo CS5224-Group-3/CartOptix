@@ -223,8 +223,18 @@ class Identity(unittest.TestCase):
         result = run({**THREE, "listings": listings}, EMPTY, observed)
         self.assertEqual(self.published(result), {"fairprice", "redmart"})
 
+    def test_a_pack_count_cannot_hide_in_the_spacing(self):
+        listings = [{**l, "specification": "2 x 500g"} for l in THREE["listings"]]
+        observed = [{**o, "Specification": "2 x 500g"} for o in three()]
+        observed[1]["Specification"] = "2500g"
+        result = run({**THREE, "listings": listings}, EMPTY, observed)
+        self.assertEqual(self.published(result), {"fairprice", "redmart"})
+
     def test_formatting_changes_are_the_same_product(self):
         result = run(THREE, EMPTY, three(**{"Product Name": "[BCRS] RICE  1KG", "Specification": "1 KG"}))
+        self.assertEqual(self.published(result), {"fairprice", "cold-storage", "redmart"})
+        listings = [{**l, "specification": "6 x 250ml"} for l in THREE["listings"]]
+        result = run({**THREE, "listings": listings}, EMPTY, [{**o, "Specification": "6×250ML"} for o in three()])
         self.assertEqual(self.published(result), {"fairprice", "cold-storage", "redmart"})
 
     def test_a_listing_recorded_without_a_name_needs_a_review(self):
