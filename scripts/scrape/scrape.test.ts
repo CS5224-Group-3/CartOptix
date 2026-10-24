@@ -369,6 +369,7 @@ describe("checkpoints", () => {
     expect(needsSeller({ ...row, status: "skipped" })).toBe(false);
     expect(needsSeller({ ...row, status: "not_found" })).toBe(false);
     expect(needsSeller(row)).toBe(true);
+    expect(needsSeller({ ...row, status: "" })).toBe(true);
   });
 });
 
