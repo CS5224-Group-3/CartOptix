@@ -1,5 +1,6 @@
 import type { RetailerOption } from "../../features/basket-comparison/model";
 import { formatSgd } from "../../lib/format";
+import WasPrice from "../WasPrice";
 
 /** The contract has no charge/note IDs and permits repeated labels. Preserve every entry. */
 function detailEntries<T>(values: T[]) {
@@ -60,8 +61,9 @@ export default function RetailerOptionCard({
                     {line.quantity === 1 ? "pack" : "packs"}
                   </p>
                   <p>
-                    Unit price: {formatSgd(line.pricing.unitPriceCents)} / pack
-                    {line.pricing.priceKind === "unconditional_sale" && " (unconditional sale)"}
+                    Unit price: <WasPrice cents={line.pricing.originalPriceCents} />
+                    {formatSgd(line.pricing.unitPriceCents)} / pack
+                    {line.pricing.priceKind === "unconditional_sale" && " (sale price)"}
                   </p>
                   <ul>
                     {detailEntries(line.pricing.itemCharges).map(({ value: charge, key }) => (

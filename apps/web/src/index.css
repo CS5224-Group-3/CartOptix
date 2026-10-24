@@ -216,3 +216,4 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .basket-row__product-link:focus-visible strong {
   color: var(--green);
 }
+.was-price { color: #9aa5ab; }

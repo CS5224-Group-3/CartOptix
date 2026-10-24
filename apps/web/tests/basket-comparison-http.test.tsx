@@ -144,11 +144,13 @@ describe("normal API comparison flow", () => {
     ];
     first.lines[0].excludedPromotions = ["Members only"];
     first.lines[0].priceKind = "unconditional_sale";
+    first.lines[0].originalPriceCents = 290;
     await open(async () => json(response));
     compare();
     await results();
     const fair = within(screen.getByRole("article", { name: "FairPrice" }));
-    expect(fair.getByText(/Unit price: S\$2.50.*unconditional sale/)).toBeDefined();
+    expect(fair.getByText(/Unit price: S\$2.50.*\(sale price\)/)).toBeDefined();
+    expect(fair.getByText("S$2.90").closest("s")).not.toBeNull();
     expect(fair.getByText(/Included charge: S\$0.10.*included in unit price/)).toBeDefined();
     expect(fair.getByText("Excluded promotion: Members only")).toBeDefined();
     expect(fair.getByText(/S\$3.99 waived on orders from S\$6.00/)).toBeDefined();

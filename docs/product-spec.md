@@ -120,6 +120,8 @@ Start with ordinary prices and clearly unconditional sale prices. Support same-p
 
 Multibuy support is optional for the initial MVP, not a release blocker. If reliable terms cannot be recovered within the project's effort budget, proceed with verified ordinary and unconditional sale prices and disclose the excluded promotions. The MVP takes this route: it applies no multibuys, and records them as excluded promotions.
 
+Show an unconditional sale's original price struck through beside the price paid, so shoppers can see the discount. It is for display only and never changes a total.
+
 Raw promotion descriptions are evidence, not executable rules. Do not automatically subtract a `Savings` amount from a price that may already include the discount. Do not infer unrestricted repetition or same-product eligibility from “Any N” wording.
 
 When promotion conditions are unresolved, use a verified ordinary price if available and disclose that an additional promotion is excluded. If no reliable applicable price exists, exclude the offer. Cross-product promotions, memberships, vouchers, payment-method discounts and gifts are outside the calculation scope.

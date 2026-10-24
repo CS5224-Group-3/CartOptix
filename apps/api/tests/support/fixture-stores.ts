@@ -52,7 +52,7 @@ export function createFixtureProductsStore(): {
                 })),
                 excludedPromotions: offer.excludedPromotions.map((detail) => ({ detail })),
               },
-              offer.productUrl,
+              offer,
               quantity,
             ),
           )

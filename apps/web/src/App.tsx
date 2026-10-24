@@ -38,6 +38,7 @@ import { Link, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
 import ComparisonRequestStatus from "./components/basket/ComparisonRequestStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
+import WasPrice from "./components/WasPrice";
 import type { BasketLine } from "./demo";
 import {
   addBasketLine,
@@ -861,10 +862,9 @@ function OfferRow({ offer, quantity }: { offer: Offer; quantity: number }) {
         <div>
           <strong>{retailer.name}</strong>
           <span>
+            <WasPrice cents={offer.originalPriceCents} />
             {formatSgd(offer.unitPriceCents)} per pack ·{" "}
-            {offer.priceKind === "unconditional_sale"
-              ? "Unconditional sale price"
-              : "Regular price"}
+            {offer.priceKind === "unconditional_sale" ? "Sale price" : "Regular price"}
           </span>
           {offer.excludedPromotions.map((promotion) => (
             <span className="offer-row__promotion" key={promotion}>

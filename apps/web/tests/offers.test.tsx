@@ -54,6 +54,8 @@ describe("product offer view", () => {
     expect(requestedQuantities).toContain(1);
     expect(screen.getByText(/For 1 pack; before delivery and order charges/)).toBeDefined();
     expect(screen.getByText("Excluded promotion: Unverified multibuy offer")).toBeDefined();
+    expect(screen.getByText("S$7.20").closest("s")).not.toBeNull();
+    expect(screen.getByText(/S\$6.00 per pack · Sale price/)).toBeDefined();
     expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
     expect(
       screen.getByRole("link", { name: "View FairPrice product page" }).getAttribute("href"),

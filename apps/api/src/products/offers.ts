@@ -3,7 +3,11 @@ import { multiplyCents, type OfferRule, priceLine } from "../pricing/index.ts";
 
 /** Price a product offer through the same rules used by basket comparison.
  * Returns null when the listing is ineligible or cannot be priced. */
-export function priceOffer(offer: OfferRule, productUrl: string, quantity: number): Offer | null {
+export function priceOffer(
+  offer: OfferRule,
+  listing: Pick<Offer, "productUrl" | "originalPriceCents">,
+  quantity: number,
+): Offer | null {
   const result = priceLine({ offer, packs: quantity });
   if (result.status !== "priced") return null;
 
@@ -17,9 +21,10 @@ export function priceOffer(offer: OfferRule, productUrl: string, quantity: numbe
   return {
     retailerId: offer.retailerId,
     listingId: offer.listingId,
-    productUrl,
+    productUrl: listing.productUrl,
     priceKind: offer.priceKind,
     unitPriceCents: offer.unitPrice,
+    originalPriceCents: listing.originalPriceCents,
     itemCharges,
     lineTotalCents: result.line.total,
     excludedPromotions: result.line.disclosures
