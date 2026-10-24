@@ -10,6 +10,7 @@ import {
   CentsSchema,
   HttpsUrlSchema,
   IdSchema,
+  MAX_PACKS_PER_LINE,
   PositiveCentsSchema,
   RetailerIdSchema,
 } from "@cartoptix/contracts";
@@ -49,6 +50,16 @@ const UnverifiedDeliveryRule = closed({
   note: Type.Optional(text),
 });
 
+/** `packsPerDeal` packs for `dealPriceCents`; curation has already rounded any
+ * percentage deal and checked that it is cheaper (PR-03). */
+const MultibuySchema = closed({
+  packsPerDeal: Type.Integer({ minimum: 2, maximum: MAX_PACKS_PER_LINE }),
+  dealPriceCents: PositiveCentsSchema,
+  /** The retailer's wording was "Any N". */
+  mixAndMatch: Type.Boolean(),
+});
+export type SeedMultibuy = Static<typeof MultibuySchema>;
+
 export const SeedSchema = closed({
   retailers: Type.Array(
     closed({
@@ -86,6 +97,7 @@ export const SeedSchema = closed({
       unitPriceCents: PositiveCentsSchema,
       /** Pre-sale price of an unconditional sale, for display only; null otherwise. */
       originalPriceCents: Type.Union([PositiveCentsSchema, Type.Null()]),
+      multibuy: Type.Union([MultibuySchema, Type.Null()]),
       excludedPromotions: Type.Array(text),
     }),
   ),

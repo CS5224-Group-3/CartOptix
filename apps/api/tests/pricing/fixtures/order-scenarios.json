@@ -106,7 +106,8 @@
       "unitPrice": 500,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "butter": {
       "listingId": "alpha-butter",
@@ -116,7 +117,8 @@
       "unitPrice": 498,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "egg": {
       "listingId": "alpha-egg",
@@ -126,7 +128,8 @@
       "unitPrice": 499,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "milk": {
       "listingId": "alpha-milk",
@@ -136,7 +139,8 @@
       "unitPrice": 320,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "soda": {
       "listingId": "alpha-soda",
@@ -152,7 +156,8 @@
           "includedInPrice": false
         }
       ],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "water": {
       "listingId": "alpha-water",
@@ -168,7 +173,8 @@
           "includedInPrice": true
         }
       ],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "sparkling": {
       "listingId": "alpha-sparkling",
@@ -184,7 +190,8 @@
           "includedInPrice": true
         }
       ],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "betaMilk": {
       "listingId": "beta-milk",
@@ -194,7 +201,8 @@
       "unitPrice": 300,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "gammaMilk": {
       "listingId": "gamma-milk",
@@ -204,7 +212,8 @@
       "unitPrice": 300,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "deltaMilk": {
       "listingId": "delta-milk",
@@ -214,7 +223,8 @@
       "unitPrice": 300,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "epsilonMilk": {
       "listingId": "epsilon-milk",
@@ -224,7 +234,8 @@
       "unitPrice": 300,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "zetaMilk": {
       "listingId": "zeta-milk",
@@ -234,7 +245,8 @@
       "unitPrice": 300,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     }
   },
   "scenarios": [

@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import type {
   AppliedCharge,
   Cents,
+  LineMultibuy,
   OrderCharge,
   PackPricing,
   PricingDisclosureCode,
@@ -32,6 +33,7 @@ export interface PricedLineExpectation {
   packsBreakdown: PackPricing[];
   appliedCharges: AppliedCharge[];
   disclosureCodes: PricingDisclosureCode[];
+  multibuy: LineMultibuy | null;
 }
 
 export interface LineScenario {

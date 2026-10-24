@@ -4,6 +4,7 @@ import {
   BasketCompareResponseSchema,
   MAX_BASKET_LINES,
   MAX_PACKS_PER_LINE,
+  type Offer,
   routes,
 } from "@cartoptix/contracts";
 import { Value } from "typebox/value";
@@ -11,6 +12,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDatabase, type Database } from "../../src/database.ts";
 import { runMigrations } from "../../src/db/migrate.ts";
 import { importSeed } from "../../src/seed/import.ts";
+import type { Seed } from "../../src/seed/schema.ts";
 import { buildServer } from "../../src/server.ts";
 import {
   committedSeedBytes,
@@ -50,6 +52,11 @@ function apiOverDatabase(prefix: string) {
     importSeed: (bytes: Uint8Array) => importSeed(throwaway.client, bytes),
     compare: (lines: Lines) =>
       server.inject({ method: "POST", url: routes.compare.url, payload: { lines } }),
+    offers: (productId: string, quantity: number) =>
+      server.inject({
+        method: "GET",
+        url: `${routes.offers.url.replace(":id", productId)}?quantity=${quantity}`,
+      }),
   };
 }
 
@@ -144,6 +151,26 @@ describe.skipIf(connectionString === undefined)("basket comparison on the fixtur
     });
   });
 
+  it("applies a multibuy, which can lift an order over the minimum", async () => {
+    // FairPrice noodles: 2 for 600 against 331 each. Five packs are two deals and
+    // one pack, 1531, which clears the 1500 minimum that one pack (331) misses.
+    const lines = [{ productId: "fixture-noodles-400g", quantity: 5 }];
+    const body = (await api.compare(lines)).json();
+    expectValidComparison(body, lines);
+    expect(body).toMatchObject({ status: "recommended", recommendedRetailerId: "fairprice" });
+    expect(body.options[0].lines[0]).toMatchObject({
+      unitPriceCents: 331,
+      multibuy: {
+        packsPerDeal: 2,
+        dealPriceCents: 600,
+        mixAndMatch: true,
+        timesApplied: 2,
+        savingCents: 124,
+      },
+      lineTotalCents: 1531,
+    });
+  });
+
   it("rejects a product the seed does not have", async () => {
     const response = await api.compare([{ productId: "not-in-seed", quantity: 1 }]);
     expect(response.statusCode).toBe(400);
@@ -151,11 +178,35 @@ describe.skipIf(connectionString === undefined)("basket comparison on the fixtur
   });
 });
 
+/** One listing's line, priced independently of the pricing module. The seed has no item charges. */
+function referenceLine(
+  listing: Seed["listings"][number],
+  quantity: number,
+): Pick<Offer, "lineTotalCents" | "multibuy"> {
+  const deal = listing.multibuy;
+  const unit = listing.unitPriceCents;
+  if (deal === null || deal.dealPriceCents >= deal.packsPerDeal * unit) {
+    return { lineTotalCents: quantity * unit, multibuy: null };
+  }
+  const deals = Math.floor(quantity / deal.packsPerDeal);
+  const rest = quantity - deals * deal.packsPerDeal;
+  return {
+    lineTotalCents: deals * deal.dealPriceCents + rest * unit,
+    multibuy: {
+      packsPerDeal: deal.packsPerDeal,
+      dealPriceCents: deal.dealPriceCents,
+      mixAndMatch: deal.mixAndMatch,
+      timesApplied: deals,
+      savingCents: deals * (deal.packsPerDeal * unit - deal.dealPriceCents),
+    },
+  };
+}
+
 describe.skipIf(connectionString === undefined)("basket comparison on the committed seed", () => {
   const api = apiOverDatabase("cartoptix_seed");
-  const productIds: string[] = JSON.parse(committedSeedBytes.toString("utf8")).products.map(
-    (product: { productId: string }) => product.productId,
-  );
+  const seed: Seed = JSON.parse(committedSeedBytes.toString("utf8"));
+  const productIds = seed.products.map((product) => product.productId);
+  const seedListings = seed.listings;
 
   /** Compares a basket and checks it returns a valid comparison, never an error. */
   const compareValid = async (lines: Lines) => {
@@ -180,6 +231,32 @@ describe.skipIf(connectionString === undefined)("basket comparison on the commit
       }
     }
   }, 30_000);
+
+  it("prices every listing at every quantity as an independent reference does", async () => {
+    // Recomputed here from the seed file, without the pricing module: whole
+    // deals at the deal price, the rest at the unit price, and a deal that is
+    // not cheaper ignored. Every snapshot committed to the seed runs this in CI.
+    for (const productId of productIds) {
+      const listings = seedListings.filter((listing) => listing.productId === productId);
+      for (let quantity = 1; quantity <= MAX_PACKS_PER_LINE; quantity += 1) {
+        const response = await api.offers(productId, quantity);
+        expect(response.statusCode, response.body).toBe(200);
+        const offers: Offer[] = response.json().offers;
+        expect(offers.map((offer) => offer.listingId).sort()).toEqual(
+          listings.map((listing) => listing.listingId).sort(),
+        );
+        for (const offer of offers) {
+          const listing = listings.find((candidate) => candidate.listingId === offer.listingId);
+          if (!listing) throw new Error(`Unknown listing ${offer.listingId}`);
+          const expected = referenceLine(listing, quantity);
+          expect(
+            { lineTotalCents: offer.lineTotalCents, multibuy: offer.multibuy },
+            `${offer.listingId} × ${quantity}`,
+          ).toEqual(expected);
+        }
+      }
+    }
+  }, 120_000);
 
   it("returns a valid comparison for varied baskets, up to the largest allowed", async () => {
     // A fixed-seed generator keeps failures reproducible.

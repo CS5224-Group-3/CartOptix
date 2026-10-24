@@ -5,10 +5,9 @@
  * basket comparison can never disagree about what something costs. Everything
  * here is pure: no clock, no database, no environment.
  *
- * Scope is verified ordinary and unconditional sale prices, mandatory charges
- * and one documented delivery scenario per retailer. Multibuys are out of
- * scope until #4 verifies one; section 4 allows the initial kernel to omit
- * them entirely.
+ * Scope is verified ordinary and unconditional sale prices, same-product
+ * multibuys, mandatory charges and one documented delivery scenario per
+ * retailer.
  *
  * Pack limits and retailer IDs come from `@cartoptix/contracts`, so the
  * module enforces the same bounds and names as the request schema.
@@ -31,6 +30,7 @@ export type {
   AppliedCharge,
   Cents,
   DeliveryCharge,
+  LineMultibuy,
   LinePricingResult,
   OrderCharge,
   OrderInfeasibility,
@@ -49,6 +49,7 @@ export type {
   DeliveryRule,
   ExcludedPromotionRule,
   MandatoryChargeRule,
+  MultibuyRule,
   OfferRule,
   OrderChargeRule,
   ThresholdBasis,

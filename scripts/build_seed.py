@@ -145,6 +145,7 @@ def main(selection_path: str) -> None:
                     "priceKind": offer["price_kind"],
                     "unitPriceCents": offer["unit_price_cents"],
                     "originalPriceCents": offer["original_price_cents"],
+                    "multibuy": offer["multibuy"],
                     "excludedPromotions": [offer["excluded_promotion"]]
                     if offer["excluded_promotion"]
                     else [],

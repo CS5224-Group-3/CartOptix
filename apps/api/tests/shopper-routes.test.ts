@@ -24,6 +24,7 @@ const offer = (retailerId: "redmart" | "fairprice", productId: string, unitPrice
     retailerId,
     priceKind: "ordinary",
     unitPrice,
+    multibuy: null,
     eligible: true,
     charges: [],
     excludedPromotions: [],
@@ -136,7 +137,11 @@ describe("shopper routes", () => {
       const addedCharges = offer.itemCharges
         .filter((charge: { includedInPrice: boolean }) => !charge.includedInPrice)
         .reduce((total: number, charge: { amountCents: number }) => total + charge.amountCents, 0);
-      expect(offer.lineTotalCents).toBe(offer.unitPriceCents * 3 + addedCharges);
+      // One deal plus one pack where the offer has a "2 for" deal.
+      const packs = offer.multibuy
+        ? offer.multibuy.dealPriceCents + offer.unitPriceCents
+        : offer.unitPriceCents * 3;
+      expect(offer.lineTotalCents).toBe(packs + addedCharges);
     }
   });
 
@@ -233,6 +238,7 @@ describe("shopper routes", () => {
         priceKind: "ordinary",
         unitPriceCents: 1100,
         originalPriceCents: null,
+        multibuy: null,
         itemCharges: [],
         lineTotalCents: 2200,
         excludedPromotions: [],

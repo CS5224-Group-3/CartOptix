@@ -34,6 +34,49 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(/fixed retailer dataset/i).first()).toBeVisible();
   });
 
+  test("J1/J3: sale prices are shown on the product page and in the basket", async ({ page }) => {
+    await page.goto("/product/anlene-actifit-3x-plain-milk-powder-1kg");
+    await expect(page.locator("s.was-price").first()).toContainText(/S\$\d+\.\d{2}/);
+    await expect(page.getByText(/per pack · Sale price/).first()).toBeVisible();
+    await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await expect(page).toHaveURL(/\/basket$/);
+    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+    await expect(page).toHaveURL(/\/results$/);
+    await expect(page.locator(".retailer-option s.was-price").first()).toBeVisible();
+    await expect(page.getByText(/\(sale price\)/).first()).toBeVisible();
+  });
+
+  test("J1: a multibuy hint never adds packs; other promotions are left out", async ({ page }) => {
+    await page.goto("/product/yava-chocolate-vanilla-granola-200g");
+    await expect(
+      page.getByText("Spend $15 + Free Gift — not included in this estimate").first(),
+    ).toBeVisible();
+
+    await page.goto("/product/ayam-brand-pulled-chicken-buffalo-150g");
+    await expect(page.getByText(/^Buy 2 for S\$\d+\.\d{2}$/).first()).toBeVisible();
+    // The hint never changes the requested quantity.
+    await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await expect(page).toHaveURL(/\/basket$/);
+    await expect(
+      page.locator(".basket-row").first().locator(".quantity-control").getByText("1", {
+        exact: true,
+      }),
+    ).toBeVisible();
+  });
+
+  test("J1/J3: a multibuy is priced on the product page and in the basket", async ({ page }) => {
+    await page.goto("/product/ayam-brand-pulled-chicken-buffalo-150g");
+    await page.getByRole("button", { name: "Increase quantity" }).click();
+    const deal = /^1 × deal \(2 for S\$\d+\.\d{2}\) · You save S\$\d+\.\d{2}$/;
+    await expect(page.getByText(deal).first()).toBeVisible();
+    await expect(page.getByText("Mixing items in this deal may save more").first()).toBeVisible();
+    await page.getByRole("button", { name: /Add 2 packs to basket/ }).click();
+    await expect(page).toHaveURL(/\/basket$/);
+    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+    await expect(page).toHaveURL(/\/results$/);
+    await expect(page.getByText(deal).first()).toBeVisible();
+  });
+
   test("J2: changing the basket makes an earlier result stale", async ({ page }) => {
     await page.goto("/basket");
     await page.getByRole("button", { name: /Multiple complete retailers/i }).click();

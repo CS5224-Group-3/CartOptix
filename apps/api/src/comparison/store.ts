@@ -16,6 +16,26 @@ export interface ListingDetails {
   excludedPromotions: string[];
 }
 
+/** A published listing row as the pricing module's offer. */
+export function offerRule(row: typeof listings.$inferSelect): OfferRule {
+  return {
+    listingId: row.listingId,
+    productId: row.productId,
+    retailerId: row.retailerId,
+    priceKind: row.priceKind,
+    unitPrice: row.unitPriceCents,
+    multibuy: row.multibuy && {
+      packsPerDeal: row.multibuy.packsPerDeal,
+      dealPrice: row.multibuy.dealPriceCents,
+      mixAndMatch: row.multibuy.mixAndMatch,
+    },
+    // Only eligible offers are published, and the MVP models no item charges.
+    eligible: true,
+    charges: [],
+    excludedPromotions: row.excludedPromotions.map((detail) => ({ detail })),
+  };
+}
+
 export interface BasketData {
   /** Requested product IDs that exist in the seed. */
   knownProductIds: Set<string>;
@@ -46,19 +66,7 @@ export async function loadBasketData(
       return {
         knownProductIds: new Set(known.map((row) => row.productId)),
         retailers: retailerRows.map((row) => row.retailerId),
-        offers: listingRows.map(
-          (row): OfferRule => ({
-            listingId: row.listingId,
-            productId: row.productId,
-            retailerId: row.retailerId,
-            priceKind: row.priceKind,
-            unitPrice: row.unitPriceCents,
-            // Only eligible offers are published, and the MVP models no item charges.
-            eligible: true,
-            charges: [],
-            excludedPromotions: row.excludedPromotions.map((detail) => ({ detail })),
-          }),
-        ),
+        offers: listingRows.map(offerRule),
         deliveryRules: ruleRows.map(
           (row): DeliveryRule => ({
             retailerId: row.retailerId,

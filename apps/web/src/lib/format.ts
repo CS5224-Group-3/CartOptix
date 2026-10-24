@@ -1,5 +1,5 @@
 // Display helpers: money formatting and visual treatment for retailers and categories.
-import type { Order, RetailerId } from "@cartoptix/contracts";
+import type { Multibuy, Order, RetailerId } from "@cartoptix/contracts";
 
 export function formatSgd(cents: number | null | undefined): string {
   if (cents === null || cents === undefined) return "Unavailable";
@@ -55,4 +55,33 @@ export function orderChargeLabel(charge: Order["orderCharges"][number]): string 
   if (charge.waived && charge.waivedFromCents !== null)
     return `${charge.label} ${formatSgd(charge.amountCents)} waived on orders from ${formatSgd(charge.waivedFromCents)}`;
   return charge.label;
+}
+
+/**
+ * How a line's multibuy is described: the deals and leftover packs it was priced
+ * as and, with `hint`, what the shopper would need to buy to qualify. Wording
+ * only; amounts come from the API. The basket shows no hint (PR-03).
+ */
+export function multibuyNotes(
+  multibuy: Multibuy | null,
+  quantity: number,
+  unitPriceCents: number,
+  hint = false,
+): string[] {
+  if (!multibuy) return [];
+  const terms = `${multibuy.packsPerDeal} for ${formatSgd(multibuy.dealPriceCents)}`;
+  const rest = quantity - multibuy.timesApplied * multibuy.packsPerDeal;
+  const parts = [`${multibuy.timesApplied} × deal (${terms})`];
+  if (rest > 0) parts.push(`${rest} × ${formatSgd(unitPriceCents)}`);
+  const notes = [];
+  if (multibuy.timesApplied > 0)
+    notes.push(`${parts.join(" + ")} · You save ${formatSgd(multibuy.savingCents)}`);
+  else if (hint) notes.push(`Buy ${terms}`);
+  if (multibuy.mixAndMatch) notes.push("Mixing items in this deal may save more");
+  return notes;
+}
+
+/** A promotion the estimate leaves out, as the retailer worded it. */
+export function excludedPromotionNote(promotion: string): string {
+  return `${promotion} — not included in this estimate`;
 }

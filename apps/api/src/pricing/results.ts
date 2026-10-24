@@ -46,24 +46,28 @@ export interface PricingDisclosure {
 }
 
 export type PricingDisclosureCode =
-  /** The source data described a promotion whose terms were not verified. */
+  /** The source data described a promotion the estimate does not include. */
   | "promotion-excluded"
   /** A verified mandatory charge is already inside the recorded price. */
   | "charge-included-in-price";
 
 /**
- * How the cost of one line's packs was reached.
- *
- * Only ordinary and unconditional sale prices are supported, so this is always
- * one per-pack segment today. It stays a list because a promotion type that
- * charges some packs differently — a multibuy, if #4 ever verifies one — adds
- * a variant here rather than reshaping the line (PR-03, section 4).
+ * How the cost of one line's packs was reached: whole deals at the deal price,
+ * then any remaining packs at the unit price (PR-03, section 4). A segment with
+ * no packs is left out.
  */
-export interface PackPricing {
-  kind: "unit";
-  packs: number;
-  unitPrice: Cents;
-  amount: Cents;
+export type PackPricing =
+  | { kind: "unit"; packs: number; unitPrice: Cents; amount: Cents }
+  | { kind: "multibuy"; deals: number; packsPerDeal: number; dealPrice: Cents; amount: Cents };
+
+/** A listing's deal as it applied to one line; `deals` is 0 below its pack count. */
+export interface LineMultibuy {
+  packsPerDeal: number;
+  dealPrice: Cents;
+  mixAndMatch: boolean;
+  deals: number;
+  /** Saving against the unit price across the line. */
+  saving: Cents;
 }
 
 /** A verified mandatory charge added on top of the recorded price. */
@@ -82,7 +86,11 @@ export interface PricedLine {
   listingId: string;
   /** Carried from the offer, so callers never re-read it from the raw record. */
   priceKind: PriceKind;
+  /** The listing's price for one pack, outside any deal. */
+  unitPrice: Cents;
   packs: number;
+  /** The listing's deal, or null when it has none or it would not be cheaper. */
+  multibuy: LineMultibuy | null;
   /** Cost of the packs themselves, before charges the price excludes. */
   packsSubtotal: Cents;
   /** Every segment of `packsSubtotal`, in the order it was applied. */

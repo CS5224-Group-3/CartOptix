@@ -26,7 +26,12 @@ export interface CompleteRetailerOption {
     purchaseUrl: string;
     pricing: Pick<
       PlanLine,
-      "unitPriceCents" | "originalPriceCents" | "priceKind" | "itemCharges" | "excludedPromotions"
+      | "unitPriceCents"
+      | "originalPriceCents"
+      | "priceKind"
+      | "multibuy"
+      | "itemCharges"
+      | "excludedPromotions"
     >;
   })[];
   productSubtotalCents: number;

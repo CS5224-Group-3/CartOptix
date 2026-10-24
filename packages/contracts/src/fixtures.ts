@@ -86,6 +86,7 @@ const line = (productId: string, retailerId: RetailerId, cents: number): PlanLin
   priceKind: "ordinary",
   unitPriceCents: cents,
   originalPriceCents: null,
+  multibuy: null,
   itemCharges: [],
   lineTotalCents: cents,
   excludedPromotions: [],
@@ -137,13 +138,15 @@ const drinkAtRedmart: PlanLine = {
   priceKind: "ordinary",
   unitPriceCents: 200,
   originalPriceCents: null,
+  multibuy: null,
   itemCharges: [{ label: "Synthetic container deposit", amountCents: 10, includedInPrice: false }],
   lineTotalCents: 210,
   excludedPromotions: [],
 };
 
-/** Two packs of rice. FairPrice has a deposit already in its price and an excluded
- * promotion; RedMart adds a handling fee on top. Offers are cheapest first. */
+/** Two packs of rice. FairPrice applies a "2 for" deal, has a deposit already in its
+ * price and an excluded promotion; RedMart adds a handling fee on top. Offers are
+ * cheapest first. */
 export const offersExample = {
   product: riceProduct,
   quantity: 2,
@@ -155,9 +158,16 @@ export const offersExample = {
       priceKind: "ordinary",
       unitPriceCents: 410,
       originalPriceCents: null,
+      multibuy: {
+        packsPerDeal: 2,
+        dealPriceCents: 700,
+        mixAndMatch: true,
+        timesApplied: 1,
+        savingCents: 120,
+      },
       itemCharges: [{ label: "Synthetic deposit", amountCents: 20, includedInPrice: true }],
-      lineTotalCents: 820,
-      excludedPromotions: ["Unverified multibuy offer"],
+      lineTotalCents: 700,
+      excludedPromotions: ["Spend $30 + Free Gift"],
     },
     {
       retailerId: "redmart",
@@ -166,6 +176,7 @@ export const offersExample = {
       priceKind: "unconditional_sale",
       unitPriceCents: 600,
       originalPriceCents: 720,
+      multibuy: null,
       itemCharges: [{ label: "Synthetic handling fee", amountCents: 30, includedInPrice: false }],
       lineTotalCents: 1230,
       excludedPromotions: [],

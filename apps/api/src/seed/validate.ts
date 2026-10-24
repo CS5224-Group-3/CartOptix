@@ -106,6 +106,17 @@ export function validateSeed(input: unknown): SeedValidation {
     } else if (listing.originalPriceCents !== null) {
       errors.push(`Ordinary listing ${listing.listingId} cannot have an original price`);
     }
+    if (listing.multibuy !== null) {
+      if (listing.priceKind === "unconditional_sale") {
+        errors.push(`Sale listing ${listing.listingId} cannot also have a multibuy`);
+      }
+      if (
+        listing.multibuy.dealPriceCents >=
+        listing.unitPriceCents * listing.multibuy.packsPerDeal
+      ) {
+        errors.push(`Listing ${listing.listingId} has a multibuy that is not cheaper`);
+      }
+    }
   }
   for (const productId of productIds) {
     const specifications = seed.listings

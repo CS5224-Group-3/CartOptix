@@ -3,6 +3,7 @@ import {
   MAX_BASKET_LINES,
   MAX_PACKS_PER_LINE,
   MIN_PACKS_PER_LINE,
+  type PlanLine,
   type UnavailableReason,
 } from "@cartoptix/contracts";
 import { formatSgd, orderChargeLabel, RETAILER_DISPLAY } from "../../lib/format";
@@ -49,6 +50,28 @@ export function validateSnapshot(basket: BasketSnapshot): void {
   } catch {
     throw new PresentationDataFailure();
   }
+}
+
+/**
+ * What a line's packs cost: whole deals at the deal price, the rest at the unit
+ * price. Rejects a deal whose counts or saving do not add up.
+ */
+function packsCost({ quantity, unitPriceCents, priceKind, multibuy }: PlanLine): number {
+  if (multibuy === null) return unitPriceCents * quantity;
+  // A deal never stacks on a sale price (PR-03).
+  requireData(priceKind === "ordinary");
+  const { packsPerDeal, dealPriceCents, timesApplied, savingCents } = multibuy;
+  requireData(
+    Number.isInteger(packsPerDeal) &&
+      packsPerDeal >= 2 &&
+      cents(dealPriceCents) &&
+      dealPriceCents > 0 &&
+      dealPriceCents < unitPriceCents * packsPerDeal &&
+      typeof multibuy.mixAndMatch === "boolean",
+  );
+  requireData(timesApplied === Math.floor(quantity / packsPerDeal));
+  requireData(savingCents === timesApplied * (unitPriceCents * packsPerDeal - dealPriceCents));
+  return timesApplied * dealPriceCents + (quantity - timesApplied * packsPerDeal) * unitPriceCents;
 }
 
 function explain(reason: UnavailableReason, names: Map<string, string>): string {
@@ -136,7 +159,7 @@ export function adaptComparison(
           // Reconciliation checks reject data; they never replace API amounts.
           requireData(
             line.lineTotalCents ===
-              line.unitPriceCents * line.quantity +
+              packsCost(line) +
                 line.itemCharges.reduce(
                   (sum, charge) => sum + (charge.includedInPrice ? 0 : charge.amountCents),
                   0,
@@ -153,6 +176,7 @@ export function adaptComparison(
               unitPriceCents: line.unitPriceCents,
               originalPriceCents: line.originalPriceCents,
               priceKind: line.priceKind,
+              multibuy: line.multibuy,
               itemCharges: line.itemCharges,
               excludedPromotions: line.excludedPromotions,
             }),

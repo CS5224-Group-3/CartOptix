@@ -131,7 +131,7 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 3. Restrict candidates to the eight product categories. Treat `Keyword` as source discovery metadata, not the canonical category taxonomy.
 4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
 5. Propose matches, which may use AI. Publish only high-confidence AI matches that agree with the name rules and exclude the rest; manual match review is out of scope for the proof of concept.
-6. Verify one delivery scenario per retailer. The MVP publishes verified ordinary and unconditional sale prices only, recording other promotions as excluded; do not infer unsupported rules.
+6. Verify one delivery scenario per retailer. Publish verified ordinary and unconditional sale prices and same-product multibuys (PR-03), recording other promotions as excluded; do not infer unsupported rules.
 7. Publish clean, schema-validated seed data with a coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
 
 Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
@@ -144,7 +144,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Canonical product | ID, category, brand, variant, pack count, per-pack size/unit or equivalent non-food identity, display name. |
 | Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, direct-fulfilment status and any evidence reference. |
 | Offer | Listing ID, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
-| Supported promotion | Listing, verified type, qualifying quantity, payable amount, repetition cap/rule, remainder rule, captured validity terms where present, and scenario-approval evidence. Rules are fixed in the committed seed. |
+| Supported promotion | A listing's same-product multibuy: packs per deal, deal price in cents (any percentage already rounded half-up by curation) and whether the retailer's wording was "Any N". Deals repeat; remaining packs use the unit price. No validity terms are kept. Rules are fixed in the committed seed. |
 | Delivery rule | Retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. Unused in the MVP, which does not model BCRS deposits. |
 | Click event | Event ID, retailer/listing/product and the server-recorded timestamp; no user identity. |
@@ -157,19 +157,17 @@ Freezing evaluation data is best-effort; record material changes and rerun affec
 
 ### Shared pricing kernel
 
-One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Fixed-price bundles can be calculated as whole bundles plus remainder packs without dividing the bundle price into fractional cents. If a verified supported rule requires rounding, capture the retailer's rounding basis and stage, document it, and test the boundary; exclude rules whose rounding treatment cannot be established rather than inventing a discount convention.
+One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Percentage deals are rounded once, half-up to the cent per deal, when curation builds the seed, so the module never rounds; the live-checkout evidence for PR-03 must confirm the convention, and a deal type that disagrees stays excluded.
 
 - Compute the verified ordinary or unconditional sale cost for the exact pack quantity.
-- Compare eligible same-product bundles only where terms are encoded; apply verified repetition and remainder rules. Do not stack promotions unless explicitly supported and verified; initial scope excludes stacking.
+- Apply a listing's same-product multibuy: floor(quantity ÷ packs per deal) deals, the rest at the unit price, and only when the deal is cheaper. Never count packs from another line, and never stack promotions.
 - Treat original prices and raw savings text as descriptive evidence, not automatic extra discounts.
 - Apply verified mandatory item charges, retailer minimum orders, delivery fees and threshold spending bases.
 - Return an itemised explanation and excluded-promotion notices, not just a scalar total.
 
 Unknown necessary delivery rules prevent a valid complete-total calculation for that retailer. Do not substitute zero. An unsupported promotion can be ignored only when a verified usable price remains and the omission is disclosed.
 
-Promotion eligibility comes from the committed seed, not the runtime clock. Advancing the current date must not expire or activate a promotion during calculation. Keep captured validity terms as internal provenance, not website collection dates or live-validity claims. Reject a promotion from the curated rules when its applicability to the recorded scenario cannot be established; retain a verified ordinary-price fallback only with the required disclosure.
-
-The MVP pricing kernel omits multibuy execution, because B3 approves only ordinary/unconditional prices. Keep unsupported rules out of the active seed; bundle-specific implementation and acceptance cases apply only when that promotion type is adopted.
+Promotion eligibility comes from the committed seed, not the runtime clock. There is no date handling: curation strips validity wording, and advancing the current date never expires or activates a promotion. Keep unsupported rules out of the active seed and disclose them as excluded promotions.
 
 ### Comparison procedure
 
@@ -214,7 +212,7 @@ Contract decisions (#5):
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
 - **Comparison results.** The request carries only basket lines. The response is either `recommended`, with the recommended retailer, or `no_feasible_plan`. Both return an option for each retailer: a priced complete basket with an itemised breakdown, or unavailable with its reasons (missing products, below the minimum order, or an unverified delivery rule). Complete options come first, cheapest first, then unavailable ones, so a recommendation is always the first option. Ties, and the order of unavailable options, follow retailer ID in code-point order. Other feasible options may show the difference from the recommendation.
 - **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
-- **Pricing on the wire.** Ordinary and unconditional sale prices only; multibuys wait for verified terms. Mandatory charges are itemised. An unconditional sale also carries its original price (`originalPriceCents`, null for ordinary prices) so the client can show it struck through; it is display only and never enters a total. A line total is unit price × quantity plus charges with `includedInPrice: false`; charges already in the price are shown but not added, so nothing is counted twice or dropped. An order charge with a waiver threshold (such as FairPrice's service fee) carries the threshold and whether the order reached it; a waived charge is shown but not added to the total. Prices are positive. An unknown delivery rule is `unavailable`, never a zero fee. BCRS container deposits are not modelled in the MVP: the same 10¢ per container applies at every retailer, so it cannot change which option wins, and the client shows the exported `DEPOSIT_NOTICE` instead. Item charges stay in the contract so deposits can be modelled later. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
+- **Pricing on the wire.** Ordinary and unconditional sale prices, and same-product multibuys. Each line carries its listing's deal, or null: packs per deal, deal price, whether the retailer's wording was "Any N", how many deals the line applied and the saving against the unit price. The deal is present even when the line is too small to qualify, so the client can say what it needs. Mandatory charges are itemised. An unconditional sale also carries its original price (`originalPriceCents`, null for ordinary prices) so the client can show it struck through; it is display only and never enters a total. A line total is the deals at the deal price, the remaining packs at the unit price, plus charges with `includedInPrice: false`; charges already in the price are shown but not added, so nothing is counted twice or dropped. An order charge with a waiver threshold (such as FairPrice's service fee) carries the threshold and whether the order reached it; a waived charge is shown but not added to the total. Prices are positive. An unknown delivery rule is `unavailable`, never a zero fee. BCRS container deposits are not modelled in the MVP: the same 10¢ per container applies at every retailer, so it cannot change which option wins, and the client shows the exported `DEPOSIT_NOTICE` instead. Item charges stay in the contract so deposits can be modelled later. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
 - **Pricing outcomes at the boundary.** The pricing module's outcomes reach shoppers as follows:
   - An order below a retailer's minimum makes that retailer's option unavailable, not the basket.
   - An unverified delivery rule makes that retailer's option unavailable rather than failing the request, because a retry cannot fix it and it would count against SC-06.
@@ -225,7 +223,7 @@ Contract decisions (#5):
   - The three retailers with display names, and the eight categories with stable IDs and names.
   - Per retailer, either the verified delivery fee, free-delivery threshold and minimum order (each may be absent) with a short note, or an explicit "unverified". Threshold basis and fixed order-level charges remain internal pricing inputs and are not exposed by `DeliveryRuleSchema`.
   - Per product: category, a representative listing name, listing specifications and an optional image URL. The API derives `name` from the representative name, removing any `[BCRS]` tag, and `packSize` from normalized eligible listing specifications, with units lower-cased. Unresolved specification conflicts are rejected during seed import; a product with no listing is accepted. Products without an eligible listing remain browseable with `available: false` and cannot be added to a basket. Separate canonical pack count/size/unit fields remain future work.
-  - Per eligible offer, meaning in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), a positive unit price in integer cents, for a sale its higher original price in integer cents, and notes on excluded promotions. Mandatory item charges, with a label, per-pack amount and whether the price already includes them, are needed only once a charge is modelled; the MVP has none, since BCRS deposits are not modelled.
+  - Per eligible offer, meaning in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), a positive unit price in integer cents, for a sale its higher original price in integer cents, any approved same-product multibuy, and excluded promotions as the retailer worded them. Mandatory item charges, with a label, per-pack amount and whether the price already includes them, are needed only once a charge is modelled; the MVP has none, since BCRS deposits are not modelled.
   - Fixed order-level charges per retailer, and whatever rule inputs the pricing module (#8) needs to compute totals.
   - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across seed edits, because browser baskets keep product IDs through a correction.
   - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
@@ -322,7 +320,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B3 — Verify delivery scenarios and supported prices
 - **Blocked by:** A2, B1.
-- **Work:** Capture one standard non-member delivery scenario per retailer, with its sources, and confirm each offer's price kind (ordinary or unconditional sale). Record other promotions as excluded. Multibuys and BCRS deposits are out of scope for the MVP (PR-03, PR-04).
+- **Work:** Capture one standard non-member delivery scenario per retailer, with its sources, and confirm each offer's price kind (ordinary or unconditional sale). Encode same-product multibuys and check a sample against the live checkout (PR-03). Record other promotions as excluded. BCRS deposits are out of scope for the MVP (PR-04).
 - **Acceptance:** Each retailer's fee, free-delivery threshold, minimum order, threshold basis and fixed order-level charges are verified with evidence, or the rule is explicitly unverified; unknown fees cannot become zero. Offers without a reliable ordinary or unconditional sale price are excluded.
 
 #### B4 — Implement database migrations and atomic seed import
@@ -340,7 +338,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C1 — Implement the shared pricing kernel
 - **Blocked by:** A2.
 - **Work:** Implement product, promotion, mandatory-charge and retailer-order pricing against explicit fixtures. Return itemised explanations and excluded-promotion notices.
-- **Acceptance:** Independent reference tests cover cents, supported bundle terms/remainders where adopted, minimum orders, threshold boundaries and charge inclusion; document and test rounding boundaries if any supported rule requires rounding. A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed, including dated promotions if adopted. Product and basket paths use the same module. Real rules are validated later in C5.
+- **Acceptance:** Independent reference tests cover cents, multibuy deals and remainders, deals that are not cheaper, minimum orders, threshold boundaries and charge inclusion; percentage rounding happens once in curation and is checked against the live checkout (PR-03). A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed. Product and basket paths use the same module. Real rules are validated later in C5.
 
 #### C2 — Price every retailer's complete basket and validate plans
 - **Blocked by:** C1.
@@ -354,7 +352,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C5 — Evaluate comparison correctness
 - **Blocked by:** B5, C2.
 - **Work:** Check constructed reference baskets and real-seed baskets against independent pricing calculations, including unavailable retailers and ties.
-- **Acceptance:** Each complete option passes arithmetic and constraint checks; unavailability reasons and the cheapest recommendation match references; no-feasible-plan cases are reported correctly.
+- **Acceptance:** Each complete option passes arithmetic and constraint checks; unavailability reasons and the cheapest recommendation match references; no-feasible-plan cases are reported correctly. An independent reference prices every seed listing at 1–20 packs and matches the API, in CI, so every committed snapshot is checked.
 
 ### WS-D — Shopper API and web experience
 

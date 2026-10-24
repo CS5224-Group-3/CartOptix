@@ -217,3 +217,4 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
   color: var(--green);
 }
 .was-price { color: #9aa5ab; }
+.offer-row__retailer span.offer-row__deal { color: var(--green); }

@@ -5,15 +5,14 @@
     "SGD cents, so a change in the module's arithmetic fails a test rather",
     "than quietly rewriting the expectation. Data here is invented for testing",
     "and is not a curated retailer record.",
-    "Scope is verified ordinary and unconditional sale prices. Multibuys are",
-    "out of scope until curation verifies one (PR-03, section 4), so no",
-    "bundle appears here.",
+    "Scope is verified ordinary and unconditional sale prices, plus same-product",
+    "multibuys: whole deals at the deal price, remaining packs at the unit price,",
+    "and a deal that is not cheaper ignored (PR-03, section 4).",
     "Requests outside the supported range are a caller mistake rather than a",
     "pricing outcome, so they throw and are tested in line.test.ts instead.",
     "Retailer IDs are the contract's real IDs; every price is still invented.",
     "rice uses an unconditional sale price, to show priceKind passes through."
   ],
-
   "offers": {
     "milk": {
       "listingId": "alpha-milk",
@@ -23,7 +22,8 @@
       "unitPrice": 320,
       "eligible": true,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "soda": {
       "listingId": "alpha-soda",
@@ -33,9 +33,14 @@
       "unitPrice": 180,
       "eligible": true,
       "charges": [
-        { "label": "Beverage container deposit", "amount": 20, "includedInPrice": false }
+        {
+          "label": "Beverage container deposit",
+          "amount": 20,
+          "includedInPrice": false
+        }
       ],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "water": {
       "listingId": "alpha-water",
@@ -44,8 +49,15 @@
       "priceKind": "ordinary",
       "unitPrice": 150,
       "eligible": true,
-      "charges": [{ "label": "Beverage container deposit", "amount": 10, "includedInPrice": true }],
-      "excludedPromotions": []
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 10,
+          "includedInPrice": true
+        }
+      ],
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "mystery": {
       "listingId": "alpha-mystery",
@@ -54,8 +66,15 @@
       "priceKind": "ordinary",
       "unitPrice": 200,
       "eligible": true,
-      "charges": [{ "label": "Container deposit", "amount": null, "includedInPrice": false }],
-      "excludedPromotions": []
+      "charges": [
+        {
+          "label": "Container deposit",
+          "amount": null,
+          "includedInPrice": false
+        }
+      ],
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "rice": {
       "listingId": "alpha-rice",
@@ -69,7 +88,8 @@
         {
           "detail": "A multibuy is advertised for this product but its terms could not be verified, so it is not applied."
         }
-      ]
+      ],
+      "multibuy": null
     },
     "withdrawn": {
       "listingId": "alpha-withdrawn",
@@ -79,7 +99,8 @@
       "unitPrice": 500,
       "eligible": false,
       "charges": [],
-      "excludedPromotions": []
+      "excludedPromotions": [],
+      "multibuy": null
     },
     "zeroPriced": {
       "listingId": "alpha-zero-priced",
@@ -89,10 +110,61 @@
       "unitPrice": 0,
       "eligible": true,
       "charges": [],
+      "excludedPromotions": [],
+      "multibuy": null
+    },
+    "chicken": {
+      "listingId": "alpha-chicken",
+      "productId": "chicken-150g",
+      "retailerId": "cold-storage",
+      "priceKind": "ordinary",
+      "unitPrice": 350,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPrice": 655,
+        "mixAndMatch": true
+      },
+      "eligible": true,
+      "charges": [],
+      "excludedPromotions": []
+    },
+    "pasta": {
+      "listingId": "alpha-pasta",
+      "productId": "pasta-500g",
+      "retailerId": "fairprice",
+      "priceKind": "ordinary",
+      "unitPrice": 335,
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPrice": 905,
+        "mixAndMatch": false
+      },
+      "eligible": true,
+      "charges": [
+        {
+          "label": "Beverage container deposit",
+          "amount": 10,
+          "includedInPrice": false
+        }
+      ],
+      "excludedPromotions": []
+    },
+    "dud": {
+      "listingId": "alpha-dud",
+      "productId": "dud-1kg",
+      "retailerId": "redmart",
+      "priceKind": "ordinary",
+      "unitPrice": 300,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPrice": 600,
+        "mixAndMatch": false
+      },
+      "eligible": true,
+      "charges": [],
       "excludedPromotions": []
     }
   },
-
   "scenarios": [
     {
       "name": "prices whole packs at the verified per-pack price",
@@ -102,9 +174,17 @@
         "status": "priced",
         "packsSubtotal": 960,
         "total": 960,
-        "packsBreakdown": [{ "kind": "unit", "packs": 3, "unitPrice": 320, "amount": 960 }],
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 3,
+            "unitPrice": 320,
+            "amount": 960
+          }
+        ],
         "appliedCharges": [],
-        "disclosureCodes": []
+        "disclosureCodes": [],
+        "multibuy": null
       }
     },
     {
@@ -115,9 +195,17 @@
         "status": "priced",
         "packsSubtotal": 320,
         "total": 320,
-        "packsBreakdown": [{ "kind": "unit", "packs": 1, "unitPrice": 320, "amount": 320 }],
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 1,
+            "unitPrice": 320,
+            "amount": 320
+          }
+        ],
         "appliedCharges": [],
-        "disclosureCodes": []
+        "disclosureCodes": [],
+        "multibuy": null
       }
     },
     {
@@ -128,9 +216,17 @@
         "status": "priced",
         "packsSubtotal": 6400,
         "total": 6400,
-        "packsBreakdown": [{ "kind": "unit", "packs": 20, "unitPrice": 320, "amount": 6400 }],
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 20,
+            "unitPrice": 320,
+            "amount": 6400
+          }
+        ],
         "appliedCharges": [],
-        "disclosureCodes": []
+        "disclosureCodes": [],
+        "multibuy": null
       }
     },
     {
@@ -141,9 +237,23 @@
         "status": "priced",
         "packsSubtotal": 720,
         "total": 800,
-        "packsBreakdown": [{ "kind": "unit", "packs": 4, "unitPrice": 180, "amount": 720 }],
-        "appliedCharges": [{ "label": "Beverage container deposit", "perPack": 20, "amount": 80 }],
-        "disclosureCodes": []
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 4,
+            "unitPrice": 180,
+            "amount": 720
+          }
+        ],
+        "appliedCharges": [
+          {
+            "label": "Beverage container deposit",
+            "perPack": 20,
+            "amount": 80
+          }
+        ],
+        "disclosureCodes": [],
+        "multibuy": null
       }
     },
     {
@@ -154,16 +264,27 @@
         "status": "priced",
         "packsSubtotal": 600,
         "total": 600,
-        "packsBreakdown": [{ "kind": "unit", "packs": 4, "unitPrice": 150, "amount": 600 }],
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 4,
+            "unitPrice": 150,
+            "amount": 600
+          }
+        ],
         "appliedCharges": [],
-        "disclosureCodes": ["charge-included-in-price"]
+        "disclosureCodes": ["charge-included-in-price"],
+        "multibuy": null
       }
     },
     {
       "name": "refuses to price a line whose mandatory charge is unresolved",
       "offer": "mystery",
       "packs": 1,
-      "expect": { "status": "unavailable", "code": "charge-unresolved" }
+      "expect": {
+        "status": "unavailable",
+        "code": "charge-unresolved"
+      }
     },
     {
       "name": "discloses an advertised promotion that curation did not verify",
@@ -173,22 +294,214 @@
         "status": "priced",
         "packsSubtotal": 2500,
         "total": 2500,
-        "packsBreakdown": [{ "kind": "unit", "packs": 2, "unitPrice": 1250, "amount": 2500 }],
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 2,
+            "unitPrice": 1250,
+            "amount": 2500
+          }
+        ],
         "appliedCharges": [],
-        "disclosureCodes": ["promotion-excluded"]
+        "disclosureCodes": ["promotion-excluded"],
+        "multibuy": null
       }
     },
     {
       "name": "refuses an offer curation excluded",
       "offer": "withdrawn",
       "packs": 1,
-      "expect": { "status": "unavailable", "code": "offer-ineligible" }
+      "expect": {
+        "status": "unavailable",
+        "code": "offer-ineligible"
+      }
     },
     {
       "name": "refuses an offer with no positive price",
       "offer": "zeroPriced",
       "packs": 1,
-      "expect": { "status": "unavailable", "code": "offer-ineligible" }
+      "expect": {
+        "status": "unavailable",
+        "code": "offer-ineligible"
+      }
+    },
+    {
+      "name": "a multibuy below its pack count charges the unit price and reports no deal",
+      "offer": "chicken",
+      "packs": 1,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 350,
+        "total": 350,
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 1,
+            "unitPrice": 350,
+            "amount": 350
+          }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": [],
+        "multibuy": {
+          "packsPerDeal": 2,
+          "dealPrice": 655,
+          "mixAndMatch": true,
+          "deals": 0,
+          "saving": 0
+        }
+      }
+    },
+    {
+      "name": "an exact multibuy charges the deal price",
+      "offer": "chicken",
+      "packs": 2,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 655,
+        "total": 655,
+        "packsBreakdown": [
+          {
+            "kind": "multibuy",
+            "deals": 1,
+            "packsPerDeal": 2,
+            "dealPrice": 655,
+            "amount": 655
+          }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": [],
+        "multibuy": {
+          "packsPerDeal": 2,
+          "dealPrice": 655,
+          "mixAndMatch": true,
+          "deals": 1,
+          "saving": 45
+        }
+      }
+    },
+    {
+      "name": "packs left over after a multibuy are charged at the unit price",
+      "offer": "chicken",
+      "packs": 3,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 1005,
+        "total": 1005,
+        "packsBreakdown": [
+          {
+            "kind": "multibuy",
+            "deals": 1,
+            "packsPerDeal": 2,
+            "dealPrice": 655,
+            "amount": 655
+          },
+          {
+            "kind": "unit",
+            "packs": 1,
+            "unitPrice": 350,
+            "amount": 350
+          }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": [],
+        "multibuy": {
+          "packsPerDeal": 2,
+          "dealPrice": 655,
+          "mixAndMatch": true,
+          "deals": 1,
+          "saving": 45
+        }
+      }
+    },
+    {
+      "name": "a multibuy repeats across the maximum quantity",
+      "offer": "chicken",
+      "packs": 20,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 6550,
+        "total": 6550,
+        "packsBreakdown": [
+          {
+            "kind": "multibuy",
+            "deals": 10,
+            "packsPerDeal": 2,
+            "dealPrice": 655,
+            "amount": 6550
+          }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": [],
+        "multibuy": {
+          "packsPerDeal": 2,
+          "dealPrice": 655,
+          "mixAndMatch": true,
+          "deals": 10,
+          "saving": 450
+        }
+      }
+    },
+    {
+      "name": "a multibuy repeats with a remainder and still adds per-pack charges",
+      "offer": "pasta",
+      "packs": 7,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 2145,
+        "total": 2215,
+        "packsBreakdown": [
+          {
+            "kind": "multibuy",
+            "deals": 2,
+            "packsPerDeal": 3,
+            "dealPrice": 905,
+            "amount": 1810
+          },
+          {
+            "kind": "unit",
+            "packs": 1,
+            "unitPrice": 335,
+            "amount": 335
+          }
+        ],
+        "appliedCharges": [
+          {
+            "label": "Beverage container deposit",
+            "perPack": 10,
+            "amount": 70
+          }
+        ],
+        "disclosureCodes": [],
+        "multibuy": {
+          "packsPerDeal": 3,
+          "dealPrice": 905,
+          "mixAndMatch": false,
+          "deals": 2,
+          "saving": 200
+        }
+      }
+    },
+    {
+      "name": "a multibuy that is not cheaper is ignored",
+      "offer": "dud",
+      "packs": 2,
+      "expect": {
+        "status": "priced",
+        "packsSubtotal": 600,
+        "total": 600,
+        "packsBreakdown": [
+          {
+            "kind": "unit",
+            "packs": 2,
+            "unitPrice": 300,
+            "amount": 600
+          }
+        ],
+        "appliedCharges": [],
+        "disclosureCodes": [],
+        "multibuy": null
+      }
     }
   ]
 }

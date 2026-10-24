@@ -1,5 +1,5 @@
 import type { RetailerOption } from "../../features/basket-comparison/model";
-import { formatSgd } from "../../lib/format";
+import { excludedPromotionNote, formatSgd, multibuyNotes } from "../../lib/format";
 import WasPrice from "../WasPrice";
 
 /** The contract has no charge/note IDs and permits repeated labels. Preserve every entry. */
@@ -74,8 +74,17 @@ export default function RetailerOptionCard({
                           : " (additional charge, already included in line total)"}
                       </li>
                     ))}
+                    {detailEntries(
+                      multibuyNotes(
+                        line.pricing.multibuy,
+                        line.quantity,
+                        line.pricing.unitPriceCents,
+                      ),
+                    ).map(({ value: note, key }) => (
+                      <li key={key}>{note}</li>
+                    ))}
                     {detailEntries(line.pricing.excludedPromotions).map(({ value: note, key }) => (
-                      <li key={key}>Excluded promotion: {note}</li>
+                      <li key={key}>{excludedPromotionNote(note)}</li>
                     ))}
                   </ul>
                   {purchaseEnabled && (

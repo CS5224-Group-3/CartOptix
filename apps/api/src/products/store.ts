@@ -1,6 +1,7 @@
 import type { OffersResponse, Product, ProductsQuery } from "@cartoptix/contracts";
 import { and, asc, count, eq, exists, inArray, like, or, type SQLWrapper, sql } from "drizzle-orm";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { offerRule } from "../comparison/store.ts";
 import { listings, products } from "../db/schema.ts";
 import { priceOffer } from "./offers.ts";
 
@@ -156,23 +157,7 @@ export function createDatabaseProductsStore(db: NodePgDatabase): ProductsStore {
             .where(eq(listings.productId, productId))
             .orderBy(asc(listings.retailerId), asc(listings.listingId));
           const offers = offerRows
-            .map((offer) =>
-              priceOffer(
-                {
-                  listingId: offer.listingId,
-                  productId: offer.productId,
-                  retailerId: offer.retailerId,
-                  priceKind: offer.priceKind,
-                  unitPrice: offer.unitPriceCents,
-                  // Listing rows hold published offers only; excluded candidates never enter the seed.
-                  eligible: true,
-                  charges: [],
-                  excludedPromotions: offer.excludedPromotions.map((detail) => ({ detail })),
-                },
-                offer,
-                quantity,
-              ),
-            )
+            .map((offer) => priceOffer(offerRule(offer), offer, quantity))
             .filter((offer) => offer !== null)
             .sort((left, right) => left.lineTotalCents - right.lineTotalCents);
           return {

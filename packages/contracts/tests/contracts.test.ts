@@ -167,11 +167,18 @@ describe("line totals", () => {
     expect([...kinds].sort()).toEqual([false, true]);
   });
 
-  it.each(lines)("$listingId: unit price × quantity plus added charges", (line) => {
+  it("fixtures include a multibuy", () => {
+    expect(lines.some((line) => line.multibuy && line.multibuy.timesApplied > 0)).toBe(true);
+  });
+
+  it.each(lines)("$listingId: deals and remaining packs plus added charges", (line) => {
     const added = line.itemCharges.filter((c) => !c.includedInPrice);
-    const expected =
-      line.unitPriceCents * line.quantity + added.reduce((s, c) => s + c.amountCents, 0);
-    expect(line.lineTotalCents).toBe(expected);
+    const deals = line.multibuy?.timesApplied ?? 0;
+    const dealPacks = deals * (line.multibuy?.packsPerDeal ?? 0);
+    const packs =
+      deals * (line.multibuy?.dealPriceCents ?? 0) +
+      (line.quantity - dealPacks) * line.unitPriceCents;
+    expect(line.lineTotalCents).toBe(packs + added.reduce((s, c) => s + c.amountCents, 0));
   });
 });
 

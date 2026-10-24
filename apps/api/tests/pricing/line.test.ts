@@ -40,6 +40,8 @@ describe("priceLine", () => {
       expect(line.total).toBe(expected.total);
       expect(line.packsBreakdown).toEqual(expected.packsBreakdown);
       expect(line.appliedCharges).toEqual(expected.appliedCharges);
+      expect(line.multibuy).toEqual(expected.multibuy);
+      expect(line.unitPrice).toBe(offer.unitPrice);
       expect(line.disclosures.map((disclosure) => disclosure.code)).toEqual(
         expected.disclosureCodes,
       );
@@ -78,5 +80,11 @@ describe("priceLine", () => {
         expect(() => priceLine({ offer, packs })).toThrow(PricingContractError);
       });
     }
+
+    it("throws rather than stacking a multibuy on a sale price", () => {
+      const chicken = lookup(fixture.offers, "chicken", "offer");
+      const stacked = { ...chicken, priceKind: "unconditional_sale" as const };
+      expect(() => priceLine({ offer: stacked, packs: 2 })).toThrow(PricingContractError);
+    });
   });
 });

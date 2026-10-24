@@ -12,9 +12,10 @@
     "dev": "node scripts/dev.mjs",
     "build": "pnpm -r --filter=./apps/* build",
     "test": "vitest run",
-    "check": "biome ci . && tsc --build && vitest run && pnpm --filter @cartoptix/infra synth",
+    "check": "biome ci . && tsc --build && vitest run && pnpm run test:scripts && pnpm --filter @cartoptix/infra synth",
     "fix": "biome check --write .",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "test:scripts": "python3 -m unittest discover -s scripts -p \"test_*.py\""
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",

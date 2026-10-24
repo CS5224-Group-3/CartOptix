@@ -31,6 +31,8 @@ export interface OfferRule {
    * (PR-03).
    */
   unitPrice: Cents;
+  /** The listing's approved same-product deal, or null when it has none. */
+  multibuy: MultibuyRule | null;
   /** False when curation excluded the offer; such an offer has no usable price. */
   eligible: boolean;
   /** Charges that apply per pack of this listing. */
@@ -42,6 +44,21 @@ export interface OfferRule {
    * reflected in the price (PR-03).
    */
   excludedPromotions: ExcludedPromotionRule[];
+}
+
+/**
+ * `packsPerDeal` packs of one listing for `dealPrice` (PR-03).
+ *
+ * Curation reduces every supported wording ("N At $X", "N Save X%", "N Save
+ * $X") to this one shape, rounding any percentage when it builds the seed, so
+ * the module never rounds. A deal is counted against packs of its own listing
+ * only, even when the retailer would also accept other products.
+ */
+export interface MultibuyRule {
+  packsPerDeal: number;
+  dealPrice: Cents;
+  /** The retailer's wording was "Any N": other products also qualify. */
+  mixAndMatch: boolean;
 }
 
 /**
