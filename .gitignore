@@ -23,5 +23,8 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
+# Scraper browser profile (cookies)
+.cache/
+
 # Python caches
 __pycache__/

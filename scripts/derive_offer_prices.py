@@ -11,11 +11,17 @@ Rules (product spec PR-03):
   unconditional sale; otherwise it is ordinary. A sale keeps its original
   price for display only; it never changes what the shopper pays.
 - A same-product multibuy becomes a deal of N packs for a fixed price, if that
-  is cheaper than N packs at the unit price. "N At $X" costs X; "N Save X%" and
-  "Buy N Get X% Off" take X% off N packs, rounded half-up to the cent;
-  "N Save $X" takes X off N packs. Deals worded "Any" are marked mix-and-match,
-  but only same-product packs are counted. Validity dates are ignored. A deal
-  on a sale price is not applied, because promotions never stack.
+  is cheaper than N packs at the unit price. "N At $X" (also "@" or "For")
+  costs X; "N Save $X" takes X off N packs. Deals worded "Any" are marked
+  mix-and-match, but only same-product packs are counted. Validity dates are
+  ignored. A deal on a sale price is not applied, because promotions never
+  stack.
+- A percentage deal ("N Save X%", "Buy N Get X% Off") takes X% off N packs,
+  rounded half-up to the cent per deal, and keeps X as `percentOff`. It is an
+  estimate: the live checkout showed the percentage is the retailer's rounded
+  label for a fixed deal price (RedMart's "Any 2 Save 40%" charged $11.79 for
+  $19.78, 40.4% off), so the cart can differ by up to 0.5% of N packs at the
+  unit price per deal (PR-03, data/snapshot/checkout-evidence.md).
 - Other savings text that is not the plain "Save $X" of a sale (spend
   thresholds, gifts, deals that would not be cheaper) is a promotion that is
   not applied. It is kept as a shopper-facing note, with any dates removed.
@@ -41,7 +47,7 @@ WORKBOOKS = {
 PLAIN_SAVING = re.compile(r"save \$?\d+(\.\d+)?", re.IGNORECASE)
 DATES = re.compile(r"\s*\([^)]*\d+/\d+[^)]*\)")
 MULTIBUY = re.compile(
-    r"(?P<scope>any|buy) (?P<packs>\d+) (?:at (?P<price>\$?[\d.]+)"
+    r"(?P<scope>any|buy) (?P<packs>\d+),? (?:(?:at|@|for) (?P<price>\$?[\d.]+)"
     r"|save (?P<saving>\$[\d.]+)|(?:save|get) (?P<percent>\d+(?:\.\d+)?)%(?: off)?)",
     re.IGNORECASE,
 )
@@ -68,44 +74,54 @@ def parse_multibuy(text: str, unit_price: int) -> dict | None:
         return None
     packs = int(match["packs"])
     full_price = packs * unit_price
+    percent = Decimal(match["percent"]) if match["percent"] else None
     if match["price"]:
         deal_price = to_cents(match["price"])
     elif match["saving"]:
         saving = to_cents(match["saving"])
         deal_price = None if saving is None else full_price - saving
     else:
-        percent = Decimal(match["percent"])
-        deal_price = int(
-            (Decimal(full_price) * (100 - percent) / 100).quantize(Decimal(1), ROUND_HALF_UP)
-        )
+        deal_price = int((full_price * (100 - percent) / 100).quantize(Decimal(1), ROUND_HALF_UP))
     if not 2 <= packs <= MAX_PACKS or deal_price is None or not 0 < deal_price < full_price:
         return None
     return {
         "packsPerDeal": packs,
         "dealPriceCents": deal_price,
         "mixAndMatch": match["scope"].lower() == "any",
+        "percentOff": None if percent is None else int(percent) if percent == int(percent) else float(percent),
     }
 
 
+PROMOTION_SEPARATOR = " | "
+
+
 def derive_offer(source) -> dict:
-    """Price, price kind, multibuy and excluded promotion for one workbook row."""
+    """Price, price kind, multibuy and excluded promotions for one source row.
+
+    `Savings` holds one promotion, or several separated by " | " (the scrapers).
+    """
     price = to_cents(source["Product Price"])
     original = to_cents(source["Original Price"])
     savings = source["Savings"].strip()
     is_sale = price is not None and original is not None and original > price
     eligible = price is not None and price > 0
-    terms = DATES.sub("", savings).strip()
-    # A sale price is already a discount; a multibuy never stacks on it (PR-03).
-    multibuy = parse_multibuy(terms, price) if eligible and terms and not is_sale else None
-    promotion = ""
-    if savings and multibuy is None and not (is_sale and PLAIN_SAVING.fullmatch(savings)):
-        promotion = terms
+    multibuy = None
+    excluded = []
+    for term in (DATES.sub("", t).strip() for t in savings.split(PROMOTION_SEPARATOR)):
+        if not term or (is_sale and PLAIN_SAVING.fullmatch(term)):
+            continue
+        # A sale price is already a discount; a multibuy never stacks on it (PR-03).
+        deal = parse_multibuy(term, price) if eligible and not is_sale and multibuy is None else None
+        if deal:
+            multibuy = deal
+        else:
+            excluded.append(term)
     return {
         "unit_price_cents": price if eligible else None,
         "original_price_cents": original if eligible and is_sale else None,
         "price_kind": ("unconditional_sale" if is_sale else "ordinary") if eligible else None,
         "multibuy": multibuy,
-        "excluded_promotion": promotion,
+        "excluded_promotions": excluded,
         "eligible": eligible,
         "savings": savings,
     }
@@ -149,7 +165,8 @@ def main() -> None:
                 "multibuy_packs": (offer["multibuy"] or {}).get("packsPerDeal", ""),
                 "multibuy_price_cents": (offer["multibuy"] or {}).get("dealPriceCents", ""),
                 "multibuy_mix_and_match": (offer["multibuy"] or {}).get("mixAndMatch", ""),
-                "excluded_promotion": offer["excluded_promotion"],
+                "multibuy_percent_off": (offer["multibuy"] or {}).get("percentOff") or "",
+                "excluded_promotion": PROMOTION_SEPARATOR.join(offer["excluded_promotions"]),
                 "offer_status": "ELIGIBLE" if offer["eligible"] else "EXCLUDED_NO_RELIABLE_PRICE",
                 "raw_product_price": source["Product Price"],
                 "raw_original_price": source["Original Price"],

@@ -122,7 +122,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPrice": 655,
-        "mixAndMatch": true
+        "mixAndMatch": true,
+        "percentOff": null
       },
       "eligible": true,
       "charges": [],
@@ -137,7 +138,8 @@
       "multibuy": {
         "packsPerDeal": 3,
         "dealPrice": 905,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": 10
       },
       "eligible": true,
       "charges": [
@@ -158,7 +160,8 @@
       "multibuy": {
         "packsPerDeal": 2,
         "dealPrice": 600,
-        "mixAndMatch": false
+        "mixAndMatch": false,
+        "percentOff": null
       },
       "eligible": true,
       "charges": [],
@@ -347,6 +350,7 @@
           "packsPerDeal": 2,
           "dealPrice": 655,
           "mixAndMatch": true,
+          "percentOff": null,
           "deals": 0,
           "saving": 0
         }
@@ -375,6 +379,7 @@
           "packsPerDeal": 2,
           "dealPrice": 655,
           "mixAndMatch": true,
+          "percentOff": null,
           "deals": 1,
           "saving": 45
         }
@@ -409,6 +414,7 @@
           "packsPerDeal": 2,
           "dealPrice": 655,
           "mixAndMatch": true,
+          "percentOff": null,
           "deals": 1,
           "saving": 45
         }
@@ -437,6 +443,7 @@
           "packsPerDeal": 2,
           "dealPrice": 655,
           "mixAndMatch": true,
+          "percentOff": null,
           "deals": 10,
           "saving": 450
         }
@@ -477,6 +484,7 @@
           "packsPerDeal": 3,
           "dealPrice": 905,
           "mixAndMatch": false,
+          "percentOff": 10,
           "deals": 2,
           "saving": 200
         }

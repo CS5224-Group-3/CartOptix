@@ -98,7 +98,7 @@ describe("compareBasket", () => {
   });
 
   it("lets a same-product multibuy change the winner, counting its own packs only", () => {
-    const deal = { packsPerDeal: 2, dealPrice: 1500, mixAndMatch: true };
+    const deal = { packsPerDeal: 2, dealPrice: 1500, mixAndMatch: true, percentOff: null };
     const result = compare({
       offers: offers.map((o) =>
         o.retailerId === "cold-storage" && o.productId === "rice" ? { ...o, multibuy: deal } : o,
@@ -114,7 +114,7 @@ describe("compareBasket", () => {
   });
 
   it('never combines two lines that share an "Any 2" deal', () => {
-    const deal = { packsPerDeal: 2, dealPrice: 500, mixAndMatch: true };
+    const deal = { packsPerDeal: 2, dealPrice: 500, mixAndMatch: true, percentOff: null };
     const result = compare({
       lines: [
         { productId: "rice", quantity: 1 },

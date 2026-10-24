@@ -48,6 +48,7 @@ export function createFixtureProductsStore(): {
                   packsPerDeal: offer.multibuy.packsPerDeal,
                   dealPrice: offer.multibuy.dealPriceCents,
                   mixAndMatch: offer.multibuy.mixAndMatch,
+                  percentOff: offer.multibuy.percentOff,
                 },
                 eligible: true,
                 charges: offer.itemCharges.map((charge) => ({

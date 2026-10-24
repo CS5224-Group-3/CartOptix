@@ -170,6 +170,7 @@ describe("shared comparison contract adapter", () => {
       packsPerDeal: 2,
       dealPriceCents: 2 * unit - 100,
       mixAndMatch: false,
+      percentOff: null,
       timesApplied: 1,
       savingCents: 100,
       ...change,
@@ -194,6 +195,8 @@ describe("shared comparison contract adapter", () => {
     ["a deal count that does not match the quantity", { timesApplied: 0 }],
     ["a saving that does not add up", { savingCents: 90 }],
     ["a deal that is not cheaper", { dealPriceCents: 100_000 }],
+    ["a percentage of 0", { percentOff: 0 }],
+    ["a percentage of 100", { percentOff: 100 }],
   ])("rejects a multibuy with %s", (_name, change) => {
     const { response, basket } = withDeal(change);
     expect(() => adaptComparison(response, basket)).toThrow(PresentationDataFailure);

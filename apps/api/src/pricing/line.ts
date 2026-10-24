@@ -139,6 +139,7 @@ function lineMultibuy(offer: OfferRule, packs: number): LineMultibuy | null {
     packsPerDeal,
     dealPrice,
     mixAndMatch: rule.mixAndMatch,
+    percentOff: rule.percentOff,
     deals,
     saving: multiplyCents(perDealSaving, deals),
   };

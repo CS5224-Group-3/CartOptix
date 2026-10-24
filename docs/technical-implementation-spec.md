@@ -124,6 +124,8 @@ Known examples requiring validation:
 
 Do not infer seller eligibility, collection dates or canonical identity from these files alone. Titles, URLs and category labels can supply clues but are not sufficient verification.
 
+These exports seeded the first catalogue and stay as historical evidence. Later snapshots come from the scrapers in `scripts/scrape/`, which write the same columns plus the retailer and the RedMart "Sold by" seller to `data/snapshot/`; they are not refresh inputs.
+
 ### Curation pipeline
 
 1. Keep the original exports unchanged outside the clean seed, and give each listing a stable source reference (`source_record_id`).
@@ -132,7 +134,9 @@ Do not infer seller eligibility, collection dates or canonical identity from the
 4. Exclude source stock `No`, unverifiable prices, listings the evidence shows are third-party fulfilled, and unresolved mandatory charges. Listings count as directly fulfilled otherwise (PR-02).
 5. Propose matches, which may use AI. Publish only high-confidence AI matches that agree with the name rules and exclude the rest; manual match review is out of scope for the proof of concept.
 6. Verify one delivery scenario per retailer. Publish verified ordinary and unconditional sale prices and same-product multibuys (PR-03), recording other promotions as excluded; do not infer unsupported rules.
-7. Publish clean, schema-validated seed data with a coverage report and exclusions. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
+7. Publish clean, schema-validated seed data with a coverage report and exclusions. A product needs eligible listings at two or more retailers. Target 200–300 products, with at least 70% having eligible offers from two or more retailers; reduce size before weakening evidence requirements. Compute coverage as qualifying canonical products divided by all published canonical products, not raw listings.
+
+**Snapshot refresh.** `node scripts/scrape/refresh.ts new` clears the previous snapshot's files; `refresh.ts listings` reads every catalogue listing's page again, including every listing that did not publish last time (kept without prices in `data/seed/retired.json`, with the products that dropped out); a listing read again whose name or pack size changed is quarantined until a new high-confidence AI match approves it; `refresh.ts search` searches the retailers each product is missing from and keeps hits that pass the name rules (same pack size, the brand's word, similar name); an AI review records `match-decisions.csv`, and only high-confidence matches publish; `scripts/refresh_seed.py` applies the eligibility rules above and writes the seed and a report. All three retailers are collected in one run. A failure other than positive evidence that a page no longer exists deletes that retailer's file, a seed listing without a new observation stops the build, and no old observation fills a gap. Each step checkpoints after every item and resumes from there. The one exception to collecting everything is `--max-checks N`: once Lazada has shown N checks, the run's remaining RedMart listings are recorded as skipped (excluded, never priced from an earlier snapshot) and its remaining searches find nothing. `refresh.ts carry redmart` instead records RedMart's published listings as carried over: the build keeps each listing's recorded observation (price, original price and deal wording, from `data/seed/observations.csv` or the original exports) and applies today's curation rules to it (only seed listings can be carried), and `search redmart --hits 1` reads only the best search hit per missing product. Product IDs, categories and listing IDs stay stable across refreshes. The only hand check is a RedMart page whose seller cannot be read.
 
 Start with a small curation pilot (proposed size: about 30 canonical products spread across the categories) before expanding, published in the final seed format and importable with the real migrations so the catalogue and comparison APIs can integrate early. This is an implementation checkpoint, not a claim that such a sample has already been approved or created. Report curation quality; automated precision/recall claims require an actual matcher and independent labels, not rechecking the same manually constructed answers.
 
@@ -144,7 +148,7 @@ Start with a small curation pilot (proposed size: about 30 canonical products sp
 | Canonical product | ID, category, brand, variant, pack count, per-pack size/unit or equivalent non-food identity, display name. |
 | Listing | Retailer ID, source listing/SKU ID, canonical ID, product/image URLs, direct-fulfilment status and any evidence reference. |
 | Offer | Listing ID, price in cents, optional descriptive original price, source stock flag, eligibility and exclusion reason, price/charge inclusion evidence. |
-| Supported promotion | A listing's same-product multibuy: packs per deal, deal price in cents (any percentage already rounded half-up by curation) and whether the retailer's wording was "Any N". Deals repeat; remaining packs use the unit price. No validity terms are kept. Rules are fixed in the committed seed. |
+| Supported promotion | A listing's same-product multibuy: packs per deal, deal price in cents (any percentage already rounded half-up by curation, with the labelled percentage kept so the client can say it is an estimate) and whether the retailer's wording was "Any N". Deals repeat; remaining packs use the unit price. No validity terms are kept. Rules are fixed in the committed seed. |
 | Delivery rule | Retailer, declared location/service, explicit non-member eligibility, fee, free-delivery threshold, minimum-order constraint, spending bases, fixed charges and verification evidence. |
 | Mandatory item charge | Verified amount/basis, inclusion in the source price and threshold treatment; supports deposits without double-counting. Unused in the MVP, which does not model BCRS deposits. |
 | Click event | Event ID, retailer/listing/product and the server-recorded timestamp; no user identity. |
@@ -157,7 +161,7 @@ Freezing evaluation data is best-effort; record material changes and rerun affec
 
 ### Shared pricing kernel
 
-One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Percentage deals are rounded once, half-up to the cent per deal, when curation builds the seed, so the module never rounds; the live-checkout evidence for PR-03 must confirm the convention, and a deal type that disagrees stays excluded.
+One deterministic module calculates product-line costs and retailer-order totals. Use integer SGD cents and parse import values with decimal-aware logic. Multibuys are calculated as whole deals plus remainder packs without dividing the deal price into fractional cents. Percentage deals are rounded once, half-up to the cent per deal, when curation builds the seed, so the module never rounds. The percentage is the retailer's rounded label for a fixed price, so a percentage deal is an estimate within 0.5% of its packs at the unit price per deal; the API passes the label on as `percentOff` and the client says so (PR-03).
 
 - Compute the verified ordinary or unconditional sale cost for the exact pack quantity.
 - Apply a listing's same-product multibuy: floor(quantity ÷ packs per deal) deals, the rest at the unit price, and only when the deal is cheaper. Never count packs from another line, and never stack promotions.
@@ -225,7 +229,7 @@ Contract decisions (#5):
   - Per product: category, a representative listing name, listing specifications and an optional image URL. The API derives `name` from the representative name, removing any `[BCRS]` tag, and `packSize` from normalized eligible listing specifications, with units lower-cased. Unresolved specification conflicts are rejected during seed import; a product with no listing is accepted. Products without an eligible listing remain browseable with `available: false` and cannot be added to a basket. Separate canonical pack count/size/unit fields remain future work.
   - Per eligible offer, meaning in stock and directly fulfilled: retailer, product, approved product URL, price kind (ordinary or unconditional sale), a positive unit price in integer cents, for a sale its higher original price in integer cents, any approved same-product multibuy, and excluded promotions as the retailer worded them. Mandatory item charges, with a label, per-pack amount and whether the price already includes them, are needed only once a charge is modelled; the MVP has none, since BCRS deposits are not modelled.
   - Fixed order-level charges per retailer, and whatever rule inputs the pricing module (#8) needs to compute totals.
-  - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across seed edits, because browser baskets keep product IDs through a correction.
+  - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across seed edits and snapshot refreshes, because browser baskets keep product IDs through a correction. A product that drops out of a refresh is removed from the seed, and a basket that still holds it gets the existing not-found handling.
   - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
 
 The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, per-retailer availability reasons and the fixed-data disclaimer. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
@@ -311,12 +315,12 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### B1 — Register and profile source exports
 - **Blocked by:** None.
 - **Work:** Profile the exports, map source fields and categories, and note malformed prices, stock flags and ambiguous packs.
-- **Acceptance:** Raw exports stay unchanged, and each seed listing keeps a reference to its source row.
+- **Acceptance:** Raw exports stay unchanged, and each seed listing keeps a reference to its source row: an export row, or for a refreshed listing its snapshot page (`snapshot:<url>`). The scrapers that collect snapshots are in the repository with run instructions.
 
 #### B2 — Curate a pilot catalogue
 - **Blocked by:** A2, B1.
 - **Work:** Prepare a small cross-category sample in the final seed format; decide exact matches (AI-assisted matching is allowed), check stock eligibility and prices, and remove listings the evidence shows are not directly fulfilled. Quarantine unresolved rows and record corrections.
-- **Acceptance:** Every published pilot offer is in stock with a reliable positive price; only high-confidence matches that agree with the name rules are published; known title/specification contradictions are excluded; pilot coverage and gaps are reported.
+- **Acceptance:** Every published pilot offer is in stock with a reliable positive price; only high-confidence matches that agree with the name rules are published; known title/specification contradictions are excluded; pilot coverage and gaps are reported. Refreshes apply the same rules automatically, and third-party RedMart sellers are excluded from the scraped seller line.
 
 #### B3 — Verify delivery scenarios and supported prices
 - **Blocked by:** A2, B1.
@@ -330,7 +334,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### B5 — Publish the version-controlled MVP seed
 - **Blocked by:** B2, B3, B4.
-- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed and the scripts that build it. Rerun documentation and clearing out intermediates are out of scope for the proof of concept.
+- **Work:** Expand the verified catalogue toward 200–300 products, prioritising evidence over size. Commit the clean seed, the scripts that build it and the scrapers and instructions that refresh it (`scripts/scrape/README.md`). Clearing out intermediates is out of scope for the proof of concept.
 - **Acceptance:** Report the proportion of published canonical products with eligible offers from two or more retailers against the 70% target, category coverage and any shortfall; no known-out-of-stock or separately fulfilled offer is eligible; the seed supplies the fields in section 5, with product and listing IDs stable across seed edits and product links checked against retailer domains at import; the seed imports repeatably.
 
 ### WS-C — Pricing and recommendation engine
@@ -338,7 +342,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C1 — Implement the shared pricing kernel
 - **Blocked by:** A2.
 - **Work:** Implement product, promotion, mandatory-charge and retailer-order pricing against explicit fixtures. Return itemised explanations and excluded-promotion notices.
-- **Acceptance:** Independent reference tests cover cents, multibuy deals and remainders, deals that are not cheaper, minimum orders, threshold boundaries and charge inclusion; percentage rounding happens once in curation and is checked against the live checkout (PR-03). A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed. Product and basket paths use the same module. Real rules are validated later in C5.
+- **Acceptance:** Independent reference tests cover cents, multibuy deals and remainders, deals that are not cheaper, minimum orders, threshold boundaries and charge inclusion; deals are checked against the live checkout: fixed-price deals exactly, percentage deals within their tolerance (PR-03). A clock-change test confirms that advancing the date leaves pricing unchanged for the same basket and approved seed. Product and basket paths use the same module. Real rules are validated later in C5.
 
 #### C2 — Price every retailer's complete basket and validate plans
 - **Blocked by:** C1.

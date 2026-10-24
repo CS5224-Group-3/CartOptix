@@ -59,7 +59,7 @@ describe("product offer pricing", () => {
       {
         ...baseOffer,
         charges: [],
-        multibuy: { packsPerDeal: 2, dealPrice: 700, mixAndMatch: true },
+        multibuy: { packsPerDeal: 2, dealPrice: 700, mixAndMatch: true, percentOff: null },
       },
       listing,
       3,
@@ -70,6 +70,7 @@ describe("product offer pricing", () => {
         packsPerDeal: 2,
         dealPriceCents: 700,
         mixAndMatch: true,
+        percentOff: null,
         timesApplied: 1,
         savingCents: 120,
       },

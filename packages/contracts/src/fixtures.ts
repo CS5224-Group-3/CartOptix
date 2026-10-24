@@ -162,6 +162,7 @@ export const offersExample = {
         packsPerDeal: 2,
         dealPriceCents: 700,
         mixAndMatch: true,
+        percentOff: null,
         timesApplied: 1,
         savingCents: 120,
       },

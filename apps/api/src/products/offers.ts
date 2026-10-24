@@ -8,6 +8,7 @@ export function toWireMultibuy({ multibuy }: PricedLine): Multibuy | null {
       packsPerDeal: multibuy.packsPerDeal,
       dealPriceCents: multibuy.dealPrice,
       mixAndMatch: multibuy.mixAndMatch,
+      percentOff: multibuy.percentOff,
       timesApplied: multibuy.deals,
       savingCents: multibuy.saving,
     }
