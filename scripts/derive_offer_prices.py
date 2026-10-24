@@ -47,7 +47,7 @@ WORKBOOKS = {
 PLAIN_SAVING = re.compile(r"save \$?\d+(\.\d+)?", re.IGNORECASE)
 DATES = re.compile(r"\s*\([^)]*\d+/\d+[^)]*\)")
 MULTIBUY = re.compile(
-    r"(?P<scope>any|buy) (?P<packs>\d+) (?:(?:at|@|for) (?P<price>\$?[\d.]+)"
+    r"(?P<scope>any|buy) (?P<packs>\d+),? (?:(?:at|@|for) (?P<price>\$?[\d.]+)"
     r"|save (?P<saving>\$[\d.]+)|(?:save|get) (?P<percent>\d+(?:\.\d+)?)%(?: off)?)",
     re.IGNORECASE,
 )

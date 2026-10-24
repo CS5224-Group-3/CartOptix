@@ -23,6 +23,9 @@ class ParseMultibuy(unittest.TestCase):
     def test_each_retailers_wording(self):
         self.assertEqual(parse_multibuy("Any 2 @ $6.55", 350)["dealPriceCents"], 655)
         self.assertEqual(parse_multibuy("Any 2 For $6.30", 388)["dealPriceCents"], 630)
+        self.assertEqual(parse_multibuy("Buy 2 for $6.55", 350)["dealPriceCents"], 655)
+        # FairPrice writes a comma after the count; X% comes off the N packs, as without it.
+        self.assertEqual(parse_multibuy("Buy 2, get 30% off", 2899)["dealPriceCents"], 4059)
 
     def test_percentage_deals_keep_their_label(self):
         self.assertEqual(

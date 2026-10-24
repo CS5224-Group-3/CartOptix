@@ -7,7 +7,7 @@ fairprice_00013004,fairprice,722,ordinary,,,,,,ELIGIBLE,7.22,,
 redmart_00000024,redmart,520,ordinary,,,,,,ELIGIBLE,5.2,,
 fairprice_00037252,fairprice,550,ordinary,,,,,,ELIGIBLE,5.5,,
 redmart_00000037,redmart,555,ordinary,,,,,Spend $20 + Free Gift,ELIGIBLE,5.55,,Spend $20 + Free Gift
-fairprice_00038596,fairprice,2899,ordinary,,,,,"Buy 2, get 30% off",ELIGIBLE,28.99,,"Buy 2, get 30% off"
+fairprice_00038596,fairprice,2899,ordinary,2,4059,False,30,,ELIGIBLE,28.99,,"Buy 2, get 30% off"
 redmart_00000894,redmart,2029,unconditional_sale,,,,,,ELIGIBLE,20.29,$28.99,Save $8.70
 fairprice_00059772,fairprice,735,ordinary,,,,,,ELIGIBLE,7.35,,
 redmart_00001317,redmart,735,ordinary,,,,,,ELIGIBLE,7.35,,
