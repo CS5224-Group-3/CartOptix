@@ -260,6 +260,15 @@ class Identity(unittest.TestCase):
         self.assertEqual(self.published(result), {"fairprice", "redmart"})
         self.assertEqual(result["reasons"][("cold-storage", "identity changed")], 1)
 
+    def test_a_candidate_s_approval_does_not_outlive_a_change_to_its_page(self):
+        url = "https://www.lazada.sg/products/pdp-i5-s5.html"
+        changed = {**observation("redmart", url, seller="RedMart", **{"Product Name": "Chocolate cereal 1kg"}), "product_id": "rice-1kg", "similarity": "1.0"}
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+        observed = {o["product url"]: o for o in FRESH}
+        result = build(seed, EMPTY, observed, [changed], {("rice-1kg", url): REVIEWED}, {}, {})
+        self.assertNotIn("redmart", {l["retailerId"] for l in result["listings"]})
+        self.assertEqual(result["accepted"], 0)
+
     def test_an_approval_without_the_reviewed_name_holds_for_nothing(self):
         url = "https://www.lazada.sg/products/pdp-i5-s5.html"
         candidate = {**observation("redmart", url, seller="RedMart"), "product_id": "rice-1kg", "similarity": "1.0"}
