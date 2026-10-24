@@ -19,6 +19,8 @@ Rules:
   name and pack size, ignoring case, spacing, punctuation and the BCRS tag.
   Otherwise it is quarantined ("identity changed") until a new MATCH/HIGH
   decision in match-decisions.csv approves the page as it reads now.
+- A decision holds only while the page shows the name and specification it
+  recorded (compared the same way), so an approval never outlives a change.
 - Where a targeted search read a page the full search also read, the targeted
   reading is the one used.
 - A product publishes when two or more retailers have an eligible listing.
@@ -116,9 +118,15 @@ def same_identity(listing: dict, row: dict) -> bool:
     )
 
 
-def approved(decisions: dict, product_id: str, url: str) -> bool:
+def approved(decisions: dict, product_id: str, url: str, row: dict | None) -> bool:
+    """A MATCH/HIGH review of this page that still holds: the page shows the name
+    and pack size the review recorded. A gone page (`row` None) has none to show.
+    """
     decision = decisions.get((product_id, url), {})
-    return decision.get("decision") == "MATCH" and decision.get("confidence") == "HIGH"
+    if decision.get("decision") != "MATCH" or decision.get("confidence") != "HIGH":
+        return False
+    reviewed = {"name": decision.get("name") or None, "specification": decision.get("specification", "")}
+    return row is None or same_identity(reviewed, row)
 
 
 def latest_candidates(full: list[dict], targeted: list[dict]) -> list[dict]:
@@ -218,7 +226,7 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
         identity = {k: listing[k] for k in IDENTITY if k in listing}
         if row.get("status", "ok") == "ok" and not same_identity(listing, row):
             # A changed page publishes again only on a new MATCH/HIGH review.
-            if approved(decisions, listing["productId"], listing["productUrl"]):
+            if approved(decisions, listing["productId"], listing["productUrl"], row):
                 identity["name"] = row["Product Name"].strip()
                 identity["specification"] = row["Specification"].strip() or identity["name"]
             else:
@@ -227,9 +235,10 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
         identities[listing["productId"]].append(identity)
     accepted = 0
     for candidate in sorted(candidates, key=lambda c: -float(c["similarity"])):
-        if approved(decisions, candidate["product_id"], candidate["product url"]):
-            # Rows written before candidates had a status were all read pages.
-            candidate = {**candidate, "status": candidate.get("status") or "ok"}
+        # Rows written before candidates had a status were all read pages.
+        candidate = {**candidate, "status": candidate.get("status") or "ok"}
+        page = None if candidate["status"] == "not_found" else candidate
+        if approved(decisions, candidate["product_id"], candidate["product url"], page):
             rows[candidate["product_id"]].append(candidate)
             if candidate["status"] == "not_found":
                 continue  # A gone page publishes nothing and has no identity to keep.

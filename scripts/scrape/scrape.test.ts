@@ -391,7 +391,8 @@ def page(retailer, url):
 fp, cs = "https://www.fairprice.com.sg/product/rice", "https://coldstorage.com.sg/product/rice"
 product = {"productId": "rice-1kg", "categoryId": "rice-and-noodles", "representativeName": "Rice 1kg", "imageUrl": None}
 seed = {"products": [product], "listings": [listing("fairprice", fp), listing("cold-storage", cs)]}
-match = {("rice-1kg", full[0]["product url"]): {"decision": "MATCH", "confidence": "HIGH"}}
+match = {("rice-1kg", full[0]["product url"]): {"decision": "MATCH", "confidence": "HIGH",
+                                                "name": "Rice 1kg", "specification": "1kg"}}
 result = r.build(seed, {"products": [], "listings": []}, {fp: page("fairprice", fp), cs: page("cold-storage", cs)},
                  r.latest_candidates(full, targeted), match, {}, {})
 print(json.dumps(sorted(l["retailerId"] for l in result["listings"])))

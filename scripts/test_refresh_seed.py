@@ -155,6 +155,8 @@ class Build(unittest.TestCase):
         self.assertEqual({l["retailerId"] for l in result["listings"]}, {"fairprice", "cold-storage"})
 
 
+MATCH = {"decision": "MATCH", "confidence": "HIGH"}
+REVIEWED = {**MATCH, "name": "Rice 1kg", "specification": "1kg"}
 RM = "https://www.lazada.sg/products/pdp-i9-s9.html"
 RETIRED_WITH_REDMART = {
     "products": [PRODUCT],
@@ -169,7 +171,7 @@ class SuccessiveSnapshots(unittest.TestCase):
         rm = "https://www.lazada.sg/products/pdp-i7-s7.html"
         seed = {"products": [PRODUCT], "listings": LISTINGS}
         candidate = {**observation("redmart", rm, seller="RedMart", Savings="Any 2 For $5.00"), "product_id": "rice-1kg", "similarity": "1.0"}
-        decisions = {("rice-1kg", rm): {"decision": "MATCH", "confidence": "HIGH"}}
+        decisions = {("rice-1kg", rm): {**MATCH, "name": "Rice 1kg", "specification": "1kg"}}
         observed = {o["product url"]: o for o in FRESH}
         first = build(seed, EMPTY, observed, [candidate], decisions, {}, {})
         found = next(l for l in first["listings"] if l["retailerId"] == "redmart")
@@ -187,7 +189,6 @@ class SuccessiveSnapshots(unittest.TestCase):
         self.assertEqual(second["carried"], 1)
 
 
-RM = "https://www.lazada.sg/products/pdp-i9-s9.html"
 REDMART = {"listingId": "redmart-pdp-i9-s9", "productId": "rice-1kg", "retailerId": "redmart", "productUrl": RM, "name": "Rice 1kg", "specification": "1kg"}
 THREE = {"products": [PRODUCT], "listings": [*LISTINGS, REDMART]}
 
@@ -241,15 +242,31 @@ class Identity(unittest.TestCase):
         retired = {"products": [PRODUCT], "listings": [{k: v for k, v in l.items() if k != "name"} for l in LISTINGS]}
         observed = {o["product url"]: o for o in [observation("fairprice", FP), observation("cold-storage", CS)]}
         self.assertEqual(build(EMPTY, retired, observed, [], {}, {}, {})["products"], [])
-        decisions = {("rice-1kg", url): {"decision": "MATCH", "confidence": "HIGH"} for url in (FP, CS)}
+        decisions = {("rice-1kg", url): REVIEWED for url in (FP, CS)}
         back = build(EMPTY, retired, observed, [], decisions, {}, {})
         self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])
 
     def test_a_new_match_decision_approves_the_page_as_it_reads_now(self):
         observed = {o["product url"]: o for o in three(**{"Product Name": "Rice Jasmine 1kg"})}
-        decisions = {("rice-1kg", CS): {"decision": "MATCH", "confidence": "HIGH"}}
+        decisions = {("rice-1kg", CS): {**MATCH, "name": "Rice Jasmine 1kg", "specification": "1kg"}}
         result = build(THREE, EMPTY, observed, [], decisions, {}, {})
         self.assertEqual(self.published(result), {"fairprice", "cold-storage", "redmart"})
+
+
+    def test_an_approval_does_not_outlive_a_change_to_the_page(self):
+        # Approved as it read when reviewed, then the page changed to another product.
+        decisions = {("rice-1kg", CS): REVIEWED}
+        result = build(THREE, EMPTY, {o["product url"]: o for o in three(**{"Product Name": "Chocolate cereal 1kg"})}, [], decisions, {}, {})
+        self.assertEqual(self.published(result), {"fairprice", "redmart"})
+        self.assertEqual(result["reasons"][("cold-storage", "identity changed")], 1)
+
+    def test_an_approval_without_the_reviewed_name_holds_for_nothing(self):
+        url = "https://www.lazada.sg/products/pdp-i5-s5.html"
+        candidate = {**observation("redmart", url, seller="RedMart"), "product_id": "rice-1kg", "similarity": "1.0"}
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+        observed = {o["product url"]: o for o in FRESH}
+        result = build(seed, EMPTY, observed, [candidate], {("rice-1kg", url): MATCH}, {}, {})
+        self.assertNotIn("redmart", {l["retailerId"] for l in result["listings"]})
 
 
 class Precedence(unittest.TestCase):
@@ -280,7 +297,7 @@ class GonePages(unittest.TestCase):
         earlier = {**observation("redmart", url, seller="RedMart"), "product_id": "rice-1kg", "similarity": "1.0"}
         del earlier["status"]  # written before candidates had a status
         gone = {**observation("redmart", url, **{"Product Name": "", "Product Price": "", "in-stock": ""}), "status": "not_found", "product_id": "rice-1kg", "similarity": "1.0"}
-        decisions = {("rice-1kg", url): {"decision": "MATCH", "confidence": "HIGH"}}
+        decisions = {("rice-1kg", url): REVIEWED}
         observed = {o["product url"]: o for o in FRESH}
         seed = {"products": [PRODUCT], "listings": LISTINGS}
 
