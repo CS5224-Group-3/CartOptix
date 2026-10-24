@@ -228,7 +228,11 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
     accepted = 0
     for candidate in sorted(candidates, key=lambda c: -float(c["similarity"])):
         if approved(decisions, candidate["product_id"], candidate["product url"]):
-            rows[candidate["product_id"]].append({**candidate, "status": "ok"})
+            # Rows written before candidates had a status were all read pages.
+            candidate = {**candidate, "status": candidate.get("status") or "ok"}
+            rows[candidate["product_id"]].append(candidate)
+            if candidate["status"] == "not_found":
+                continue  # A gone page publishes nothing and has no identity to keep.
             url = candidate["product url"].split("?")[0]
             identities[candidate["product_id"]].append(
                 {

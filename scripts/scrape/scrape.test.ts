@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -11,7 +12,14 @@ import {
   pageProduct,
 } from "./fairprice.ts";
 import { packKey, passesNameRules, searchQuery } from "./match.ts";
-import { fromCsv, needsSeller, toCsv } from "./observation.ts";
+import {
+  CANDIDATE_COLUMNS,
+  candidateRow,
+  fromCsv,
+  needsSeller,
+  type Observation,
+  toCsv,
+} from "./observation.ts";
 import { isChallenge, observe as redmart, sellerFrom } from "./redmart.ts";
 
 describe("FairPrice pages", () => {
@@ -361,5 +369,73 @@ describe("checkpoints", () => {
     expect(needsSeller({ ...row, status: "skipped" })).toBe(false);
     expect(needsSeller({ ...row, status: "not_found" })).toBe(false);
     expect(needsSeller(row)).toBe(true);
+  });
+});
+
+/** Builds a seed with FairPrice and Cold Storage already listed, from the given RedMart candidate files. */
+const BUILD = `
+import json, sys
+from pathlib import Path
+sys.path.insert(0, "scripts")
+import refresh_seed as r
+r.SNAPSHOT = Path(sys.argv[1])
+full, targeted = r.read(sys.argv[2]), r.read(sys.argv[3], required=False)
+def listing(retailer, url):
+    return {"listingId": retailer + "-rice", "productId": "rice-1kg", "retailerId": retailer,
+            "productUrl": url, "name": "Rice 1kg", "specification": "1kg"}
+def page(retailer, url):
+    return {"status": "ok", "retailer": retailer, "product url": url, "Product Name": "Rice 1kg",
+            "Product Price": "3.00", "Original Price": "", "Specification": "1kg", "Savings": "",
+            "in-stock": "Yes", "Image URL": "", "seller": ""}
+fp, cs = "https://www.fairprice.com.sg/product/rice", "https://coldstorage.com.sg/product/rice"
+product = {"productId": "rice-1kg", "categoryId": "rice-and-noodles", "representativeName": "Rice 1kg", "imageUrl": None}
+seed = {"products": [product], "listings": [listing("fairprice", fp), listing("cold-storage", cs)]}
+match = {("rice-1kg", full[0]["product url"]): {"decision": "MATCH", "confidence": "HIGH"}}
+result = r.build(seed, {"products": [], "listings": []}, {fp: page("fairprice", fp), cs: page("cold-storage", cs)},
+                 r.latest_candidates(full, targeted), match, {}, {})
+print(json.dumps(sorted(l["retailerId"] for l in result["listings"])))
+`;
+
+describe("snapshot refresh, collector to seed", () => {
+  it("lets a targeted search's gone page stop an earlier reading of it from publishing", () => {
+    const dir = mkdtempSync(join(tmpdir(), "snapshot-"));
+    const url = "https://www.lazada.sg/products/pdp-i5-s5.html";
+    const target = {
+      productId: "rice-1kg",
+      name: "Rice 1kg",
+      specification: "1kg",
+      similarity: "1.000",
+    };
+    const page: Observation = {
+      retailer: "redmart",
+      "product url": url,
+      "Product Name": "Rice 1kg",
+      "Product Price": "3.00",
+      "Original Price": "",
+      Specification: "1kg",
+      Savings: "",
+      "in-stock": "Yes",
+      "Image URL": "",
+      brand: "",
+      seller: "RedMart",
+    };
+    const write = (file: string, result: Observation | "not_found") =>
+      writeFileSync(
+        join(dir, file),
+        toCsv(CANDIDATE_COLUMNS, [candidateRow(target, "redmart", url, result)]),
+      );
+    write("candidates-redmart.csv", page);
+    const published = () =>
+      JSON.parse(
+        execFileSync(
+          "python3",
+          ["-c", BUILD, dir, "candidates-redmart.csv", "candidates-redmart-targeted.csv"],
+          { cwd: join(import.meta.dirname, "../.."), encoding: "utf8" },
+        ),
+      );
+
+    expect(published()).toEqual(["cold-storage", "fairprice", "redmart"]);
+    write("candidates-redmart-targeted.csv", "not_found");
+    expect(published()).toEqual(["cold-storage", "fairprice"]);
   });
 });

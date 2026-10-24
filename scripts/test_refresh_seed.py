@@ -272,3 +272,22 @@ class InactiveListings(unittest.TestCase):
         back = run(seed, two["retired"], three())
         self.assertIn("cold-storage-rice-1kg", {l["listingId"] for l in back["listings"]})
         self.assertEqual(back["retired"], EMPTY)
+
+
+class GonePages(unittest.TestCase):
+    def test_a_targeted_search_s_gone_page_supersedes_its_earlier_reading(self):
+        url = "https://www.lazada.sg/products/pdp-i5-s5.html"
+        earlier = {**observation("redmart", url, seller="RedMart"), "product_id": "rice-1kg", "similarity": "1.0"}
+        del earlier["status"]  # written before candidates had a status
+        gone = {**observation("redmart", url, **{"Product Name": "", "Product Price": "", "in-stock": ""}), "status": "not_found", "product_id": "rice-1kg", "similarity": "1.0"}
+        decisions = {("rice-1kg", url): {"decision": "MATCH", "confidence": "HIGH"}}
+        observed = {o["product url"]: o for o in FRESH}
+        seed = {"products": [PRODUCT], "listings": LISTINGS}
+
+        published = build(seed, EMPTY, observed, refresh_seed.latest_candidates([earlier], []), decisions, {}, {})
+        self.assertIn("redmart", {l["retailerId"] for l in published["listings"]})
+        result = build(seed, EMPTY, observed, refresh_seed.latest_candidates([earlier], [gone]), decisions, {}, {})
+        self.assertNotIn("redmart", {l["retailerId"] for l in result["listings"]})
+        self.assertEqual(result["reasons"][("redmart", "page gone")], 1)
+        self.assertEqual(result["accepted"], 0)
+        self.assertEqual(result["retired"]["listings"], [])

@@ -36,6 +36,45 @@ export interface SearchHit {
 /** A page that no longer exists is an observation (unavailable), not a failure. */
 export type ProductResult = Observation | "not_found";
 
+/** The columns of candidates-<retailer>.csv: the product searched for, then the hit's page. */
+export const CANDIDATE_COLUMNS = [
+  "product_id",
+  "target_name",
+  "target_specification",
+  "similarity",
+  "status",
+  ...COLUMNS,
+] as const;
+
+/**
+ * A search hit's row: its page as read, or, when the page is gone, a negative
+ * observation, which supersedes an earlier reading of the same page in the
+ * build (refresh_seed.py). A search miss records nothing.
+ */
+export function candidateRow(
+  target: { productId: string; name: string; specification: string; similarity: string },
+  retailer: Retailer,
+  url: string,
+  result: ProductResult,
+): Record<string, string> {
+  const page =
+    result === "not_found"
+      ? {
+          ...Object.fromEntries(COLUMNS.map((c) => [c, ""])),
+          retailer,
+          "product url": url,
+          status: "not_found",
+        }
+      : { ...result, status: "ok" };
+  return {
+    product_id: target.productId,
+    target_name: target.name,
+    target_specification: target.specification,
+    similarity: target.similarity,
+    ...page,
+  };
+}
+
 export interface RetailerScraper {
   product(url: string): Promise<ProductResult>;
   search(query: string): Promise<SearchHit[]>;
@@ -98,7 +137,7 @@ export function fromCsv(text: string): Record<string, string>[] {
  * read but showed no seller. A gone or skipped listing is never revisited.
  */
 export function needsSeller(row: Record<string, string>): boolean {
-  // Candidate rows have no status column: their pages were read.
-  const read = row.status === undefined || row.status === "ok";
+  // Candidate rows written before they had a status were all read pages.
+  const read = !row.status || row.status === "ok";
   return read && row.retailer === "redmart" && !row.seller;
 }

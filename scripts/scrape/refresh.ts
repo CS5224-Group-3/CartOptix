@@ -31,10 +31,11 @@ import { coldStorage } from "./coldstorage.ts";
 import { fairprice } from "./fairprice.ts";
 import { passesNameRules, searchQuery, similarity } from "./match.ts";
 import {
+  CANDIDATE_COLUMNS,
   COLUMNS,
+  candidateRow,
   fromCsv,
   needsSeller,
-  type Observation,
   type Retailer,
   type RetailerScraper,
   toCsv,
@@ -63,13 +64,6 @@ interface Seed {
 }
 
 const LISTING_COLUMNS = ["status", ...COLUMNS] as const;
-const CANDIDATE_COLUMNS = [
-  "product_id",
-  "target_name",
-  "target_specification",
-  "similarity",
-  ...COLUMNS,
-] as const;
 type Row = Record<string, string>;
 
 const load = (file: string): Seed =>
@@ -250,15 +244,13 @@ function search(retailer: Retailer): Promise<string[]> {
         .slice(0, options.hits);
       const rows: Row[] = [];
       for (const hit of hits) {
-        const result = await client.product(hit.url);
-        if (result === "not_found") continue;
-        rows.push({
-          product_id: item.product.productId,
-          target_name: name,
-          target_specification: item.specification,
+        const target = {
+          productId: item.product.productId,
+          name,
+          specification: item.specification,
           similarity: similarity(name, hit.name).toFixed(3),
-          ...(result satisfies Observation),
-        });
+        };
+        rows.push(candidateRow(target, retailer, hit.url, await client.product(hit.url)));
       }
       return rows;
     },
