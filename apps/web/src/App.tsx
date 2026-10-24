@@ -234,7 +234,10 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
         }
         if (!basket.length) return;
         // Freeze available catalogue pages and product details before resolving any missing metadata.
-        const known = new Map<string, Pick<Product, "name" | "packSize">>();
+        const known = new Map<
+          string,
+          Pick<Product, "name" | "packSize"> & { imageUrl?: string | null }
+        >();
         // Metadata already resolved for an earlier API attempt is still usable for the same IDs.
         if (requestState.phase !== "idle" && !requestState.submitted.scenario)
           for (const product of requestState.submitted.basket.products)
@@ -242,6 +245,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
               known.set(product.productId, {
                 name: product.name,
                 packSize: product.packDescription,
+                imageUrl: product.imageUrl,
               });
         for (const [id, product] of buildKnownProductMap(queryClient, products))
           known.set(id, product);
@@ -253,6 +257,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
                 ...line,
                 name: known.get(line.productId)?.name ?? "",
                 packDescription: known.get(line.productId)?.packSize ?? "",
+                imageUrl: known.get(line.productId)?.imageUrl ?? null,
               })),
             },
           },
@@ -916,7 +921,7 @@ function UnavailableOfferRow({ retailerId }: { retailerId: RetailerId }) {
         <span className="retailer-dot" style={{ background: retailer.accent }} />{" "}
         <div>
           <strong>{retailer.name}</strong>
-          <span>No eligible offer</span>
+          <span>Not available at {retailer.name}</span>
         </div>
       </div>
       <div className="offer-row__price">

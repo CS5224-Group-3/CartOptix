@@ -27,7 +27,7 @@ Primary users are people who buy groceries online in Singapore and want to compa
 | Canonical product | A verified product identity shared by eligible retailer listings: same brand, variant, pack size and pack count, or equivalent identifying attributes for a non-food item. |
 | Retailer listing | A particular retailer's purchasable listing, linked to a canonical product. |
 | Basket line | One canonical product and the requested number of whole packs. |
-| Retailer option | The complete basket priced at one retailer when every line has an eligible offer, its delivery rule is verified and the order meets its minimum; otherwise unavailable with a reason. A feasible option does not guarantee current stock or fulfilment. |
+| Retailer option | The complete basket priced at one retailer when every line has an eligible offer, its delivery rule is verified and the order meets its minimum; otherwise unavailable with a reason, and with an estimate of checking out the lines it can supply where there is one (J3). A feasible option does not guarantee current stock or fulfilment. |
 | Eligible offer | A listing approved for the curated dataset with usable pricing, direct supermarket fulfilment and an in-stock source flag. A listing counts as directly fulfilled unless evidence shows otherwise (PR-02). |
 | BAU | The prospective business-as-usual service. Its demand and cost estimates are planning assumptions, not demonstrated adoption. |
 
@@ -76,6 +76,8 @@ The normal evaluation basket has 20 distinct lines. The supported maximum is **5
 
 Display an option for each of the three retailers. A retailer is feasible only when it has an eligible offer for every line, its delivery rule is verified and its order meets the minimum. Show other options as unavailable with reasons such as missing products, an unmet minimum or an unverified delivery rule. Recommend the cheapest feasible option; never rank a partial basket against a complete one.
 
+An unavailable option also shows what checking out the lines that retailer can supply would cost, as the shopper would pay it: those lines with their promotions, and the delivery fee and order charges for that spend. It is labelled as an incomplete basket with an "Estimated total for N of M items" (counting distinct lines), lists each missing product with its name, image and pack size and a link to its product page, and warns when that spend is below the retailer's minimum order ("S$X more needed"). A complete basket below the minimum gets the same estimate, labelled "Estimated total", and warning. There is no estimate when the retailer can supply none of the basket or its delivery rule is unverified. Unavailable options come after every complete option, fewest missing products first, then by retailer; they are never recommended or compared with the recommendation.
+
 Each feasible option shows:
 
 - Products and quantities at that retailer.
@@ -96,17 +98,17 @@ Record lightweight outbound-click events for usage evaluation. A tracking failur
 | Situation | Required behaviour |
 | --- | --- |
 | Empty basket or invalid input | Explain what must change; do not run a misleading comparison. |
-| Some retailers unavailable | Show each unavailable retailer and its reason alongside any feasible complete-basket options. |
-| No retailer can fulfil the complete basket | Show **“No feasible purchasing plan available”** with each retailer's reason; the shopper changes the basket themselves. |
+| Some retailers unavailable | Show each unavailable retailer, its reason and its incomplete-basket estimate (J3) after any feasible complete-basket options. |
+| No retailer can fulfil the complete basket | Show **“No feasible purchasing plan available”** above each retailer's reason and incomplete-basket estimate; the shopper changes the basket themselves. |
 | Calculation or service failure | Show a retryable error distinct from a valid business outcome. |
 
-Never price a partial basket as complete or rank it against complete options. Changing the basket is the shopper's decision.
+Never present a partial basket as complete, rank it against complete options or recommend it; a clearly labelled estimate of it is allowed (J3). Changing the basket is the shopper's decision.
 
 ## 4. Product rules and constraints
 
 ### PR-01 — Exact products and quantities
 
-Each complete-basket option places every line with the same retailer. Do not divide a line's quantity across retailers, substitute brands or pack configurations, add products, or buy extra units to reach a promotion or delivery threshold. Similar names and equivalent total volume alone do not establish an exact match.
+Each complete-basket option places every line with the same retailer; an incomplete-basket estimate (J3) prices only the lines that retailer has, at their requested quantities, and is never presented as complete. Do not divide a line's quantity across retailers, substitute brands or pack configurations, add products, or buy extra units to reach a promotion or delivery threshold. Similar names and equivalent total volume alone do not establish an exact match.
 
 ### PR-02 — Curated eligibility and availability
 
@@ -147,7 +149,7 @@ BCRS container deposits are not modelled in the MVP. The same 10¢ per container
 
 All monetary calculations use integer SGD cents. Calculate the complete basket independently at each retailer, with the same pricing rules as product comparison, including product costs, supported promotions, delivery fees and thresholds, minimum orders and mandatory order charges. Recommend the cheapest feasible option, with ties resolved as in J3.
 
-Validate every returned complete option and explain each unavailable retailer. Retailer participation, commissions and click revenue do not influence recommendations.
+Validate every returned complete option and explain each unavailable retailer. An unavailable retailer's estimate is validated the same way, never takes part in the recommendation, and never appears above a complete option. Retailer participation, commissions and click revenue do not influence recommendations.
 
 ### PR-06 — Snapshot disclosure and seed data
 

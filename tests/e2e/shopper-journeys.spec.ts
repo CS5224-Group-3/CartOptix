@@ -1,4 +1,37 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { expect, test } from "@playwright/test";
+
+/** The committed seed, so seed-dependent journeys hold across snapshot refreshes. */
+const seed: {
+  products: { productId: string; representativeName: string }[];
+  listings: { productId: string; retailerId: string }[];
+} = JSON.parse(readFileSync(resolve(import.meta.dirname, "../../data/seed/seed.json"), "utf8"));
+const RETAILER_NAMES: Record<string, string> = {
+  redmart: "RedMart",
+  fairprice: "FairPrice",
+  "cold-storage": "Cold Storage",
+};
+const shopperName = (name: string) => name.replace(/\s*\[BCRS\]\s*/gi, " ").trim();
+
+/**
+ * Two products and a retailer that has only the first, where another retailer
+ * has both, so the basket has a recommended complete option and an incomplete one.
+ */
+function incompleteBasket() {
+  const at = (productId: string) =>
+    new Set(seed.listings.filter((l) => l.productId === productId).map((l) => l.retailerId));
+  for (const present of seed.products)
+    for (const missing of seed.products) {
+      const a = at(present.productId);
+      const b = at(missing.productId);
+      const retailer = [...a].find((r) => !b.has(r));
+      const both = [...a].some((r) => b.has(r));
+      if (retailer && both && present.productId !== missing.productId)
+        return { present, missing, retailer: RETAILER_NAMES[retailer] ?? retailer };
+    }
+  throw new Error("The seed has no incomplete basket to show");
+}
 
 test.describe("CartOptix shopper journeys", () => {
   test("J1: find a product and add it to the basket", async ({ page }) => {
@@ -28,9 +61,9 @@ test.describe("CartOptix shopper journeys", () => {
 
     await expect(page).toHaveURL(/\/results$/);
     await expect(page.getByRole("heading", { name: "Retailer basket comparison" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "RedMart" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "FairPrice" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Cold Storage" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "RedMart", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "FairPrice", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Cold Storage", exact: true })).toBeVisible();
     await expect(page.getByText(/fixed retailer dataset/i).first()).toBeVisible();
   });
 
@@ -77,6 +110,41 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(deal).first()).toBeVisible();
   });
 
+  test("J3/J5: an incomplete basket shows its estimate and missing products", async ({ page }) => {
+    const { present, missing, retailer } = incompleteBasket();
+    for (const product of [present, missing]) {
+      await page.goto(`/product/${product.productId}`);
+      await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+      await expect(page).toHaveURL(/\/basket$/);
+    }
+    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+    await expect(page).toHaveURL(/\/results$/);
+    // A complete option is recommended first; the incomplete card follows it.
+    await expect(page.getByText(/^Recommended/)).toHaveCount(1);
+    const card = page.getByRole("article", { name: retailer });
+    await expect(card.getByText("Incomplete basket")).toBeVisible();
+    await expect(card.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(card.getByText(/^Recommended/)).toHaveCount(0);
+    // The missing product's link works from the keyboard.
+    const link = card.getByRole("link", { name: shopperName(missing.representativeName) });
+    await link.focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(new RegExp(`/product/${missing.productId}$`));
+  });
+
+  test("J3: a retailer with none of the basket shows no estimate", async ({ page }) => {
+    const { missing, retailer } = incompleteBasket();
+    await page.goto(`/product/${missing.productId}`);
+    await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+    const card = page.getByRole("article", { name: retailer });
+    await expect(card.getByText("Incomplete basket")).toBeVisible();
+    await expect(card.getByText(/Estimated total|S\$/)).toHaveCount(0);
+    await expect(
+      card.getByRole("link", { name: shopperName(missing.representativeName) }),
+    ).toBeVisible();
+  });
+
   test("J2: changing the basket makes an earlier result stale", async ({ page }) => {
     await page.goto("/basket");
     await page.getByRole("button", { name: /Multiple complete retailers/i }).click();
@@ -99,6 +167,18 @@ test.describe("CartOptix shopper journeys", () => {
     await page.getByRole("button", { name: "No feasible purchasing plan" }).click();
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page.getByText(/No feasible purchasing plan available/i)).toBeVisible();
+    // Fewest missing first: Cold Storage (no estimate: unverified delivery), FairPrice
+    // (whole basket below its minimum), then RedMart (missing one product).
+    await expect(page.locator("article h2")).toHaveText(["Cold Storage", "FairPrice", "RedMart"]);
+    const coldStorage = page.getByRole("article", { name: "Cold Storage" });
+    await expect(coldStorage.getByText(/Estimated total/)).toHaveCount(0);
+    const fairprice = page.getByRole("article", { name: "FairPrice" });
+    await expect(fairprice.getByText("Below minimum order")).toBeVisible();
+    await expect(fairprice.getByText(/minimum order — S\$8\.50 more needed/)).toBeVisible();
+    await expect(fairprice.getByText("Estimated total", { exact: true })).toBeVisible();
+    const redmart = page.getByRole("article", { name: "RedMart" });
+    await expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(page.getByText(/^Recommended/)).toHaveCount(0);
   });
 
   test("J5: temporary service failure can be retried successfully", async ({ page }) => {

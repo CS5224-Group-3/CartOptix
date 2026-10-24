@@ -177,7 +177,7 @@ Promotion eligibility comes from the committed seed, not the runtime clock. Ther
 
 1. Validate input, rejecting duplicate product IDs as the contract requires (section 5).
 2. Read the seed data from one consistent snapshot and price the complete basket independently at each of the three retailers through the shared pricing module.
-3. For each retailer, require eligible offers for every line, a verified delivery rule and an order that meets its minimum. Otherwise mark that option unavailable with its reason; do not price a partial basket as complete.
+3. For each retailer, require eligible offers for every line, a verified delivery rule and an order that meets its minimum. Otherwise mark that option unavailable with its reasons; do not price a partial basket as complete. When the delivery rule is verified and at least one line is available, price those lines through the same module as a partial order, with delivery and order charges for that spend, including when the spend is below the minimum.
 4. Validate each feasible option and its itemised product costs, supported promotions, excluded-promotion notices, delivery and other mandatory order charges, and estimated total.
 5. Recommend the cheapest feasible option, breaking ties by retailer ID in code-point order. Return every retailer's option, including unavailability reasons.
 
@@ -187,11 +187,11 @@ All three options are computed exactly; there is no search budget or optimality 
 
 | Outcome | Meaning |
 | --- | --- |
-| Feasible options | Return each retailer's complete-basket option or unavailability reason, and recommend the cheapest feasible option using the documented tie-break. |
-| No feasible plan | Show “No feasible purchasing plan available” with each retailer's reason; the shopper changes the basket themselves. |
+| Feasible options | Return each retailer's complete-basket option or unavailability reasons with any partial order, and recommend the cheapest feasible option using the documented tie-break. |
+| No feasible plan | Show “No feasible purchasing plan available” with each retailer's reasons and partial order; the shopper changes the basket themselves. |
 | Operational error | Internal or database failure uses a distinct retryable service-error response rather than a business outcome. Invalid shopper input is rejected separately. |
 
-Never return a partial basket as a complete result or compare its price with complete options. Report unavailable options and no-feasible-plan rates separately from operational failures.
+Never return a partial basket as a complete result, compare its price with complete options or recommend it; it travels only as an unavailable option's `partialOrder`. Report unavailable options and no-feasible-plan rates separately from operational failures.
 
 ## 5. API and interface contracts
 
@@ -214,11 +214,11 @@ Contract decisions (#5):
 - **Seed data.** The database holds the one committed seed, which evolves in Git; Git history is its version record. There are no dataset IDs or versions: neither requests nor responses identify a seed, and a correction is an edit to the seed file.
 - **Catalogue search.** Product search is case- and whitespace-insensitive substring matching across the shopper-facing product name (including brand and variant, without the `[BCRS]` marker) and the pack-size text of the product's listings. `%`, `_`, and `\` are ordinary search characters, not wildcards. Empty results are successful responses; database or seed failures are service errors.
 - **Duplicate lines.** A product listed twice returns 400 rather than being merged.
-- **Comparison results.** The request carries only basket lines. The response is either `recommended`, with the recommended retailer, or `no_feasible_plan`. Both return an option for each retailer: a priced complete basket with an itemised breakdown, or unavailable with its reasons (missing products, below the minimum order, or an unverified delivery rule). Complete options come first, cheapest first, then unavailable ones, so a recommendation is always the first option. Ties, and the order of unavailable options, follow retailer ID in code-point order. Other feasible options may show the difference from the recommendation.
+- **Comparison results.** The request carries only basket lines. The response is either `recommended`, with the recommended retailer, or `no_feasible_plan`. Both return an option for each retailer: a priced complete basket with an itemised breakdown, or unavailable with its reasons (missing products, below the minimum order, or an unverified delivery rule). An unavailable option carries an optional `partialOrder`, the `Order` shape for the lines it can supply priced as a checkout; it is absent when no line is available or the delivery rule is unverified, and may hold every line when only the minimum blocks the order. Complete options come first, cheapest first, then unavailable ones, fewest missing products first, so a recommendation is always the first option. Ties, between equal totals or equal missing counts, follow retailer ID in code-point order. Partial totals never enter the recommendation or the difference from it. Other feasible options may show the difference from the recommendation.
 - **Errors.** One body shape, `{ error: { code, message } }`, with codes only where the client acts differently: `invalid_request`, `not_found` and `service_error`. 4xx or 5xx decides whether to offer a retry. The API's error handler maps Fastify validation errors to this shape.
 - **Pricing on the wire.** Ordinary and unconditional sale prices, and same-product multibuys. Each line carries its listing's deal, or null: packs per deal, deal price, whether the retailer's wording was "Any N", how many deals the line applied and the saving against the unit price. The deal is present even when the line is too small to qualify, so the client can say what it needs. Mandatory charges are itemised. An unconditional sale also carries its original price (`originalPriceCents`, null for ordinary prices) so the client can show it struck through; it is display only and never enters a total. A line total is the deals at the deal price, the remaining packs at the unit price, plus charges with `includedInPrice: false`; charges already in the price are shown but not added, so nothing is counted twice or dropped. An order charge with a waiver threshold (such as FairPrice's service fee) carries the threshold and whether the order reached it; a waived charge is shown but not added to the total. Prices are positive. An unknown delivery rule is `unavailable`, never a zero fee. BCRS container deposits are not modelled in the MVP: the same 10¢ per container applies at every retailer, so it cannot change which option wins, and the client shows the exported `DEPOSIT_NOTICE` instead. Item charges stay in the contract so deposits can be modelled later. The pricing module's results stay inside `apps/api`; #10 and #13 map them onto these shapes, and the client composes price wording from their structured fields.
 - **Pricing outcomes at the boundary.** The pricing module's outcomes reach shoppers as follows:
-  - An order below a retailer's minimum makes that retailer's option unavailable, not the basket.
+  - An order below a retailer's minimum makes that retailer's option unavailable, not the basket, and still carries its partial order so the shopper sees the shortfall.
   - An unverified delivery rule makes that retailer's option unavailable rather than failing the request, because a retry cannot fix it and it would count against SC-06.
   - Missing eligible offers make the affected retailer unavailable. An unresolved charge or an ineligible offer incorrectly passed to the pricing module should be stopped by the importer (#4); if it reaches pricing, return `service_error`.
 - **Limits.** `MAX_BASKET_LINES` and the per-line pack range are exported constants, so the web client enforces the same bounds as the API.
@@ -347,7 +347,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C2 — Price every retailer's complete basket and validate plans
 - **Blocked by:** C1.
 - **Work:** Price each retailer's complete basket using the shared module, validate all feasible options, record unavailability reasons and recommend the cheapest, breaking ties by retailer ID.
-- **Acceptance:** Invalid or partial baskets cannot be returned as complete; totals match references; quantities are preserved; missing offers, unverified delivery rules and unmet minimums make the affected retailer unavailable; ties follow the documented order.
+- **Acceptance:** Invalid or partial baskets cannot be returned as complete; totals match references; quantities are preserved; missing offers, unverified delivery rules and unmet minimums make the affected retailer unavailable, with a reconciled partial order where one can be priced; ties follow the documented order.
 
 #### C3–C4 — Deferred split-basket search
 - **Status:** Deferred; no issue is planned for the MVP, and nothing depends on it.
@@ -356,7 +356,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### C5 — Evaluate comparison correctness
 - **Blocked by:** B5, C2.
 - **Work:** Check constructed reference baskets and real-seed baskets against independent pricing calculations, including unavailable retailers and ties.
-- **Acceptance:** Each complete option passes arithmetic and constraint checks; unavailability reasons and the cheapest recommendation match references; no-feasible-plan cases are reported correctly. An independent reference prices every seed listing at 1–20 packs and matches the API, in CI, so every committed snapshot is checked.
+- **Acceptance:** Each complete option and each partial order passes arithmetic and constraint checks; unavailability reasons and the cheapest recommendation match references; no-feasible-plan cases are reported correctly. An independent reference prices every seed listing at 1–20 packs and matches the API, in CI, so every committed snapshot is checked.
 
 ### WS-D — Shopper API and web experience
 
@@ -373,7 +373,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 #### D3 — Deliver basket comparison and outcome presentation
 - **Blocked by:** D2, C2.
 - **Work:** Integrate the comparison API with per-retailer options, itemised breakdowns, recommendation, unavailability reasons and all business/error states.
-- **Acceptance:** All three retailers appear as complete or unavailable; the cheapest feasible option is recommended with the documented tie-break; no feasible plan and retryable service failures are distinct.
+- **Acceptance:** All three retailers appear as complete or unavailable; the cheapest feasible option is recommended with the documented tie-break; an unavailable option shows its partial estimate, labelled with how many items it covers, and its missing products; no feasible plan and retryable service failures are distinct.
 
 #### D4 — Add purchase links and non-blocking click recording
 - **Blocked by:** D1, B4.

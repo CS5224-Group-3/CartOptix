@@ -218,3 +218,9 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 }
 .was-price { color: #9aa5ab; }
 .offer-row__retailer span.offer-row__deal { color: var(--green); }
+.retailer-option__missing { margin-top: 18px; padding-top: 14px; border-top: 1px solid #edf1f1; }
+.retailer-option__missing h3 { margin: 0 0 10px; font-size: 14px; }
+.retailer-option__missing ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.retailer-option__missing li { display: flex; gap: 10px; align-items: center; }
+.retailer-option__missing p { margin: 2px 0 0; color: #71817d; font-size: 12px; }
+.retailer-option__thumb { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 8px; object-fit: contain; background: #f2f5f5; }

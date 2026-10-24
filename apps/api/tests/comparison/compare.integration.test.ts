@@ -5,6 +5,7 @@ import {
   MAX_BASKET_LINES,
   MAX_PACKS_PER_LINE,
   type Offer,
+  type Order,
   routes,
 } from "@cartoptix/contracts";
 import { Value } from "typebox/value";
@@ -68,15 +69,31 @@ function apiOverDatabase(prefix: string) {
 function expectValidComparison(body: BasketCompareResponse, lines: Lines): void {
   expect([...Value.Errors(BasketCompareResponseSchema, body)]).toEqual([]);
   const requested = lines.map((line) => [line.productId, line.quantity]).sort();
+  const requestedQuantity = new Map(lines.map((line) => [line.productId, line.quantity]));
   const complete = body.options.filter((option) => option.status === "complete");
+  const reconciles = (order: Order) => {
+    const charges = order.orderCharges.filter((charge) => !charge.waived);
+    expect(order.totalCents).toBe(
+      order.lines.reduce((sum, line) => sum + line.lineTotalCents, 0) +
+        charges.reduce((sum, charge) => sum + charge.amountCents, 0) +
+        order.deliveryCents,
+    );
+  };
   for (const option of complete) {
     expect(option.lines.map((line) => [line.productId, line.quantity]).sort()).toEqual(requested);
-    const charges = option.orderCharges.filter((charge) => !charge.waived);
-    expect(option.totalCents).toBe(
-      option.lines.reduce((sum, line) => sum + line.lineTotalCents, 0) +
-        charges.reduce((sum, charge) => sum + charge.amountCents, 0) +
-        option.deliveryCents,
+    reconciles(option);
+  }
+  // A partial order prices what the retailer has; with the missing products it covers the basket.
+  for (const option of body.options) {
+    if (option.status !== "unavailable" || !option.partialOrder) continue;
+    const missing = option.reasons.flatMap((r) =>
+      r.code === "missing_products" ? r.productIds : [],
     );
+    const priced = option.partialOrder.lines.map((line) => [line.productId, line.quantity]);
+    expect([...priced, ...missing.map((id) => [id, requestedQuantity.get(id)])].sort()).toEqual(
+      requested,
+    );
+    reconciles(option.partialOrder);
   }
   if (body.status === "recommended") {
     expect(body.options[0]?.retailerId).toBe(body.recommendedRetailerId);
@@ -141,11 +158,13 @@ describe.skipIf(connectionString === undefined)("basket comparison on the fixtur
     expect(body).toMatchObject({
       status: "no_feasible_plan",
       options: [
-        { retailerId: "cold-storage" },
         {
           retailerId: "fairprice",
           reasons: [{ code: "below_minimum_order", minimumOrderCents: 1500, spendCents: 331 }],
+          // 331 + 499 delivery + 100 service charge, as if the order were accepted.
+          partialOrder: { deliveryCents: 499, totalCents: 930 },
         },
+        { retailerId: "cold-storage" },
         { retailerId: "redmart" },
       ],
     });

@@ -1,4 +1,9 @@
-import type { BasketCompareResponse, CompleteOption, Multibuy } from "@cartoptix/contracts";
+import type {
+  BasketCompareResponse,
+  CompleteOption,
+  Multibuy,
+  UnavailableOption,
+} from "@cartoptix/contracts";
 import {
   basketRequestExample,
   noFeasiblePlanExample,
@@ -209,7 +214,7 @@ describe("shared comparison contract adapter", () => {
     expect(() => adaptComparison(response, basket)).toThrow(PresentationDataFailure);
   });
 
-  it("maps no feasible plan and all structured reasons without partial totals", () => {
+  it("maps no feasible plan with each reason and what checking out the rest would cost", () => {
     const result = adaptComparison(noFeasiblePlanExample, snapshot());
     expect(result.outcome).toEqual({ kind: "no-feasible-plan" });
     for (const [index, option] of result.options.entries()) {
@@ -217,33 +222,77 @@ describe("shared comparison contract adapter", () => {
       expect(option.explanations?.map(({ reason }) => reason)).toEqual(
         noFeasiblePlanExample.options[index]?.reasons,
       );
+      // Never shaped as a complete option, so it cannot be ranked or recommended.
       expect(option).not.toHaveProperty("estimatedTotalCents");
-      expect(option).not.toHaveProperty("lines");
     }
     expect(result.options[0]).toMatchObject({
-      reasons: ["Delivery charges could not be verified, so a complete total is not shown."],
+      reasons: ["Cold Storage's delivery charges could not be confirmed, so no total is shown."],
+      missingProducts: [],
     });
+    expect(result.options[0]).not.toHaveProperty("partial");
     expect(result.options[1]).toMatchObject({
-      explanations: [
-        {
-          reason: { code: "below_minimum_order", minimumOrderCents: 1500, spendCents: 650 },
-          text: expect.stringContaining("S$6.50"),
-        },
-      ],
+      reasons: ["Below FairPrice's S$15.00 minimum order — S$8.50 more needed."],
+      partial: { productSubtotalCents: 650, deliveryCents: 500, estimatedTotalCents: 1150 },
     });
     expect(result.options[2]).toMatchObject({
-      reasons: ["No eligible offer for Fixture White Rice."],
+      reasons: ["Not available at RedMart: Fixture White Rice."],
+      missingProducts: [{ productId: "fixture-rice", name: "Fixture White Rice", quantity: 1 }],
+      partial: { estimatedTotalCents: 809 },
     });
   });
 
-  it("uses an unknown reason product ID as context without inventing metadata", () => {
+  it.each([
+    [
+      "a missing product that is not in the basket",
+      (option: UnavailableOption) => {
+        option.reasons = [{ code: "missing_products", productIds: ["unknown"] }];
+      },
+    ],
+    [
+      "a partial order that also prices a missing product",
+      (option: UnavailableOption) => {
+        option.reasons = [{ code: "missing_products", productIds: ["fixture-drink"] }];
+      },
+    ],
+    [
+      "a partial order that leaves a product unaccounted for",
+      (option: UnavailableOption) => {
+        option.reasons = [
+          { code: "below_minimum_order", minimumOrderCents: 1500, spendCents: 210 },
+        ];
+      },
+    ],
+    [
+      "a partial order at the wrong quantity",
+      (option: UnavailableOption) => {
+        const line = option.partialOrder?.lines[0];
+        if (line) line.quantity = 2;
+      },
+    ],
+    [
+      "a partial order for another retailer",
+      (option: UnavailableOption) => {
+        if (option.partialOrder) option.partialOrder.retailerId = "fairprice";
+      },
+    ],
+    [
+      "an estimate alongside an unverified delivery rule",
+      (option: UnavailableOption) => {
+        option.reasons.push({ code: "delivery_rule_unverified" });
+      },
+    ],
+    [
+      "a partial total that does not reconcile",
+      (option: UnavailableOption) => {
+        if (option.partialOrder) option.partialOrder.totalCents += 1;
+      },
+    ],
+  ])("rejects %s", (_name, mutate) => {
     const response: BasketCompareResponse = structuredClone(noFeasiblePlanExample);
-    const option = response.options[0];
-    if (option?.status !== "unavailable") throw new Error("Missing option");
-    option.reasons = [{ code: "missing_products", productIds: ["unknown"] }];
-    expect(adaptComparison(response, snapshot()).options[0]).toMatchObject({
-      reasons: ["No eligible offer for unknown."],
-    });
+    const redmart = response.options[2];
+    if (redmart?.status !== "unavailable") throw new Error("Missing option");
+    mutate(redmart);
+    expect(() => adaptComparison(response, snapshot())).toThrow(PresentationDataFailure);
   });
 
   it.each([

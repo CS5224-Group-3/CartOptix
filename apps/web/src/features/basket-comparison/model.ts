@@ -6,6 +6,8 @@ export interface SubmittedProduct {
   name: string;
   packDescription: string;
   quantity: number;
+  /** Catalogue image, when known; shown for a product a retailer is missing. */
+  imageUrl?: string | null;
 }
 
 export interface BasketSnapshot {
@@ -18,9 +20,8 @@ export interface RetailerPresentation {
   name: string;
 }
 
-export interface CompleteRetailerOption {
-  kind: "complete";
-  retailer: RetailerPresentation;
+/** One retailer order as displayed: its lines, charges and estimated total. */
+export interface OrderPresentation {
   lines: (SubmittedProduct & {
     amountCents: number;
     purchaseUrl: string;
@@ -43,11 +44,20 @@ export interface CompleteRetailerOption {
   estimatedTotalCents: number;
 }
 
+export interface CompleteRetailerOption extends OrderPresentation {
+  kind: "complete";
+  retailer: RetailerPresentation;
+}
+
 export interface UnavailableRetailerOption {
   kind: "unavailable";
   retailer: RetailerPresentation;
   reasons: string[];
   explanations?: { reason: UnavailableReason; text: string }[];
+  /** What checking out the lines this retailer has would cost; never ranked or recommended. */
+  partial?: OrderPresentation;
+  /** Basket products this retailer does not have. */
+  missingProducts?: SubmittedProduct[];
 }
 
 export type RetailerOption = CompleteRetailerOption | UnavailableRetailerOption;

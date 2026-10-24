@@ -339,7 +339,7 @@ describe("comparison lifecycle", () => {
     compare();
     await control.finish();
     expect(control.source).toHaveBeenCalledTimes(2);
-    expect(screen.getAllByText("Unavailable")).toHaveLength(2);
+    expect(screen.getAllByText(/^(Unavailable|Incomplete basket)$/)).toHaveLength(2);
     expect(screen.queryByText(/earlier basket state/)).toBeNull();
     expect(screen.getByText(/^Recommended/)).toBeDefined();
   });
