@@ -96,14 +96,17 @@ export default function BasketComparisonPage({
           )}
           <ComparisonMatrix
             options={result.options}
+            products={result.submittedBasket.products}
             recommendedId={recommendedId}
             tied={tied}
             purchaseEnabled={!referenceOnly}
           />
-          <p>
-            Rebuild this basket and complete checkout manually on the retailer’s website. CartOptix
-            does not transfer carts or reserve stock.
-          </p>
+          {result.outcome.kind === "recommended" && (
+            <p>
+              Rebuild this basket and complete checkout manually on the retailer’s website.
+              CartOptix does not transfer carts or reserve stock.
+            </p>
+          )}
         </>
       )}
       <div className="results-disclaimer">

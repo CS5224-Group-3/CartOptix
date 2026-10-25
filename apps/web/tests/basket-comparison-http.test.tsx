@@ -172,7 +172,7 @@ describe("normal API comparison flow", () => {
     expect(fair.getByText(/Included charge: S\$0.10.*included in unit price/)).toBeDefined();
     expect(fair.getByText("Members only — not included in this estimate")).toBeDefined();
     expect(
-      screen.getByRole("rowheader", { name: /S\$3.99 waived on orders from S\$6.00/ }),
+      screen.getByRole("cell", { name: /S\$3.99 waived on orders from S\$6.00/ }),
     ).toBeDefined();
     // The fee is waived, so the subtotal and the estimated total agree.
     const subtotal = screen.getByRole("row", { name: /^Product subtotal/ });

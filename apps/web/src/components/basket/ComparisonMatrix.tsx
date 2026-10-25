@@ -1,3 +1,4 @@
+import type { OrderCharge } from "@cartoptix/contracts";
 import { useState } from "react";
 import { Link } from "wouter";
 import type {
@@ -13,21 +14,6 @@ type Line = OrderPresentation["lines"][number];
 /** The order a column prices: a complete option's, or an unavailable one's labelled partial estimate. */
 const orderOf = (option: RetailerOption): OrderPresentation | undefined =>
   option.kind === "complete" ? option : option.partial;
-
-/** One row per product, named once, in the order of the first option that has all of them. */
-function productRows(options: RetailerOption[]): SubmittedProduct[] {
-  const seen = new Map<string, SubmittedProduct>();
-  // Keep the first entry that has an image: a retailer's missing-product entry may lack one.
-  const add = (product: SubmittedProduct) => {
-    if (!seen.get(product.productId)?.imageUrl) seen.set(product.productId, product);
-  };
-  for (const option of options) {
-    for (const line of orderOf(option)?.lines ?? []) add(line);
-    if (option.kind === "unavailable")
-      for (const product of option.missingProducts ?? []) add(product);
-  }
-  return [...seen.values()];
-}
 
 /** The catalogue image, or a neutral placeholder when there is none or it fails to load. */
 function Thumb({ product }: { product: SubmittedProduct }) {
@@ -121,11 +107,13 @@ function Cell({
  */
 export default function ComparisonMatrix({
   options,
+  products,
   recommendedId,
   tied,
   purchaseEnabled = true,
 }: {
   options: RetailerOption[];
+  products: SubmittedProduct[];
   recommendedId: string | null;
   tied: boolean;
   purchaseEnabled?: boolean;
@@ -134,23 +122,62 @@ export default function ComparisonMatrix({
   const columns = [...options].sort(
     (a, b) => Number(a.kind === "unavailable") - Number(b.kind === "unavailable"),
   );
-  const rows = productRows(columns);
-  const charges = [
-    ...new Set(columns.flatMap((o) => (orderOf(o)?.charges ?? []).map((c) => c.label))),
-  ];
+  // Rows follow the submitted basket, named once with its identity, so even a
+  // result where no retailer could price anything shows what was asked for.
+  const rows = products;
+  // One row per (base label, per-order occurrence), unioned across columns.
+  const charges: { label: string; occurrence: number }[] = [];
+  for (const option of columns) {
+    const seenPerOrder = new Map<string, number>();
+    for (const charge of orderOf(option)?.orderCharges ?? []) {
+      const occurrence = seenPerOrder.get(charge.label) ?? 0;
+      seenPerOrder.set(charge.label, occurrence + 1);
+      if (!charges.some((c) => c.label === charge.label && c.occurrence === occurrence))
+        charges.push({ label: charge.label, occurrence });
+    }
+  }
   type FootRow = {
+    key: string;
     label: string;
-    amount: (order: OrderPresentation) => number | undefined;
+    charge: (o: OrderPresentation) => { cents: number; waivedFee?: OrderCharge } | undefined;
     total: boolean;
   };
+  // Charges are matched by base label with an occurrence index: the same fee
+  // keeps one row across retailers even when only one of them waives it, and
+  // repeated labels keep separate amounts instead of losing one.
   const footRows: FootRow[] = [
-    { label: "Product subtotal", amount: (o) => o.productSubtotalCents, total: false },
-    ...charges.map((label) => ({
+    {
+      key: "subtotal",
+      label: "Product subtotal",
+      charge: (o) => ({ cents: o.productSubtotalCents }),
+      total: false,
+    },
+    {
+      key: "delivery",
+      label: "Delivery",
+      charge: (o) => ({ cents: o.deliveryCents }),
+      total: false,
+    },
+    ...charges.map(({ label, occurrence }) => ({
+      key: `${label}:${occurrence}`,
       label,
-      amount: (o: OrderPresentation) => o.charges.find((c) => c.label === label)?.amountCents,
+      charge: (o: OrderPresentation) => {
+        const match = o.orderCharges.filter((c) => c.label === label)[occurrence];
+        return match
+          ? {
+              cents: match.waived ? 0 : match.amountCents,
+              waivedFee: match.waived ? match : undefined,
+            }
+          : undefined;
+      },
       total: false,
     })),
-    { label: "Estimated total", amount: (o) => o.estimatedTotalCents, total: true },
+    {
+      key: "total",
+      label: "Estimated total",
+      charge: (o) => ({ cents: o.estimatedTotalCents }),
+      total: true,
+    },
   ];
   return (
     <table className="matrix">
@@ -235,16 +262,20 @@ export default function ComparisonMatrix({
         ))}
       </tbody>
       <tfoot>
-        {footRows.map(({ label, amount, total }) => (
-          <tr key={label} className={total ? "matrix__total-row" : undefined}>
+        {footRows.map(({ key, label, charge, total }) => (
+          <tr key={key} className={total ? "matrix__total-row" : undefined}>
             <th scope="row">{label}</th>
             {columns.map((option) => {
               const order = orderOf(option);
-              const cents = order && amount(order);
+              const matched = order && charge(order);
               return (
                 <td key={option.retailer.id} data-retailer={option.retailer.name}>
-                  {cents === undefined ? "—" : formatSgd(cents)}
-                  {cents !== undefined && option.kind === "unavailable" && (
+                  {matched === undefined
+                    ? "—"
+                    : matched.waivedFee
+                      ? `${formatSgd(matched.waivedFee.amountCents)} waived on orders from ${formatSgd(matched.waivedFee.waivedFromCents ?? 0)}`
+                      : formatSgd(matched.cents)}
+                  {matched !== undefined && option.kind === "unavailable" && (
                     <span className="matrix__partial"> (partial estimate)</span>
                   )}
                 </td>
