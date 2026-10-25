@@ -787,14 +787,6 @@ export function ProductDetail() {
               <span>Pack size</span>
               <strong>{product.packSize}</strong>
             </div>
-            <div>
-              <span>Quantity rule</span>
-              <strong>Whole packs only</strong>
-            </div>
-            <div>
-              <span>Pricing</span>
-              <strong>Non-member</strong>
-            </div>
           </div>
           <p className="product-detail__copy">
             Compare the estimated product cost for your requested quantity. Prices include sale
