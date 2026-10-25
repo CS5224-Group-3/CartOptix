@@ -51,7 +51,10 @@ function columnTitle(option: RetailerOption, recommended: boolean, tied: boolean
         ? "Recommended — joint lowest estimated total"
         : "Recommended — lowest estimated total"
       : "Complete";
-  return (option.missingProducts?.length ?? 0) > 0 ? "Incomplete basket" : "Unavailable";
+  if ((option.missingProducts?.length ?? 0) > 0) return "Incomplete basket";
+  return option.explanations?.some(({ reason }) => reason.code === "below_minimum_order")
+    ? "Below minimum order"
+    : "Unavailable";
 }
 
 function Cell({
@@ -82,9 +85,8 @@ function Cell({
       ))}
       {purchaseEnabled && (
         <a href={line.purchaseUrl} target="_blank" rel="noopener noreferrer" className="text-link">
-          View
+          View{" "}
           <span className="sr-only">
-            {" "}
             {line.name} at {retailerName}
           </span>{" "}
           ↗
@@ -111,47 +113,62 @@ export default function ComparisonMatrix({
   purchaseEnabled?: boolean;
 }) {
   const rows = productRows(options);
-  const columns = options.length;
-  const style = { "--matrix-columns": columns } as React.CSSProperties;
+  const charges = [
+    ...new Set(options.flatMap((o) => (orderOf(o)?.charges ?? []).map((c) => c.label))),
+  ];
+  const footRows: [string, (order: OrderPresentation) => number | undefined, boolean][] = [
+    ["Product subtotal", (o) => o.productSubtotalCents, false],
+    ...charges.map((label): [string, (order: OrderPresentation) => number | undefined, boolean] => [
+      label,
+      (o) => o.charges.find((c) => c.label === label)?.amountCents,
+      false,
+    ]),
+    ["Estimated total", (o) => o.estimatedTotalCents, true],
+  ];
   return (
-    <div className="matrix" style={style}>
-      <div className="matrix__head" role="presentation">
-        <div className="matrix__corner">
-          {rows.length} {rows.length === 1 ? "product" : "products"}
-        </div>
-        {options.map((option) => {
-          const recommended = option.retailer.id === recommendedId;
-          const order = orderOf(option);
-          const missing = option.kind === "unavailable" ? (option.missingProducts?.length ?? 0) : 0;
-          return (
-            <div
-              key={option.retailer.id}
-              className={`matrix__retailer${recommended ? " matrix__retailer--recommended" : ""}${option.kind === "unavailable" ? " matrix__retailer--muted" : ""}`}
-            >
-              <h2>{option.retailer.name}</h2>
-              <span className="matrix__badge">{columnTitle(option, recommended, tied)}</span>
-              <strong className="matrix__total">
-                {order ? formatSgd(order.estimatedTotalCents) : "No estimate"}
-              </strong>
-              {order && missing > 0 && (
-                <span className="matrix__partial">
-                  for {order.lines.length} of {rows.length} items
-                </span>
-              )}
-              {option.kind === "unavailable" &&
-                option.reasons.map((reason) => (
-                  <span key={reason} className="matrix__reason">
-                    {reason}
+    <table className="matrix">
+      <caption className="sr-only">Retailer comparison</caption>
+      <thead>
+        <tr>
+          <th scope="col" className="matrix__corner">
+            {rows.length} {rows.length === 1 ? "product" : "products"}
+          </th>
+          {options.map((option) => {
+            const recommended = option.retailer.id === recommendedId;
+            const order = orderOf(option);
+            const missing =
+              option.kind === "unavailable" ? (option.missingProducts?.length ?? 0) : 0;
+            return (
+              <th
+                key={option.retailer.id}
+                scope="col"
+                className={`matrix__retailer${recommended ? " matrix__retailer--recommended" : ""}${option.kind === "unavailable" ? " matrix__retailer--muted" : ""}`}
+              >
+                <h2>{option.retailer.name}</h2>
+                <span className="matrix__badge">{columnTitle(option, recommended, tied)}</span>
+                <strong className="matrix__total">
+                  {order ? formatSgd(order.estimatedTotalCents) : "No estimate"}
+                </strong>
+                {order && missing > 0 && (
+                  <span className="matrix__partial">
+                    for {order.lines.length} of {rows.length} items
                   </span>
-                ))}
-            </div>
-          );
-        })}
-      </div>
-      <ul className="matrix__rows">
+                )}
+                {option.kind === "unavailable" &&
+                  option.reasons.map((reason) => (
+                    <span key={reason} className="matrix__reason">
+                      {reason}
+                    </span>
+                  ))}
+              </th>
+            );
+          })}
+        </tr>
+      </thead>
+      <tbody>
         {rows.map((product) => (
-          <li key={product.productId} className="matrix__row">
-            <div className="matrix__product">
+          <tr key={product.productId}>
+            <th scope="row" className="matrix__product">
               <Thumb product={product} />
               <div>
                 <Link className="matrix__name" href={`/product/${product.productId}`}>
@@ -162,11 +179,11 @@ export default function ComparisonMatrix({
                   {product.quantity === 1 ? "pack" : "packs"}
                 </span>
               </div>
-            </div>
+            </th>
             {options.map((option) => {
               const line = orderOf(option)?.lines.find((l) => l.productId === product.productId);
               return (
-                <div
+                <td
                   key={option.retailer.id}
                   className={`matrix__cell${option.retailer.id === recommendedId ? " matrix__cell--recommended" : ""}${line ? "" : " matrix__cell--missing"}`}
                   data-retailer={option.retailer.name}
@@ -180,58 +197,28 @@ export default function ComparisonMatrix({
                   ) : (
                     <span>Not available</span>
                   )}
-                </div>
+                </td>
               );
             })}
-          </li>
+          </tr>
         ))}
-      </ul>
-      <dl className="matrix__foot">
-        {(
-          [
-            ["Product subtotal", (o: OrderPresentation) => o.productSubtotalCents],
-            ["Delivery", (o: OrderPresentation) => o.deliveryCents],
-          ] as const
-        ).map(([label, amount]) => (
-          <div key={label} className="matrix__row">
-            <dt>{label}</dt>
+      </tbody>
+      <tfoot>
+        {footRows.map(([label, amount, total]) => (
+          <tr key={label} className={total ? "matrix__total-row" : undefined}>
+            <th scope="row">{label}</th>
             {options.map((option) => {
               const order = orderOf(option);
+              const cents = order && amount(order);
               return (
-                <dd key={option.retailer.id} data-retailer={option.retailer.name}>
-                  {order ? formatSgd(amount(order)) : "—"}
-                </dd>
+                <td key={option.retailer.id} data-retailer={option.retailer.name}>
+                  {cents === undefined ? "—" : formatSgd(cents)}
+                </td>
               );
             })}
-          </div>
+          </tr>
         ))}
-        {[...new Set(options.flatMap((o) => (orderOf(o)?.charges ?? []).map((c) => c.label)))].map(
-          (label) => (
-            <div key={label} className="matrix__row">
-              <dt>{label}</dt>
-              {options.map((option) => {
-                const charge = orderOf(option)?.charges.find((c) => c.label === label);
-                return (
-                  <dd key={option.retailer.id} data-retailer={option.retailer.name}>
-                    {charge ? formatSgd(charge.amountCents) : "—"}
-                  </dd>
-                );
-              })}
-            </div>
-          ),
-        )}
-        <div className="matrix__row matrix__row--total">
-          <dt>Estimated total</dt>
-          {options.map((option) => {
-            const order = orderOf(option);
-            return (
-              <dd key={option.retailer.id} data-retailer={option.retailer.name}>
-                {order ? formatSgd(order.estimatedTotalCents) : "—"}
-              </dd>
-            );
-          })}
-        </div>
-      </dl>
-    </div>
+      </tfoot>
+    </table>
   );
 }

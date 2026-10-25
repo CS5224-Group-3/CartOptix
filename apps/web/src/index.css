@@ -287,50 +287,50 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .retailer-option__missing p { margin: 2px 0 0; color: #71817d; font-size: 12px; }
 .retailer-option__thumb { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 8px; object-fit: contain; background: #f2f5f5; }
 
-/* Comparison matrix: one product column, one price column per retailer. */
-.matrix { --matrix-columns: 3; margin-top: 24px; border: 1px solid var(--line); border-radius: 14px; background: white; }
-.matrix__head, .matrix__row { display: grid; grid-template-columns: minmax(200px, 1.3fr) repeat(var(--matrix-columns), minmax(0, 1fr)); }
-.matrix__head { position: sticky; top: 0; z-index: 2; border-bottom: 1px solid var(--line); border-radius: 14px 14px 0 0; background: white; }
-.matrix__corner { align-self: end; padding: 16px 18px; color: var(--muted); font-size: 12px; }
-.matrix__retailer { display: flex; flex-direction: column; gap: 3px; padding: 16px 14px 14px; border-left: 1px solid var(--line); }
-.matrix__retailer h2 { margin: 0; font-size: 18px; }
-.matrix__retailer--recommended { background: var(--green-pale); box-shadow: inset 0 3px 0 var(--green); }
+/* Comparison matrix: a real table, one product column and one price column per retailer. */
+.matrix { width: 100%; margin-top: 24px; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.matrix th, .matrix td { padding: 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-weight: 400; }
+.matrix th + th, .matrix th + td, .matrix td + td { border-left: 1px solid var(--line); }
+.matrix thead th { position: sticky; top: 0; z-index: 2; background: white; }
+.matrix__corner { width: 28%; color: var(--muted); font-size: 12px; vertical-align: bottom; }
+.matrix__retailer h2 { margin: 0 0 3px; font-size: 18px; }
+.matrix__retailer > * { display: block; }
+.matrix__retailer--recommended { background: var(--green-pale) !important; box-shadow: inset 0 3px 0 var(--green); }
 .matrix__retailer--muted { color: var(--muted); }
 .matrix__badge { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .matrix__retailer--muted .matrix__badge { color: #b07a1d; }
-.matrix__total { color: var(--navy); font-size: 24px; letter-spacing: -.03em; }
+.matrix__total { margin-top: 3px; color: var(--navy); font-size: 24px; letter-spacing: -.03em; }
 .matrix__retailer--muted .matrix__total { color: var(--muted); font-size: 18px; }
 .matrix__partial, .matrix__reason { color: var(--muted); font-size: 11px; line-height: 1.4; }
-.matrix__rows { margin: 0; padding: 0; list-style: none; }
-.matrix__row { border-bottom: 1px solid var(--line); }
 .matrix__product { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; }
 .matrix__product > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .matrix__product span { color: var(--muted); font-size: 12px; }
-.matrix__thumb { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 9px; border: 1px solid var(--line); object-fit: contain; background: #f4f7f6; }
 .matrix__name { color: var(--navy); font-size: 14px; font-weight: 700; }
-.matrix__cell { display: flex; flex-direction: column; gap: 2px; padding: 14px; border-left: 1px solid var(--line); font-size: 12px; }
-.matrix__cell strong { color: var(--navy); font-size: 15px; }
+.matrix__thumb { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 9px; border: 1px solid var(--line); object-fit: contain; background: #f4f7f6; }
+.matrix__cell { font-size: 12px; }
+.matrix__cell > * { display: block; margin-top: 2px; }
+.matrix__cell strong { margin: 0; color: var(--navy); font-size: 15px; }
 .matrix__cell--recommended { background: #f5fbf8; }
-.matrix__cell--missing { color: #9aa7ad; background: #fafbfb; justify-content: center; font-style: italic; }
+.matrix__cell--missing { color: #9aa7ad; background: #fafbfb; font-style: italic; vertical-align: middle; }
 .matrix__unit { color: var(--muted); }
 .matrix__note { color: #8a6417; font-size: 11px; line-height: 1.4; }
 .matrix__cell .text-link { margin-top: 3px; font-size: 11px; }
-.matrix__foot { margin: 0; }
-.matrix__foot .matrix__row:last-child { border-bottom: 0; }
-.matrix__foot dt { padding: 12px 18px; color: var(--muted); font-size: 13px; }
-.matrix__foot dd { margin: 0; padding: 12px 14px; border-left: 1px solid var(--line); font-size: 13px; }
-.matrix__row--total { background: #f8fafb; }
-.matrix__row--total dt, .matrix__row--total dd { color: var(--navy); font-size: 14px; font-weight: 800; }
+.matrix tfoot th { padding: 12px 18px; color: var(--muted); font-size: 13px; }
+.matrix tfoot td { padding: 12px 14px; font-size: 13px; }
+.matrix tfoot tr:last-child > * { border-bottom: 0; }
+.matrix__total-row th, .matrix__total-row td { background: #f8fafb; color: var(--navy); font-size: 14px; font-weight: 800; }
 @media (max-width: 720px) {
-  .matrix__head { position: static; grid-template-columns: repeat(var(--matrix-columns), 1fr); }
-  .matrix__corner { display: none; }
-  .matrix__retailer { padding: 10px 8px; }
+  .matrix, .matrix thead, .matrix tbody, .matrix tfoot, .matrix tr, .matrix th, .matrix td { display: block; }
+  .matrix thead tr { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }
+  .matrix thead th { position: static; padding: 10px 8px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .matrix__corner { display: none !important; }
   .matrix__retailer h2 { font-size: 13px; }
   .matrix__total { font-size: 16px; }
-  .matrix__row { grid-template-columns: 1fr; padding-bottom: 6px; }
-  .matrix__product { align-items: center; background: #f8fafb; padding: 10px 14px; }
+  .matrix tbody tr, .matrix tfoot tr { border-bottom: 1px solid var(--line); }
+  .matrix th, .matrix td { border: 0 !important; }
+  .matrix__product { align-items: center; background: #f8fafb; padding: 10px 14px; display: flex !important; }
   .matrix__thumb { flex-basis: 40px; width: 40px; height: 40px; }
-  .matrix__cell, .matrix__foot dd { display: flex; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 8px 14px; border-left: 0; }
-  .matrix__cell::before, .matrix__foot dd::before { content: attr(data-retailer); min-width: 92px; color: var(--muted); font-size: 11px; font-weight: 700; }
-  .matrix__foot dt { padding: 10px 14px 0; font-weight: 700; }
+  .matrix td { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 8px 14px; }
+  .matrix td::before { content: attr(data-retailer); min-width: 92px; color: var(--muted); font-size: 11px; font-weight: 700; }
+  .matrix tfoot th { padding: 10px 14px 0; font-weight: 700; }
 }
