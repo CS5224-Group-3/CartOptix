@@ -1,6 +1,21 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
+
+async function addMilkAndOpenBasket(page: Page) {
+  await page.goto("/catalogue");
+  await page.getByRole("textbox", { name: /Search products/i }).fill("milk");
+  await page.getByRole("button", { name: "Add", exact: true }).first().click();
+  await expect(page.getByText("Added to basket")).toBeVisible();
+  const mobileMenu = page.locator("button.mobile-menu-button");
+  if (await mobileMenu.isVisible()) await mobileMenu.click();
+  await page.locator('a[href="/basket"]').click({ force: true });
+}
+
+async function compareBasket(page: Page) {
+  await page.getByRole("button", { name: "Compare basket", exact: true }).click();
+  await expect(page).toHaveURL(/\/results$/);
+}
 
 /** The committed seed, so seed-dependent journeys hold across snapshot refreshes. */
 const seed: {
@@ -34,37 +49,70 @@ function incompleteBasket() {
 }
 
 test.describe("CartOptix shopper journeys", () => {
+  test("basket edits are shared with a newly opened tab", async ({ page, context }) => {
+    await addMilkAndOpenBasket(page);
+    const other = await context.newPage();
+    try {
+      await other.goto("/basket");
+      const quantity = other.locator(".basket-row .quantity-control strong").first();
+      await expect(quantity).toHaveText("1");
+      await page
+        .getByRole("button", { name: /Increase/ })
+        .first()
+        .click();
+      await expect(quantity).toHaveText("2");
+      await other
+        .getByRole("button", { name: /Increase/ })
+        .first()
+        .click();
+      await expect(page.locator(".basket-row .quantity-control strong").first()).toHaveText("3");
+    } finally {
+      await other.close();
+    }
+  });
+
+  test("basket heading and counts fit with ten products", async ({ page }) => {
+    await page.goto("/catalogue");
+    await page.evaluate(
+      (lines) => {
+        localStorage.setItem("cartoptix:basket:v1", JSON.stringify(lines));
+      },
+      seed.products.slice(0, 10).map(({ productId }) => ({ productId, quantity: 1 })),
+    );
+    await page.goto("/basket");
+    const hero = page.locator(".basket-product-hero");
+    await expect(hero.getByRole("heading", { name: "Review your basket" })).toBeVisible();
+    await expect(hero.locator(".basket-header__meta")).toContainText("10items10packs");
+    const bounds = await hero.boundingBox();
+    for (const selector of ["h1", ".basket-header__meta", ".basket-product-hero__description"]) {
+      const child = await hero.locator(selector).boundingBox();
+      if (!bounds || !child) throw new Error("Missing hero content");
+      expect(child.y).toBeGreaterThanOrEqual(bounds.y);
+      expect(child.y + child.height).toBeLessThanOrEqual(bounds.y + bounds.height + 1);
+      expect(child.x + child.width).toBeLessThanOrEqual(bounds.x + bounds.width + 1);
+    }
+  });
+
   test("J1: find a product and add it to the basket", async ({ page }) => {
     await page.goto("/catalogue");
-    await expect(page.getByRole("heading", { name: /Build a basket/i })).toBeVisible();
-
-    const search = page.getByRole("textbox", { name: /Search products/i });
-    await search.fill("milk");
+    await expect(
+      page.getByRole("heading", { name: "Find your everyday essentials." }),
+    ).toBeVisible();
+    await page.getByRole("textbox", { name: /Search products/i }).fill("milk");
     await expect(page.getByText(/products found/i)).toBeVisible();
-
-    await page.getByRole("button", { name: "Add", exact: true }).first().click();
-    await expect(page.getByText("Added to basket")).toBeVisible();
-    const mobileMenu = page.locator("button.mobile-menu-button");
-    if (await mobileMenu.isVisible()) await mobileMenu.click();
-    await page.locator('a[href="/basket"]').click({ force: true });
-    await expect(page.getByText(/1 distinct lines/i)).toBeVisible();
+    await addMilkAndOpenBasket(page);
+    await expect(page.getByRole("heading", { name: "Review your basket" })).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Remove / })).toHaveCount(1);
   });
 
   test("J2/J3: compare a basket and display all retailer outcomes", async ({ page }) => {
-    await page.goto("/catalogue");
-    await page.getByRole("textbox", { name: /Search products/i }).fill("milk");
-    await page.getByRole("button", { name: "Add", exact: true }).first().click();
-    const mobileMenu = page.locator("button.mobile-menu-button");
-    if (await mobileMenu.isVisible()) await mobileMenu.click();
-    await page.locator('a[href="/basket"]').click({ force: true });
-    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-
-    await expect(page).toHaveURL(/\/results$/);
+    await addMilkAndOpenBasket(page);
+    await compareBasket(page);
     await expect(page.getByRole("heading", { name: "Retailer basket comparison" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "RedMart", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "FairPrice", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Cold Storage", exact: true })).toBeVisible();
-    await expect(page.getByText(/fixed retailer dataset/i).first()).toBeVisible();
+    await expect(page.getByText(/Prices and availability may have changed/i).first()).toBeVisible();
   });
 
   test("J1/J3: sale prices are shown on the product page and in the basket", async ({ page }) => {
@@ -72,6 +120,8 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.locator("s.was-price").first()).toContainText(/S\$\d+\.\d{2}/);
     await expect(page.getByText(/per pack · Sale price/).first()).toBeVisible();
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await expect(page).toHaveURL(/\/product\//);
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
@@ -89,6 +139,7 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(/^Buy 2 for S\$\d+\.\d{2}$/).first()).toBeVisible();
     // The hint never changes the requested quantity.
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await expect(
       page.locator(".basket-row").first().locator(".quantity-control").getByText("1", {
@@ -104,6 +155,7 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(deal).first()).toBeVisible();
     await expect(page.getByText("Mixing items in this deal may save more").first()).toBeVisible();
     await page.getByRole("button", { name: /Add 2 packs to basket/ }).click();
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
@@ -115,6 +167,7 @@ test.describe("CartOptix shopper journeys", () => {
     for (const product of [present, missing]) {
       await page.goto(`/product/${product.productId}`);
       await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+      await page.getByRole("link", { name: "View basket", exact: true }).click();
       await expect(page).toHaveURL(/\/basket$/);
     }
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
@@ -136,6 +189,7 @@ test.describe("CartOptix shopper journeys", () => {
     const { missing, retailer } = incompleteBasket();
     await page.goto(`/product/${missing.productId}`);
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     const card = page.getByRole("article", { name: retailer });
     await expect(card.getByText("Incomplete basket")).toBeVisible();
@@ -146,71 +200,21 @@ test.describe("CartOptix shopper journeys", () => {
   });
 
   test("J2: changing the basket makes an earlier result stale", async ({ page }) => {
-    await page.goto("/basket");
-    await page.getByRole("button", { name: /Multiple complete retailers/i }).click();
-    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    await expect(page).toHaveURL(/\/results$/);
+    await addMilkAndOpenBasket(page);
+    await compareBasket(page);
     await page.getByRole("link", { name: "Edit basket" }).click();
     await page
       .getByRole("button", { name: /Increase/ })
       .first()
       .click();
-    await expect(
-      page.getByText(/previous comparison|stale|compare again|run a new comparison/i),
-    ).toBeVisible();
-  });
-
-  test("J5: synthetic unsuccessful scenarios remain distinct from API results", async ({
-    page,
-  }) => {
-    await page.goto("/basket");
-    await page.getByRole("button", { name: "No feasible purchasing plan" }).click();
-    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    await expect(page.getByText(/No feasible purchasing plan available/i)).toBeVisible();
-    // Fewest missing first: Cold Storage (no estimate: unverified delivery), FairPrice
-    // (whole basket below its minimum), then RedMart (missing one product).
-    await expect(page.locator("article h2")).toHaveText(["Cold Storage", "FairPrice", "RedMart"]);
-    const coldStorage = page.getByRole("article", { name: "Cold Storage" });
-    await expect(coldStorage.getByText(/Estimated total/)).toHaveCount(0);
-    const fairprice = page.getByRole("article", { name: "FairPrice" });
-    await expect(fairprice.getByText("Below minimum order")).toBeVisible();
-    await expect(fairprice.getByText(/minimum order — S\$8\.50 more needed/)).toBeVisible();
-    await expect(fairprice.getByText("Estimated total", { exact: true })).toBeVisible();
-    const redmart = page.getByRole("article", { name: "RedMart" });
-    await expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeVisible();
-    await expect(page.getByText(/^Recommended/)).toHaveCount(0);
-  });
-
-  test("J5: temporary service failure can be retried successfully", async ({ page }) => {
-    await page.goto("/basket");
-    await page.getByRole("button", { name: "Temporary failure, then success" }).click();
-    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Could not compare basket" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Retry comparison" })).toBeVisible();
-    await page.getByRole("button", { name: "Retry comparison" }).click();
-    await expect(page).toHaveURL(/\/results$/);
-    await expect(page.getByRole("heading", { name: "Retailer basket comparison" })).toBeVisible();
-  });
-
-  test("J5: repeated service failure stays distinct from retailer unavailability", async ({
-    page,
-  }) => {
-    await page.goto("/basket");
-    await page.getByRole("button", { name: "Repeated service failure" }).click();
-    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Could not compare basket" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Retry comparison" })).toBeVisible();
-    await expect(page.getByRole("alert").getByText(/This is a service failure/i)).toBeVisible();
+    await expect(page.getByText(/Your basket changed/i)).toBeVisible();
   });
 
   test("J4: retailer purchase links are present and point to retailer domains", async ({
     page,
   }) => {
-    await page.goto("/basket");
-    await page.getByRole("button", { name: /Multiple complete retailers/i }).click();
-    await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    await expect(page).toHaveURL(/\/results$/);
-
+    await addMilkAndOpenBasket(page);
+    await compareBasket(page);
     const purchaseLinks = page.getByRole("link", { name: /^View .* at / });
     await expect(purchaseLinks.first()).toBeVisible();
     const hrefs = await purchaseLinks.evaluateAll((links) =>
@@ -221,8 +225,7 @@ test.describe("CartOptix shopper journeys", () => {
   });
 
   test("basket quantity is capped at 20 packs", async ({ page }) => {
-    await page.goto("/basket");
-    await page.getByRole("button", { name: /Multiple complete retailers/i }).click();
+    await addMilkAndOpenBasket(page);
     const increase = page.getByRole("button", { name: /Increase/ }).first();
     for (let index = 0; index < 19; index += 1) await increase.click();
     await expect(
@@ -243,8 +246,7 @@ test.describe("CartOptix shopper journeys", () => {
     if (await mobileMenu.isVisible()) await mobileMenu.click();
     await expect(page.getByText(/Basket 50/i)).toBeVisible();
     await page.locator('a[href="/basket"]').click({ force: true });
-    await expect(page.getByText(/50 distinct lines/i)).toBeVisible();
-    await expect(page.getByText(/Basket lines\s*50\s*\/\s*50/i)).toBeVisible();
+    await expect(page.getByText(/Items in basket\s*50\s*\/\s*50/i)).toBeVisible();
     await expect(page.getByText("Basket limit reached")).toBeVisible();
   });
 });

@@ -6,8 +6,11 @@ import {
   recommendedExample,
   tieExample,
 } from "@cartoptix/contracts/fixtures";
-import { adaptComparison } from "./adapter";
-import type { BasketComparisonPresentation, BasketSnapshot } from "./model";
+import { adaptComparison } from "../../src/features/basket-comparison/adapter";
+import type {
+  BasketComparisonPresentation,
+  BasketSnapshot,
+} from "../../src/features/basket-comparison/model";
 
 const basket: BasketSnapshot = {
   revision: 0,
@@ -30,7 +33,7 @@ export const comparisonFixtures: Record<string, BasketComparisonPresentation> = 
     id,
     {
       ...adaptComparison(response, basket, {
-        kind: "demo",
+        kind: "synthetic",
         description: `Synthetic demonstration: ${label}. These are not retailer prices. Product links are illustrative.`,
       }),
       fixtureLabel: label,

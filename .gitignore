@@ -28,3 +28,4 @@ Thumbs.db
 
 # Python caches
 __pycache__/
+e2e-logs/

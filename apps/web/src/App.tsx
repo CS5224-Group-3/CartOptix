@@ -7,7 +7,6 @@ import {
   type Offer,
   type Product,
   type RetailerId,
-  SNAPSHOT_DISCLAIMER,
 } from "@cartoptix/contracts";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
@@ -18,11 +17,13 @@ import {
   CircleHelp,
   Leaf,
   Menu,
+  Search,
   ShoppingBasket,
-  Sparkles,
+  SlidersHorizontal,
   X,
 } from "lucide-react";
 import {
+  type CSSProperties,
   createContext,
   type ReactNode,
   useCallback,
@@ -34,21 +35,24 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
-import { Link, Route, Switch, useLocation, useRoute } from "wouter";
+import { Link, Redirect, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
 import ComparisonRequestStatus from "./components/basket/ComparisonRequestStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
 import WasPrice from "./components/WasPrice";
-import type { BasketLine } from "./demo";
+import type { BasketLine } from "./features/basket/model";
 import {
   addBasketLine,
   removeBasketLine,
   setBasketLineQuantity,
 } from "./features/basket/mutations";
-import { persistBasket, restoreBasket } from "./features/basket/storage";
+import {
+  BASKET_STORAGE_KEY,
+  persistBasket,
+  restoreBasket,
+  restoreBasketSnapshot,
+} from "./features/basket/storage";
 import { createApiSource } from "./features/basket-comparison/apiSource";
-import { createFixtureSource, fixtureScenarios } from "./features/basket-comparison/fixtureSource";
-import { comparisonFixtures, fixtureForBasket } from "./features/basket-comparison/fixtures";
 import { buildKnownProductMap } from "./features/basket-comparison/knownProducts";
 import { resolveSubmissionMetadata } from "./features/basket-comparison/metadata";
 import type {
@@ -75,18 +79,35 @@ import {
   RETAILER_IDS,
 } from "./lib/format";
 import BasketComparisonPage from "./pages/BasketComparisonPage";
-import Home from "./pages/Home";
 
 const clampPacks = (quantity: number) =>
   Math.min(MAX_PACKS_PER_LINE, Math.max(MIN_PACKS_PER_LINE, Math.round(quantity)));
+const CATALOGUE_BACKDROP_TILE_COUNT = 50;
+const CATALOGUE_BACKDROP_GROUP_KEYS = [
+  "primary",
+  "copy-1",
+  "copy-2",
+  "copy-3",
+  "copy-4",
+  "copy-5",
+] as const;
+
+function createCatalogueBackdropSequence(products: Product[]) {
+  if (products.length <= 1) return products.map((product, slot) => ({ product, slot }));
+
+  const sequence: { product: Product; slot: number }[] = [];
+  for (let slot = 0; slot < CATALOGUE_BACKDROP_TILE_COUNT; slot += 1) {
+    const product = products[slot % products.length];
+    if (product) sequence.push({ product, slot });
+  }
+  return sequence;
+}
 
 type BasketContextValue = {
   basket: BasketLine[];
   productMetadata: Map<string, Product>;
   basketRevision: number;
-  fixtureScenario: string | null;
   persistenceFailed: boolean;
-  leaveDemo: () => void;
   comparison: BasketComparisonPresentation | null;
   isStale: boolean;
   basketCount: number;
@@ -97,16 +118,12 @@ type BasketContextValue = {
   canCompare: boolean;
   runComparison: () => void;
   retryComparison: () => void;
-  loadScenario: (lines: BasketLine[]) => void;
-  loadComparisonScenario: (scenario: string) => void;
 };
 
 const BasketContext = createContext<BasketContextValue | null>(null);
 
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
-  const [fixtureScenario, setFixtureScenario] = useState<string | null>(null);
-  const basketBeforeDemo = useRef<BasketLine[] | null>(null);
   const [productMetadataRevision, setProductMetadataRevision] = useState(0);
   const products = useProductIndex();
   const queryClient = useQueryClient();
@@ -169,8 +186,26 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   const [basketRevision, setBasketRevision] = useState(0);
   const [persistenceFailed, setPersistenceFailed] = useState(false);
 
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== BASKET_STORAGE_KEY && event.key !== null) return;
+      // Access may throw when browser storage is blocked.
+      try {
+        if (event.storageArea !== window.localStorage) return;
+      } catch {
+        return;
+      }
+      const next = restoreBasketSnapshot(event.newValue);
+      if (JSON.stringify(next) === JSON.stringify(basket)) return;
+      setBasket(next);
+      setBasketRevision((revision) => revision + 1);
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [basket]);
+
   const changed = useCallback(
-    (next: BasketLine[], shouldPersist = true, force = false) => {
+    (next: BasketLine[]) => {
       const basketChanged =
         next.length !== basket.length ||
         next.some(
@@ -178,60 +213,31 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
             line.productId !== basket[index]?.productId ||
             line.quantity !== basket[index]?.quantity,
         );
-      if (!basketChanged && !force) return;
+      if (!basketChanged) return;
       setBasket(next);
-      if (shouldPersist) {
-        const saved = persistBasket(next);
-        setPersistenceFailed(!saved);
-        if (!saved && !persistenceFailed)
-          toast.warning("Basket changes may not survive a reload", {
-            description: "Session storage is unavailable. Keep this tab open to retain your edits.",
-          });
-      }
+      const saved = persistBasket(next);
+      setPersistenceFailed(!saved);
+      if (!saved && !persistenceFailed)
+        toast.warning("Basket changes may not survive a reload", {
+          description: "Browser storage is unavailable. Keep this tab open to retain your edits.",
+        });
       setBasketRevision((revision) => revision + 1);
     },
     [basket, persistenceFailed],
   );
-  const isStale = Boolean(
-    comparison &&
-      (comparison.submittedBasket.revision !== basketRevision ||
-        (comparison.submittedScenario ?? null) !== fixtureScenario),
-  );
+  const isStale = Boolean(comparison && comparison.submittedBasket.revision !== basketRevision);
 
   const value = useMemo<BasketContextValue>(
     () => ({
       basket,
       productMetadata,
       basketRevision,
-      fixtureScenario,
       persistenceFailed,
       comparison,
       isStale,
       requestState,
-      canCompare:
-        fixtureScenario !== null
-          ? Boolean(
-              fixtureForBasket(
-                fixtureScenarios[fixtureScenario]?.fixture ?? "",
-                basket,
-                basketRevision,
-              ),
-            )
-          : basket.length > 0 && basket.length <= MAX_BASKET_LINES,
+      canCompare: basket.length > 0 && basket.length <= MAX_BASKET_LINES,
       runComparison: () => {
-        if (fixtureScenario !== null) {
-          const fixture = fixtureForBasket(
-            fixtureScenarios[fixtureScenario]?.fixture ?? "",
-            basket,
-            basketRevision,
-          );
-          if (fixture)
-            submit(
-              { scenario: fixtureScenario, basket: fixture.submittedBasket },
-              successNavigation(),
-            );
-          return;
-        }
         if (!basket.length) return;
         // Freeze available catalogue pages and product details before resolving any missing metadata.
         const known = new Map<
@@ -239,7 +245,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           Pick<Product, "name" | "packSize"> & { imageUrl?: string | null }
         >();
         // Metadata already resolved for an earlier API attempt is still usable for the same IDs.
-        if (requestState.phase !== "idle" && !requestState.submitted.scenario)
+        if (requestState.phase !== "idle")
           for (const product of requestState.submitted.basket.products)
             if (product.name && product.packDescription)
               known.set(product.productId, {
@@ -266,17 +272,10 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           prepareSubmission,
         );
       },
-      leaveDemo: () => {
-        basketBeforeDemo.current = null;
-        setFixtureScenario(null);
-        changed([]);
-      },
       retryComparison: () => retry(successNavigation()),
       basketCount: basket.reduce((total, line) => total + line.quantity, 0),
       addToBasket: (productId, quantity) => {
-        const sourceBasket =
-          fixtureScenario === null ? basket : (basketBeforeDemo.current ?? restoreBasket());
-        const mutation = addBasketLine(sourceBasket, productId, quantity);
+        const mutation = addBasketLine(basket, productId, quantity);
         if (mutation.error) {
           if (mutation.error === "line-limit") {
             toast.error("Basket limit reached", {
@@ -293,15 +292,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           }
           return false;
         }
-        if (mutation.changed) {
-          const leavingDemo = fixtureScenario !== null;
-          if (leavingDemo) {
-            basketBeforeDemo.current = null;
-            setFixtureScenario(null);
-            toast.info("Demo ended. Your saved basket is ready to edit.");
-          }
-          changed(mutation.basket, true, leavingDemo);
-        }
+        if (mutation.changed) changed(mutation.basket);
         return mutation.changed;
       },
       setQuantity: (productId, quantity) => {
@@ -310,35 +301,15 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
           toast.error("Quantity not changed", {
             description: `Choose a whole-pack quantity from ${MIN_PACKS_PER_LINE} to ${MAX_PACKS_PER_LINE}.`,
           });
-        } else if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
+        } else if (mutation.changed) changed(mutation.basket);
       },
       removeFromBasket: (productId) => {
         const mutation = removeBasketLine(basket, productId);
-        if (mutation.changed) changed(mutation.basket, fixtureScenario === null);
-      },
-      // Homepage baskets use the normal API source.
-      loadScenario: (lines) => {
-        basketBeforeDemo.current = null;
-        changed(lines);
-        setFixtureScenario(null);
-      },
-      loadComparisonScenario: (scenario) => {
-        const fixture = comparisonFixtures[fixtureScenarios[scenario]?.fixture ?? ""];
-        if (!fixture) return;
-        if (fixtureScenario === null) basketBeforeDemo.current = basket;
-        changed(
-          fixture.submittedBasket.products.map(({ productId, quantity }) => ({
-            productId,
-            quantity,
-          })),
-          false,
-        );
-        setFixtureScenario(scenario);
+        if (mutation.changed) changed(mutation.basket);
       },
     }),
     [
       basket,
-      fixtureScenario,
       persistenceFailed,
       comparison,
       basketRevision,
@@ -377,7 +348,6 @@ function AppShell({ children }: { children: ReactNode }) {
   const { basketCount } = useBasket();
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const isLanding = location === "/";
   return (
     <div className="app-shell">
       <header className="site-header">
@@ -415,12 +385,6 @@ function AppShell({ children }: { children: ReactNode }) {
             >
               Browse products
             </Link>
-            <a
-              href={isLanding ? "#how-it-works" : "/#how-it-works"}
-              onClick={() => setMenuOpen(false)}
-            >
-              How it works
-            </a>
             <Link
               href="/basket"
               className={`nav-basket ${location === "/basket" ? "is-active" : ""}`}
@@ -445,39 +409,9 @@ function AppShell({ children }: { children: ReactNode }) {
             </div>
             <p>Transparent basket comparison for Singapore grocery shoppers.</p>
           </div>
-          <div>
-            <p className="footer-label">Prototype boundaries</p>
-            <p>Fixed demo dataset · estimates only · no checkout integration</p>
-          </div>
-          <div className="footer-trust">
-            <Check size={16} /> Retailer payments never influence recommendations.
-          </div>
         </div>
       </footer>
     </div>
-  );
-}
-
-function PageIntro({
-  eyebrow,
-  title,
-  description,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  children?: ReactNode;
-}) {
-  return (
-    <section className="page-intro">
-      <div className="container">
-        <p className="eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p className="page-intro__description">{description}</p>
-        {children}
-      </div>
-    </section>
   );
 }
 
@@ -544,11 +478,23 @@ export function CataloguePage() {
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const pageSize = 100;
   const [pageInput, setPageInput] = useState(String(page));
   useEffect(() => setPageInput(String(page)), [page]);
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", focusSearch);
+    return () => window.removeEventListener("keydown", focusSearch);
+  }, []);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
+  const { data: heroData } = useProducts({ page: 1, pageSize: 50 });
   const query = useMemo(
     () => ({
       ...(search.trim() ? { q: search.trim() } : {}),
@@ -561,6 +507,10 @@ export function CataloguePage() {
   const { data, isLoading, isError, isPlaceholderData } = useProducts(query);
   const products = data?.products ?? [];
   const total = data?.total ?? 0;
+  const categories = catalogue.data?.categories ?? [];
+  const quickCategories = categories.slice(0, 6);
+  const backdropProducts = heroData?.products ?? [];
+  const backdropSequence = createCatalogueBackdropSequence(backdropProducts);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   useEffect(() => {
     setPage((current) => Math.min(current, totalPages));
@@ -572,31 +522,87 @@ export function CataloguePage() {
   };
   return (
     <main>
-      <PageIntro
-        eyebrow="Prototype catalogue"
-        title="Build a basket from exact products."
-        description="Search the demo catalogue, inspect retailer offers, then add whole packs to your basket. Product identity and pack size stay fixed throughout the comparison."
-      >
-        <div className="data-pill">
-          <Sparkles size={14} /> Prototype data · not live retailer pricing
+      <section className="catalogue-collage-hero">
+        <div className="catalogue-collage-viewport" aria-hidden="true">
+          <div className="catalogue-collage-track">
+            {CATALOGUE_BACKDROP_GROUP_KEYS.map((copyKey) => (
+              <div className="catalogue-collage-group" key={copyKey}>
+                {backdropSequence.map(({ product, slot }) => {
+                  const { accent } = categoryVisual(product.categoryId);
+                  return (
+                    <div
+                      key={`${copyKey}-${slot}-${product.productId}`}
+                      className={`catalogue-collage-tile catalogue-collage-tile--${(slot % backdropProducts.length) + 1}`}
+                      data-product-id={product.productId}
+                      style={{
+                        background: accent,
+                        gridColumn: Math.floor(slot / 2) + 1,
+                        gridRow: (slot % 2) + 1,
+                      }}
+                    >
+                      {product.imageUrl && <img src={product.imageUrl} alt="" />}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </div>
-      </PageIntro>
-      <section className="container catalogue-section">
-        <div className="catalogue-toolbar">
-          <label className="search-field">
-            <span className="sr-only">Search products</span>
-            <span>⌕</span>
+        <div className="catalogue-collage-overlay" />
+        <div className="container catalogue-collage-content">
+          <h1>Find your everyday essentials.</h1>
+          <div className="catalogue-search-card">
+            <Search size={21} aria-hidden="true" />
+            <label htmlFor="catalogue-search" className="sr-only">
+              Search products
+            </label>
             <input
+              ref={searchInputRef}
+              id="catalogue-search"
               value={search}
               maxLength={100}
               onChange={(event) => {
                 setSearch(event.target.value);
                 setPage(1);
               }}
-              placeholder="Search by product, brand or variant"
+              placeholder="Search products, brands or pack sizes"
             />
-          </label>
-          <label className="select-field">
+            <span className="catalogue-search-card__hint">⌘ / Ctrl K</span>
+          </div>
+          <p className="catalogue-search-caption">
+            Exact products. Clear retailer offers. No substitutions.
+          </p>
+        </div>
+      </section>
+      <section className="container catalogue-section">
+        <div className="catalogue-controls">
+          <fieldset className="category-chips" aria-label="Quick product category filters">
+            <button
+              type="button"
+              className={categoryId === "" ? "is-active" : ""}
+              onClick={() => {
+                setCategoryId("");
+                setPage(1);
+              }}
+            >
+              All
+            </button>
+            {quickCategories.map((category) => (
+              <button
+                key={category.categoryId}
+                type="button"
+                className={categoryId === category.categoryId ? "is-active" : ""}
+                onClick={() => {
+                  setCategoryId(category.categoryId);
+                  setPage(1);
+                }}
+              >
+                {category.name}
+              </button>
+            ))}
+          </fieldset>
+          <label className="select-field select-field--compact">
+            <SlidersHorizontal size={15} aria-hidden="true" />
             <span className="sr-only">Filter category</span>
             <select
               value={categoryId}
@@ -605,21 +611,21 @@ export function CataloguePage() {
                 setPage(1);
               }}
             >
-              <option value="">All</option>
-              {(catalogue.data?.categories ?? []).map((category) => (
+              <option value="">All categories</option>
+              {categories.map((category) => (
                 <option key={category.categoryId} value={category.categoryId}>
                   {category.name}
                 </option>
               ))}
             </select>
-            <ChevronDown size={16} />
+            <ChevronDown size={15} aria-hidden="true" />
           </label>
         </div>
         <div className="catalogue-summary">
           <p>
             <strong>{total}</strong> products found
           </p>
-          <p>{catalogue.data?.categories.length ?? 0} categories</p>
+          <p>Compare Singapore grocery retailers</p>
         </div>
         {isLoading ? (
           <div className="loading-state">Loading the catalogue…</div>
@@ -721,7 +727,6 @@ export function ProductDetail() {
   const { data, isLoading, error } = useOffers(productId, quantity);
   const categoryNames = useCategoryNames();
   const { addToBasket } = useBasket();
-  const [, navigate] = useLocation();
   if (isLoading)
     return (
       <main>
@@ -740,7 +745,7 @@ export function ProductDetail() {
           </h1>
           <p>
             {error instanceof ApiError && error.status === 404
-              ? "That product is not in the prototype dataset."
+              ? "That product is not in the catalogue."
               : "The offers service is unavailable. Please try again shortly."}
           </p>
           <Link className="button button--primary" href="/catalogue">
@@ -768,9 +773,6 @@ export function ProductDetail() {
       <section className="container product-detail">
         <div className="product-detail__visual">
           <ProductImage product={product} className="product-image--detail" />
-          <div className="prototype-note">
-            <Sparkles size={15} /> Exact product identity · fixed dataset
-          </div>
         </div>
         <div className="product-detail__content">
           <p className="eyebrow">{categoryName}</p>
@@ -843,7 +845,6 @@ export function ProductDetail() {
               onClick={() => {
                 if (!addToBasket(product.productId, quantity)) return;
                 toast.success("Added to basket", { description: `${quantity} × ${product.name}` });
-                navigate("/basket");
               }}
             >
               <ShoppingBasket size={17} /> Add {quantity} pack{quantity > 1 ? "s" : ""} to basket
@@ -859,9 +860,8 @@ export function ProductDetail() {
         <p>
           <strong>Stock and pricing note.</strong>{" "}
           {offers.length === 0
-            ? "No retailer has an eligible direct-fulfilment offer for this product in the dataset."
+            ? "No retailer has an eligible direct-fulfilment offer for this product."
             : "Offers show direct supermarket fulfilment only."}{" "}
-          {SNAPSHOT_DISCLAIMER}
         </p>
       </section>
     </main>
@@ -936,7 +936,6 @@ export function BasketPage() {
   const {
     basket,
     basketRevision,
-    fixtureScenario,
     persistenceFailed,
     productMetadata,
     comparison,
@@ -947,23 +946,78 @@ export function BasketPage() {
     canCompare,
     runComparison,
     retryComparison,
-    loadComparisonScenario,
-    leaveDemo,
   } = useBasket();
 
   const categoryNames = useCategoryNames();
+  const basketBackdropProducts = basket.map((line) => {
+    const product = productMetadata.get(line.productId);
+    const { accent } = categoryVisual(product?.categoryId ?? "synthetic");
+    return { productId: line.productId, imageUrl: product?.imageUrl ?? null, accent };
+  });
+  const isBasketEmpty = basketBackdropProducts.length === 0;
+  const backdropProducts = isBasketEmpty
+    ? Array.from({ length: 12 }, (_, index) => ({
+        productId: `cartoptix-icon-${index}`,
+        imageUrl: null,
+        accent: "#1b342f",
+      }))
+    : basketBackdropProducts;
+  const shouldScrollBackdrop = basket.length >= 11;
+  const backdropCopies = shouldScrollBackdrop ? ["primary", "duplicate"] : ["primary"];
   const totalPacks = basket.reduce((sum, line) => sum + line.quantity, 0);
   return (
     <main>
-      <PageIntro
-        eyebrow="Your basket"
-        title="Compare the basket, not partial items."
-        description="Compare the complete basket independently at each retailer using prototype data."
+      <section
+        className={`basket-product-hero${shouldScrollBackdrop ? " basket-product-hero--scrolling" : " basket-product-hero--static"}${isBasketEmpty ? " basket-product-hero--empty" : ""}`}
+        style={{ "--basket-product-count": backdropProducts.length } as CSSProperties}
       >
-        <div className="data-pill">
-          <ShoppingBasket size={14} /> {basket.length} distinct lines · {totalPacks} whole packs
+        <div className="basket-product-hero__viewport" aria-hidden="true">
+          <div
+            className={`basket-product-hero__track${shouldScrollBackdrop ? " basket-product-hero__track--scrolling" : " basket-product-hero__track--static"}`}
+          >
+            {backdropCopies.map((copy) => (
+              <div className="basket-product-hero__group" key={copy}>
+                {backdropProducts.map((product) => (
+                  <div
+                    key={`${copy}-${product.productId}`}
+                    className={`basket-product-hero__tile${isBasketEmpty ? " basket-product-hero__tile--brand" : ""}`}
+                    data-product-id={isBasketEmpty ? undefined : product.productId}
+                    style={{ background: product.accent }}
+                  >
+                    {isBasketEmpty ? (
+                      <span className="basket-product-hero__brand-mark">
+                        <Leaf size="40%" aria-hidden="true" />
+                      </span>
+                    ) : (
+                      product.imageUrl && <img src={product.imageUrl} alt="" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </PageIntro>
+        <div className="basket-product-hero__overlay" />
+        <div className="container basket-product-hero__content">
+          <p className="eyebrow">Shopping basket</p>
+          <div className="basket-product-hero__heading-row">
+            <h1>Review your basket</h1>
+            <div className="basket-header__meta">
+              <div>
+                <strong>{basket.length}</strong>
+                <span>items</span>
+              </div>
+              <div>
+                <strong>{totalPacks}</strong>
+                <span>packs</span>
+              </div>
+            </div>
+          </div>
+          <p className="basket-product-hero__description">
+            Compare your complete basket at RedMart, FairPrice and Cold Storage.
+          </p>
+        </div>
+      </section>
       <section className="container basket-layout">
         <div className="basket-main">
           <ComparisonRequestStatus
@@ -978,7 +1032,7 @@ export function BasketPage() {
               <div>
                 <strong>Basket changes may not survive a reload.</strong>
                 <span>
-                  Session storage is unavailable. Keep this tab open to retain your edits.
+                  Browser storage is unavailable. Keep this tab open to retain your edits.
                 </span>
               </div>
             </div>
@@ -999,7 +1053,7 @@ export function BasketPage() {
             <div className="empty-state basket-empty">
               <ShoppingBasket size={30} />
               <h2>Your basket is empty</h2>
-              <p>Start with the catalogue or load a reproducible demo scenario.</p>
+              <p>Browse the catalogue to add products to your basket.</p>
               <Link className="button button--primary" href="/catalogue">
                 Browse products <ArrowRight size={16} />
               </Link>
@@ -1008,32 +1062,15 @@ export function BasketPage() {
             <div className="basket-card">
               <div className="basket-card__header">
                 <div>
-                  <p className="eyebrow">Basket lines</p>
-                  <h2>Exact products you selected</h2>
+                  <p className="eyebrow">Selected items</p>
+                  <h2>Your grocery list</h2>
                 </div>
                 <Link href="/catalogue" className="button button--outline button--small">
                   Add more
                 </Link>
               </div>
               {basket.map((line) => {
-                const fixtureProduct =
-                  fixtureScenario === null
-                    ? undefined
-                    : comparisonFixtures[
-                        fixtureScenarios[fixtureScenario ?? ""]?.fixture ?? ""
-                      ]?.submittedBasket.products.find(
-                        (product) => product.productId === line.productId,
-                      );
-                const product = fixtureProduct
-                  ? {
-                      productId: fixtureProduct.productId,
-                      name: fixtureProduct.name,
-                      packSize: fixtureProduct.packDescription,
-                      categoryId: "synthetic",
-                      imageUrl: null,
-                      available: true,
-                    }
-                  : productMetadata.get(line.productId);
+                const product = productMetadata.get(line.productId);
                 if (!product)
                   return (
                     <div className="basket-row" key={line.productId}>
@@ -1084,44 +1121,12 @@ export function BasketPage() {
               })}
             </div>
           )}
-          <div className="demo-panel">
-            <div>
-              <p className="eyebrow">Reproducible demos</p>
-              <h3>Try a known scenario</h3>
-              <p>These controls load fixed baskets for testing comparison outcomes.</p>
-            </div>
-            <div className="demo-grid">
-              {Object.entries(fixtureScenarios).map(([key, scenario]) => (
-                <button
-                  type="button"
-                  key={key}
-                  className="demo-button"
-                  onClick={() => {
-                    loadComparisonScenario(key);
-                    toast.success("Demo scenario loaded", { description: scenario.label });
-                  }}
-                >
-                  <strong>{scenario.label}</strong>
-                  <span>Synthetic data — not retailer prices</span>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
         <aside className="basket-sidebar">
           <div className="basket-summary-card">
-            <p className="eyebrow">Comparison setup</p>
+            <p className="eyebrow">Compare options</p>
             <h2>Complete retailer baskets</h2>
-            <p className="muted">
-              {fixtureScenario === null
-                ? "API comparison mode. Compare your basket using the curated retailer dataset."
-                : "Demo mode. Only the exact selected demonstration basket can be compared."}
-            </p>
-            {fixtureScenario !== null && (
-              <button type="button" className="button button--outline" onClick={leaveDemo}>
-                Leave demo and start a new basket
-              </button>
-            )}
+            <p className="muted">We’ll compare your shopping cart for you.</p>
             <div className="scenario-box">
               <div>
                 <Check size={15} /> Singapore serviceable location
@@ -1132,10 +1137,10 @@ export function BasketPage() {
               <div>
                 <Check size={15} /> Non-member pricing
               </div>
-              <small>No postcode or delivery-slot selector.</small>
+              <small>Compare estimated totals and see unavailable products at each retailer.</small>
             </div>
             <div className="basket-summary-card__footer">
-              <span>Basket lines</span>
+              <span>Items in basket</span>
               <strong>
                 {basket.length} / {MAX_BASKET_LINES}
               </strong>
@@ -1157,12 +1162,6 @@ export function BasketPage() {
               </Link>
             )}
           </div>
-          <div className="trust-card">
-            <Sparkles size={17} />
-            <p>
-              <strong>Fixed dataset disclaimer</strong> {SNAPSHOT_DISCLAIMER}
-            </p>
-          </div>
         </aside>
       </section>
     </main>
@@ -1182,32 +1181,22 @@ function BasketRow({
   onChange: (quantity: number) => void;
   onRemove: () => void;
 }) {
-  // Product details URL for real catalogue products.
-  // Synthetic demo products do not have catalogue detail pages.
-  const productHref = product.categoryId === "synthetic" ? null : `/product/${product.productId}`;
+  const productHref = `/product/${product.productId}`;
 
   return (
     <div className="basket-row">
-      {productHref ? (
-        <Link
-          href={productHref}
-          className="basket-row__image-link"
-          aria-label={`View details for ${product.name}`}
-        >
-          <ProductImage product={product} className="product-image--basket" />
-        </Link>
-      ) : (
+      <Link
+        href={productHref}
+        className="basket-row__image-link"
+        aria-label={`View details for ${product.name}`}
+      >
         <ProductImage product={product} className="product-image--basket" />
-      )}
+      </Link>
 
       <div className="basket-row__identity">
-        {productHref ? (
-          <Link href={productHref} className="basket-row__product-link">
-            <strong>{product.name}</strong>
-          </Link>
-        ) : (
+        <Link href={productHref} className="basket-row__product-link">
           <strong>{product.name}</strong>
-        )}
+        </Link>
         <span>{product.packSize}</span>
         <span>{categoryName}</span>
       </div>
@@ -1272,7 +1261,7 @@ function HowItWorks() {
           <div className="step">
             <span>01</span>
             <h3>Choose exact products</h3>
-            <p>Search a fixed dataset. Brands, variants and pack sizes are never substituted.</p>
+            <p>Search exact products. Brands, variants and pack sizes are never substituted.</p>
           </div>
           <div className="step">
             <span>02</span>
@@ -1323,7 +1312,9 @@ export { AppShell, HowItWorks };
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/">
+        <Redirect to="/catalogue" />
+      </Route>
       <Route path="/catalogue" component={CataloguePage} />
       <Route path="/product/:id" component={ProductDetail} />
       <Route path="/basket" component={BasketPage} />
@@ -1352,14 +1343,7 @@ export default function App({
   comparisonSource?: ComparisonSource;
 }) {
   const [client] = useState(() => queryClient ?? new QueryClient());
-  const [source] = useState(() => {
-    if (comparisonSource) return comparisonSource;
-    const api = createApiSource();
-    const demo = createFixtureSource();
-    const selected: ComparisonSource = (submission) =>
-      submission.scenario ? demo(submission) : api(submission);
-    return selected;
-  });
+  const [source] = useState(() => comparisonSource ?? createApiSource());
   return (
     <ErrorBoundary>
       <QueryClientProvider client={client}>

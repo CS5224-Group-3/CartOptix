@@ -1,21 +1,37 @@
 import { routes } from "@cartoptix/contracts";
-import { catalogueExample, productsExample } from "@cartoptix/contracts/fixtures";
+import {
+  basketRequestExample,
+  catalogueExample,
+  productsExample,
+} from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
-import { createFixtureSource } from "../src/features/basket-comparison/fixtureSource";
+import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
 import { ComparisonFailure, type ComparisonSource } from "../src/features/basket-comparison/model";
+import { createFixtureSource, fixtureScenarios } from "./support/fixtureSource";
 
-afterEach(() => window.history.replaceState({}, "", "/"));
+afterEach(() => {
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
+  window.history.replaceState({}, "", "/");
+});
 
 function controlledSource() {
   const releases: (() => void)[] = [];
-  const source = vi.fn(
-    createFixtureSource({ wait: () => new Promise<void>((resolve) => releases.push(resolve)) }),
-  );
+  let selectedScenario = "complete";
+  const fixtureSource = createFixtureSource({
+    scenario: () => selectedScenario,
+    wait: () => new Promise<void>((resolve) => releases.push(resolve)),
+  });
+  const source = vi.fn(fixtureSource);
   return {
     source,
+    selectScenario(name: RegExp) {
+      selectedScenario =
+        Object.entries(fixtureScenarios).find(([, scenario]) => name.test(scenario.label))?.[0] ??
+        "complete";
+    },
     async finish() {
       await waitFor(() => expect(releases.length).toBeGreaterThan(0));
       await act(async () => {
@@ -26,6 +42,7 @@ function controlledSource() {
 }
 
 function openApp(source: ComparisonSource, path = "/basket") {
+  window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
   vi.stubGlobal(
     "fetch",
     vi.fn(async (input: RequestInfo | URL) => {
@@ -37,16 +54,18 @@ function openApp(source: ComparisonSource, path = "/basket") {
     }),
   );
   window.history.pushState({}, "", path);
-  render(
-    <App
-      comparisonSource={source}
-      queryClient={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
-    />,
-  );
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  queryClient.setQueryData(["product-index"], productsExample.products);
+  render(<App comparisonSource={source} queryClient={queryClient} />);
 }
 
-function loadScenario(name: RegExp = /Multiple complete retailers/) {
-  fireEvent.click(screen.getByRole("button", { name }));
+function loadScenario(
+  control: ReturnType<typeof controlledSource>,
+  name: RegExp = /Multiple complete retailers/,
+) {
+  control.selectScenario(name);
 }
 
 function compare() {
@@ -75,7 +94,7 @@ describe("comparison lifecycle", () => {
   it("shows pending progress, blocks duplicate submissions and navigates on success", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
     expect(screen.getByRole("status").textContent).toContain("Comparing submitted basket");
     const pending = screen.getByRole("button", { name: "Comparing..." }) as HTMLButtonElement;
@@ -93,7 +112,7 @@ describe("comparison lifecycle", () => {
   it("stores a late success without redirecting a shopper who left the comparison flow", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
     fireEvent.click(screen.getByRole("link", { name: "Browse products" }));
     expect(window.location.pathname).toBe("/catalogue");
@@ -111,7 +130,7 @@ describe("comparison lifecycle", () => {
   it("does not restore automatic navigation merely because the shopper returns before completion", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
     fireEvent.click(screen.getByRole("link", { name: "Browse products" }));
     fireEvent.click(screen.getByRole("link", { name: /^Basket/ }));
@@ -128,7 +147,7 @@ describe("comparison lifecycle", () => {
   it("also preserves a successful retry without redirecting after navigation away", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(/Temporary failure, then success/);
+    loadScenario(control, /Temporary failure, then success/);
     compare();
     await control.finish();
     fireEvent.click(screen.getByRole("button", { name: "Retry comparison" }));
@@ -145,7 +164,7 @@ describe("comparison lifecycle", () => {
   it("keeps a retryable service failure visible across navigation", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(/Repeated service failure/);
+    loadScenario(control, /Repeated service failure/);
     compare();
     await control.finish();
     expect(screen.getByRole("alert").textContent).toContain("This is a service failure");
@@ -170,7 +189,7 @@ describe("comparison lifecycle", () => {
   it("retries the submitted snapshot once, blocks duplicate retries and succeeds", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(/Temporary failure, then success/);
+    loadScenario(control, /Temporary failure, then success/);
     compare();
     await control.finish();
     fireEvent.click(screen.getByRole("button", { name: "Retry comparison" }));
@@ -190,7 +209,7 @@ describe("comparison lifecycle", () => {
   it("keeps an unsuccessful retry as a persistent error", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(/Repeated service failure/);
+    loadScenario(control, /Repeated service failure/);
     compare();
     await control.finish();
     fireEvent.click(screen.getByRole("button", { name: "Retry comparison" }));
@@ -205,7 +224,7 @@ describe("comparison lifecycle", () => {
   it("shows no retry action for a non-retryable failure", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(/Non-retryable service failure/);
+    loadScenario(control, /Non-retryable service failure/);
     compare();
     await control.finish();
     expect(screen.getByRole("alert")).toBeDefined();
@@ -225,7 +244,7 @@ describe("comparison lifecycle", () => {
   ])("keeps %s as a business outcome", async (label, outcome) => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(label);
+    loadScenario(control, label);
     compare();
     await control.finish();
     expect(screen.getAllByText(outcome)[0]).toBeDefined();
@@ -236,7 +255,7 @@ describe("comparison lifecycle", () => {
   it("retains a successful breakdown after editing but removes current purchase and recommendation actions", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
     await control.finish();
     edit();
@@ -251,7 +270,7 @@ describe("comparison lifecycle", () => {
   it("treats the eventual response as stale when the basket is edited while pending", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
     increaseRice();
     expect(riceQuantity()).toBe("2");
@@ -267,7 +286,7 @@ describe("comparison lifecycle", () => {
   it("a retry after edits neither overwrites the basket nor makes its old snapshot current", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario(/Temporary failure, then success/);
+    loadScenario(control, /Temporary failure, then success/);
     compare();
     await control.finish();
     increaseRice();
@@ -286,11 +305,11 @@ describe("comparison lifecycle", () => {
   it("failed retry cannot turn the retained stale success into a current recommendation", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
     await control.finish();
     edit();
-    loadScenario(/Repeated service failure/);
+    loadScenario(control, /Repeated service failure/);
     compare();
     await control.finish();
     fireEvent.click(screen.getByRole("link", { name: "View previous results" }));
@@ -299,7 +318,7 @@ describe("comparison lifecycle", () => {
     expectReferenceOnly();
     await control.finish();
     expect(screen.getByRole("alert")).toBeDefined();
-    expect(screen.getByRole("status").textContent).toContain("earlier basket state");
+    expect(screen.getByText(/Previous successful comparison, for reference only/)).toBeDefined();
     expectReferenceOnly();
     edit();
     expect(riceQuantity()).toBe("1");
@@ -312,7 +331,7 @@ describe("comparison lifecycle", () => {
       .mockImplementationOnce(control.source)
       .mockRejectedValue(new ComparisonFailure("Synthetic service failure", true));
     openApp(source);
-    loadScenario();
+    loadScenario(control);
     compare();
     await control.finish();
     edit();
@@ -324,16 +343,17 @@ describe("comparison lifecycle", () => {
     expectReferenceOnly();
   });
 
-  it("changing scenarios while pending cannot start an overlapping request", async () => {
+  it("blocks duplicate submissions while pending and accepts a later comparison", async () => {
     const control = controlledSource();
     openApp(control.source);
-    loadScenario();
+    loadScenario(control);
     compare();
-    loadScenario(/Only one complete retailer/);
+    await waitFor(() => expect(control.source).toHaveBeenCalledTimes(1));
+    loadScenario(control, /Only one complete retailer/);
     fireEvent.click(screen.getByRole("button", { name: "Comparing..." }));
     await control.finish();
     expect(control.source).toHaveBeenCalledTimes(1);
-    expectReferenceOnly();
+    expect(screen.getByText(/^Recommended/)).toBeDefined();
     expect(screen.getAllByText("Unavailable")).toHaveLength(1);
     edit();
     compare();

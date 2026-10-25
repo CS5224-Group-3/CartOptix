@@ -15,7 +15,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - Support at most 50 distinct lines and 1–20 whole packs per line.
 - Use verified, directly supermarket-fulfilled offers marked in stock. Quarantine ambiguous matches, prices, promotions and mandatory charges.
 - Calculate in integer SGD cents. Recommend the cheapest feasible retailer option; show each unavailable retailer with its reason. A partial basket may be shown as a labelled estimate, but is never presented as complete, ranked against complete options or recommended.
-- Show the fixed-dataset disclaimer, not collection dates. Keep the clean seed in Git.
+- Show the dataset and price-and-availability notice (`SNAPSHOT_DISCLAIMER`) only on basket comparison results, not collection dates. Keep the clean seed in Git.
 
 ## Working conventions
 
@@ -24,7 +24,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 - Record unresolved evidence and measured results accurately. Do not present catalogue coverage, performance or AWS affordability as verified before checking them.
 - AWS deployments are budget-constrained. Consult the spec before provisioning or changing resources; never commit credentials.
 - Cost controls for the presentation stack (`infra/`): deploy and destroy it only from an engineer's machine, never from CI; destroy it when it is not in use, checked daily; run one baseline application instance while building, and two only for the evaluation and presentation window (accepted availability debt, see the technical spec); keep the development host stopped while it is up; tag every resource `Project=cartoptix` so the tag-filtered budget sees it; and keep `cdk synth` free of context lookups so CI can synthesise without AWS credentials. These exist only because of the SGD 84 budget. Once cost no longer needs managing, or after teardown on 13 November 2026, remove them from this file, the spec and the runbooks.
-- The API catalogue and products routes use the imported seed. Do not build production features on a synthetic API placeholder or present fixture figures as retailer data. Comparison fixtures remain explicitly synthetic for tests and demonstrations.
+- The API catalogue and products routes use the imported seed. Do not build production features on a synthetic API placeholder or present fixture figures as retailer data. Production has no demo scenario controls; controlled fixtures and mocked failures stay in tests and use the normal shopper interactions.
 - When importing generated or template code, keep only what the app uses. Remove unused components, dependencies, lint or type exceptions, and template infrastructure (auth, ORMs, RPC layers) that the spec does not call for.
 
 ## Branching and integration
@@ -42,6 +42,8 @@ We use trunk-based development: `main` is the trunk and must always pass CI and 
 See [README.md](README.md) for prerequisites, setup and commands. Docker must be installed and running, because it provides the local PostgreSQL database.
 
 Run `pnpm check` before proposing changes; it runs the same format, lint, type and test checks as CI. It needs PostgreSQL running, because the API integration tests query it; start it with `pnpm dev` or `docker compose up --detach --wait`.
+
+End-to-end shopper journeys run in CI as a separate job; locally, start the seeded API and web app with `pnpm dev`, install browsers with `pnpm exec playwright install chromium webkit`, then run `pnpm e2e`.
 
 - `@cartoptix/contracts` is consumed from its compiled `dist/`. `pnpm check` and `pnpm dev` build it first; after editing contracts, run `tsc --build` before running `pnpm test` or Vitest on their own, or they will use stale output.
 - The API runs TypeScript directly with Node's type stripping (`node src/main.ts`). Use `.ts` extensions in relative imports, and avoid syntax that needs compilation: enums, namespaces and constructor parameter properties.

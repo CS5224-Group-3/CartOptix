@@ -60,6 +60,10 @@ These journeys define required steps, on-screen content, states and a small set 
 4. Read supported promotion explanations and any notice that an additional promotion was excluded.
 5. Add the product and quantity to the basket.
 
+Adding from product details keeps the shopper on that page, confirms the addition,
+and provides a View basket link. The home route opens the catalogue; there is no
+separate promotional landing page or shopper-facing demo scenario selector.
+
 Names, pack information and prices must be clear enough to avoid confusing unit prices with the amount payable for the requested packs. Image failure must not prevent product selection.
 Products retained in the canonical catalogue without a published eligible listing remain visible for discovery, but are marked unavailable and cannot be added to the basket.
 Catalogue search is case- and whitespace-insensitive substring matching across the shopper-facing product name (including brand and variant, without the `[BCRS]` marker) and the pack-size text of the product's listings. `%`, `_`, and `\` are ordinary search characters, not wildcards.
@@ -67,7 +71,7 @@ Catalogue search is case- and whitespace-insensitive substring matching across t
 ### J2 — Build a basket
 
 1. Add, remove or change basket lines.
-2. Review the snapshot disclaimer and each retailer's delivery rule.
+2. Review the selected products and quantities; comparison results show each retailer's delivery rule and the dataset notice.
 3. Request a comparison.
 
 The normal evaluation basket has 20 distinct lines. The supported maximum is **50 distinct lines**, with **1–20 whole packs per line**. Changing the basket makes an earlier comparison stale; the interface must request a new calculation before presenting it as current.
@@ -153,9 +157,11 @@ Validate every returned complete option and explain each unavailable retailer. A
 
 ### PR-06 — Snapshot disclosure and seed data
 
-Do **not** display collection dates on the website. Display this notice near comparisons:
+Do **not** display collection dates on the website. Show a small, readable notice on the basket comparison results page only:
 
-> Prototype using a fixed retailer dataset. Prices and availability may have changed. Confirm details on the retailer's website.
+> Estimates use a curated dataset. Prices and availability may have changed. Confirm details on the retailer's website.
+
+Do not display dataset disclosures elsewhere in the shopper interface. Internal documentation retains the fixed-snapshot limitations. The comparison does not check live retailer prices or availability.
 
 Keep one cleaned seed in the repository; it evolves through Git, which is its version history. Engineers refresh it by taking a new snapshot of all three retailers within one short window (`scripts/scrape/README.md`); each refresh replaces the previous snapshot entirely and stays a fixed dataset until the next one. If any retailer's collection fails, the previous seed stays; listings skipped under a check cap (PR-02) are not a failure, and are left out rather than carried over. Neither the seed nor the site records when a snapshot was taken, and source references are not presented as collection dates. There is no scheduled or live refresh.
 
@@ -209,4 +215,4 @@ The intended commercial progression is to explore retailer-funded pay-per-click 
 
 ## 8. Evidence still required
 
-The raw files have been profiled, but listing eligibility, exact matches and promotion terms have not been fully verified. The project must still establish a reliable curated catalogue, price the complete AWS configuration and measure comparison correctness and system capacity. Record shortfalls and revisit affected decisions instead of presenting these targets as achieved results.
+The curated seed is committed and system evaluation is recorded in [capacity findings](capacity-findings.md) and issue #22. Run G reached 240 RPS for four minutes; this is the highest tested load, not a measured maximum sustainable capacity. User evaluation and the cloud/on-premise cost comparison are tracked in #23, and teardown in #24. Record limitations and remaining evidence explicitly rather than treating closed tickets as proof of every claim.

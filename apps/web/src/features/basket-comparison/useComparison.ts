@@ -54,9 +54,6 @@ export function useComparison(source: ComparisonSource) {
             setResult({
               ...response,
               submittedBasket: structuredClone(submitted.basket),
-              ...(submitted.scenario === undefined
-                ? {}
-                : { submittedScenario: submitted.scenario }),
             });
             setRequest({ phase: "success", submitted });
             inFlight.current = false;

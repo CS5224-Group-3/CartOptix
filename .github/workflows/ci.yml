@@ -62,6 +62,77 @@ jobs:
       - name: Build
         run: pnpm run build
 
+  e2e:
+    name: End-to-end shopper journeys
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        # Must match the major version in docker-compose.yml and RDS.
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: cartoptix
+          POSTGRES_PASSWORD: local_dev_password
+          POSTGRES_DB: cartoptix
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U cartoptix -d cartoptix"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      DATABASE_URL: postgresql://cartoptix:local_dev_password@localhost:5433/cartoptix
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared contracts
+        run: pnpm --filter @cartoptix/contracts build
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium webkit
+
+      - name: Prepare database
+        # API startup does not apply migrations or import the committed seed.
+        run: |
+          pnpm --filter @cartoptix/api db:migrate
+          pnpm --filter @cartoptix/api seed:import data/seed/seed.json
+
+      - name: Start API and web app
+        run: |
+          mkdir -p e2e-logs
+          pnpm --filter @cartoptix/api dev > e2e-logs/api.log 2>&1 &
+          NODE_ENV=development pnpm --filter @cartoptix/web dev > e2e-logs/web.log 2>&1 &
+          curl --fail --silent --show-error --retry 30 --retry-all-errors --retry-delay 2 --max-time 5 http://localhost:5173/api/v1/catalogue > /dev/null
+
+      - name: Run shopper journeys
+        run: pnpm e2e
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/
+            e2e-logs/
+          retention-days: 7
+
   workflows:
     name: Lint workflows
     runs-on: ubuntu-latest
