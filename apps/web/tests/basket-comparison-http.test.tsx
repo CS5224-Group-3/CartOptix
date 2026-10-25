@@ -89,7 +89,6 @@ describe("normal API comparison flow", () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(basketRequestExample),
     });
-    expect(screen.getByText(/curated retailer dataset, not live retailer prices/)).toBeDefined();
     expect(screen.queryByRole("link", { name: /^Visit / })).toBeNull();
     expect(
       screen

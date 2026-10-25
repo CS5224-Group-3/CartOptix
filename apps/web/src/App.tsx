@@ -847,15 +847,6 @@ export function ProductDetail() {
           </div>
         </div>
       </section>
-      <section className="container detail-disclosure">
-        <CircleHelp size={17} />
-        <p>
-          <strong>Stock and pricing note.</strong>{" "}
-          {offers.length === 0
-            ? "No supported retailer has an eligible offer for this product."
-            : "Offers are from our supported supermarket catalogues."}{" "}
-        </p>
-      </section>
     </main>
   );
 }
