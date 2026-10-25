@@ -8,9 +8,13 @@ async function addMilkAndOpenBasket(page: Page) {
   await page.getByRole("textbox", { name: /Search products/i }).fill("milk");
   await page.getByRole("button", { name: "Add", exact: true }).first().click();
   await expect(page.getByText("Added to basket")).toBeVisible();
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
   const mobileMenu = page.locator("button.mobile-menu-button");
-  if (await mobileMenu.isVisible()) await mobileMenu.click();
-  await page.locator('a[href="/basket"]').click({ force: true });
+  if ((await mobileMenu.isVisible()) && !(await navigation.isVisible())) {
+    await mobileMenu.click();
+    await expect(navigation).toBeVisible();
+  }
+  await navigation.locator('a[href="/basket"]').click();
 }
 
 async function dismissFirstVisitGuide(page: Page) {

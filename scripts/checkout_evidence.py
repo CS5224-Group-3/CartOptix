@@ -96,6 +96,7 @@ def main() -> None:
             tally[c["kind"] + " agree"] += bool(c["agree"])
             name = row["url"].rstrip("/").rsplit("/", 1)[-1].removesuffix(".html")
             note = f" ({row['note']})" if row["note"] and row["note"] != "terms only" else ""
+            live_savings = row["live_savings"].replace("|", "\\|")
             if c["kind"] == "terms":
                 result = "terms checked, no cart"
             elif c["kind"] == "unchecked":
@@ -111,7 +112,7 @@ def main() -> None:
             else:
                 result = "match" if c["agree"] else f"**differs by {c['cart'] - c['expected']}¢**"
             sections.append(
-                f"| {name} | {row['qty']} | {row['live_price']} | {row['live_savings'].replace('|', '\\|')} | "
+                f"| {name} | {row['qty']} | {row['live_price']} | {live_savings} | "
                 f"{c['deal']} | {money(c['expected'])} | {money(c['cart'])} | {result}{note} |"
             )
         parts = []
