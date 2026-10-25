@@ -148,8 +148,11 @@ ASG may temporarily launch one replacement instance during a rolling API update.
 
 For releases containing both API and web changes, migrations and the API rollout
 finish first. If either fails, web publication does not start. A web failure
-does not roll back the already healthy API; rerun the failed Release workflow to
-retry the web stage. No seed import runs automatically: follow **Load the
+does not roll back the already healthy API; the failed web change set rolls back
+to its prior assets, and rerunning the Release workflow retries only the web
+stage. If the API readiness check fails after rollout, CI restores the previous
+API release and skips web publication. The previous API image must still exist
+in ECR for a safe rollout. No seed import runs automatically: follow **Load the
 database** below for the initial seed and perform future seed updates manually.
 
 ### GitHub OIDC roles

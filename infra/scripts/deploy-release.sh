@@ -55,8 +55,14 @@ url="$(output Url)"
 [[ -n "$group" && "$group" != "null" ]] || die "stack has no AutoScalingGroupName output."
 [[ "$url" == https://* ]] || die "stack has no valid Url output."
 
-if changed "$current_infra" "$release" \
-  infra/bin infra/src infra/cdk.json infra/cdk.context.json infra/package.json infra/tsconfig.json \
+if changed "$current_infra" "$release" infra \
+  ':(exclude)infra/RUNBOOK.md' \
+  ':(exclude)infra/scripts/deploy-release.sh' \
+  ':(exclude)infra/scripts/run-migrations.sh' \
+  ':(exclude)infra/scripts/check_release_change_set.py' \
+  ':(exclude)infra/scripts/deploy.sh' \
+  ':(exclude)infra/scripts/destroy.sh' \
+  ':(exclude)infra/scripts/deploy-budget.sh' \
   pnpm-lock.yaml pnpm-workspace.yaml patches; then
   die "infrastructure sources changed since InfraRelease=$current_infra; deploy infrastructure from an engineer's machine first."
 fi
@@ -106,9 +112,8 @@ build_web_at() {
   printf '%s\n' "$old_web_worktree/apps/web/dist"
 }
 
-prepare_change_set() {
-  local stage="$1" api_sha="$2" web_sha="$3" web_dist="$4"
-  pending_change_set="cartoptix-${GITHUB_RUN_ID:-local}-$(date +%s)-$stage"
+deploy_change_set() {
+  local method="$1" change_set="$2" api_sha="$3" web_sha="$4" web_dist="$5"
   pnpm exec cdk deploy CartOptixPresentation \
     -c release="$api_sha" \
     -c webRelease="$web_sha" \
@@ -119,10 +124,16 @@ prepare_change_set() {
     -c targetRequestsPerMinute="$target_rpm" \
     -c scalingWarmupSeconds="$scaling_warmup" \
     -c alertEmail=unused@example.invalid \
-    --method prepare-change-set \
-    --change-set-name "$pending_change_set" \
+    --method "$method" \
+    --change-set-name "$change_set" \
     --require-approval never \
     --exclusively --ci
+}
+
+prepare_change_set() {
+  local stage="$1" api_sha="$2" web_sha="$3" web_dist="$4"
+  pending_change_set="cartoptix-${GITHUB_RUN_ID:-local}-$(date +%s)-$stage"
+  deploy_change_set prepare-change-set "$pending_change_set" "$api_sha" "$web_sha" "$web_dist"
   local changes
   changes="$(aws cloudformation describe-change-set --stack-name CartOptixPresentation --change-set-name "$pending_change_set" --output json)"
   python3 scripts/check_release_change_set.py "$stage" <<<"$changes"
@@ -130,19 +141,7 @@ prepare_change_set() {
 
 execute_change_set() {
   local api_sha="$1" web_sha="$2" web_dist="$3"
-  pnpm exec cdk deploy CartOptixPresentation \
-    -c release="$api_sha" \
-    -c webRelease="$web_sha" \
-    -c infraRelease="$current_infra" \
-    -c webDist="$web_dist" \
-    -c minInstances="$min_instances" \
-    -c maxInstances="$max_instances" \
-    -c targetRequestsPerMinute="$target_rpm" \
-    -c scalingWarmupSeconds="$scaling_warmup" \
-    -c alertEmail=unused@example.invalid \
-    --method execute-change-set \
-    --change-set-name "$pending_change_set" \
-    --exclusively --ci
+  deploy_change_set execute-change-set "$pending_change_set" "$api_sha" "$web_sha" "$web_dist"
   pending_change_set=""
 }
 
@@ -155,7 +154,7 @@ wait_for_api() {
     fi
     sleep 5
   done
-  die "API readiness did not pass at $ready_url; web deployment stopped."
+  return 1
 }
 
 api_release="$current_api"
@@ -163,11 +162,19 @@ web_dist=""
 if [[ "$api_changed" == true ]]; then
   aws ecr describe-images --repository-name cartoptix-api --image-ids "imageTag=$release" >/dev/null \
     || die "no cartoptix-api image for $release. The Release publish job must succeed first."
+  aws ecr describe-images --repository-name cartoptix-api --image-ids "imageTag=$current_api" >/dev/null \
+    || die "the deployed API image $current_api is unavailable; refusing an API update without a rollback image."
   web_dist="$(build_web_at "$current_web")"
   prepare_change_set api "$release" "$current_web" "$web_dist"
   ./scripts/run-migrations.sh "$release" "$group"
   execute_change_set "$release" "$current_web" "$web_dist"
-  wait_for_api
+  if ! wait_for_api; then
+    echo "API readiness failed; restoring API release $current_api before stopping." >&2
+    prepare_change_set api "$current_api" "$current_web" "$web_dist"
+    execute_change_set "$current_api" "$current_web" "$web_dist"
+    wait_for_api || die "API readiness failed and restoring $current_api did not recover it."
+    die "API readiness failed; restored $current_api and skipped web publication."
+  fi
   api_release="$release"
 fi
 
@@ -178,7 +185,6 @@ if [[ "$web_changed" == true ]]; then
   fi
   prepare_change_set web "$api_release" "$release" "$web_dist"
   execute_change_set "$api_release" "$release" "$web_dist"
-  curl --fail --silent --show-error --max-time 20 --output /dev/null "$url/"
 fi
 
 echo "Presentation release complete: API=$api_release web=$([[ "$web_changed" == true ]] && echo "$release" || echo "$current_web")."

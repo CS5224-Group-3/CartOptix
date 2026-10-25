@@ -28,6 +28,16 @@ class ReleaseChangeSetTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unexpected resource"):
             validate("api", [change("DatabaseABC", "AWS::RDS::DBInstance")])
 
+    def test_web_release_cannot_change_bucket_or_distribution(self):
+        for logical_id, resource_type in (
+            ("WebBucket", "AWS::S3::Bucket"),
+            ("Distribution", "AWS::CloudFront::Distribution"),
+        ):
+            with self.subTest(logical_id=logical_id), self.assertRaisesRegex(
+                ValueError, "unexpected resource"
+            ):
+                validate("web", [change(logical_id, resource_type)])
+
     def test_rejects_resource_replacement(self):
         with self.assertRaisesRegex(ValueError, "replace or remove"):
             validate("api", [change("ApiLaunchTemplate89156735", "AWS::EC2::LaunchTemplate", replacement="True")])
