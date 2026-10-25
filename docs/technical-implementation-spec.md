@@ -13,7 +13,7 @@ Read this with the [product specification](product-spec.md), which owns user jou
 - Complete-basket comparison at each of the three retailers, with at most 50 distinct lines and 1–20 whole packs per line; no substitutions or divided lines.
 - Exact comparison of all feasible single-retailer options, recommending the cheapest with a stable tie-break.
 - Version-controlled clean seed data, no website collection dates, and a visible price-and-availability notice.
-- Two AWS deployment profiles: single-node development and a short-lived ALB/ASG/RDS presentation deployment.
+- A local Docker development setup and a short-lived ALB/ASG/RDS presentation deployment.
 - Automatic scaling and application-instance failure demonstrations; endpoint-RPS load tests.
 
 ### Proposed implementation defaults
@@ -28,8 +28,8 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Persistence | PostgreSQL, Drizzle ORM with drizzle-kit migrations, and bounded `node-postgres` pools. |
 | Comparison | Pure TypeScript shared pricing and comparison modules, run in process for all three retailers. |
 | Packaging | Immutable ARM64-compatible application container; local containerised PostgreSQL. |
-| Infrastructure | Development profile: a hand-provisioned EC2 host running Docker Compose (`deploy/development`). Presentation profile: AWS CDK in TypeScript (`infra/`), deployed and destroyed from an engineer's machine. |
-| Delivery | GitHub Actions checks, and publication of commit-tagged arm64 images to ECR from `main`. The development host is updated by hand from those images (E3); the presentation stack is deployed from an engineer's machine and its migrations and seed import are run by hand (E4). OIDC is optional for the POC; credentials are never committed. |
+| Infrastructure | Local development uses Docker Compose. The only AWS deployment is the short-lived presentation stack, defined in AWS CDK (`infra/`); engineers create and destroy it. |
+| Delivery | GitHub Actions checks and publishes commit-tagged arm64 API images after successful CI on `main`. CI deploys changed application services to an existing presentation stack; stack lifecycle and unrelated infrastructure changes stay manual. Backward-compatible migrations run once before API rollout; seed import remains manual. OIDC credentials are never committed. |
 | Verification | Vitest, API/PostgreSQL integration tests, Playwright journeys and an arrival-rate load tool such as k6. |
 
 Specific package versions, frontend styling, instance sizes for the ASG, origin networking and scaling thresholds are engineering choices to validate in the tasks below. They must satisfy the product contract, including the two-second basket target.
@@ -67,8 +67,8 @@ These versions were installed, built, tested and run on `arm64` during the works
 Use one backend application with catalogue, pricing, comparison, import and click-event modules. Keep API instances stateless: basket requests contain product IDs and quantities, and the server prices them from the loaded seed. Do not rely on instance memory or local files for persistent user state.
 
 ```text
-Development POC
-Browser -> EC2 t4g.micro [web/API + PostgreSQL on persistent storage]
+Local development
+Browser -> Vite web/API -> local PostgreSQL
 
 Presentation
 Browser -HTTPS-> CloudFront (*.cloudfront.net)
@@ -240,17 +240,17 @@ Outbound links must work without the event API. Send tracking asynchronously wit
 
 ### Cost and lifecycle
 
-Cost the entire eight-week project in SGD before credits against approximately SGD 84, including the main load-test day. Include both deployment profiles, their actual durations and any overlap, EBS/RDS storage, ALB hours/capacity, public IPv4, CloudFront/S3, traffic, ECR, logs, backups and any secrets/network services selected. Record the pricing date, currency conversion and applicable tax assumptions. No estimate has yet established that the target configuration fits.
+Cost the entire eight-week project in SGD before credits against approximately SGD 84, including the main load-test day. Include the presentation stack's actual duration, EBS/RDS storage, ALB hours/capacity, public IPv4, CloudFront/S3, traffic, ECR, logs, backups and any secrets/network services selected. Record the pricing date, currency conversion and applicable tax assumptions. No estimate has yet established that the target configuration fits.
 
-Use one `t4g.micro` for the development POC, with app and database sharing its limited resources. The presentation configuration uses two baseline application instances during the evaluation and presentation window (one while building, as accepted technical debt; section 2), maximum three, and Single-AZ `db.t4g.micro`. Select application instance sizes after ARM64 and load checks. Shorten the presentation window to five days before weakening the required demonstrations. If still unaffordable, raise an explicit cost/scope decision.
+The presentation configuration uses two baseline application instances during the evaluation and presentation window (one while building, as accepted technical debt; section 2), maximum three, and Single-AZ `db.t4g.micro`. Select application instance sizes after ARM64 and load checks. Shorten the presentation window to five days before weakening the required demonstrations. If still unaffordable, raise an explicit cost/scope decision.
 
 Provision reusable infrastructure, then verify teardown by 13 November 2026. Include resources that continue charging after compute shutdown: volumes, load balancers, snapshots, retained databases and logs. Preserve required seed, results and report artefacts before deletion. Any retained billable resource needs an explicit cost entry.
 
-The presentation stack is destroyed when it is not in use, checked daily, and recreated when needed, and the development host stays stopped while the presentation stack is up. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
+The presentation stack is destroyed when it is not in use, checked daily, and recreated when needed. Every project resource is tagged `Project=cartoptix`, and the spending alert is a budget filtered by that tag, because the AWS account also holds unrelated workloads.
 
 ### Delivery and scaling
 
-PR checks run format, types, relevant tests and builds. Deploy identifiable builds; OIDC is optional for the POC, and credentials are never committed. Apply database migrations once through a designated task, not concurrently on every ASG instance. Retain a known-good application release; rollback restores it when the schema is still compatible, otherwise fix forward. Schema changes need not be backward compatible during the MVP.
+PR checks run format, types, relevant tests and builds. After CI succeeds on `main`, publish the immutable API image and deploy only changed services to the existing presentation stack. Use a narrowly trusted OIDC role for application releases, separate from the ECR publisher role. Keep stack creation, destruction and unrelated infrastructure changes on an engineer's machine. Apply backward-compatible database migrations once before API rollout, not concurrently on every ASG instance; keep seed import manual. Retain a known-good application release; if API rollout fails, stop before web publication. If web publication fails, retain the API and retry the web release. Schema changes need not be backward compatible during the MVP, but migrations in a rolling rollout must remain compatible with the currently running API.
 
 Use automatic ASG scaling policies, with a costed maximum of three. Select and document a metric, threshold, warm-up and cooldown from baseline measurements. CPU or ALB requests per target are candidate metrics; the choice is not yet settled. Show scale-out and scale-in under bounded load. The forecast surge may fit baseline capacity, so the trigger demonstration can use a separately labelled higher load.
 
@@ -381,31 +381,26 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 - **Acceptance:** Known-listing validation prevents arbitrary redirects/events; navigation works when tracking fails; stored events are labelled usage rather than conversions or billable clicks.
 
 #### D5 — Verify complete shopper journeys (tracked with the system evaluation)
-- **Blocked by:** B5, D3, D4, E2, E3.
-- **Work:** Release the current application and curated seed to the development AWS deployment, then run mobile, keyboard and end-to-end checks for J1–J5; include stale results, service errors and unsupported-promotion notices. Local checks may run earlier but do not close this task.
+- **Blocked by:** B5, D3, D4, E3, E4.
+- **Work:** Release the current application and curated seed to the presentation deployment, then run mobile, keyboard and end-to-end checks for J1–J5; include stale results, service errors and unsupported-promotion notices. Local checks may run earlier but do not close this task.
 - **Acceptance:** Each journey has recorded evidence from the deployed service; explanations match backend totals; current-price/availability claims do not exceed the model. Repeat deployed smoke checks after moving to the presentation configuration.
 
 ### WS-E — AWS, delivery and lifecycle
 
-#### E1 — Cost both deployment profiles and choose networking
+#### E1 — Cost the presentation deployment and choose networking
 - **Blocked by:** None.
 - **Work:** Price Singapore resources and durations before credits; select origin connectivity, administration, application instance sizes and retention assumptions. Separate project and continuous BAU estimates.
 - **Acceptance:** A dated SGD estimate covers ancillary costs and the load-test day; origin connectivity and outbound/administration arrangements are documented with their cost impact. The presentation window is affordable or a specific budget/scope decision is raised; two baseline/max-three capacity remains conditional until this check.
 
-#### E2 — Deploy the single-node development POC
-- **Blocked by:** A1, B4, E1.
-- **Work:** Provision `t4g.micro` app/DB hosting with persistent storage, restricted access, configuration and repeatable seed loading.
-- **Acceptance:** A deployed smoke path works; PostgreSQL is not publicly accessible; data survives app restart; resource pressure and POC limitations are documented.
-
 #### E3 — Establish CI and repeatable release delivery
 - **Blocked by:** A1, B4, E1.
-- **Work:** Add PR checks, identifiable build publishing, explicit migration/seed tasks and a documented rollback. OIDC is optional for the POC.
-- **Acceptance:** Checks block a broken build; no long-lived AWS credentials are committed; migrations run once; a prior application release can be restored without destructive schema rollback.
+- **Work:** Add PR checks and immutable API image publishing; deploy changed API/web services from CI to an existing presentation stack after successful main-branch checks. Keep stack lifecycle and unrelated infrastructure changes manual.
+- **Acceptance:** Checks block a broken release; the narrowly trusted deployment OIDC role is separate from the ECR publisher; API migrations run once before rollout; the seed import stays manual; docs-only changes deploy no services; a failed API rollout blocks web publication; a failed web publication leaves the API in place for retry.
 
 #### E4 — Provision the presentation architecture
-- **Blocked by:** E2, E3.
-- **Work:** Define in CDK, and deploy from an engineer's machine, an internal ALB, a stateless EC2 ASG (maximum 3; minimum 2 for evaluation and the presentation, 1 while building) running the commit-tagged API image from ECR, private Single-AZ RDS with approved sizing, and CloudFront serving the frontend from a private S3 bucket; configure liveness-based health checks and draining. An engineer runs the migrations and the one-time seed import by hand, following the runbook. Deployment from CI is out of scope.
-- **Acceptance:** Requests work through HTTPS ingress; when scaled out, every application instance serves the same data; database access is restricted; a database outage does not drain or replace application instances; the stack is created and destroyed from code; the deployed cost assumptions and topology are recorded.
+- **Blocked by:** E3.
+- **Work:** Define in CDK an internal ALB, a stateless EC2 ASG (maximum 3; minimum 2 for evaluation and the presentation, 1 while building) running the commit-tagged API image from ECR, private Single-AZ RDS with approved sizing, and CloudFront serving the frontend from a private S3 bucket; configure liveness-based health checks and draining. Engineers create and destroy the stack; application releases deploy through E3. The one-time seed import remains manual.
+- **Acceptance:** Requests work through HTTPS ingress; when scaled out, every application instance serves the same data; database access is restricted; a database outage does not drain or replace application instances; stack lifecycle stays outside CI; the deployed cost assumptions and topology are recorded.
 
 #### E5 — Configure observability and automatic scaling
 - **Blocked by:** E4.
@@ -436,7 +431,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### F4 — Conduct the shopper study and record small refinements
 - **Blocked by:** D5.
-- **Work:** Recruit 10–15 regular online grocery shoppers; conduct representative tasks on the verified AWS deployment and interviews/questionnaires covering comprehension, trust, value and cart reconstruction effort. The study may use the development deployment; record which configuration and seed were used.
+- **Work:** Recruit 10–15 regular online grocery shoppers; conduct representative tasks on the verified presentation deployment and interviews/questionnaires covering comprehension, trust, value and cart reconstruction effort; record the configuration and seed used.
 - **Acceptance:** Report deployed task evidence, negative and positive findings, task outcomes, assumption comprehension and changes made; interest is not labelled adoption; longer-term suggestions remain separate from MVP scope.
 
 #### F5 — Assemble the final evaluation and cost report
@@ -447,7 +442,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 ## 9. Delivery sequence and completion gate
 
 1. **Foundation and evidence:** A1–A2, B1 and E1. Prepare F1 once contracts exist.
-2. **Vertical slice:** B2–B4, C1–C2 and D1–D3 using clearly labelled fixtures where needed; establish E2–E3.
+2. **Vertical slice:** B2–B4, C1–C2 and D1–D3 using clearly labelled fixtures where needed; establish E3.
 3. **Curated MVP:** B5, C5 and D4–D5. Confirm coverage and correct comparisons before presenting recommendations as useful.
 4. **Cloud evaluation:** E4–E5, F2–F4. Keep the presentation window within the costed allowance and coordinate the one-day main load exercise.
 5. **Report and close:** F5, final presentation, E6 by the shutdown deadline.

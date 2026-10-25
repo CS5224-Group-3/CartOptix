@@ -5,16 +5,17 @@ stack (`CartOptixPresentation`). The architecture and its limitations are in the
 [technical spec](../docs/technical-implementation-spec.md), section 2.
 
 The stack runs only while someone is working on it, testing it or presenting.
-**Destroy it when it is not in use, checked daily**, and keep the development host stopped while
-it is up. It is deployed from an engineer's machine only, never from CI.
+**Destroy it when it is not in use, checked daily.** Engineers create and destroy
+the stack; CI deploys application releases only to an existing stack and cannot
+change unrelated infrastructure.
 
 ## What gets deployed
 
 | Part | Detail |
 | --- | --- |
-| Frontend | `apps/web/dist`, built from your checkout, uploaded to a private S3 bucket and served by CloudFront |
+| Frontend | `apps/web/dist`, built from the release commit and uploaded to a private S3 bucket; served by CloudFront |
 | API | `cartoptix-api:<release>` from ECR, one Docker container per EC2 `t4g.micro` instance in an Auto Scaling Group (max 3) |
-| Release | a full commit SHA whose image the Release workflow has already published, which means it has landed on `main` |
+| Release identity | Full commit SHAs tracked separately by the `Release`, `WebRelease` and `InfraRelease` outputs |
 | Database | RDS PostgreSQL 18.6, `db.t4g.micro`, Single-AZ, no backups. Empty until you load it, below |
 | Entry point | `https://<id>.cloudfront.net`, printed as the `Url` output. `/api/*` and `/health/*` go to the API, uncached; everything else is the frontend |
 | Observability | A CloudWatch dashboard and five alarms, printed as the `Dashboard` output. Logs are kept three days |
@@ -56,6 +57,10 @@ subnets behind a NAT gateway or VPC endpoints.
   assume the `cdk-hnb659fds-*` roles, and, for the tunnel, `ssm:StartSession` on
   the stack's instances and `secretsmanager:GetSecretValue` on its database
   secret. See the admin request on #20.
+- For application releases, separate GitHub OIDC roles for ECR publishing and
+  presentation deployment, plus the repository variables `AWS_PUBLISH_ROLE_ARN`
+  and `AWS_DEPLOY_ROLE_ARN`. The deploy role is trusted only for this repository's `main` branch. See
+  [CI application releases](#ci-application-releases).
 
 Once per project, deploy the spending alert. It is a separate stack on purpose:
 `pnpm destroy` tears down the presentation stack whenever it is idle, and an
@@ -113,6 +118,91 @@ A redeploy with a different release replaces instances one at a time and waits
 for each new one to report healthy; if one fails, CloudFormation rolls the stack
 back to the previous release. Changing only `MIN_INSTANCES` resizes the group
 without replacing instances.
+
+## CI application releases
+
+After the successful CI workflow for a push to `main`, `release.yml` publishes
+the immutable `cartoptix-api:<sha>` image and deploys only application changes to
+an existing `CartOptixPresentation` stack. A superseded main commit is skipped.
+If the stack is absent, the job reports that and exits without creating it. The
+workflow never creates or destroys stacks and does not publish `cartoptix-web`;
+the old ECR repository and its images are left untouched.
+
+The stack's `Release`, `WebRelease` and `InfraRelease` outputs record the
+deployed API, web and infrastructure commits independently. The release script
+compares those commits to the verified release:
+
+| Changes since deployed release | Deployment |
+| --- | --- |
+| `apps/api` | Run that release's database migrations once through SSM, then roll out the API and wait for `/health/ready` |
+| `apps/web` | Build and publish the web assets to the existing private bucket |
+| `packages/contracts` | API rollout first, then web publication |
+| Documentation or other non-application files | No application deployment |
+| CDK definition changes not already deployed | Stop and require an engineer to deploy infrastructure first |
+
+The workflow reads the live ASG minimum/maximum, target-tracking threshold and
+warm-up when preparing an API update, and the CDK change-set gate rejects resource changes
+outside the API launch template/ASG for API releases or the web deployment for
+web releases. It does not change the stack's baseline or scaling settings. The
+ASG may temporarily launch one replacement instance during a rolling API update.
+
+For releases containing both API and web changes, migrations and the API rollout
+finish first. If either fails, web publication does not start. A web failure
+does not roll back the already healthy API; rerun the failed Release workflow to
+retry the web stage. No seed import runs automatically: follow **Load the
+database** below for the initial seed and perform future seed updates manually.
+
+### GitHub OIDC roles
+
+Set repository variable `AWS_DEPLOY_ROLE_ARN` to a dedicated deployment role.
+Keep it separate from the existing `AWS_PUBLISH_ROLE_ARN` ECR publisher role;
+the publisher does not receive deployment permissions. The publishing workflow
+now checks for an existing immutable API tag, so the publisher also needs
+`ecr:DescribeImages` on `cartoptix-api` in addition to its existing ECR push
+permissions. Leave its existing permissions on the legacy `cartoptix-web`
+repository unchanged; this workflow never uses them.
+
+The deployment role's trust policy must restrict OIDC to this repository's
+`main` branch (the subject includes the repository's immutable owner/repository
+IDs):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": {
+      "Federated": "arn:aws:iam::<account-id>:oidc-provider/token.actions.githubusercontent.com"
+    },
+    "Action": "sts:AssumeRoleWithWebIdentity",
+    "Condition": {
+      "StringEquals": {
+        "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+        "token.actions.githubusercontent.com:sub": "repo:CS5224-Group-3@325644622/CartOptix@1359158441:ref:refs/heads/main"
+      }
+    }
+  }]
+}
+```
+
+Give this role read access to the presentation stack outputs, ASG and scaling
+policy, and the API ECR image; allow `ssm:SendCommand` only with
+`AWS-RunShellScript` against instances tagged `Project=cartoptix`, plus
+`ssm:GetCommandInvocation`. Allow `sts:AssumeRole` only for the regional
+`cdk-hnb659fds-deploy-role` and `cdk-hnb659fds-file-publishing-role` created by
+the existing bootstrap. Allow `ssm:GetParameter` only for
+`/cdk-bootstrap/hnb659fds/version`, which CDK reads to verify bootstrap status.
+Scope CloudFormation inspection and change-set cleanup to
+`CartOptixPresentation`; do not grant direct stack create/delete or broad
+CloudFormation mutation permissions to the OIDC role. The CDK bootstrap roles
+perform application change-set and asset operations. Review their existing
+execution-role policy before enabling CI; the release script fails closed if a
+change set includes resources outside the application allowlist.
+
+Set `AWS_DEPLOY_ROLE_ARN` in **Settings → Secrets and variables → Actions →
+Variables** alongside the existing `AWS_PUBLISH_ROLE_ARN`. No long-lived AWS
+credentials are needed. The deployment role is used only after the
+successful-main CI gate; PR runs never receive its OIDC token.
 
 ## Load the database (once per stack)
 
