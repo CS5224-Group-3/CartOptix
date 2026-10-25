@@ -1126,9 +1126,6 @@ export function BasketPage() {
               <div>
                 <Check size={15} /> Standard delivery
               </div>
-              <div>
-                <Check size={15} /> Non-member pricing
-              </div>
               <small>Compare estimated totals and see unavailable products at each retailer.</small>
             </div>
             <div className="basket-summary-card__footer">

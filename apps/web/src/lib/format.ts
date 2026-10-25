@@ -10,27 +10,24 @@ export const RETAILER_IDS: readonly RetailerId[] = ["redmart", "fairprice", "col
 
 export const RETAILER_DISPLAY: Record<
   RetailerId,
-  { name: string; accent: string; initial: string; badgeClass: string; tagline: string }
+  { name: string; accent: string; initial: string; tagline: string }
 > = {
   redmart: {
     name: "RedMart",
     accent: "#e85c62",
     initial: "R",
-    badgeClass: "retailer-badge--red",
     tagline: "online grocery",
   },
   fairprice: {
     name: "FairPrice",
     accent: "#16866e",
     initial: "F",
-    badgeClass: "retailer-badge--green",
     tagline: "everyday value",
   },
   "cold-storage": {
     name: "Cold Storage",
     accent: "#355cb4",
     initial: "C",
-    badgeClass: "retailer-badge--blue",
     tagline: "fresh favourites",
   },
 };
