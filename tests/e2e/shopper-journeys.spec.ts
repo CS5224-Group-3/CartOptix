@@ -18,6 +18,14 @@ async function dismissFirstVisitGuide(page: Page) {
   if (await skip.isVisible()) await skip.click();
 }
 
+async function openBasketGuide(page: Page) {
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
+  const guideButton = navigation.getByRole("button", { name: "How it works" });
+  const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
+  if ((await mobileMenu.isVisible()) && !(await guideButton.isVisible())) await mobileMenu.click();
+  await guideButton.click();
+}
+
 async function compareBasket(page: Page) {
   await page.getByRole("button", { name: "Compare basket", exact: true }).click();
   await expect(page).toHaveURL(/\/results$/);
@@ -334,7 +342,49 @@ test.describe("keyboard operation", () => {
       .getByRole("navigation", { name: "Main navigation" })
       .getByRole("button", { name: "How it works" })
       .click();
-    await expect(page).toHaveURL(/\/catalogue$/);
-    await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await expect(page).toHaveURL(/\/basket$/);
+    await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
+  });
+});
+
+test.describe("basket guide", () => {
+  test("guides an empty basket to Browse products and explains comparison", async ({ page }) => {
+    await page.goto("/basket");
+    await expect(page.getByRole("heading", { name: "Your basket is empty" })).toBeVisible();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+
+    await openBasketGuide(page);
+    await expect(page.locator(".tutorial-spotlight")).toBeVisible();
+    await expect(page.locator(".tutorial-spotlight")).toHaveAttribute("aria-hidden", "true");
+
+    await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
+    await expect(page.locator(".tutorial-spotlight")).toBeVisible();
+    await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
+    await expect(page.getByRole("heading", { name: "Compare your basket" })).toBeVisible();
+    await expect(page.locator("#compare-basket")).toBeVisible();
+
+    await page.getByRole("dialog").getByRole("button", { name: "Finish" }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await openBasketGuide(page);
+    await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
+  });
+
+  test("explains populated basket items and the Compare basket button", async ({ page }) => {
+    const productId = seed.products[0]?.productId;
+    if (!productId) throw new Error("The committed seed contains no products");
+    await page.addInitScript(
+      ({ productId }) => {
+        localStorage.setItem("cartoptix:basket:v1", JSON.stringify([{ productId, quantity: 1 }]));
+      },
+      { productId },
+    );
+    await page.goto("/basket");
+    await expect(page.getByRole("heading", { name: "Review your basket" })).toBeVisible();
+    await openBasketGuide(page);
+    await expect(page.getByRole("heading", { name: "Review your basket items" })).toBeVisible();
+    await expect(page.locator(".basket-card .basket-row")).toBeVisible();
+    await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
+    await expect(page.getByRole("heading", { name: "Compare your basket" })).toBeVisible();
+    await expect(page.locator("#compare-basket")).toBeVisible();
   });
 });

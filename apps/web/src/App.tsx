@@ -124,7 +124,8 @@ type BasketContextValue = {
 const BasketContext = createContext<BasketContextValue | null>(null);
 const TutorialRequestContext = createContext<{
   requestId: number;
-  requestTutorial: () => void;
+  requestPath: string;
+  requestTutorial: (path: string) => void;
 } | null>(null);
 const NavigationContext = createContext<{
   menuOpen: boolean;
@@ -403,8 +404,9 @@ function AppShell({ children }: { children: ReactNode }) {
                 className="nav-how-it-works"
                 onClick={() => {
                   setMenuOpen(true);
-                  navigate("/catalogue");
-                  tutorialRequest?.requestTutorial();
+                  const tutorialPath = location === "/basket" ? "/basket" : "/catalogue";
+                  if (tutorialPath === "/catalogue") navigate("/catalogue");
+                  tutorialRequest?.requestTutorial(tutorialPath);
                 }}
               >
                 <CircleHelp size={16} /> How it works
@@ -500,6 +502,12 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
 }
 
 const TUTORIAL_STORAGE_KEY = "cartoptix:tutorial:completed:v1";
+type TutorialStep = {
+  selector: string | null;
+  title: string;
+  description: string;
+};
+
 const WELCOME_TUTORIAL_STEP = {
   selector: null,
   title: "Welcome to CartOptix",
@@ -532,6 +540,28 @@ const TUTORIAL_STEPS = [
     description: "If you need a refresher, select How it works to start this guide again.",
   },
 ] as const;
+const BASKET_ITEMS_STEP: TutorialStep = {
+  selector: ".basket-card .basket-row",
+  title: "Review your basket items",
+  description:
+    "Your selected products and pack counts appear here. Adjust quantities or remove items before comparing.",
+};
+const COMPARE_BASKET_STEP: TutorialStep = {
+  selector: "#compare-basket",
+  title: "Compare your basket",
+  description:
+    "Compare basket checks the cost and availability of your complete basket at RedMart, FairPrice and Cold Storage.",
+};
+const BASKET_TUTORIAL_STEPS: readonly TutorialStep[] = [BASKET_ITEMS_STEP, COMPARE_BASKET_STEP];
+const EMPTY_BASKET_TUTORIAL_STEPS: readonly TutorialStep[] = [
+  {
+    selector: ".basket-empty a[href='/catalogue']",
+    title: "Add products to your basket",
+    description:
+      "Your basket is empty. Select Browse products to find groceries and add them to your basket before comparing.",
+  },
+  COMPARE_BASKET_STEP,
+];
 
 function TutorialGuide({
   open,
@@ -539,14 +569,16 @@ function TutorialGuide({
   onStepChange,
   onFinish,
   menuOpen,
+  steps = TUTORIAL_STEPS,
 }: {
   open: boolean;
   stepIndex: number;
   onStepChange: (step: number) => void;
   onFinish: () => void;
   menuOpen: boolean;
+  steps?: readonly TutorialStep[];
 }) {
-  const step = TUTORIAL_STEPS[stepIndex] ?? WELCOME_TUTORIAL_STEP;
+  const step = steps[stepIndex] ?? WELCOME_TUTORIAL_STEP;
   const [spotlight, setSpotlight] = useState<DOMRect | null>(null);
   const [dialogTop, setDialogTop] = useState<number | null>(null);
   const dialogRef = useRef<HTMLElement>(null);
@@ -657,7 +689,7 @@ function TutorialGuide({
         <div className="tutorial-dialog__topline">
           <span>CartOptix quick guide</span>
           <span>
-            {stepIndex + 1} of {TUTORIAL_STEPS.length}
+            {stepIndex + 1} of {steps.length}
           </span>
         </div>
         <h2 id="tutorial-title">{step.title}</h2>
@@ -681,10 +713,10 @@ function TutorialGuide({
               type="button"
               className="button button--primary button--small"
               onClick={() =>
-                stepIndex === TUTORIAL_STEPS.length - 1 ? onFinish() : onStepChange(stepIndex + 1)
+                stepIndex === steps.length - 1 ? onFinish() : onStepChange(stepIndex + 1)
               }
             >
-              {stepIndex === TUTORIAL_STEPS.length - 1 ? "Finish" : "Next"}
+              {stepIndex === steps.length - 1 ? "Finish" : "Next"}
             </button>
           </div>
         </div>
@@ -722,12 +754,17 @@ export function CataloguePage() {
   }, [navigation?.setMenuOpen]);
   useEffect(() => {
     const requestId = tutorialRequest?.requestId ?? 0;
-    if (requestId === 0 || requestId === handledTutorialRequest.current) return;
+    if (
+      tutorialRequest?.requestPath !== "/catalogue" ||
+      requestId === 0 ||
+      requestId === handledTutorialRequest.current
+    )
+      return;
     handledTutorialRequest.current = requestId;
     setTutorialStep(0);
     setTutorialOpen(true);
     navigation?.setMenuOpen(true);
-  }, [navigation?.setMenuOpen, tutorialRequest?.requestId]);
+  }, [navigation?.setMenuOpen, tutorialRequest?.requestId, tutorialRequest?.requestPath]);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
@@ -1201,6 +1238,11 @@ function UnavailableOfferRow({ retailerId }: { retailerId: RetailerId }) {
 }
 
 export function BasketPage() {
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const tutorialRequest = useContext(TutorialRequestContext);
+  const navigation = useContext(NavigationContext);
+  const handledTutorialRequest = useRef(0);
   const {
     basket,
     basketRevision,
@@ -1215,6 +1257,24 @@ export function BasketPage() {
     runComparison,
     retryComparison,
   } = useBasket();
+
+  const finishTutorial = useCallback(() => {
+    setTutorialOpen(false);
+    navigation?.setMenuOpen(false);
+  }, [navigation?.setMenuOpen]);
+  useEffect(() => {
+    const requestId = tutorialRequest?.requestId ?? 0;
+    if (
+      tutorialRequest?.requestPath !== "/basket" ||
+      requestId === 0 ||
+      requestId === handledTutorialRequest.current
+    )
+      return;
+    handledTutorialRequest.current = requestId;
+    setTutorialStep(0);
+    setTutorialOpen(true);
+    navigation?.setMenuOpen(true);
+  }, [navigation?.setMenuOpen, tutorialRequest?.requestId, tutorialRequest?.requestPath]);
 
   const categoryNames = useCategoryNames();
   const basketBackdropProducts = basket.map((line) => {
@@ -1414,6 +1474,7 @@ export function BasketPage() {
               </strong>
             </div>
             <button
+              id="compare-basket"
               type="button"
               className="button button--primary button--full"
               disabled={!basket.length || !canCompare || requestState.phase === "pending"}
@@ -1432,6 +1493,14 @@ export function BasketPage() {
           </div>
         </aside>
       </section>
+      <TutorialGuide
+        open={tutorialOpen}
+        stepIndex={tutorialStep}
+        onStepChange={setTutorialStep}
+        onFinish={finishTutorial}
+        menuOpen={navigation?.menuOpen ?? false}
+        steps={basket.length > 0 ? BASKET_TUTORIAL_STEPS : EMPTY_BASKET_TUTORIAL_STEPS}
+      />
     </main>
   );
 }
@@ -1612,11 +1681,19 @@ export default function App({
 }) {
   const [client] = useState(() => queryClient ?? new QueryClient());
   const [source] = useState(() => comparisonSource ?? createApiSource());
-  const [tutorialRequestId, setTutorialRequestId] = useState(0);
-  const requestTutorial = useCallback(() => setTutorialRequestId((id) => id + 1), []);
+  const [tutorialRequest, setTutorialRequest] = useState({
+    requestId: 0,
+    requestPath: "/catalogue",
+  });
+  const requestTutorial = useCallback((requestPath: string) => {
+    setTutorialRequest((current) => ({
+      requestId: current.requestId + 1,
+      requestPath,
+    }));
+  }, []);
   const tutorialRequestValue = useMemo(
-    () => ({ requestId: tutorialRequestId, requestTutorial }),
-    [tutorialRequestId, requestTutorial],
+    () => ({ ...tutorialRequest, requestTutorial }),
+    [tutorialRequest, requestTutorial],
   );
   return (
     <ErrorBoundary>
