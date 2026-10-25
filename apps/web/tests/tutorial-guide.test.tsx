@@ -46,6 +46,12 @@ describe("catalogue tutorial guide", () => {
     openCatalogue();
     expect(await screen.findByRole("dialog")).toBeDefined();
     expect(screen.getByRole("heading", { name: "Welcome to CartOptix" })).toBeDefined();
+    expect(screen.getByTestId("tutorial-backdrop")).toBeDefined();
+    const next = screen.getByRole("button", { name: "Next" });
+    fireEvent.keyDown(window, { key: "Tab" });
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Skip guide" }));
+    fireEvent.keyDown(window, { key: "Tab", shiftKey: true });
+    expect(document.activeElement).toBe(next);
     fireEvent.click(screen.getByRole("button", { name: "Skip guide" }));
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(window.localStorage.getItem("cartoptix:tutorial:completed:v1")).toBe("true");
@@ -63,6 +69,11 @@ describe("catalogue tutorial guide", () => {
     expect(document.querySelector(".tutorial-spotlight")).not.toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Next" }));
     expect(screen.getByRole("heading", { name: "Explore products" })).toBeDefined();
+    expect(
+      screen.getByText(
+        "Browse the matching products here. After finishing the guide, select a product to compare retailer offers or add it to your basket.",
+      ),
+    ).toBeDefined();
     fireEvent.click(screen.getByRole("button", { name: "Next" }));
     expect(screen.getByRole("heading", { name: "Narrow your search" })).toBeDefined();
     fireEvent.click(screen.getByRole("button", { name: "Next" }));

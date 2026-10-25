@@ -222,6 +222,7 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .page-jump-control { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
 .product-grid--pending { opacity: .6; }
 .product-card__unavailable { margin: 0 0 8px; color: #886721; font-size: 11px; font-weight: 700; }
+.tutorial-backdrop { position: fixed; z-index: 1499; inset: 0; background: transparent; pointer-events: auto; touch-action: none; }
 .tutorial-spotlight { position: fixed; z-index: 1500; border: 3px solid #91d6ad; border-radius: 14px; box-shadow: 0 0 0 9999px rgba(8, 23, 20, .72), 0 0 0 7px rgba(145, 214, 173, .28); pointer-events: none; transition: top .2s ease, left .2s ease, width .2s ease, height .2s ease; }
 .tutorial-dialog { position: fixed; z-index: 1501; top: 50%; left: 50%; width: min(440px, calc(100vw - 32px)); padding: 22px; border: 1px solid #dbe6e2; border-radius: 16px; color: var(--navy); background: white; box-shadow: 0 18px 60px rgba(5, 20, 17, .3); transform: translate(-50%, -50%); }
 .tutorial-dialog[data-positioned="true"] { transform: translateX(-50%); }
@@ -341,3 +342,7 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
   .matrix td::before { content: attr(data-retailer); min-width: 92px; color: var(--muted); font-size: 11px; font-weight: 700; }
   .matrix tfoot th { padding: 10px 14px 0; font-weight: 700; }
 }
+
+.detail-disclosure { display: flex; align-items: flex-start; gap: 10px; }
+.detail-disclosure > svg { flex: 0 0 auto; }
+.detail-disclosure > p { margin-bottom: 0; }

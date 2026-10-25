@@ -531,7 +531,7 @@ const TUTORIAL_STEPS = [
     selector: "#catalogue-products .product-card",
     title: "Explore products",
     description:
-      "Browse the matching products here. Open a product to compare its retailer offers, or add it to your basket.",
+      "Browse the matching products here. After finishing the guide, select a product to compare retailer offers or add it to your basket.",
   },
   {
     selector: "#catalogue-filters",
@@ -705,15 +705,38 @@ function TutorialGuide({
     if (!open) return;
     nextButtonRef.current?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onFinish();
+      if (event.key !== "Tab") return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const buttons = Array.from(
+        dialog.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"),
+      );
+      const firstButton = buttons[0];
+      const lastButton = buttons.at(-1);
+      if (!firstButton || !lastButton) {
+        event.preventDefault();
+        return;
+      }
+      const focusIsInsideDialog = dialog.contains(document.activeElement);
+      if (event.shiftKey && (!focusIsInsideDialog || document.activeElement === firstButton)) {
+        event.preventDefault();
+        lastButton.focus();
+      } else if (
+        !event.shiftKey &&
+        (!focusIsInsideDialog || document.activeElement === lastButton)
+      ) {
+        event.preventDefault();
+        firstButton.focus();
+      }
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onFinish]);
+    window.addEventListener("keydown", onKeyDown, true);
+    return () => window.removeEventListener("keydown", onKeyDown, true);
+  }, [open]);
 
   if (!open) return null;
   return createPortal(
     <>
+      <div className="tutorial-backdrop" aria-hidden="true" data-testid="tutorial-backdrop" />
       {spotlight && (
         <div
           className="tutorial-spotlight"

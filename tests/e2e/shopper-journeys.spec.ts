@@ -361,6 +361,31 @@ test.describe("keyboard operation", () => {
   });
 });
 
+test.describe("guide interaction boundary", () => {
+  test("blocks catalogue navigation until the guide is dismissed", async ({ page }) => {
+    await page.goto("/catalogue");
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(dialog.getByRole("heading", { name: "Explore products" })).toBeVisible();
+
+    const productLink = page.locator("#catalogue-products .product-card__link").first();
+    await expect(productLink).toBeVisible();
+    await productLink.scrollIntoViewIfNeeded();
+    const bounds = await productLink.boundingBox();
+    if (!bounds) throw new Error("The first catalogue product link has no visible bounds");
+    await page.mouse.click(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    await expect(page).toHaveURL(/\/catalogue$/);
+    await expect(dialog.getByRole("heading", { name: "Explore products" })).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Skip guide" }).click();
+    await expect(dialog).toHaveCount(0);
+    await productLink.click();
+    await expect(page).toHaveURL(/\/product\//);
+  });
+});
+
 test.describe("basket guide", () => {
   test("guides an empty basket to Browse products and explains comparison", async ({ page }) => {
     await page.goto("/basket");
