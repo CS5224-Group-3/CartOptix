@@ -32,10 +32,7 @@ export const comparisonFixtures: Record<string, BasketComparisonPresentation> = 
   ).map(([id, label, response]) => [
     id,
     {
-      ...adaptComparison(response, basket, {
-        kind: "synthetic",
-        description: `Synthetic demonstration: ${label}. These are not retailer prices. Product links are illustrative.`,
-      }),
+      ...adaptComparison(response, basket),
       fixtureLabel: label,
     },
   ]),

@@ -84,7 +84,7 @@ describe("synthetic comparison fixtures", () => {
       }),
     };
     expect(fixture).toEqual({
-      ...adaptComparison(response, basket, fixture.provenance),
+      ...adaptComparison(response, basket),
       fixtureLabel: fixture.fixtureLabel,
     });
     for (const option of fixture.options) expect(option.retailer).not.toHaveProperty("purchaseUrl");
