@@ -281,6 +281,16 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 .matrix__retailer--recommended { background: var(--green-pale) !important; box-shadow: inset 0 3px 0 var(--green); }
 .matrix__retailer--muted { color: var(--muted); }
 .matrix__badge { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+/* The recommendation is the answer the page exists to give, so it outranks
+   the other column labels instead of reading as one more uppercase tag. */
+.matrix__retailer--recommended .matrix__badge { font-size: 14px; letter-spacing: .01em; text-transform: none; }
+/* Part of the link, but secondary to it: the action is "sign in", the host
+   only says where that goes. */
+.matrix__signin-host { color: var(--muted); font-weight: 400; white-space: nowrap; }
+.matrix__signin-row th, .matrix__signin-row td { padding-top: 14px; }
+/* `.text-link` is inline-flex, which in a narrow cell stretches and strands
+   the host across the column. Inline makes the link wrap as a phrase. */
+.matrix__signin-row .text-link { display: inline; }
 .matrix__retailer--muted .matrix__badge { color: #b07a1d; }
 .matrix__total { margin-top: 3px; color: var(--navy); font-size: 24px; letter-spacing: -.03em; }
 .matrix__retailer--muted .matrix__total { color: var(--muted); font-size: 18px; }
