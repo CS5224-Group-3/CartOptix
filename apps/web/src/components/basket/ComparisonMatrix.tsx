@@ -57,6 +57,16 @@ function columnTitle(option: RetailerOption, recommended: boolean, tied: boolean
     : "Unavailable";
 }
 
+/** Notes can repeat, so a key is the text plus how many identical notes came before it. */
+function withKeys(values: string[]) {
+  const seen = new Map<string, number>();
+  return values.map((value) => {
+    const occurrence = seen.get(value) ?? 0;
+    seen.set(value, occurrence + 1);
+    return { value, key: `${value}:${occurrence}` };
+  });
+}
+
 function Cell({
   line,
   retailerName,
@@ -86,9 +96,9 @@ function Cell({
         {formatSgd(line.pricing.unitPriceCents)}
         {line.pricing.priceKind === "unconditional_sale" && " sale"}
       </span>
-      {notes.map((note, index) => (
-        <span key={`${index}:${note}`} className="matrix__note">
-          {note}
+      {withKeys(notes).map(({ value, key }) => (
+        <span key={key} className="matrix__note">
+          {value}
         </span>
       ))}
       {purchaseEnabled && (
@@ -177,15 +187,17 @@ export default function ComparisonMatrix({
         {rows.map((product) => (
           <tr key={product.productId}>
             <th scope="row" className="matrix__product">
-              <Thumb product={product} />
-              <div>
-                <Link className="matrix__name" href={`/product/${product.productId}`}>
-                  {product.name}
-                </Link>
-                <span>
-                  {product.packDescription} · {product.quantity}{" "}
-                  {product.quantity === 1 ? "pack" : "packs"}
-                </span>
+              <div className="matrix__identity">
+                <Thumb product={product} />
+                <div>
+                  <Link className="matrix__name" href={`/product/${product.productId}`}>
+                    {product.name}
+                  </Link>
+                  <span>
+                    {product.packDescription} · {product.quantity}{" "}
+                    {product.quantity === 1 ? "pack" : "packs"}
+                  </span>
+                </div>
               </div>
             </th>
             {options.map((option) => {
