@@ -113,6 +113,11 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByRole("heading", { name: "FairPrice", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Cold Storage", exact: true })).toBeVisible();
     await expect(page.getByText(/Prices and availability may have changed/i).first()).toBeVisible();
+    // The comparison survives the shopper reloading the results page (#84).
+    await page.reload();
+    await expect(page.getByRole("heading", { name: "Retailer basket comparison" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "No comparison yet" })).toHaveCount(0);
+    await expect(page.getByText(/Prices and availability may have changed/i).first()).toBeVisible();
   });
 
   test("J1/J3: sale prices are shown on the product page and in the basket", async ({ page }) => {

@@ -61,6 +61,10 @@ import type {
   ComparisonSource,
   ComparisonSubmission,
 } from "./features/basket-comparison/model";
+import {
+  persistComparison,
+  restoreComparison,
+} from "./features/basket-comparison/persistedComparison";
 import { useComparison } from "./features/basket-comparison/useComparison";
 import {
   ApiError,
@@ -124,6 +128,8 @@ const BasketContext = createContext<BasketContextValue | null>(null);
 
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
+  // The last successful comparison of this tab, for a results page that survives a reload.
+  const [restoredComparison] = useState(() => restoreComparison(basket));
   const [productMetadataRevision, setProductMetadataRevision] = useState(0);
   const products = useProductIndex();
   const queryClient = useQueryClient();
@@ -162,7 +168,17 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
     },
     [products, queryClient],
   );
-  const { result: comparison, request: requestState, submit, retry } = useComparison(source);
+  const {
+    result: comparison,
+    request: requestState,
+    submit,
+    retry,
+  } = useComparison(
+    source,
+    restoredComparison
+      ? { result: restoredComparison.result, submitted: restoredComparison.submitted }
+      : undefined,
+  );
   const [location, navigate] = useLocation();
   const currentLocation = useRef(location);
   const departures = useRef(0);
@@ -183,8 +199,16 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       }
     };
   }, [navigate]);
-  const [basketRevision, setBasketRevision] = useState(0);
+  const [basketRevision, setBasketRevision] = useState(() => restoredComparison?.revisionSeed ?? 0);
   const [persistenceFailed, setPersistenceFailed] = useState(false);
+
+  // The completed comparison survives this tab's next load. A restored comparison
+  // is already in storage, so only a fresh success (a new result object) writes.
+  useEffect(() => {
+    if (requestState.phase !== "success" || !comparison) return;
+    if (comparison === restoredComparison?.result) return;
+    persistComparison(requestState.submitted, comparison);
+  }, [requestState, comparison, restoredComparison]);
 
   useEffect(() => {
     const handleStorage = (event: StorageEvent) => {

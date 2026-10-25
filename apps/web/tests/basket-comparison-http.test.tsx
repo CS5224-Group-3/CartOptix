@@ -12,8 +12,14 @@ import { QueryClient } from "@tanstack/react-query";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
+import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
+import { COMPARISON_STORAGE_KEY } from "../src/features/basket-comparison/persistedComparison";
 
-afterEach(() => window.history.replaceState({}, "", "/"));
+afterEach(() => {
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
+  window.sessionStorage.removeItem(COMPARISON_STORAGE_KEY);
+  window.history.replaceState({}, "", "/");
+});
 /** A retailer's column header, found by name. */
 const column = (retailer: string) =>
   screen.getByRole("columnheader", { name: new RegExp(retailer) });
@@ -28,7 +34,6 @@ function cellIn(row: HTMLElement, retailer: string) {
   if (!cell) throw new Error(`No ${retailer} cell`);
   return cell;
 }
-
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
 function deferred() {
   let resolve: (value: Response) => void = () => {

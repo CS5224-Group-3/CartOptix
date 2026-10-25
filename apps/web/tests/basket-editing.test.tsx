@@ -11,6 +11,7 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY, restoreBasket } from "../src/features/basket/storage";
+import { COMPARISON_STORAGE_KEY } from "../src/features/basket-comparison/persistedComparison";
 
 const json = (value: unknown) => new Response(JSON.stringify(value), { status: 200 });
 
@@ -54,9 +55,13 @@ async function addBothCatalogueProducts() {
   await screen.findByRole("heading", { name: "Your grocery list" });
 }
 
-beforeEach(() => window.localStorage.removeItem(BASKET_STORAGE_KEY));
+beforeEach(() => {
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
+  window.sessionStorage.removeItem(COMPARISON_STORAGE_KEY);
+});
 afterEach(() => {
   window.localStorage.removeItem(BASKET_STORAGE_KEY);
+  window.sessionStorage.removeItem(COMPARISON_STORAGE_KEY);
   window.history.replaceState({}, "", "/");
 });
 

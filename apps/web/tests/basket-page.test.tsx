@@ -9,10 +9,12 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
+import { COMPARISON_STORAGE_KEY } from "../src/features/basket-comparison/persistedComparison";
 import { comparisonFixtures } from "./support/fixtures";
 
 afterEach(() => {
   window.localStorage.removeItem(BASKET_STORAGE_KEY);
+  window.sessionStorage.removeItem(COMPARISON_STORAGE_KEY);
   window.history.replaceState({}, "", "/");
   vi.unstubAllGlobals();
 });

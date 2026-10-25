@@ -3,7 +3,8 @@ import type { BasketLine } from "./model";
 
 export const BASKET_STORAGE_KEY = "cartoptix:basket:v1";
 
-type BasketStorage = Pick<Storage, "getItem" | "setItem">;
+/** A best-effort storage: the read/write pair that basket and comparison state keep to. */
+export type BasketStorage = Pick<Storage, "getItem" | "setItem">;
 
 function sharedBasketStorage(): BasketStorage | undefined {
   try {
@@ -13,7 +14,8 @@ function sharedBasketStorage(): BasketStorage | undefined {
   }
 }
 
-function validStoredBasket(value: unknown): BasketLine[] | null {
+/** Validates stored lines on their own; malformed data falls back to the rejection value. */
+export function validStoredBasket(value: unknown): BasketLine[] | null {
   if (!Array.isArray(value) || value.length > MAX_BASKET_LINES) return null;
   const lines: BasketLine[] = [];
   const productIds = new Set<string>();
