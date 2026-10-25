@@ -12,7 +12,6 @@ import { formatSgd, orderChargeLabel, RETAILER_DISPLAY } from "../../lib/format"
 import {
   type BasketComparisonPresentation,
   type BasketSnapshot,
-  type ComparisonProvenance,
   type OrderPresentation,
   PresentationDataFailure,
   type RetailerPresentation,
@@ -20,12 +19,6 @@ import {
   type UnavailableRetailerOption,
 } from "./model";
 import { validateRecommendation } from "./validation";
-
-export const apiProvenance: ComparisonProvenance = {
-  kind: "curated",
-  description:
-    "Prices come from CartOptix's curated retailer dataset, not live retailer prices. Product links open the retailer's own page.",
-};
 
 function requireData(condition: unknown): asserts condition {
   if (!condition) throw new PresentationDataFailure();
@@ -238,7 +231,6 @@ function adaptUnavailable(
 export function adaptComparison(
   response: BasketCompareResponse,
   basket: BasketSnapshot,
-  provenance: ComparisonProvenance = apiProvenance,
 ): BasketComparisonPresentation {
   try {
     validateSnapshot(basket);
@@ -247,7 +239,6 @@ export function adaptComparison(
     const metadata = new Map(basket.products.map((product) => [product.productId, product]));
     const result: BasketComparisonPresentation = {
       submittedBasket: structuredClone(basket),
-      provenance: structuredClone(provenance),
       outcome:
         response.status === "recommended"
           ? { kind: "recommended", retailerId: response.recommendedRetailerId }

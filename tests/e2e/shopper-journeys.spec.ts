@@ -125,8 +125,13 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page).toHaveURL(/\/basket$/);
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
-    await expect(page.locator(".retailer-option s.was-price").first()).toBeVisible();
-    await expect(page.getByText(/\(sale price\)/).first()).toBeVisible();
+    await expect(page.getByRole("table").locator("s.was-price").first()).toBeVisible();
+    await expect(
+      page
+        .getByRole("table")
+        .getByText(/\ssale$/)
+        .first(),
+    ).toBeVisible();
   });
 
   test("J1: a multibuy hint never adds packs; other promotions are left out", async ({ page }) => {
@@ -174,12 +179,14 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page).toHaveURL(/\/results$/);
     // A complete option is recommended first; the incomplete card follows it.
     await expect(page.getByText(/^Recommended/)).toHaveCount(1);
-    const card = page.getByRole("article", { name: retailer });
-    await expect(card.getByText("Incomplete basket")).toBeVisible();
-    await expect(card.getByText("Estimated total for 1 of 2 items")).toBeVisible();
-    await expect(card.getByText(/^Recommended/)).toHaveCount(0);
-    // The missing product's link works from the keyboard.
-    const link = card.getByRole("link", { name: shopperName(missing.representativeName) });
+    const column = page.getByRole("columnheader", { name: new RegExp(retailer) });
+    await expect(column.getByText("Incomplete basket")).toBeVisible();
+    await expect(column.getByText("Estimated total for 1 of 2 items")).toBeVisible();
+    await expect(column.getByText(/^Recommended/)).toHaveCount(0);
+    // The missing product is named once, in its row, and its link works from the keyboard.
+    const link = page
+      .getByRole("table")
+      .getByRole("link", { name: shopperName(missing.representativeName), exact: true });
     await link.focus();
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(new RegExp(`/product/${missing.productId}$`));
@@ -191,11 +198,14 @@ test.describe("CartOptix shopper journeys", () => {
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
     await page.getByRole("link", { name: "View basket", exact: true }).click();
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
-    const card = page.getByRole("article", { name: retailer });
-    await expect(card.getByText("Incomplete basket")).toBeVisible();
-    await expect(card.getByText(/Estimated total|S\$/)).toHaveCount(0);
+    const column = page.getByRole("columnheader", { name: new RegExp(retailer) });
+    await expect(column.getByText("Incomplete basket")).toBeVisible();
+    await expect(column.getByText("No estimate")).toBeVisible();
+    await expect(column.getByText(/S\$/)).toHaveCount(0);
     await expect(
-      card.getByRole("link", { name: shopperName(missing.representativeName) }),
+      page
+        .getByRole("table")
+        .getByRole("link", { name: shopperName(missing.representativeName), exact: true }),
     ).toBeVisible();
   });
 

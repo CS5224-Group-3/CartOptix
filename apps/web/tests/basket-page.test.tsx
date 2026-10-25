@@ -79,6 +79,8 @@ it("comparison navigates to results and goes stale after an edit", async () => {
   expect(await screen.findByRole("heading", { name: "Retailer basket comparison" })).toBeDefined();
   expect(screen.getByRole("status").textContent).toContain("earlier basket state");
   expect(screen.getByRole("status").textContent).toContain("Recalculate");
-  expect(screen.getAllByRole("article")).toHaveLength(3);
-  expect(screen.getAllByText(/1 kg.*Quantity: 1 pack/)).toHaveLength(2);
+  // A product column plus one column per retailer.
+  expect(screen.getAllByRole("columnheader")).toHaveLength(4);
+  // The pack and quantity are stated once, in the product column.
+  expect(screen.getAllByText(/1 kg · 1 pack/)).toHaveLength(1);
 });

@@ -43,10 +43,7 @@ describe("shared comparison contract adapter", () => {
     (response) => {
       const basket = snapshot();
       const before = structuredClone(response);
-      const result = adaptComparison(response, basket, {
-        kind: "test",
-        description: "Shared contract fixture",
-      });
+      const result = adaptComparison(response, basket);
       expect(result.outcome).toEqual({
         kind: "recommended",
         retailerId: response.recommendedRetailerId,
@@ -56,7 +53,6 @@ describe("shared comparison contract adapter", () => {
       );
       expect(result.submittedBasket).toEqual(basket);
       expect(result.submittedBasket).not.toBe(basket);
-      expect(result.provenance?.kind).toBe("test");
       expect(result.fixtureLabel).toBeUndefined();
       expect(result.options.every((option) => !Object.hasOwn(option.retailer, "purchaseUrl"))).toBe(
         true,

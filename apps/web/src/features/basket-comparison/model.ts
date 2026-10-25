@@ -67,13 +67,6 @@ export interface BasketComparisonPresentation {
   options: RetailerOption[];
   outcome: { kind: "recommended"; retailerId: string } | { kind: "no-feasible-plan" };
   fixtureLabel?: string;
-  provenance?: ComparisonProvenance;
-}
-
-/** Source identity is configuration, not an assertion inferred from an HTTP response. */
-export interface ComparisonProvenance {
-  kind: "synthetic" | "test" | "curated";
-  description: string;
 }
 
 /** A frontend request to a presentation-data source, never an HTTP payload. */
