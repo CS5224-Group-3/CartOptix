@@ -67,6 +67,14 @@ function Cell({
   purchaseEnabled: boolean;
 }) {
   const notes = [
+    ...line.pricing.itemCharges.map(
+      (charge) =>
+        `${charge.label}: ${formatSgd(charge.amountCents)} for this line${
+          charge.includedInPrice
+            ? " (included in unit price)"
+            : " (additional charge, already included in line total)"
+        }`,
+    ),
     ...multibuyNotes(line.pricing.multibuy, line.quantity, line.pricing.unitPriceCents),
     ...line.pricing.excludedPromotions.map(excludedPromotionNote),
   ];
@@ -78,8 +86,8 @@ function Cell({
         {formatSgd(line.pricing.unitPriceCents)}
         {line.pricing.priceKind === "unconditional_sale" && " sale"}
       </span>
-      {notes.map((note) => (
-        <span key={note} className="matrix__note">
+      {notes.map((note, index) => (
+        <span key={`${index}:${note}`} className="matrix__note">
           {note}
         </span>
       ))}
