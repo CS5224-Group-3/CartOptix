@@ -85,12 +85,6 @@ export function createFixtureSource({
         true,
       );
     }
-    return {
-      ...result,
-      provenance: {
-        kind: "synthetic",
-        description: `Synthetic demonstration: ${result.fixtureLabel}. These are not retailer prices. Product links are illustrative.`,
-      },
-    };
+    return result;
   };
 }

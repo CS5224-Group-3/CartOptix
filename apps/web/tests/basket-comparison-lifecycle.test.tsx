@@ -86,8 +86,10 @@ function expectReferenceOnly() {
   expect(screen.queryByText(/^Recommended/)).toBeNull();
   expect(screen.queryByRole("link", { name: /^Visit / })).toBeNull();
   expect(screen.queryByRole("link", { name: /^View Fixture / })).toBeNull();
-  expect(screen.getAllByRole("article")).toHaveLength(3);
-  expect(screen.getAllByText(/1 kg.*Quantity: 1 pack/)).toHaveLength(2);
+  // A product column plus one column per retailer.
+  expect(screen.getAllByRole("columnheader")).toHaveLength(4);
+  // The pack and quantity are stated once, in the product column.
+  expect(screen.getAllByText(/1 kg · 1 pack/)).toHaveLength(1);
 }
 
 describe("comparison lifecycle", () => {
@@ -123,7 +125,8 @@ describe("comparison lifecycle", () => {
     fireEvent.click(screen.getByRole("link", { name: "View current results" }));
     expect(window.location.pathname).toBe("/results");
     expect(screen.getByText(/^Recommended/)).toBeDefined();
-    expect(screen.getAllByRole("article")).toHaveLength(3);
+    // A product column plus one column per retailer.
+    expect(screen.getAllByRole("columnheader")).toHaveLength(4);
     expect(control.source).toHaveBeenCalledTimes(1);
   });
 

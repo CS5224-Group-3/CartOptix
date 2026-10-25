@@ -44,7 +44,6 @@ describe("API-backed comparison source", () => {
       expect(result.outcome.kind).toBe(
         response.status === "recommended" ? "recommended" : "no-feasible-plan",
       );
-      expect(result.provenance?.kind).toBe("curated");
     },
   );
 

@@ -14,6 +14,21 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 
 afterEach(() => window.history.replaceState({}, "", "/"));
+/** A retailer's column header, found by name. */
+const column = (retailer: string) =>
+  screen.getByRole("columnheader", { name: new RegExp(retailer) });
+/** The cell a retailer's column holds in a row: cells follow the column headers' order. */
+function cellIn(row: HTMLElement, retailer: string) {
+  const names = screen
+    .getAllByRole("columnheader")
+    .slice(1)
+    .map((header) => header.textContent ?? "");
+  const cell =
+    within(row).getAllByRole("cell")[names.findIndex((name) => name.startsWith(retailer))];
+  if (!cell) throw new Error(`No ${retailer} cell`);
+  return cell;
+}
+
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
 function deferred() {
   let resolve: (value: Response) => void = () => {
@@ -89,11 +104,10 @@ describe("normal API comparison flow", () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(basketRequestExample),
     });
-    expect(screen.getByText(/curated retailer dataset, not live retailer prices/)).toBeDefined();
     expect(screen.queryByRole("link", { name: /^Visit / })).toBeNull();
     expect(
       screen
-        .getByRole("link", { name: "View Fixture White Rice at FairPrice" })
+        .getByRole("link", { name: /View Fixture White Rice at FairPrice/ })
         .getAttribute("href"),
     ).toBe(
       recommendedExample.options[0]?.status === "complete"
@@ -101,7 +115,8 @@ describe("normal API comparison flow", () => {
         : "",
     );
     expect(screen.queryByText(/split|savings|How many retailer orders/i)).toBeNull();
-    expect(screen.getAllByText(/complete checkout manually/)).toHaveLength(2);
+    // The manual-checkout guidance is stated once for the whole comparison.
+    expect(screen.getAllByText(/complete checkout manually/)).toHaveLength(1);
   });
 
   it.each([noFeasiblePlanExample, tieExample])(
@@ -119,21 +134,17 @@ describe("normal API comparison flow", () => {
         expect(screen.getByText(/Below FairPrice's S\$15.00 minimum order/)).toBeDefined();
         expect(screen.queryByText(/^Recommended/)).toBeNull();
         // RedMart's partial checkout, labelled as such, with the missing product listed.
-        const redmart = within(screen.getByRole("article", { name: "RedMart" }));
-        expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeDefined();
-        expect(redmart.getByRole("link", { name: "Fixture White Rice" })).toBeDefined();
-      } else {
         expect(
-          within(screen.getByRole("article", { name: "FairPrice" })).getByText(
-            /Recommended.*joint lowest/,
-          ),
+          within(column("RedMart")).getByText("Estimated total for 1 of 2 items"),
         ).toBeDefined();
-        expect(
-          within(screen.getByRole("article", { name: "RedMart" })).queryByText(/^Recommended/),
-        ).toBeNull();
+        const missing = screen.getByRole("row", { name: /^Fixture White Rice/ });
+        expect(within(missing).getByRole("link", { name: "Fixture White Rice" })).toBeDefined();
+      } else {
+        expect(within(column("FairPrice")).getByText(/Recommended.*joint lowest/)).toBeDefined();
+        expect(within(column("RedMart")).queryByText(/^Recommended/)).toBeNull();
         expect(screen.getByText("S$1.60")).toBeDefined();
       }
-      const unavailable = within(screen.getByRole("article", { name: "Cold Storage" }));
+      const unavailable = within(column("Cold Storage"));
       expect(unavailable.getByText(/delivery charges could not be confirmed/)).toBeDefined();
       expect(unavailable.queryByText(/Estimated total|Recommended/)).toBeNull();
     },
@@ -152,17 +163,27 @@ describe("normal API comparison flow", () => {
     await open(async () => json(response));
     compare();
     await results();
-    const fair = within(screen.getByRole("article", { name: "FairPrice" }));
-    expect(fair.getByText(/Unit price: S\$2.50.*\(sale price\)/)).toBeDefined();
+    const line = screen.getByRole("row", { name: /^Fixture Plain Drink/ });
+    const fair = within(cellIn(line, "FairPrice"));
+    expect(cellIn(line, "FairPrice").querySelector(".matrix__unit")?.textContent).toMatch(
+      /1 × .*S\$2\.90.*S\$2\.50 sale/,
+    );
     expect(fair.getByText("S$2.90").closest("s")).not.toBeNull();
     expect(fair.getByText(/Included charge: S\$0.10.*included in unit price/)).toBeDefined();
     expect(fair.getByText("Members only — not included in this estimate")).toBeDefined();
-    expect(fair.getByText(/S\$3.99 waived on orders from S\$6.00/)).toBeDefined();
-    expect(fair.getAllByText("S$6.50")).toHaveLength(2);
-    const red = within(screen.getByRole("article", { name: "RedMart" }));
+    expect(
+      screen.getByRole("cell", { name: /S\$3.99 waived on orders from S\$6.00/ }),
+    ).toBeDefined();
+    // The fee is waived, so the subtotal and the estimated total agree.
+    const subtotal = screen.getByRole("row", { name: /^Product subtotal/ });
+    const total = screen.getByRole("row", { name: /^Estimated total/ });
+    expect(cellIn(subtotal, "FairPrice").textContent).toBe("S$6.50");
+    expect(cellIn(total, "FairPrice").textContent).toBe("S$6.50");
+    const red = within(cellIn(line, "RedMart"));
     expect(red.getByText(/S\$0.10.*already included in line total/)).toBeDefined();
     expect(red.getByText("S$2.10")).toBeDefined();
-    expect(red.getAllByText("S$8.10")).toHaveLength(2);
+    expect(cellIn(subtotal, "RedMart").textContent).toBe("S$8.10");
+    expect(cellIn(total, "RedMart").textContent).toBe("S$8.10");
   });
 
   it("resolves missing metadata before POST and blocks duplicates during lookup", async () => {
@@ -182,7 +203,8 @@ describe("normal API comparison flow", () => {
     );
     await results();
     expect(posts).toHaveBeenCalledTimes(1);
-    expect(within(screen.getByRole("main")).getAllByText("Fixture Plain Drink")).toHaveLength(2);
+    // Named once in the product column, not once per retailer.
+    expect(within(screen.getByRole("main")).getAllByText("Fixture Plain Drink")).toHaveLength(1);
   });
 
   it.each(["comparison-product", "product-index", "products-page", "offers"] as const)(
@@ -309,7 +331,8 @@ describe("normal API comparison flow", () => {
     await act(async () => waiting.resolve(json(recommendedExample)));
     await results();
     expect(screen.getByText(/earlier basket state/)).toBeDefined();
-    expect(within(screen.getByRole("main")).getAllByText("Fixture White Rice")).toHaveLength(2);
+    // Named once in the product column, not once per retailer.
+    expect(within(screen.getByRole("main")).getAllByText("Fixture White Rice")).toHaveLength(1);
     expect(screen.queryByText("Changed name")).toBeNull();
     expect(screen.queryByText(/^Recommended/)).toBeNull();
     expect(screen.queryByRole("link", { name: /^View Fixture/ })).toBeNull();

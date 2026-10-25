@@ -1165,14 +1165,6 @@ export function ProductDetail() {
               <span>Pack size</span>
               <strong>{product.packSize}</strong>
             </div>
-            <div>
-              <span>Quantity rule</span>
-              <strong>Whole packs only</strong>
-            </div>
-            <div>
-              <span>Pricing</span>
-              <strong>Non-member</strong>
-            </div>
           </div>
           <p className="product-detail__copy">
             Compare the estimated product cost for your requested quantity. Prices include sale
@@ -1543,9 +1535,6 @@ export function BasketPage() {
               </div>
               <div>
                 <Check size={15} /> Standard delivery
-              </div>
-              <div>
-                <Check size={15} /> Non-member pricing
               </div>
               <small>Compare estimated totals and see unavailable products at each retailer.</small>
             </div>

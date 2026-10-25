@@ -8,30 +8,18 @@ export function formatSgd(cents: number | null | undefined): string {
 
 export const RETAILER_IDS: readonly RetailerId[] = ["redmart", "fairprice", "cold-storage"];
 
-export const RETAILER_DISPLAY: Record<
-  RetailerId,
-  { name: string; accent: string; initial: string; badgeClass: string; tagline: string }
-> = {
+export const RETAILER_DISPLAY: Record<RetailerId, { name: string; accent: string }> = {
   redmart: {
     name: "RedMart",
     accent: "#e85c62",
-    initial: "R",
-    badgeClass: "retailer-badge--red",
-    tagline: "online grocery",
   },
   fairprice: {
     name: "FairPrice",
     accent: "#16866e",
-    initial: "F",
-    badgeClass: "retailer-badge--green",
-    tagline: "everyday value",
   },
   "cold-storage": {
     name: "Cold Storage",
     accent: "#355cb4",
-    initial: "C",
-    badgeClass: "retailer-badge--blue",
-    tagline: "fresh favourites",
   },
 };
 

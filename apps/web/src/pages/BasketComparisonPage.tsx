@@ -1,7 +1,7 @@
 import { DEPOSIT_NOTICE, SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
 import { Link } from "wouter";
+import ComparisonMatrix from "../components/basket/ComparisonMatrix";
 import ComparisonRequestStatus from "../components/basket/ComparisonRequestStatus";
-import RetailerOptionCard from "../components/basket/RetailerOptionCard";
 import type {
   BasketComparisonPresentation,
   ComparisonRequestState,
@@ -85,8 +85,6 @@ export default function BasketComparisonPage({
       )}
       {recommendation.kind !== "invalid" && (
         <>
-          <p>Each complete option keeps your entire requested basket with one retailer.</p>
-          <p className="notice-card">{result.provenance?.description}</p>
           {result.outcome.kind === "no-feasible-plan" && (
             <h2>No feasible purchasing plan available</h2>
           )}
@@ -96,17 +94,19 @@ export default function BasketComparisonPage({
               highlighted option is one of these tied options.
             </p>
           )}
-          <div className="basket-comparison__options">
-            {result.options.map((option) => (
-              <RetailerOptionCard
-                key={option.retailer.id}
-                option={option}
-                recommended={option.retailer.id === recommendedId}
-                tied={tied}
-                purchaseEnabled={!referenceOnly}
-              />
-            ))}
-          </div>
+          <ComparisonMatrix
+            options={result.options}
+            products={result.submittedBasket.products}
+            recommendedId={recommendedId}
+            tied={tied}
+            purchaseEnabled={!referenceOnly}
+          />
+          {result.outcome.kind === "recommended" && (
+            <p>
+              Rebuild this basket and complete checkout manually on the retailer’s website.
+              CartOptix does not transfer carts or reserve stock.
+            </p>
+          )}
         </>
       )}
       <div className="results-disclaimer">
