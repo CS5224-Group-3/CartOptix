@@ -404,7 +404,12 @@ function AppShell({ children }: { children: ReactNode }) {
                 className="nav-how-it-works"
                 onClick={() => {
                   setMenuOpen(true);
-                  const tutorialPath = location === "/basket" ? "/basket" : "/catalogue";
+                  const tutorialPath =
+                    location === "/basket"
+                      ? "/basket"
+                      : location.startsWith("/product/")
+                        ? location
+                        : "/catalogue";
                   if (tutorialPath === "/catalogue") navigate("/catalogue");
                   tutorialRequest?.requestTutorial(tutorialPath);
                 }}
@@ -562,6 +567,51 @@ const EMPTY_BASKET_TUTORIAL_STEPS: readonly TutorialStep[] = [
   },
   COMPARE_BASKET_STEP,
 ];
+const PRODUCT_QUANTITY_STEP: TutorialStep = {
+  selector: "#product-quantity",
+  title: "Choose how many packs you need",
+  description:
+    "Use the minus and plus buttons to set the number of whole packs. Prices and multibuy offers update for that quantity.",
+};
+const PRODUCT_RETAILER_OFFERS_STEP: TutorialStep = {
+  selector: "#product-offers",
+  title: "Compare the three retailers",
+  description:
+    "RedMart, FairPrice, and Cold Storage are listed here. Review each available offer, sale or multibuy note, and product cost; delivery and order charges are not included.",
+};
+const PRODUCT_RETAILER_LINKS_STEP: TutorialStep = {
+  selector: ".offer-row:not(.offer-row--muted) a.icon-button",
+  title: "Open a retailer product page",
+  description:
+    "The green arrow beside an available retailer opens that product's page on the retailer's website in a new tab.",
+};
+const PRODUCT_ADD_TO_BASKET_STEP: TutorialStep = {
+  selector: "#add-to-basket",
+  title: "Add these packs to your basket",
+  description:
+    "Add the selected number of packs to your CartOptix basket. You can change the quantity above before adding it.",
+};
+const PRODUCT_VIEW_BASKET_STEP: TutorialStep = {
+  selector: "#view-basket",
+  title: "View your basket",
+  description:
+    "Open your basket here to review the products you have added and compare the complete basket across retailers.",
+};
+
+function productTutorialSteps(hasOffers: boolean): readonly TutorialStep[] {
+  return [
+    PRODUCT_QUANTITY_STEP,
+    {
+      ...PRODUCT_RETAILER_OFFERS_STEP,
+      description: hasOffers
+        ? PRODUCT_RETAILER_OFFERS_STEP.description
+        : "RedMart, FairPrice, and Cold Storage are listed here. None has an eligible offer for this product right now.",
+    },
+    ...(hasOffers ? [PRODUCT_RETAILER_LINKS_STEP] : []),
+    PRODUCT_ADD_TO_BASKET_STEP,
+    PRODUCT_VIEW_BASKET_STEP,
+  ];
+}
 
 function TutorialGuide({
   open,
@@ -1027,11 +1077,34 @@ export function CataloguePage() {
 
 export function ProductDetail() {
   const [, params] = useRoute("/product/:id");
+  const [location] = useLocation();
   const productId = params?.id ?? "";
   const [quantity, setQuantity] = useState(1);
   const { data, isLoading, error } = useOffers(productId, quantity);
   const categoryNames = useCategoryNames();
   const { addToBasket } = useBasket();
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const tutorialRequest = useContext(TutorialRequestContext);
+  const navigation = useContext(NavigationContext);
+  const handledTutorialRequest = useRef(0);
+  const finishTutorial = useCallback(() => {
+    setTutorialOpen(false);
+    navigation?.setMenuOpen(false);
+  }, [navigation?.setMenuOpen]);
+  useEffect(() => {
+    const requestId = tutorialRequest?.requestId ?? 0;
+    if (
+      tutorialRequest?.requestPath !== location ||
+      requestId === 0 ||
+      requestId === handledTutorialRequest.current
+    )
+      return;
+    handledTutorialRequest.current = requestId;
+    setTutorialStep(0);
+    setTutorialOpen(true);
+    navigation?.setMenuOpen(true);
+  }, [location, navigation?.setMenuOpen, tutorialRequest?.requestId, tutorialRequest?.requestPath]);
   if (isLoading)
     return (
       <main>
@@ -1105,7 +1178,7 @@ export function ProductDetail() {
             Compare the estimated product cost for your requested quantity. Prices include sale
             prices and multibuy deals on this product; other promotions are not included.
           </p>
-          <div className="quantity-control">
+          <div className="quantity-control" id="product-quantity">
             <span>Quantity (whole packs)</span>
             <button
               type="button"
@@ -1126,7 +1199,7 @@ export function ProductDetail() {
             </button>
             <em>packs</em>
           </div>
-          <div className="offer-list">
+          <div className="offer-list" id="product-offers">
             <div className="offer-list__head">
               <span>Retailer offer</span>
               <span>Product cost</span>
@@ -1144,6 +1217,7 @@ export function ProductDetail() {
           </div>
           <div className="detail-actions">
             <button
+              id="add-to-basket"
               type="button"
               className="button button--primary"
               disabled={!product.available}
@@ -1154,7 +1228,7 @@ export function ProductDetail() {
             >
               <ShoppingBasket size={17} /> Add {quantity} pack{quantity > 1 ? "s" : ""} to basket
             </button>
-            <Link href="/basket" className="button button--outline">
+            <Link href="/basket" className="button button--outline" id="view-basket">
               View basket
             </Link>
           </div>
@@ -1169,6 +1243,14 @@ export function ProductDetail() {
             : "Offers are from our supported supermarket catalogues."}{" "}
         </p>
       </section>
+      <TutorialGuide
+        open={tutorialOpen}
+        stepIndex={tutorialStep}
+        onStepChange={setTutorialStep}
+        onFinish={finishTutorial}
+        menuOpen={navigation?.menuOpen ?? false}
+        steps={productTutorialSteps(offers.length > 0)}
+      />
     </main>
   );
 }
