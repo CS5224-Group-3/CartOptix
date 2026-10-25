@@ -13,7 +13,7 @@ Follow the product contract. The technical spec distinguishes agreed decisions f
 
 - Match exact products and pack configurations. Compare the complete basket at each retailer; do not split a basket across retailers, substitute products or add quantities.
 - Support at most 50 distinct lines and 1–20 whole packs per line.
-- Use verified, directly supermarket-fulfilled offers marked in stock. Quarantine ambiguous matches, prices, promotions and mandatory charges.
+- Use verified supermarket offers marked in stock. RedMart storefront listings qualify regardless of "Sold by"; ordinary Lazada marketplace listings do not. Other retailers require direct supermarket fulfilment. Quarantine ambiguous matches, prices, promotions and mandatory charges.
 - Calculate in integer SGD cents. Recommend the cheapest feasible retailer option; show each unavailable retailer with its reason. A partial basket may be shown as a labelled estimate, but is never presented as complete, ranked against complete options or recommended.
 - Show the dataset and price-and-availability notice (`SNAPSHOT_DISCLAIMER`) only on basket comparison results, not collection dates. Keep the clean seed in Git.
 

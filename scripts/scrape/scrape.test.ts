@@ -241,7 +241,17 @@ describe("RedMart product pages", () => {
     expect(() => redmart(null, url, "RedMart")).toThrow(/no price data/);
   });
 
-  it("reads the seller structurally, and leaves an unclear page for a hand check", () => {
+  it("accepts storefront sellers but rejects ordinary Lazada price modules", () => {
+    expect(redmart(page(), url, "Medic Drugstore Pte Ltd").seller).toBe("Medic Drugstore Pte Ltd");
+    expect(redmart(page(), url, "").seller).toBe("");
+    const ordinary = page();
+    const { price_grocer, ...fields } = ordinary.data.root.fields;
+    expect(() =>
+      redmart({ data: { root: { fields: { ...fields, price: price_grocer } } } }, url, "RedMart"),
+    ).toThrow(/no price data/);
+  });
+
+  it("reads seller provenance structurally without guessing when unclear", () => {
     const withSeller = (extra: object, seller = { name: "RedMart" }) => ({
       data: { root: { fields: { price_grocer: {}, seller, ...extra } } },
     });
@@ -394,7 +404,7 @@ seed = {"products": [product], "listings": [listing("fairprice", fp), listing("c
 match = {("rice-1kg", full[0]["product url"]): {"decision": "MATCH", "confidence": "HIGH",
                                                 "name": "Rice 1kg", "specification": "1kg"}}
 result = r.build(seed, {"products": [], "listings": []}, {fp: page("fairprice", fp), cs: page("cold-storage", cs)},
-                 r.latest_candidates(full, targeted), match, {}, {})
+                 r.latest_candidates(full, targeted), match, {})
 print(json.dumps(sorted(l["retailerId"] for l in result["listings"])))
 `;
 

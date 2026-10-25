@@ -7,14 +7,13 @@ Inputs, all in data/snapshot, one file per retailer for the first two:
   from, already through the name rules.
 - match-decisions.csv: the AI review of those candidates. Only MATCH with HIGH
   confidence publishes (PR-02).
-- seller-checks.csv (optional): hand checks for RedMart pages whose seller
-  could not be read.
 
 Rules:
 - Nothing from the previous snapshot is reused: a listing is priced only from
   its new observation, and a missing file or listing stops the build.
-- A listing is eligible when its page exists, it is in stock, it has a reliable
-  price (derive_offer_prices.py) and, at RedMart, RedMart sells it.
+- A listing is eligible when its page exists, it is in stock and it has a reliable
+  price (derive_offer_prices.py). RedMart observations come from its storefront;
+  the "Sold by" seller is provenance, not an eligibility filter.
 - A listing read again must still show the product it was matched to: the same
   name and pack size, ignoring case, spacing, punctuation and the BCRS tag.
   Otherwise it is quarantined ("identity changed") until a new MATCH/HIGH
@@ -29,9 +28,7 @@ Rules:
   data/seed/retired.json, so a later refresh reads it again and it returns
   under the same ID.
 
-Writes data/seed/seed.json, data/seed/product_ids.csv and
-data/snapshot/report.md. Exits with status 2, writing nothing, when RedMart
-sellers need a hand check; they are listed in data/snapshot/seller-checks-needed.csv.
+Writes data/seed/seed.json, data/seed/product_ids.csv and data/snapshot/report.md.
 
 Run from the repository root: python3 scripts/refresh_seed.py
 """
@@ -73,7 +70,7 @@ def read(name: str, required: bool = True) -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
+def exclusion(row: dict) -> str | None:
     """Why a listing cannot publish, or None when it is eligible."""
     if row.get("status", "ok") == "not_found":
         return "page gone"
@@ -87,12 +84,6 @@ def exclusion(row: dict, seller_checks: dict[str, str]) -> str | None:
         return "out of stock"
     if not derive_offer(row)["eligible"]:
         return "no reliable price"
-    if row["retailer"] == "redmart":
-        seller = row["seller"] or seller_checks.get(row["product url"], "")
-        if not seller:
-            return "seller unreadable"
-        if seller != "RedMart":
-            return "third-party seller"
     return None
 
 
@@ -199,7 +190,7 @@ def catalogue(seed: dict, retired: dict) -> tuple[dict, list[dict]]:
     return products, list(listings.values())
 
 
-def build(seed, retired, observed, candidates, decisions, seller_checks, registry) -> dict:
+def build(seed, retired, observed, candidates, decisions, registry) -> dict:
     """The refreshed products and listings, the retired ones, and what the report needs.
 
     Pure apart from updating `registry`, so it can be tested without files.
@@ -259,15 +250,12 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
     carried = 0
     # What each published listing was observed as, so a later snapshot can carry it over.
     observations: list[dict] = []
-    unreadable: list[dict] = []
     products, listings, added = [], [], []
     retired_products = []
     for product_id, product in sorted(known.items()):
         eligible: dict[str, dict] = {}
         for row in rows[product_id]:
-            reason = exclusion(row, seller_checks)
-            if reason == "seller unreadable":
-                unreadable.append(row)
+            reason = exclusion(row)
             if reason:
                 reasons[(row["retailer"], reason)] += 1
             elif row["retailer"] not in eligible:
@@ -325,7 +313,6 @@ def build(seed, retired, observed, candidates, decisions, seller_checks, registr
         "accepted": accepted,
         "carried": carried,
         "reasons": reasons,
-        "unreadable": unreadable,
     }
 
 
@@ -349,19 +336,8 @@ def main() -> None:
             for row in latest_candidates(read(f"candidates-{r}.csv"), read(f"candidates-{r}-targeted.csv", required=False))
         ],
         decisions={(r["product_id"], r["product url"]): r for r in read("match-decisions.csv", required=False)},
-        seller_checks={r["product url"]: r["seller"] for r in read("seller-checks.csv", required=False)},
         registry=registry,
     )
-
-    if result["unreadable"]:
-        path = SNAPSHOT / "seller-checks-needed.csv"
-        with open(path, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["product url", "Product Name", "seller"])
-            writer.writerows([[r["product url"], r["Product Name"], ""] for r in result["unreadable"]])
-        print(f"{len(result['unreadable'])} RedMart sellers need a hand check: fill in {path.relative_to(ROOT)},")
-        print("add the rows to data/snapshot/seller-checks.csv, then run this again.")
-        raise SystemExit(2)
 
     write_seed(result["products"], result["listings"], registry)
     with open(OBSERVATIONS, "w", newline="", encoding="utf-8") as f:

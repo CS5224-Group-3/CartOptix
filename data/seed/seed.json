@@ -7172,6 +7172,20 @@
       "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
+      "listingId": "redmart-pdp-i13711531028-s124640446028",
+      "productId": "kellogg-s-strawberry-cornflakes-cereal-250g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i13711531028-s124640446028.html",
+      "name": "Kellogg's Strawberry Crunch Cornflakes Cereal 250G (Corn flakes)",
+      "specification": "250 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i13711531028-s124640446028.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 500,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i13718441209-s124659334681",
       "productId": "magiclean-bathroom-stain-and-mold-remover-light-floral-360ml",
       "retailerId": "redmart",
@@ -7195,6 +7209,20 @@
       "productUrl": "https://www.lazada.sg/products/pdp-i13747900006-s124705076410.html",
       "priceKind": "ordinary",
       "unitPriceCents": 450,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i13860634287-s124868468869",
+      "productId": "davidoff-fine-aroma-instant-coffee-90g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i13860634287-s124868468869.html",
+      "name": "Davidoff Cafe Fine Aroma Instant Coffee 90g",
+      "specification": "90 g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i13860634287-s124868468869.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1495,
       "originalPriceCents": null,
       "multibuy": null,
       "excludedPromotions": []
@@ -7330,6 +7358,20 @@
       "originalPriceCents": null,
       "multibuy": null,
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i2251428458-s12963972595",
+      "productId": "aaa-pickled-mustard-170g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i2251428458-s12963972595.html",
+      "name": "AAA Pickled Mustard",
+      "specification": "170g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i2251428458-s12963972595.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 290,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": ["Spend $10.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i2256124647-s12993795238",
@@ -7903,6 +7945,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i301126388-s527208078",
+      "productId": "hormel-spam-with-bacon-luncheon-meat-340g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301126388-s527208078.html",
+      "name": "SPAM® W Bacon 340G",
+      "specification": "340 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301126388-s527208078.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 665,
+      "originalPriceCents": 740,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i301126624-s527208386",
       "productId": "top-detergent-powder-super-low-suds-colour-protect-4-6kg",
       "retailerId": "redmart",
@@ -7934,6 +7990,25 @@
         "percentOff": 7
       },
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301126773-s527208567",
+      "productId": "colgate-total-charcoal-clean-toothpaste-150g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301126773-s527208567.html",
+      "name": "Colgate Total Charcoal Clean Toothpaste 150G",
+      "specification": "150 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301126773-s527208567.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 750,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1575,
+        "mixAndMatch": true,
+        "percentOff": 30
+      },
+      "excludedPromotions": ["Spend $60.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i301128368-s527164945",
@@ -8007,6 +8082,20 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 991,
       "originalPriceCents": 1101,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i301132398-s527182750",
+      "productId": "hormel-spam-lite-luncheon-meat-340g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i301132398-s527182750.html",
+      "name": "SPAM® Lite 340G",
+      "specification": "340 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i301132398-s527182750.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 665,
+      "originalPriceCents": 740,
       "multibuy": null,
       "excludedPromotions": []
     },
@@ -8975,6 +9064,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i302772454-s535986369",
+      "productId": "jin-huang-thai-fragrant-jasmine-rice-10kg",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i302772454-s535986369.html",
+      "name": "Jin Huang Thai Fragrant Rice - 10KG",
+      "specification": "10 KG",
+      "productUrl": "https://www.lazada.sg/products/pdp-i302772454-s535986369.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 2444,
+      "originalPriceCents": 2704,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i302854359-s536114839",
       "productId": "hershey-s-kisses-creamy-milk-chocolate-146g",
       "retailerId": "redmart",
@@ -9029,6 +9132,39 @@
       "originalPriceCents": 489,
       "multibuy": null,
       "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i303138864-s536412392",
+      "productId": "ah-huat-extra-rich-white-coffee-13-x-36g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i303138864-s536412392.html",
+      "name": "Ah Huat White Coffee Extra Rich",
+      "specification": "13 x 36g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303138864-s536412392.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 770,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i303174625-s536442228",
+      "productId": "colgate-total-breath-health-toothpaste-150g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i303174625-s536442228.html",
+      "name": "Colgate Total Pro Breath Health Antibacterial Toothpaste 150 G",
+      "specification": "150 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303174625-s536442228.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 830,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1718,
+        "mixAndMatch": true,
+        "percentOff": 31
+      },
+      "excludedPromotions": ["Spend $60.00 + free gift"]
     },
     {
       "listingId": "redmart-pdp-i303238577-s536560401",
@@ -9265,6 +9401,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i303736642-s537434855",
+      "productId": "hi-chew-strawberry-and-grape-chewy-candy-100g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i303736642-s537434855.html",
+      "name": "HI-CHEW Grape And Strawberry Chewy Candy Mix Bag 100G",
+      "specification": "100 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i303736642-s537434855.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 305,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i303796892-s537662267",
       "productId": "gw-light-green-dishwashing-liquid",
       "retailerId": "redmart",
@@ -9307,6 +9457,20 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i304046078-s538170093",
+      "productId": "lee-kum-kee-abalone-sauce-535g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i304046078-s538170093.html",
+      "name": "Lee Kum Kee Abalone Sauce Cooking Sauce 535g",
+      "specification": "535 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i304046078-s538170093.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 652,
+      "originalPriceCents": 686,
+      "multibuy": null,
+      "excludedPromotions": ["Spend $15 + free gift"]
+    },
+    {
       "listingId": "redmart-pdp-i304094348-s538238164",
       "productId": "breeze-anti-bacterial-and-colour-protect-liquid-detergent-3-6kg",
       "retailerId": "redmart",
@@ -9317,6 +9481,20 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 1176,
       "originalPriceCents": 1264,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i304302340-s538530140",
+      "productId": "elgydium-anti-plaque-toothpaste-75ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i304302340-s538530140.html",
+      "name": "Elgydium Anti-Plaque Toothpaste - By Medic Drugstore",
+      "specification": "75 ML",
+      "productUrl": "https://www.lazada.sg/products/pdp-i304302340-s538530140.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 891,
+      "originalPriceCents": 990,
       "multibuy": null,
       "excludedPromotions": []
     },
@@ -9471,6 +9649,25 @@
       "excludedPromotions": ["Spend $30 + Free Gift"]
     },
     {
+      "listingId": "redmart-pdp-i3143072696-s21422050443",
+      "productId": "beryl-s-assorted-almond-chocolate-370g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i3143072696-s21422050443.html",
+      "name": "Beryl's Assorted Almond Chocolate 370g",
+      "specification": "370g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3143072696-s21422050443.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1300,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 2210,
+        "mixAndMatch": true,
+        "percentOff": 15
+      },
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i315052020-s586456663",
       "productId": "kodomo-cleanser-for-baby-bottle-and-accessories-750ml",
       "retailerId": "redmart",
@@ -9607,6 +9804,39 @@
       "priceKind": "unconditional_sale",
       "unitPriceCents": 496,
       "originalPriceCents": 695,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i3398081504-s22662913985",
+      "productId": "kellogg-s-granola-boost-vitamin-d-calcium-300g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i3398081504-s22662913985.html",
+      "name": "Kellogg's Boost Calcium and Vit D Granola 300G",
+      "specification": "300 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3398081504-s22662913985.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 1050,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1995,
+        "mixAndMatch": true,
+        "percentOff": null
+      },
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i3428255008-s22824072426",
+      "productId": "blue-frog-macadamia-almond-and-manuka-honey-cereal-350g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i3428255008-s22824072426.html",
+      "name": "Blue Frog Macadamia Almond And Manuka Honey Granola 350G",
+      "specification": "350g",
+      "productUrl": "https://www.lazada.sg/products/pdp-i3428255008-s22824072426.html",
+      "priceKind": "unconditional_sale",
+      "unitPriceCents": 1350,
+      "originalPriceCents": 1590,
       "multibuy": null,
       "excludedPromotions": []
     },
@@ -9775,6 +10005,25 @@
       "excludedPromotions": []
     },
     {
+      "listingId": "redmart-pdp-i406430673-s1004156372",
+      "productId": "lay-s-stax-sour-cream-and-onion-potato-chips-100g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i406430673-s1004156372.html",
+      "name": "Lay's Stax Sour Cream And Onion Flavored Potato Chips Snacks 100G",
+      "specification": "100 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i406430673-s1004156372.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 270,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 459,
+        "mixAndMatch": false,
+        "percentOff": 15
+      },
+      "excludedPromotions": []
+    },
+    {
       "listingId": "redmart-pdp-i406464405-s1004192125",
       "productId": "lay-s-stax-extra-cheese-potato-chips-100g",
       "retailerId": "redmart",
@@ -9792,6 +10041,25 @@
         "percentOff": 15
       },
       "excludedPromotions": ["Spend $105.00 + free gift"]
+    },
+    {
+      "listingId": "redmart-pdp-i509850780-s1420726490",
+      "productId": "irvins-salted-egg-potato-chips-95g",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i509850780-s1420726490.html",
+      "name": "Irvins Salted Egg Potato Chips (95G)",
+      "specification": "95 G",
+      "productUrl": "https://www.lazada.sg/products/pdp-i509850780-s1420726490.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 958,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 2,
+        "dealPriceCents": 1609,
+        "mixAndMatch": true,
+        "percentOff": 16
+      },
+      "excludedPromotions": []
     },
     {
       "listingId": "redmart-pdp-i569114388-s1622298642",
@@ -9908,6 +10176,39 @@
       "unitPriceCents": 590,
       "originalPriceCents": null,
       "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i901308060-s3137300769",
+      "productId": "kct-superior-light-soya-sauce-640ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i901308060-s3137300769.html",
+      "name": "Kwong Cheong Thye SUPERIOR Light Soya Sauce",
+      "specification": "640 ML",
+      "productUrl": "https://www.lazada.sg/products/pdp-i901308060-s3137300769.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 550,
+      "originalPriceCents": null,
+      "multibuy": null,
+      "excludedPromotions": []
+    },
+    {
+      "listingId": "redmart-pdp-i990422174-s3592164820",
+      "productId": "bcrs-magnolia-high-protein-chocolate-milk-375ml",
+      "retailerId": "redmart",
+      "sourceRecordId": "snapshot:https://www.lazada.sg/products/pdp-i990422174-s3592164820.html",
+      "name": "Magnolia High Protein Low Fat Milk Chocolate 375ML [New Formula]",
+      "specification": "375ml",
+      "productUrl": "https://www.lazada.sg/products/pdp-i990422174-s3592164820.html",
+      "priceKind": "ordinary",
+      "unitPriceCents": 504,
+      "originalPriceCents": null,
+      "multibuy": {
+        "packsPerDeal": 3,
+        "dealPriceCents": 1425,
+        "mixAndMatch": true,
+        "percentOff": null
+      },
       "excludedPromotions": []
     }
   ]
