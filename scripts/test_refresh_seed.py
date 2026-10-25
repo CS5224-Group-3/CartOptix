@@ -23,25 +23,23 @@ def row(**overrides) -> dict:
 
 class Exclusion(unittest.TestCase):
     def test_an_in_stock_redmart_listing_is_eligible(self):
-        self.assertIsNone(exclusion(row(), {}))
+        self.assertIsNone(exclusion(row()))
 
     def test_gone_out_of_stock_and_unpriced_listings_are_not(self):
-        self.assertEqual(exclusion(row(status="not_found"), {}), "page gone")
-        self.assertEqual(exclusion(row(status="skipped"), {}), "not collected (Lazada check)")
-        self.assertEqual(exclusion(row(**{"in-stock": "No"}), {}), "out of stock")
-        self.assertEqual(exclusion(row(**{"Product Price": "0"}), {}), "no reliable price")
+        self.assertEqual(exclusion(row(status="not_found")), "page gone")
+        self.assertEqual(exclusion(row(status="skipped")), "not collected (Lazada check)")
+        self.assertEqual(exclusion(row(**{"in-stock": "No"})), "out of stock")
+        self.assertEqual(exclusion(row(**{"Product Price": "0"})), "no reliable price")
 
-    def test_third_party_redmart_sellers_are_dropped(self):
-        self.assertEqual(exclusion(row(seller="Sea Boss"), {}), "third-party seller")
-
-    def test_an_unreadable_seller_needs_a_hand_check(self):
-        url = row()["product url"]
-        self.assertEqual(exclusion(row(seller=""), {}), "seller unreadable")
-        self.assertIsNone(exclusion(row(seller=""), {url: "RedMart"}))
-        self.assertEqual(exclusion(row(seller=""), {url: "Delyco"}), "third-party seller")
+    def test_redmart_storefront_accepts_any_seller_without_bypassing_other_checks(self):
+        for seller in ["RedMart", "Medic Drugstore Pte Ltd", "Sea Boss", ""]:
+            with self.subTest(seller=seller):
+                self.assertIsNone(exclusion(row(seller=seller)))
+                self.assertEqual(exclusion(row(seller=seller, **{"in-stock": "No"})), "out of stock")
+                self.assertEqual(exclusion(row(seller=seller, **{"Product Price": "0"})), "no reliable price")
 
     def test_other_retailers_sell_their_own_listings(self):
-        self.assertIsNone(exclusion(row(retailer="fairprice", seller=""), {}))
+        self.assertIsNone(exclusion(row(retailer="fairprice", seller="")))
 
 
 if __name__ == "__main__":
@@ -78,7 +76,7 @@ EMPTY = {"products": [], "listings": []}
 
 
 def run(seed, retired, observed):
-    return build(seed, retired, {o["product url"]: o for o in observed}, [], {}, {}, {})
+    return build(seed, retired, {o["product url"]: o for o in observed}, [], {}, {})
 
 
 class Build(unittest.TestCase):
@@ -173,7 +171,7 @@ class SuccessiveSnapshots(unittest.TestCase):
         candidate = {**observation("redmart", rm, seller="RedMart", Savings="Any 2 For $5.00"), "product_id": "rice-1kg", "similarity": "1.0"}
         decisions = {("rice-1kg", rm): {**MATCH, "name": "Rice 1kg", "specification": "1kg"}}
         observed = {o["product url"]: o for o in FRESH}
-        first = build(seed, EMPTY, observed, [candidate], decisions, {}, {})
+        first = build(seed, EMPTY, observed, [candidate], decisions, {})
         found = next(l for l in first["listings"] if l["retailerId"] == "redmart")
         recorded = {o["source_record_id"]: o for o in first["observations"]}
         self.assertEqual(recorded[found["sourceRecordId"]]["raw_savings"], "Any 2 For $5.00")
@@ -241,22 +239,22 @@ class Identity(unittest.TestCase):
     def test_a_listing_recorded_without_a_name_needs_a_review(self):
         retired = {"products": [PRODUCT], "listings": [{k: v for k, v in l.items() if k != "name"} for l in LISTINGS]}
         observed = {o["product url"]: o for o in [observation("fairprice", FP), observation("cold-storage", CS)]}
-        self.assertEqual(build(EMPTY, retired, observed, [], {}, {}, {})["products"], [])
+        self.assertEqual(build(EMPTY, retired, observed, [], {}, {})["products"], [])
         decisions = {("rice-1kg", url): REVIEWED for url in (FP, CS)}
-        back = build(EMPTY, retired, observed, [], decisions, {}, {})
+        back = build(EMPTY, retired, observed, [], decisions, {})
         self.assertEqual([p["productId"] for p in back["products"]], ["rice-1kg"])
 
     def test_a_new_match_decision_approves_the_page_as_it_reads_now(self):
         observed = {o["product url"]: o for o in three(**{"Product Name": "Rice Jasmine 1kg"})}
         decisions = {("rice-1kg", CS): {**MATCH, "name": "Rice Jasmine 1kg", "specification": "1kg"}}
-        result = build(THREE, EMPTY, observed, [], decisions, {}, {})
+        result = build(THREE, EMPTY, observed, [], decisions, {})
         self.assertEqual(self.published(result), {"fairprice", "cold-storage", "redmart"})
 
 
     def test_an_approval_does_not_outlive_a_change_to_the_page(self):
         # Approved as it read when reviewed, then the page changed to another product.
         decisions = {("rice-1kg", CS): REVIEWED}
-        result = build(THREE, EMPTY, {o["product url"]: o for o in three(**{"Product Name": "Chocolate cereal 1kg"})}, [], decisions, {}, {})
+        result = build(THREE, EMPTY, {o["product url"]: o for o in three(**{"Product Name": "Chocolate cereal 1kg"})}, [], decisions, {})
         self.assertEqual(self.published(result), {"fairprice", "redmart"})
         self.assertEqual(result["reasons"][("cold-storage", "identity changed")], 1)
 
@@ -265,7 +263,7 @@ class Identity(unittest.TestCase):
         changed = {**observation("redmart", url, seller="RedMart", **{"Product Name": "Chocolate cereal 1kg"}), "product_id": "rice-1kg", "similarity": "1.0"}
         seed = {"products": [PRODUCT], "listings": LISTINGS}
         observed = {o["product url"]: o for o in FRESH}
-        result = build(seed, EMPTY, observed, [changed], {("rice-1kg", url): REVIEWED}, {}, {})
+        result = build(seed, EMPTY, observed, [changed], {("rice-1kg", url): REVIEWED}, {})
         self.assertNotIn("redmart", {l["retailerId"] for l in result["listings"]})
         self.assertEqual(result["accepted"], 0)
 
@@ -274,7 +272,7 @@ class Identity(unittest.TestCase):
         candidate = {**observation("redmart", url, seller="RedMart"), "product_id": "rice-1kg", "similarity": "1.0"}
         seed = {"products": [PRODUCT], "listings": LISTINGS}
         observed = {o["product url"]: o for o in FRESH}
-        result = build(seed, EMPTY, observed, [candidate], {("rice-1kg", url): MATCH}, {}, {})
+        result = build(seed, EMPTY, observed, [candidate], {("rice-1kg", url): MATCH}, {})
         self.assertNotIn("redmart", {l["retailerId"] for l in result["listings"]})
 
 
@@ -310,9 +308,9 @@ class GonePages(unittest.TestCase):
         observed = {o["product url"]: o for o in FRESH}
         seed = {"products": [PRODUCT], "listings": LISTINGS}
 
-        published = build(seed, EMPTY, observed, refresh_seed.latest_candidates([earlier], []), decisions, {}, {})
+        published = build(seed, EMPTY, observed, refresh_seed.latest_candidates([earlier], []), decisions, {})
         self.assertIn("redmart", {l["retailerId"] for l in published["listings"]})
-        result = build(seed, EMPTY, observed, refresh_seed.latest_candidates([earlier], [gone]), decisions, {}, {})
+        result = build(seed, EMPTY, observed, refresh_seed.latest_candidates([earlier], [gone]), decisions, {})
         self.assertNotIn("redmart", {l["retailerId"] for l in result["listings"]})
         self.assertEqual(result["reasons"][("redmart", "page gone")], 1)
         self.assertEqual(result["accepted"], 0)

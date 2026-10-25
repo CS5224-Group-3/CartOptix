@@ -265,7 +265,8 @@ const read = (file: string): Row[] =>
 /**
  * Reads again the RedMart pages whose seller an earlier pass left empty, for
  * example because Lazada challenged the browser, and records the sellers it
- * can now read in seller-checks.csv. Whatever is still empty needs a hand check.
+ * can now read in seller-checks.csv. This is optional provenance collection;
+ * seller identity does not determine RedMart storefront eligibility.
  */
 async function sellers(): Promise<string[]> {
   const checks = new Map(read("seller-checks.csv").map((row) => [row["product url"] ?? "", row]));

@@ -860,8 +860,8 @@ export function ProductDetail() {
         <p>
           <strong>Stock and pricing note.</strong>{" "}
           {offers.length === 0
-            ? "No retailer has an eligible direct-fulfilment offer for this product."
-            : "Offers show direct supermarket fulfilment only."}{" "}
+            ? "No supported retailer has an eligible offer for this product."
+            : "Offers are from our supported supermarket catalogues."}{" "}
         </p>
       </section>
     </main>
@@ -1282,16 +1282,16 @@ function HowItWorks() {
           <div>
             <h3>What is included</h3>
             <p>
-              Direct supermarket fulfilment, regular and sale prices, multibuy deals on the same
+              Supported supermarket listings, regular and sale prices, multibuy deals on the same
               product, delivery fees, free-delivery thresholds and minimum-order values.
             </p>
           </div>
           <div>
             <h3>What is not included</h3>
             <p>
-              Live scraping, third-party sellers, cross-product promotions, cart transfer, stock
-              reservation, payment, delivery-slot selection or buying extra items just to unlock a
-              discount.
+              Live scraping, listings outside the supported storefronts, cross-product promotions,
+              cart transfer, stock reservation, payment, delivery-slot selection or buying extra
+              items just to unlock a discount.
             </p>
           </div>
           <div>

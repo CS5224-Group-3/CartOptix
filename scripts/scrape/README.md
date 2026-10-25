@@ -40,7 +40,7 @@ Run everything from the repository root.
 
    `--hits N` reads the pages of the N best hits per product (default 3); for RedMart, read only the best one to keep Lazada's checks down.
 
-3. **Read RedMart sellers again, if needed.** Lazada's catalogue does not say who sells an item, so the scraper reads each RedMart product page for its "Sold by" line. A page that loads without seller data leaves the seller empty; this reads those pages again and records what it finds in `data/snapshot/seller-checks.csv`:
+3. **Optionally read seller provenance again.** The scraper records each RedMart page's "Sold by" line when available. Missing seller data does not prevent publication. This optional command reads those pages again and records what it finds in `data/snapshot/seller-checks.csv`; the builder does not use seller identity for eligibility:
 
    ```sh
    node scripts/scrape/refresh.ts sellers --headed
@@ -55,7 +55,7 @@ Run everything from the repository root.
    pnpm exec biome format --write data/seed
    ```
 
-   If a RedMart seller is still unknown, the build stops with status 2 and lists those pages in `data/snapshot/seller-checks-needed.csv`. Open each one, note the seller ("RedMart" when there is no "Sold by" line), add the rows to `data/snapshot/seller-checks.csv` and run the build again. This is the only manual check.
+   For manually observed missing listings, preserve existing rows in `candidates-redmart-targeted.csv` and obtain an identity review in `match-decisions.csv`. Confirm that the product page is inside the RedMart storefront (its RedMart header/search and product branding), not just a Lazada page with RedMart in the global navigation. Keep the actual seller when shown; any seller, or an unreadable seller, qualifies within that storefront. No per-listing fulfilment exception or seller approval is needed.
 
 6. **Check and release.** `pnpm check` runs the seed integration tests and the reference price checker against the new seed. Commit the snapshot files and the seed, release, and re-import the seed (`infra/RUNBOOK.md`).
 
@@ -66,11 +66,11 @@ Run everything from the repository root.
 - **Check budget.** `--max-checks N` lets Lazada show N checks in a run; after that the RedMart items not yet collected are skipped: a skipped listing is recorded as such and not published (never from an earlier observation), and a skipped search finds no candidates.
 - **All or nothing, per retailer.** A page is recorded as gone only on positive evidence: a 404 at FairPrice or Cold Storage; FairPrice's empty product detail, or its product page with no product for an old link; or Lazada's "no longer available" page without product data. Any other failure, including a page in an unexpected shape, deletes that retailer's file, so a failed refresh cannot leave an earlier observation to build from. Collect a retailer that failed again the same day: one snapshot covers all three retailers within one short window. A missing file, or a seed listing without a new observation, stops the build.
 - **Columns.** Observations keep the source workbooks' columns (`data/raw/README.md`), so `derive_offer_prices.py` applies the same price, sale and multibuy rules, and add `retailer` and `seller`. `Savings` holds every promotion in the retailer's wording, separated by " | ": a multibuy is applied, a sale's plain saving dropped and anything else shown as an excluded promotion. Nothing records when they were collected.
-- **Eligibility.** A listing publishes when its page exists, it is in stock, its price is reliable and, at RedMart, RedMart sells it. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable. A listing that does not publish, and a product that drops out, move without prices to `data/seed/retired.json`; later refreshes read them again and bring them back under the same IDs.
+- **Eligibility.** A listing publishes when its page exists, it is in stock and its price is reliable. RedMart storefront membership, not the "Sold by" seller, determines retailer eligibility (PR-02): collection uses RedMart-restricted search and requires `price_grocer` data for the linked SKU. Ordinary Lazada marketplace pages do not qualify. A product publishes when two or more retailers have an eligible listing. Product IDs, categories and listing IDs stay stable. A listing that does not publish, and a product that drops out, move without prices to `data/seed/retired.json`; later refreshes read them again and bring them back under the same IDs.
 - **Identity.** A listing read again must still show the product it was matched to: the same name and pack size, ignoring case, spacing, punctuation and the BCRS tag. Otherwise it is quarantined as "identity changed" until the AI review records MATCH/HIGH for its `product_id` and `product url` with the name and specification it shows now. A listing recorded without a name (an older `retired.json`) always needs that review.
 - **Precedence.** Where a targeted search read a page the full search also read, the build uses the targeted reading. A hit whose page is gone is recorded as `not_found`, so a targeted search that finds that page gone stops an earlier reading of it from publishing. A search that finds nothing records nothing and does not remove an earlier hit, nor does a failed read, which stops the run instead.
 - **Pack rules.** A search hit must state the same pack count and per-pack size as the product (2 × 500 g is not 1 kg), and a hit whose title and specification disagree is never matched.
-- **Sellers.** The RedMart seller is read from the page data's "Sold by:" entry. With none, a page whose seller module is RedMart's is RedMart's; anything else is left for a hand check.
+- **Sellers.** The RedMart seller is read from the page data's "Sold by:" entry. With none, a page whose seller module is RedMart's records RedMart; otherwise seller stays empty. This is provenance only and does not block publication.
 
 ## How each retailer is read
 

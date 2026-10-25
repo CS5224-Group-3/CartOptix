@@ -106,7 +106,7 @@ export function observe(data: unknown, url: string, seller: string): Observation
     "in-stock": (fields.skuInfos?.[sku]?.stock ?? 0) > 0 ? "Yes" : "No",
     "Image URL": image ? new URL(image, "https://www.lazada.sg").href : "",
     brand: clean(fields.product.brand?.name),
-    // Empty when the seller could not be read; such a listing needs a hand check.
+    // Provenance only: storefront listings qualify regardless of the seller.
     seller,
   };
 }
@@ -121,8 +121,8 @@ const challenged = (page: Page) =>
 /**
  * The seller of a product page's data: the "Sold by:" entry when there is one,
  * "RedMart" when the page's seller module is RedMart's and names no other
- * seller, and null when the data is incomplete or ambiguous, so the listing
- * goes to a hand check rather than being assumed RedMart's.
+ * seller, and null when the data is incomplete or ambiguous. This does not
+ * determine eligibility: observe requires RedMart's price_grocer page data.
  */
 export function sellerFrom(data: unknown): string | null {
   const fields = (data as { data?: { root?: { fields?: Record<string, unknown> } } } | null)?.data
