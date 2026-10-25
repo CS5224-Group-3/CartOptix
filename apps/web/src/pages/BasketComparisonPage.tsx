@@ -1,7 +1,7 @@
 import { DEPOSIT_NOTICE, SNAPSHOT_DISCLAIMER } from "@cartoptix/contracts";
 import { Link } from "wouter";
+import ComparisonMatrix from "../components/basket/ComparisonMatrix";
 import ComparisonRequestStatus from "../components/basket/ComparisonRequestStatus";
-import RetailerOptionCard from "../components/basket/RetailerOptionCard";
 import type {
   BasketComparisonPresentation,
   ComparisonRequestState,
@@ -94,17 +94,16 @@ export default function BasketComparisonPage({
               highlighted option is one of these tied options.
             </p>
           )}
-          <div className="basket-comparison__options">
-            {result.options.map((option) => (
-              <RetailerOptionCard
-                key={option.retailer.id}
-                option={option}
-                recommended={option.retailer.id === recommendedId}
-                tied={tied}
-                purchaseEnabled={!referenceOnly}
-              />
-            ))}
-          </div>
+          <ComparisonMatrix
+            options={result.options}
+            recommendedId={recommendedId}
+            tied={tied}
+            purchaseEnabled={!referenceOnly}
+          />
+          <p>
+            Rebuild this basket and complete checkout manually on the retailer’s website. CartOptix
+            does not transfer carts or reserve stock.
+          </p>
         </>
       )}
       <div className="results-disclaimer">
