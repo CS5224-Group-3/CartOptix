@@ -34,6 +34,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { Link, Redirect, Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
@@ -121,6 +122,14 @@ type BasketContextValue = {
 };
 
 const BasketContext = createContext<BasketContextValue | null>(null);
+const TutorialRequestContext = createContext<{
+  requestId: number;
+  requestTutorial: () => void;
+} | null>(null);
+const NavigationContext = createContext<{
+  menuOpen: boolean;
+  setMenuOpen: (open: boolean) => void;
+} | null>(null);
 
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
@@ -346,72 +355,88 @@ function useCategoryNames() {
 
 function AppShell({ children }: { children: ReactNode }) {
   const { basketCount } = useBasket();
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const tutorialRequest = useContext(TutorialRequestContext);
+  const navigationValue = useMemo(() => ({ menuOpen, setMenuOpen }), [menuOpen]);
   return (
-    <div className="app-shell">
-      <header className="site-header">
-        <div className="site-header__inner">
-          <Link
-            href="/"
-            className="wordmark"
-            aria-label="CartOptix home"
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="wordmark__mark">
-              <Leaf size={17} strokeWidth={2.8} />
-            </span>
-            <span>
-              Cart<span>Optix</span>
-            </span>
-          </Link>
-          <button
-            type="button"
-            className="mobile-menu-button"
-            aria-label="Toggle navigation"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <Menu size={21} />
-          </button>
-          <nav
-            className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
-            aria-label="Main navigation"
-          >
+    <NavigationContext.Provider value={navigationValue}>
+      <div className="app-shell">
+        <header className="site-header">
+          <div className="site-header__inner">
             <Link
-              href="/catalogue"
-              className={location === "/catalogue" ? "is-active" : ""}
+              href="/"
+              className="wordmark"
+              aria-label="CartOptix home"
               onClick={() => setMenuOpen(false)}
             >
-              Browse products
-            </Link>
-            <Link
-              href="/basket"
-              className={`nav-basket ${location === "/basket" ? "is-active" : ""}`}
-              onClick={() => setMenuOpen(false)}
-            >
-              <ShoppingBasket size={17} /> Basket <span>{basketCount}</span>
-            </Link>
-          </nav>
-        </div>
-      </header>
-      {children}
-      <footer className="site-footer">
-        <div className="container footer-grid">
-          <div>
-            <div className="wordmark wordmark--footer">
               <span className="wordmark__mark">
-                <Leaf size={15} />
+                <Leaf size={17} strokeWidth={2.8} />
               </span>
               <span>
                 Cart<span>Optix</span>
               </span>
-            </div>
-            <p>Transparent basket comparison for Singapore grocery shoppers.</p>
+            </Link>
+            <button
+              type="button"
+              className="mobile-menu-button"
+              aria-label="Toggle navigation"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <Menu size={21} />
+            </button>
+            <nav
+              className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
+              aria-label="Main navigation"
+            >
+              <Link
+                href="/catalogue"
+                className={location === "/catalogue" ? "is-active" : ""}
+                onClick={() => setMenuOpen(false)}
+              >
+                Browse products
+              </Link>
+              <button
+                id="how-it-works"
+                type="button"
+                className="nav-how-it-works"
+                onClick={() => {
+                  setMenuOpen(true);
+                  navigate("/catalogue");
+                  tutorialRequest?.requestTutorial();
+                }}
+              >
+                <CircleHelp size={16} /> How it works
+              </button>
+              <Link
+                href="/basket"
+                className={`nav-basket ${location === "/basket" ? "is-active" : ""}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                <ShoppingBasket size={17} /> Basket <span>{basketCount}</span>
+              </Link>
+            </nav>
           </div>
-        </div>
-      </footer>
-    </div>
+        </header>
+        {children}
+        <footer className="site-footer">
+          <div className="container footer-grid">
+            <div>
+              <div className="wordmark wordmark--footer">
+                <span className="wordmark__mark">
+                  <Leaf size={15} />
+                </span>
+                <span>
+                  Cart<span>Optix</span>
+                </span>
+              </div>
+              <p>Transparent basket comparison for Singapore grocery shoppers.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </NavigationContext.Provider>
   );
 }
 
@@ -474,7 +499,235 @@ function ProductCard({ product, categoryName }: { product: Product; categoryName
   );
 }
 
+const TUTORIAL_STORAGE_KEY = "cartoptix:tutorial:completed:v1";
+const WELCOME_TUTORIAL_STEP = {
+  selector: null,
+  title: "Welcome to CartOptix",
+  description:
+    "CartOptix helps you compare the cost of your complete grocery basket across Singapore supermarkets, using exact products and clear retailer offers.",
+} as const;
+const TUTORIAL_STEPS = [
+  WELCOME_TUTORIAL_STEP,
+  {
+    selector: "#catalogue-search",
+    title: "Search the catalogue",
+    description:
+      "Search by product name, brand or pack size to find the exact groceries you want to compare.",
+  },
+  {
+    selector: "#catalogue-products .product-card",
+    title: "Explore products",
+    description:
+      "Browse the matching products here. Open a product to compare its retailer offers, or add it to your basket.",
+  },
+  {
+    selector: "#catalogue-filters",
+    title: "Narrow your search",
+    description:
+      "Choose a category to filter the catalogue. You can combine a category with your search.",
+  },
+  {
+    selector: "#how-it-works",
+    title: "Replay this guide any time",
+    description: "If you need a refresher, select How it works to start this guide again.",
+  },
+] as const;
+
+function TutorialGuide({
+  open,
+  stepIndex,
+  onStepChange,
+  onFinish,
+  menuOpen,
+}: {
+  open: boolean;
+  stepIndex: number;
+  onStepChange: (step: number) => void;
+  onFinish: () => void;
+  menuOpen: boolean;
+}) {
+  const step = TUTORIAL_STEPS[stepIndex] ?? WELCOME_TUTORIAL_STEP;
+  const [spotlight, setSpotlight] = useState<DOMRect | null>(null);
+  const [dialogTop, setDialogTop] = useState<number | null>(null);
+  const dialogRef = useRef<HTMLElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) {
+      setSpotlight(null);
+      setDialogTop(null);
+      return;
+    }
+    const target = step.selector
+      ? (document.querySelector(step.selector) ??
+        (step.selector === "#catalogue-products .product-card"
+          ? document.querySelector(".catalogue-summary")
+          : null))
+      : null;
+    if (step.selector === "#how-it-works" && window.innerWidth <= 720 && !menuOpen) {
+      setSpotlight(null);
+      setDialogTop(null);
+      return;
+    }
+    if (!target) {
+      setSpotlight(null);
+      setDialogTop(null);
+    } else {
+      target.scrollIntoView?.({ block: "center", behavior: "smooth" });
+      const updatePosition = () => {
+        const targetRect = target.getBoundingClientRect();
+        const dialogRect = dialogRef.current?.getBoundingClientRect();
+        const dialogHeight = dialogRect?.height ?? 220;
+        const dialogWidth = dialogRect?.width ?? Math.min(440, window.innerWidth - 32);
+        const viewportPadding = 16;
+        const centerTop = Math.max(viewportPadding, (window.innerHeight - dialogHeight) / 2);
+        const centerLeft = (window.innerWidth - dialogWidth) / 2;
+        const horizontalOverlap =
+          centerLeft < targetRect.right && targetRect.left < centerLeft + dialogWidth;
+        let nextTop = centerTop;
+
+        if (
+          horizontalOverlap &&
+          centerTop < targetRect.bottom &&
+          targetRect.top < centerTop + dialogHeight
+        ) {
+          const above = targetRect.top - dialogHeight - 20;
+          const below = targetRect.bottom + 20;
+          const fitsAbove = above >= viewportPadding;
+          const fitsBelow = below + dialogHeight <= window.innerHeight - viewportPadding;
+          if (fitsAbove && fitsBelow)
+            nextTop = Math.abs(above - centerTop) <= Math.abs(below - centerTop) ? above : below;
+          else if (fitsAbove) nextTop = above;
+          else if (fitsBelow) nextTop = below;
+          else
+            nextTop = Math.max(
+              viewportPadding,
+              window.innerHeight - dialogHeight - viewportPadding,
+            );
+        }
+
+        setSpotlight(targetRect);
+        setDialogTop(nextTop);
+      };
+      updatePosition();
+      window.addEventListener("resize", updatePosition);
+      window.addEventListener("scroll", updatePosition, true);
+      return () => {
+        window.removeEventListener("resize", updatePosition);
+        window.removeEventListener("scroll", updatePosition, true);
+      };
+    }
+  }, [open, step.selector, menuOpen]);
+
+  useEffect(() => {
+    if (!open) return;
+    nextButtonRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onFinish();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onFinish]);
+
+  if (!open) return null;
+  return createPortal(
+    <>
+      {spotlight && (
+        <div
+          className="tutorial-spotlight"
+          aria-hidden="true"
+          style={{
+            top: spotlight.top - 8,
+            left: spotlight.left - 8,
+            width: spotlight.width + 16,
+            height: spotlight.height + 16,
+          }}
+        />
+      )}
+      <section
+        ref={dialogRef}
+        className="tutorial-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tutorial-title"
+        aria-describedby="tutorial-description"
+        style={dialogTop === null ? undefined : { top: dialogTop }}
+        data-positioned={dialogTop !== null}
+      >
+        <div className="tutorial-dialog__topline">
+          <span>CartOptix quick guide</span>
+          <span>
+            {stepIndex + 1} of {TUTORIAL_STEPS.length}
+          </span>
+        </div>
+        <h2 id="tutorial-title">{step.title}</h2>
+        <p id="tutorial-description">{step.description}</p>
+        <div className="tutorial-dialog__actions">
+          <button type="button" className="tutorial-skip" onClick={onFinish}>
+            Skip guide
+          </button>
+          <div>
+            {stepIndex > 0 && (
+              <button
+                type="button"
+                className="button button--outline button--small"
+                onClick={() => onStepChange(stepIndex - 1)}
+              >
+                Back
+              </button>
+            )}
+            <button
+              ref={nextButtonRef}
+              type="button"
+              className="button button--primary button--small"
+              onClick={() =>
+                stepIndex === TUTORIAL_STEPS.length - 1 ? onFinish() : onStepChange(stepIndex + 1)
+              }
+            >
+              {stepIndex === TUTORIAL_STEPS.length - 1 ? "Finish" : "Next"}
+            </button>
+          </div>
+        </div>
+      </section>
+    </>,
+    document.body,
+  );
+}
+
 export function CataloguePage() {
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const tutorialRequest = useContext(TutorialRequestContext);
+  const navigation = useContext(NavigationContext);
+  const handledTutorialRequest = useRef(0);
+  const finishTutorial = useCallback(() => {
+    try {
+      window.localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+    } catch {
+      // Keep the guide usable when browser storage is unavailable.
+    }
+    setTutorialOpen(false);
+    navigation?.setMenuOpen(false);
+  }, [navigation?.setMenuOpen]);
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(TUTORIAL_STORAGE_KEY) !== "true") {
+        setTutorialOpen(true);
+        navigation?.setMenuOpen(true);
+      }
+    } catch {
+      setTutorialOpen(true);
+      navigation?.setMenuOpen(true);
+    }
+  }, [navigation?.setMenuOpen]);
+  useEffect(() => {
+    const requestId = tutorialRequest?.requestId ?? 0;
+    if (requestId === 0 || requestId === handledTutorialRequest.current) return;
+    handledTutorialRequest.current = requestId;
+    setTutorialStep(0);
+    setTutorialOpen(true);
+    navigation?.setMenuOpen(true);
+  }, [navigation?.setMenuOpen, tutorialRequest?.requestId]);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
@@ -576,7 +829,11 @@ export function CataloguePage() {
       </section>
       <section className="container catalogue-section">
         <div className="catalogue-controls">
-          <fieldset className="category-chips" aria-label="Quick product category filters">
+          <fieldset
+            id="catalogue-filters"
+            className="category-chips"
+            aria-label="Quick product category filters"
+          >
             <button
               type="button"
               className={categoryId === "" ? "is-active" : ""}
@@ -627,95 +884,106 @@ export function CataloguePage() {
           </p>
           <p>Compare Singapore grocery retailers</p>
         </div>
-        {isLoading ? (
-          <div className="loading-state">Loading the catalogue…</div>
-        ) : isError ? (
-          <div className="empty-state">
-            <AlertCircle size={24} />
-            <h2>Could not load products</h2>
-            <p>The catalogue service is unavailable. Please try again shortly.</p>
-          </div>
-        ) : products.length || total > 0 ? (
-          <>
-            <div
-              className={isPlaceholderData ? "product-grid product-grid--pending" : "product-grid"}
-              aria-busy={isPlaceholderData}
-              inert={isPlaceholderData}
-            >
-              {products.map((product) => (
-                <ProductCard
-                  key={product.productId}
-                  product={product}
-                  categoryName={categoryNames.get(product.categoryId) ?? ""}
-                />
-              ))}
+        <div id="catalogue-products">
+          {isLoading ? (
+            <div className="loading-state">Loading the catalogue…</div>
+          ) : isError ? (
+            <div className="empty-state">
+              <AlertCircle size={24} />
+              <h2>Could not load products</h2>
+              <p>The catalogue service is unavailable. Please try again shortly.</p>
             </div>
-            <nav className="catalogue-pagination" aria-label="Catalogue pages">
-              <button
-                type="button"
-                className="button button--outline"
-                disabled={page === 1 || isPlaceholderData}
-                onClick={() => {
-                  setPage((current) => current - 1);
-                }}
+          ) : products.length || total > 0 ? (
+            <>
+              <div
+                className={
+                  isPlaceholderData ? "product-grid product-grid--pending" : "product-grid"
+                }
+                aria-busy={isPlaceholderData}
+                inert={isPlaceholderData}
               >
-                Previous
-              </button>
-              <span>
-                Page {page} of {totalPages}
-              </span>
-              <button
-                type="button"
-                className="button button--outline"
-                disabled={page >= totalPages || isPlaceholderData}
-                onClick={() => {
-                  setPage((current) => current + 1);
-                }}
-              >
-                Next
-              </button>
-              <label className="page-jump-control">
-                <span>Go to page</span>
-                <input
-                  type="number"
-                  min="1"
-                  max={totalPages}
-                  value={pageInput}
-                  onChange={(event) => setPageInput(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") jumpToPage();
-                  }}
-                />
+                {products.map((product) => (
+                  <ProductCard
+                    key={product.productId}
+                    product={product}
+                    categoryName={categoryNames.get(product.categoryId) ?? ""}
+                  />
+                ))}
+              </div>
+              <nav className="catalogue-pagination" aria-label="Catalogue pages">
                 <button
                   type="button"
                   className="button button--outline"
-                  disabled={isPlaceholderData}
-                  onClick={jumpToPage}
+                  disabled={page === 1 || isPlaceholderData}
+                  onClick={() => {
+                    setPage((current) => current - 1);
+                  }}
                 >
-                  Go
+                  Previous
                 </button>
-              </label>
-            </nav>
-          </>
-        ) : (
-          <div className="empty-state">
-            <CircleHelp size={24} />
-            <h2>No matching products</h2>
-            <p>Try a different product name or category.</p>
-            <button
-              type="button"
-              className="button button--outline"
-              onClick={() => {
-                setSearch("");
-                setCategoryId("");
-                setPage(1);
-              }}
-            >
-              Reset filters
-            </button>
-          </div>
-        )}
+                <span>
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  type="button"
+                  className="button button--outline"
+                  disabled={page >= totalPages || isPlaceholderData}
+                  onClick={() => {
+                    setPage((current) => current + 1);
+                  }}
+                >
+                  Next
+                </button>
+                <label className="page-jump-control">
+                  <span>Go to page</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max={totalPages}
+                    value={pageInput}
+                    onChange={(event) => setPageInput(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") jumpToPage();
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="button button--outline"
+                    disabled={isPlaceholderData}
+                    onClick={jumpToPage}
+                  >
+                    Go
+                  </button>
+                </label>
+              </nav>
+            </>
+          ) : (
+            <div className="empty-state">
+              <CircleHelp size={24} />
+              <h2>No matching products</h2>
+              <p>Try a different product name or category.</p>
+              <button
+                type="button"
+                className="button button--outline"
+                onClick={() => {
+                  setSearch("");
+                  setCategoryId("");
+                  setPage(1);
+                }}
+              >
+                Reset filters
+              </button>
+            </div>
+          )}
+        </div>
       </section>
+      <TutorialGuide
+        open={tutorialOpen}
+        stepIndex={tutorialStep}
+        onStepChange={setTutorialStep}
+        onFinish={finishTutorial}
+        menuOpen={navigation?.menuOpen ?? false}
+      />
     </main>
   );
 }
@@ -1344,14 +1612,22 @@ export default function App({
 }) {
   const [client] = useState(() => queryClient ?? new QueryClient());
   const [source] = useState(() => comparisonSource ?? createApiSource());
+  const [tutorialRequestId, setTutorialRequestId] = useState(0);
+  const requestTutorial = useCallback(() => setTutorialRequestId((id) => id + 1), []);
+  const tutorialRequestValue = useMemo(
+    () => ({ requestId: tutorialRequestId, requestTutorial }),
+    [tutorialRequestId, requestTutorial],
+  );
   return (
     <ErrorBoundary>
       <QueryClientProvider client={client}>
         <BasketProvider source={source}>
-          <Toaster />
-          <AppShell>
-            <Router />
-          </AppShell>
+          <TutorialRequestContext.Provider value={tutorialRequestValue}>
+            <Toaster />
+            <AppShell>
+              <Router />
+            </AppShell>
+          </TutorialRequestContext.Provider>
         </BasketProvider>
       </QueryClientProvider>
     </ErrorBoundary>
