@@ -124,16 +124,6 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }}
 
 /* Fixture-backed complete-basket comparison. */
-.basket-comparison__options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; align-items: start; }
-.retailer-option { min-width: 0; }
-.retailer-option--recommended { border: 2px solid var(--green); }
-.retailer-option__recommendation { color: var(--green-dark); font-weight: 700; }
-.retailer-option__lines { list-style: none; padding: 0; }
-.retailer-option__lines li { display: flex; justify-content: space-between; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line); }
-.retailer-option__lines li > strong { white-space: nowrap; }
-.retailer-option__lines p, .retailer-option > p { font-size: 13px; line-height: 1.6; }
-.retailer-option__amounts > div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; }
-.retailer-option__amounts dd { margin: 0; white-space: nowrap; }
 
 /* Basket product backdrop. */
 .basket-product-hero { --basket-product-size: clamp(190px, 22vw, 340px); position: relative; isolation: isolate; min-height: 190px; overflow: hidden; background: #1b342f; }
@@ -220,7 +210,6 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
   .catalogue-section.container { width: calc(100% - 32px); }}
 @media (prefers-reduced-motion: reduce) {
   .catalogue-collage-track { animation: none; }}
-.retailer-option a { overflow-wrap: anywhere; }
 
 .catalogue-pagination { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; }
 .catalogue-pagination span { color: var(--muted); font-size: 12px; }
@@ -280,12 +269,6 @@ h2, h3, h1, p { margin-top: 0; } h2 { margin-bottom: 0; color: var(--navy); font
 }
 .was-price { color: #9aa5ab; }
 .offer-row__retailer span.offer-row__deal { color: var(--green); }
-.retailer-option__missing { margin-top: 18px; padding-top: 14px; border-top: 1px solid #edf1f1; }
-.retailer-option__missing h3 { margin: 0 0 10px; font-size: 14px; }
-.retailer-option__missing ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.retailer-option__missing li { display: flex; gap: 10px; align-items: center; }
-.retailer-option__missing p { margin: 2px 0 0; color: #71817d; font-size: 12px; }
-.retailer-option__thumb { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 8px; object-fit: contain; background: #f2f5f5; }
 
 /* Comparison matrix: a real table, one product column and one price column per retailer. */
 .matrix { width: 100%; margin-top: 24px; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 14px; background: white; }

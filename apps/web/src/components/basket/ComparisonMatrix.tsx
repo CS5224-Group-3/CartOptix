@@ -130,28 +130,37 @@ export default function ComparisonMatrix({
   tied: boolean;
   purchaseEnabled?: boolean;
 }) {
-  const rows = productRows(options);
+  // Complete options always come first; a stable sort keeps the API's order otherwise (J3).
+  const columns = [...options].sort(
+    (a, b) => Number(a.kind === "unavailable") - Number(b.kind === "unavailable"),
+  );
+  const rows = productRows(columns);
   const charges = [
-    ...new Set(options.flatMap((o) => (orderOf(o)?.charges ?? []).map((c) => c.label))),
+    ...new Set(columns.flatMap((o) => (orderOf(o)?.charges ?? []).map((c) => c.label))),
   ];
-  const footRows: [string, (order: OrderPresentation) => number | undefined, boolean][] = [
-    ["Product subtotal", (o) => o.productSubtotalCents, false],
-    ...charges.map((label): [string, (order: OrderPresentation) => number | undefined, boolean] => [
+  type FootRow = {
+    label: string;
+    amount: (order: OrderPresentation) => number | undefined;
+    total: boolean;
+  };
+  const footRows: FootRow[] = [
+    { label: "Product subtotal", amount: (o) => o.productSubtotalCents, total: false },
+    ...charges.map((label) => ({
       label,
-      (o) => o.charges.find((c) => c.label === label)?.amountCents,
-      false,
-    ]),
-    ["Estimated total", (o) => o.estimatedTotalCents, true],
+      amount: (o: OrderPresentation) => o.charges.find((c) => c.label === label)?.amountCents,
+      total: false,
+    })),
+    { label: "Estimated total", amount: (o) => o.estimatedTotalCents, total: true },
   ];
   return (
     <table className="matrix">
-      <caption className="sr-only">Retailer comparison</caption>
+      <caption className="sr-only">Basket price by retailer</caption>
       <thead>
         <tr>
           <th scope="col" className="matrix__corner">
             {rows.length} {rows.length === 1 ? "product" : "products"}
           </th>
-          {options.map((option) => {
+          {columns.map((option) => {
             const recommended = option.retailer.id === recommendedId;
             const order = orderOf(option);
             const missing =
@@ -167,9 +176,11 @@ export default function ComparisonMatrix({
                 <strong className="matrix__total">
                   {order ? formatSgd(order.estimatedTotalCents) : "No estimate"}
                 </strong>
-                {order && missing > 0 && (
+                {option.kind === "unavailable" && order && (
                   <span className="matrix__partial">
-                    for {order.lines.length} of {rows.length} items
+                    {missing > 0
+                      ? `Estimated total for ${order.lines.length} of ${rows.length} items`
+                      : "Estimated total"}
                   </span>
                 )}
                 {option.kind === "unavailable" &&
@@ -200,7 +211,7 @@ export default function ComparisonMatrix({
                 </div>
               </div>
             </th>
-            {options.map((option) => {
+            {columns.map((option) => {
               const line = orderOf(option)?.lines.find((l) => l.productId === product.productId);
               return (
                 <td
@@ -224,15 +235,18 @@ export default function ComparisonMatrix({
         ))}
       </tbody>
       <tfoot>
-        {footRows.map(([label, amount, total]) => (
+        {footRows.map(({ label, amount, total }) => (
           <tr key={label} className={total ? "matrix__total-row" : undefined}>
             <th scope="row">{label}</th>
-            {options.map((option) => {
+            {columns.map((option) => {
               const order = orderOf(option);
               const cents = order && amount(order);
               return (
                 <td key={option.retailer.id} data-retailer={option.retailer.name}>
                   {cents === undefined ? "—" : formatSgd(cents)}
+                  {cents !== undefined && option.kind === "unavailable" && (
+                    <span className="matrix__partial"> (partial estimate)</span>
+                  )}
                 </td>
               );
             })}

@@ -181,7 +181,7 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(/^Recommended/)).toHaveCount(1);
     const column = page.getByRole("columnheader", { name: new RegExp(retailer) });
     await expect(column.getByText("Incomplete basket")).toBeVisible();
-    await expect(column.getByText("for 1 of 2 items")).toBeVisible();
+    await expect(column.getByText("Estimated total for 1 of 2 items")).toBeVisible();
     await expect(column.getByText(/^Recommended/)).toHaveCount(0);
     // The missing product is named once, in its row, and its link works from the keyboard.
     const link = page

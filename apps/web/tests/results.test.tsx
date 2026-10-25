@@ -58,7 +58,10 @@ describe("complete retailer comparison", () => {
       }),
     ).toBeDefined();
     const total = screen.getByRole("row", { name: /^Estimated total/ });
-    expect(cellFor(total, result, "FairPrice").textContent).toMatch(/^S\$\d/);
+    const fair = result.options.find((o) => o.retailer.name === "FairPrice");
+    expect(cellFor(total, result, "FairPrice").textContent).toBe(
+      fair?.kind === "complete" ? `S$${(fair.estimatedTotalCents / 100).toFixed(2)}` : "",
+    );
     expect(
       within(header("FairPrice")).getByText("Recommended — lowest estimated total"),
     ).toBeDefined();
@@ -192,7 +195,7 @@ describe("complete retailer comparison", () => {
     expect(screen.getByRole("alert").textContent).toContain("Comparison data validation failed.");
     expect(screen.queryByText(/^Recommended/)).toBeNull();
     expect(container.textContent).not.toMatch(/lowest|joint-lowest|joint lowest/i);
-    expect(container.querySelector(".retailer-option--recommended")).toBeNull();
+    expect(container.querySelector(".matrix__retailer--recommended")).toBeNull();
     expect(screen.queryByRole("table")).toBeNull();
     expect(screen.queryByRole("link", { name: /^Visit / })).toBeNull();
     expect(result.outcome).toEqual({ kind: "recommended", retailerId });
@@ -222,7 +225,7 @@ describe("complete retailer comparison", () => {
       expect(screen.queryByRole("table")).toBeNull();
       expect(screen.queryByRole("link", { name: /^Visit |^View Fixture / })).toBeNull();
       expect(container.textContent).not.toMatch(/lowest|joint-lowest|joint lowest/i);
-      expect(container.querySelector(".retailer-option--recommended")).toBeNull();
+      expect(container.querySelector(".matrix__retailer--recommended")).toBeNull();
       expect(result).toEqual(before);
       expect(errors).not.toHaveBeenCalled();
     },
@@ -290,6 +293,24 @@ describe("complete retailer comparison", () => {
     expect(screen.queryByText("No feasible purchasing plan available")).toBeNull();
   });
 
+  it("lists complete options before unavailable ones, whatever order the response has", () => {
+    const result = structuredClone(scenario("unavailable"));
+    result.options.reverse();
+    render(<BasketComparisonPage result={result} />);
+    const names = screen
+      .getAllByRole("columnheader")
+      .slice(1)
+      .map((h) => h.textContent ?? "");
+    const unavailable = result.options
+      .filter((o) => o.kind === "unavailable")
+      .map((o) => o.retailer.name);
+    const firstUnavailable = names.findIndex((name) => unavailable.some((u) => name.startsWith(u)));
+    expect(firstUnavailable).toBeGreaterThan(0);
+    expect(
+      names.slice(firstUnavailable).every((name) => unavailable.some((u) => name.startsWith(u))),
+    ).toBe(true);
+  });
+
   it("accepts full basket coverage regardless of line ordering", () => {
     const result = structuredClone(scenario("complete"));
     for (const option of result.options) if (option.kind === "complete") option.lines.reverse();
@@ -337,7 +358,7 @@ describe("complete retailer comparison", () => {
     expect(fairprice.getByText("S$11.50")).toBeDefined();
     const redmart = within(header("RedMart"));
     expect(redmart.getByText("Incomplete basket")).toBeDefined();
-    expect(redmart.getByText("for 1 of 2 items")).toBeDefined();
+    expect(redmart.getByText("Estimated total for 1 of 2 items")).toBeDefined();
     expect(redmart.getByText("S$8.09")).toBeDefined();
     const missing = screen.getByRole("row", { name: /^Fixture White Rice/ });
     expect(cellFor(missing, result, "RedMart").textContent).toBe("Not available");

@@ -134,7 +134,9 @@ describe("normal API comparison flow", () => {
         expect(screen.getByText(/Below FairPrice's S\$15.00 minimum order/)).toBeDefined();
         expect(screen.queryByText(/^Recommended/)).toBeNull();
         // RedMart's partial checkout, labelled as such, with the missing product listed.
-        expect(within(column("RedMart")).getByText("for 1 of 2 items")).toBeDefined();
+        expect(
+          within(column("RedMart")).getByText("Estimated total for 1 of 2 items"),
+        ).toBeDefined();
         const missing = screen.getByRole("row", { name: /^Fixture White Rice/ });
         expect(within(missing).getByRole("link", { name: "Fixture White Rice" })).toBeDefined();
       } else {
