@@ -41,12 +41,13 @@ describe("App", () => {
     await waitFor(() => expect(window.location.pathname).toBe("/catalogue"));
   });
 
-  it("shows the shared fixed-dataset disclaimer on the catalogue", () => {
+  it("reserves the dataset disclaimer for basket comparison results", () => {
     mockCatalogueApi();
     window.history.replaceState({}, "", "/catalogue");
     render(<App queryClient={createQueryClient()} />);
 
-    expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
+    expect(screen.queryByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeNull();
+    expect(screen.queryByText(/fixed catalogue|fixed dataset|prototype dataset/i)).toBeNull();
   });
 
   it("keeps the hero product collage unchanged while searching", async () => {

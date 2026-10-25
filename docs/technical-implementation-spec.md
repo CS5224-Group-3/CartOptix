@@ -2,7 +2,7 @@
 
 **Status:** Delivery design and issue-ready work plan. Product requirements are agreed; implementation defaults below are proposals to validate during setup, not claims that code or infrastructure already exists.
 
-Read this with the [product specification](product-spec.md), which owns user journeys, product rules (`PR-*`) and success criteria (`SC-*`). Together they supersede `mvp-implementation-plan.md`. The repository currently contains documentation, not a completed application. This document defines future tasks; it does not create GitHub issues or assign owners.
+Read this with the [product specification](product-spec.md), which owns user journeys, product rules (`PR-*`) and success criteria (`SC-*`). Together they supersede `mvp-implementation-plan.md`. The repository contains the application, infrastructure and recorded evaluation findings. Task descriptions below define scope; their completion evidence is tracked in GitHub and the linked findings.
 
 ## 1. Design decisions and implementation defaults
 
@@ -23,7 +23,7 @@ Retain compatible choices from the previous plan to avoid unnecessary redesign. 
 | Area | Default |
 | --- | --- |
 | Repository | TypeScript pnpm workspace: `apps/web`, `apps/api`, `packages/contracts`, `data/seed`, `infra`, `tests`, `scripts`. |
-| Web | React, Vite, React Router, TanStack Query; browser tab-session basket storage; no account system. |
+| Web | React, Vite, Wouter, TanStack Query; browser-local basket storage shared across tabs; no account system. |
 | API | Node.js 24 LTS and Fastify; TypeBox contracts and generated OpenAPI. |
 | Persistence | PostgreSQL, Drizzle ORM with drizzle-kit migrations, and bounded `node-postgres` pools. |
 | Comparison | Pure TypeScript shared pricing and comparison modules, run in process for all three retailers. |
@@ -232,7 +232,7 @@ Contract decisions (#5):
   - Product, listing and category IDs as opaque strings of 1–128 URL-safe characters (letters, digits, `.`, `_`, `~` and `-`, starting with a letter or digit), since product IDs appear in request paths. Product and listing IDs stay the same across seed edits and snapshot refreshes, because browser baskets keep product IDs through a correction. A product that drops out of a refresh is removed from the seed, and a basket that still holds it gets the existing not-found handling.
   - Product and image URLs over `https`, with each product link checked against its retailer's allowed domains at import. The API does not validate most responses, so the importer is where a bad link is stopped.
 
-The browser holds the basket for the current tab session, includes the full basket in comparisons, invalidates stale results after edits, and renders every non-success state distinctly. Show product identity and pack configuration, estimated costs, excluded promotions, per-retailer availability reasons and the price-and-availability notice. Support mobile layouts and keyboard operation. Accounts and persistent cross-device baskets are excluded.
+The browser persists product IDs and quantities in localStorage across tabs and browser restarts. Storage events update open tabs and invalidate earlier comparisons without writing the received snapshot back. Storage failures retain in-memory edits with a warning. Comparisons include the full basket and return outcomes for all three retailers, including unavailable reasons; infrastructure failures remain retryable service errors. Show product identity, pack configuration, estimated costs and excluded promotions. Show the dataset notice only on basket comparison results (PR-06). Support mobile layouts and keyboard operation; backdrop animation must not clip headings or counts. Production has no demo controls; controlled fixtures and mocked failures remain test-only, exercised through normal shopper interactions. Accounts and persistent cross-device baskets are excluded.
 
 Outbound links must work without the event API. Send tracking asynchronously with a bounded/non-blocking attempt; a failed event must not cancel navigation. Click-event writes should have bounded database access and must not starve comparison requests.
 
@@ -367,7 +367,7 @@ Each task below is intended to become one GitHub issue. IDs are local planning I
 
 #### D2 — Deliver basket editing
 - **Blocked by:** D1.
-- **Work:** Add tab-session basket storage, editing and 50-line/20-pack limits.
+- **Work:** Add browser-local basket storage with cross-tab synchronization, editing and 50-line/20-pack limits.
 - **Acceptance:** Limits are enforced in UI and API contracts; reloading the tab restores the basket; edits invalidate previous results; no extra items or alternative packs are inserted.
 
 #### D3 — Deliver basket comparison and outcome presentation

@@ -26,6 +26,6 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  // Each test gets a fresh tab; tests that cover reload persistence do so within one test.
-  window.sessionStorage.clear();
+  // Persistence tests keep their browser state within one test.
+  window.localStorage.clear();
 });

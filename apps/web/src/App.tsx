@@ -7,7 +7,6 @@ import {
   type Offer,
   type Product,
   type RetailerId,
-  SNAPSHOT_DISCLAIMER,
 } from "@cartoptix/contracts";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
@@ -19,7 +18,6 @@ import {
   Leaf,
   Menu,
   Search,
-  ShieldCheck,
   ShoppingBasket,
   SlidersHorizontal,
   X,
@@ -48,7 +46,12 @@ import {
   removeBasketLine,
   setBasketLineQuantity,
 } from "./features/basket/mutations";
-import { persistBasket, restoreBasket } from "./features/basket/storage";
+import {
+  BASKET_STORAGE_KEY,
+  persistBasket,
+  restoreBasket,
+  restoreBasketSnapshot,
+} from "./features/basket/storage";
 import { createApiSource } from "./features/basket-comparison/apiSource";
 import { buildKnownProductMap } from "./features/basket-comparison/knownProducts";
 import { resolveSubmissionMetadata } from "./features/basket-comparison/metadata";
@@ -183,6 +186,24 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
   const [basketRevision, setBasketRevision] = useState(0);
   const [persistenceFailed, setPersistenceFailed] = useState(false);
 
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== BASKET_STORAGE_KEY && event.key !== null) return;
+      // Access may throw when browser storage is blocked.
+      try {
+        if (event.storageArea !== window.localStorage) return;
+      } catch {
+        return;
+      }
+      const next = restoreBasketSnapshot(event.newValue);
+      if (JSON.stringify(next) === JSON.stringify(basket)) return;
+      setBasket(next);
+      setBasketRevision((revision) => revision + 1);
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [basket]);
+
   const changed = useCallback(
     (next: BasketLine[]) => {
       const basketChanged =
@@ -198,7 +219,7 @@ function BasketProvider({ children, source }: { children: ReactNode; source: Com
       setPersistenceFailed(!saved);
       if (!saved && !persistenceFailed)
         toast.warning("Basket changes may not survive a reload", {
-          description: "Session storage is unavailable. Keep this tab open to retain your edits.",
+          description: "Browser storage is unavailable. Keep this tab open to retain your edits.",
         });
       setBasketRevision((revision) => revision + 1);
     },
@@ -604,7 +625,7 @@ export function CataloguePage() {
           <p>
             <strong>{total}</strong> products found
           </p>
-          <p>Fixed catalogue · Singapore grocery retailers</p>
+          <p>Compare Singapore grocery retailers</p>
         </div>
         {isLoading ? (
           <div className="loading-state">Loading the catalogue…</div>
@@ -695,13 +716,6 @@ export function CataloguePage() {
           </div>
         )}
       </section>
-      <section className="visible-trust">
-        <div className="container">
-          <p>
-            <ShieldCheck size={16} /> {SNAPSHOT_DISCLAIMER}
-          </p>
-        </div>
-      </section>
     </main>
   );
 }
@@ -731,7 +745,7 @@ export function ProductDetail() {
           </h1>
           <p>
             {error instanceof ApiError && error.status === 404
-              ? "That product is not in the prototype dataset."
+              ? "That product is not in the catalogue."
               : "The offers service is unavailable. Please try again shortly."}
           </p>
           <Link className="button button--primary" href="/catalogue">
@@ -846,9 +860,8 @@ export function ProductDetail() {
         <p>
           <strong>Stock and pricing note.</strong>{" "}
           {offers.length === 0
-            ? "No retailer has an eligible direct-fulfilment offer for this product in the dataset."
+            ? "No retailer has an eligible direct-fulfilment offer for this product."
             : "Offers show direct supermarket fulfilment only."}{" "}
-          {SNAPSHOT_DISCLAIMER}
         </p>
       </section>
     </main>
@@ -1001,7 +1014,7 @@ export function BasketPage() {
             </div>
           </div>
           <p className="basket-product-hero__description">
-            Check your items and choose how many retailer orders you are comfortable with.
+            Compare your complete basket at RedMart, FairPrice and Cold Storage.
           </p>
         </div>
       </section>
@@ -1019,7 +1032,7 @@ export function BasketPage() {
               <div>
                 <strong>Basket changes may not survive a reload.</strong>
                 <span>
-                  Session storage is unavailable. Keep this tab open to retain your edits.
+                  Browser storage is unavailable. Keep this tab open to retain your edits.
                 </span>
               </div>
             </div>
@@ -1124,7 +1137,7 @@ export function BasketPage() {
               <div>
                 <Check size={15} /> Non-member pricing
               </div>
-              <small>Prices and availability are checked in the comparison</small>
+              <small>Compare estimated totals and see unavailable products at each retailer.</small>
             </div>
             <div className="basket-summary-card__footer">
               <span>Items in basket</span>
@@ -1248,7 +1261,7 @@ function HowItWorks() {
           <div className="step">
             <span>01</span>
             <h3>Choose exact products</h3>
-            <p>Search a fixed dataset. Brands, variants and pack sizes are never substituted.</p>
+            <p>Search exact products. Brands, variants and pack sizes are never substituted.</p>
           </div>
           <div className="step">
             <span>02</span>

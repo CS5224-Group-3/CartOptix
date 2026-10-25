@@ -5,9 +5,9 @@ export const BASKET_STORAGE_KEY = "cartoptix:basket:v1";
 
 type BasketStorage = Pick<Storage, "getItem" | "setItem">;
 
-function sessionStorageForTab(): BasketStorage | undefined {
+function sharedBasketStorage(): BasketStorage | undefined {
   try {
-    return typeof window === "undefined" ? undefined : window.sessionStorage;
+    return typeof window === "undefined" ? undefined : window.localStorage;
   } catch {
     return undefined;
   }
@@ -40,19 +40,27 @@ function validStoredBasket(value: unknown): BasketLine[] | null {
 }
 
 /** Restores only a complete, valid basket snapshot; malformed data is never partially rewritten. */
-export function restoreBasket(storage = sessionStorageForTab()): BasketLine[] {
+export function restoreBasket(storage = sharedBasketStorage()): BasketLine[] {
   if (!storage) return [];
   try {
-    const serialized = storage.getItem(BASKET_STORAGE_KEY);
-    if (serialized === null) return [];
+    return restoreBasketSnapshot(storage.getItem(BASKET_STORAGE_KEY));
+  } catch {
+    return [];
+  }
+}
+
+/** Parses cross-tab changes with the same validation as an initial restore. */
+export function restoreBasketSnapshot(serialized: string | null): BasketLine[] {
+  if (serialized === null) return [];
+  try {
     return validStoredBasket(JSON.parse(serialized)) ?? [];
   } catch {
     return [];
   }
 }
 
-/** Stores only the product IDs and pack counts in this tab's session. */
-export function persistBasket(basket: BasketLine[], storage = sessionStorageForTab()): boolean {
+/** Stores only product IDs and pack counts, shared across browser tabs. */
+export function persistBasket(basket: BasketLine[], storage = sharedBasketStorage()): boolean {
   if (!storage) return false;
   try {
     storage.setItem(

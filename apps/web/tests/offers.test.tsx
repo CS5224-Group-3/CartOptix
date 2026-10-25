@@ -68,7 +68,7 @@ describe("product offer view", () => {
     expect(screen.getByText("Mixing items in this deal may save more")).toBeDefined();
     expect(screen.getByText("S$7.20").closest("s")).not.toBeNull();
     expect(screen.getByText(/S\$6.00 per pack · Sale price/)).toBeDefined();
-    expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
+    expect(screen.queryByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeNull();
     expect(screen.getByText("Not available at Cold Storage")).toBeDefined();
     expect(
       screen.getByRole("link", { name: "View FairPrice product page" }).getAttribute("href"),

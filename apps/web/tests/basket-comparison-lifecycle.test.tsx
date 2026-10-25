@@ -13,7 +13,7 @@ import { ComparisonFailure, type ComparisonSource } from "../src/features/basket
 import { createFixtureSource, fixtureScenarios } from "./support/fixtureSource";
 
 afterEach(() => {
-  window.sessionStorage.removeItem(BASKET_STORAGE_KEY);
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
   window.history.replaceState({}, "", "/");
 });
 
@@ -42,7 +42,7 @@ function controlledSource() {
 }
 
 function openApp(source: ComparisonSource, path = "/basket") {
-  window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
+  window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
   vi.stubGlobal(
     "fetch",
     vi.fn(async (input: RequestInfo | URL) => {

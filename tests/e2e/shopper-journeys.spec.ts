@@ -49,6 +49,50 @@ function incompleteBasket() {
 }
 
 test.describe("CartOptix shopper journeys", () => {
+  test("basket edits are shared with a newly opened tab", async ({ page, context }) => {
+    await addMilkAndOpenBasket(page);
+    const other = await context.newPage();
+    try {
+      await other.goto("/basket");
+      const quantity = other.locator(".basket-row .quantity-control strong").first();
+      await expect(quantity).toHaveText("1");
+      await page
+        .getByRole("button", { name: /Increase/ })
+        .first()
+        .click();
+      await expect(quantity).toHaveText("2");
+      await other
+        .getByRole("button", { name: /Increase/ })
+        .first()
+        .click();
+      await expect(page.locator(".basket-row .quantity-control strong").first()).toHaveText("3");
+    } finally {
+      await other.close();
+    }
+  });
+
+  test("basket heading and counts fit with ten products", async ({ page }) => {
+    await page.goto("/catalogue");
+    await page.evaluate(
+      (lines) => {
+        localStorage.setItem("cartoptix:basket:v1", JSON.stringify(lines));
+      },
+      seed.products.slice(0, 10).map(({ productId }) => ({ productId, quantity: 1 })),
+    );
+    await page.goto("/basket");
+    const hero = page.locator(".basket-product-hero");
+    await expect(hero.getByRole("heading", { name: "Review your basket" })).toBeVisible();
+    await expect(hero.locator(".basket-header__meta")).toContainText("10items10packs");
+    const bounds = await hero.boundingBox();
+    for (const selector of ["h1", ".basket-header__meta", ".basket-product-hero__description"]) {
+      const child = await hero.locator(selector).boundingBox();
+      if (!bounds || !child) throw new Error("Missing hero content");
+      expect(child.y).toBeGreaterThanOrEqual(bounds.y);
+      expect(child.y + child.height).toBeLessThanOrEqual(bounds.y + bounds.height + 1);
+      expect(child.x + child.width).toBeLessThanOrEqual(bounds.x + bounds.width + 1);
+    }
+  });
+
   test("J1: find a product and add it to the basket", async ({ page }) => {
     await page.goto("/catalogue");
     await expect(
@@ -76,6 +120,8 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.locator("s.was-price").first()).toContainText(/S\$\d+\.\d{2}/);
     await expect(page.getByText(/per pack · Sale price/).first()).toBeVisible();
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await expect(page).toHaveURL(/\/product\//);
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
@@ -93,6 +139,7 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(/^Buy 2 for S\$\d+\.\d{2}$/).first()).toBeVisible();
     // The hint never changes the requested quantity.
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await expect(
       page.locator(".basket-row").first().locator(".quantity-control").getByText("1", {
@@ -108,6 +155,7 @@ test.describe("CartOptix shopper journeys", () => {
     await expect(page.getByText(deal).first()).toBeVisible();
     await expect(page.getByText("Mixing items in this deal may save more").first()).toBeVisible();
     await page.getByRole("button", { name: /Add 2 packs to basket/ }).click();
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     await expect(page).toHaveURL(/\/results$/);
@@ -119,6 +167,7 @@ test.describe("CartOptix shopper journeys", () => {
     for (const product of [present, missing]) {
       await page.goto(`/product/${product.productId}`);
       await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+      await page.getByRole("link", { name: "View basket", exact: true }).click();
       await expect(page).toHaveURL(/\/basket$/);
     }
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
@@ -140,6 +189,7 @@ test.describe("CartOptix shopper journeys", () => {
     const { missing, retailer } = incompleteBasket();
     await page.goto(`/product/${missing.productId}`);
     await page.getByRole("button", { name: /Add 1 pack to basket/ }).click();
+    await page.getByRole("link", { name: "View basket", exact: true }).click();
     await page.getByRole("button", { name: "Compare basket", exact: true }).click();
     const card = page.getByRole("article", { name: retailer });
     await expect(card.getByText("Incomplete basket")).toBeVisible();

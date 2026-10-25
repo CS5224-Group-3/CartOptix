@@ -12,13 +12,13 @@ import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
 import { comparisonFixtures } from "./support/fixtures";
 
 afterEach(() => {
-  window.sessionStorage.removeItem(BASKET_STORAGE_KEY);
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
   window.history.replaceState({}, "", "/");
   vi.unstubAllGlobals();
 });
 
 it("renders the empty basket page, brand backdrop and zero item and pack counts", async () => {
-  window.sessionStorage.removeItem(BASKET_STORAGE_KEY);
+  window.localStorage.removeItem(BASKET_STORAGE_KEY);
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input);
     if (url.startsWith(routes.catalogue.url)) return new Response(JSON.stringify(catalogueExample));
@@ -46,7 +46,7 @@ it("renders the empty basket page, brand backdrop and zero item and pack counts"
 });
 
 it("comparison navigates to results and goes stale after an edit", async () => {
-  window.sessionStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
+  window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input);
     if (url.startsWith(routes.catalogue.url)) return new Response(JSON.stringify(catalogueExample));
