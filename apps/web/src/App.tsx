@@ -787,14 +787,6 @@ export function ProductDetail() {
               <span>Pack size</span>
               <strong>{product.packSize}</strong>
             </div>
-            <div>
-              <span>Quantity rule</span>
-              <strong>Whole packs only</strong>
-            </div>
-            <div>
-              <span>Pricing</span>
-              <strong>Non-member</strong>
-            </div>
           </div>
           <p className="product-detail__copy">
             Compare the estimated product cost for your requested quantity. Prices include sale
@@ -854,15 +846,6 @@ export function ProductDetail() {
             </Link>
           </div>
         </div>
-      </section>
-      <section className="container detail-disclosure">
-        <CircleHelp size={17} />
-        <p>
-          <strong>Stock and pricing note.</strong>{" "}
-          {offers.length === 0
-            ? "No supported retailer has an eligible offer for this product."
-            : "Offers are from our supported supermarket catalogues."}{" "}
-        </p>
       </section>
     </main>
   );
@@ -1133,9 +1116,6 @@ export function BasketPage() {
               </div>
               <div>
                 <Check size={15} /> Standard delivery
-              </div>
-              <div>
-                <Check size={15} /> Non-member pricing
               </div>
               <small>Compare estimated totals and see unavailable products at each retailer.</small>
             </div>

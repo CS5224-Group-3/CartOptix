@@ -53,6 +53,10 @@ describe.skipIf(connectionString === undefined)("outbound click recording", () =
     }
 
     pool = new pg.Pool({ connectionString: url });
+    // pool.end() resolves before its sockets have closed, so the forced drop in afterAll can
+    // kill a backend that is still closing. pg then emits 57P01 on the pool; unhandled, it
+    // fails the whole run even though every test passed.
+    pool.on("error", () => {});
     recorder = createClickRecorder({ connectionString: url, onFailure: () => {} });
 
     listingId =

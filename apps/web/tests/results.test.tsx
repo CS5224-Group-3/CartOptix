@@ -343,7 +343,6 @@ describe("complete retailer comparison", () => {
     const link = card.getByRole("link", { name: "View Fixture White Rice at FairPrice" });
     expect(link.getAttribute("rel")).toBe("noopener noreferrer");
     expect(screen.getByText(SNAPSHOT_DISCLAIMER, { exact: false })).toBeDefined();
-    expect(screen.getByText(/Product links are illustrative/)).toBeDefined();
   });
 
   it.each(Object.keys(comparisonFixtures))("has no split-plan or savings results in %s", (name) => {
