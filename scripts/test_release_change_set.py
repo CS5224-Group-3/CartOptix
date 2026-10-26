@@ -3,48 +3,117 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from infra.scripts.check_release_change_set import validate
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from infra.scripts.check_release_change_set import NO_CHANGES, validate
+from release_fixtures import A, ASG, B, LT, PARAMS, W1, W2, WEB, api_changes, change, description, template
+
+STACK = {"Parameters": PARAMS}
+API = {"api_from": A, "api_to": B, "web_from": W1, "web_to": W1}
+WEB_RELEASE = {"api_from": A, "api_to": A, "web_from": W1, "web_to": W2}
 
 
-def change(logical_id, resource_type, action="Modify", replacement="False"):
-    return {
-        "ResourceChange": {
-            "LogicalResourceId": logical_id,
-            "ResourceType": resource_type,
-            "Action": action,
-            "Replacement": replacement,
-        }
-    }
+def run_api(proposed, changes=None, desc=None, releases=API, current=None):
+    return validate("api", desc or description(changes if changes is not None else api_changes()), STACK, current or template(), proposed, releases)
 
 
-class ReleaseChangeSetTests(unittest.TestCase):
-    def test_allows_api_launch_template_update(self):
-        validate("api", [change("ApiLaunchTemplate89156735", "AWS::EC2::LaunchTemplate")])
+def run_web(proposed, changes, desc=None):
+    web_changes = [change("WebDeploymentCustomResource08", WEB)] if changes is None else changes
+    return validate("web", desc or description(web_changes), STACK, template(), proposed, WEB_RELEASE)
 
-    def test_allows_web_asset_update(self):
-        validate("web", [change("WebDeploymentCustomResource08EEC474", "Custom::CDKBucketDeployment")])
 
-    def test_rejects_unrelated_resource_changes(self):
+class ApiReleaseTests(unittest.TestCase):
+    def test_allows_release_and_user_data(self):
+        self.assertEqual(run_api(template(api=B)), "execute")
+
+    def test_rollback_uses_the_same_rules(self):
+        rollback = {"api_from": B, "api_to": A, "web_from": W1, "web_to": W1}
+        self.assertEqual(run_api(template(api=A), releases=rollback, current=template(api=B)), "execute")
+
+    def test_rejects_other_user_data_changes(self):
+        proposed = template(api=B)
+        proposed["Resources"]["ApiLaunchTemplate89"]["Properties"]["LaunchTemplateData"]["UserData"]["Fn::Base64"]["Fn::Join"][1].append("curl evil")
+        with self.assertRaisesRegex(ValueError, "would change"):
+            run_api(proposed)
+
+    def test_rejects_instance_type(self):
+        proposed = template(api=B)
+        proposed["Resources"]["ApiLaunchTemplate89"]["Properties"]["LaunchTemplateData"]["InstanceType"] = "m7g.4xlarge"
+        with self.assertRaisesRegex(ValueError, "InstanceType"):
+            run_api(proposed)
+
+    def test_rejects_security_group_attachment(self):
+        proposed = template(api=B)
+        proposed["Resources"]["ApiLaunchTemplate89"]["Properties"]["LaunchTemplateData"]["SecurityGroupIds"] = ["sg-open"]
+        with self.assertRaisesRegex(ValueError, "SecurityGroupIds"):
+            run_api(proposed)
+
+    def test_rejects_scaling_capacity(self):
+        proposed = template(api=B)
+        proposed["Resources"]["ApiGroupASG12"]["Properties"]["MaxSize"] = "30"
+        with self.assertRaisesRegex(ValueError, "MaxSize"):
+            run_api(proposed)
+
+    def test_rejects_parameter_change(self):
+        moved = [{"ParameterKey": "Ami", "ParameterValue": "/ssm/ami", "ResolvedValue": "ami-2"}]
+        with self.assertRaisesRegex(ValueError, "parameters"):
+            run_api(template(api=B), desc=description(api_changes(), parameters=moved))
+
+    def test_rejects_unrelated_output(self):
+        proposed = template(api=B)
+        proposed["Outputs"]["InfraRelease"]["Value"] = "x" * 40
+        with self.assertRaisesRegex(ValueError, "InfraRelease"):
+            run_api(proposed)
+
+    def test_rejects_unexpected_resource_replacement_and_dynamic_change(self):
         with self.assertRaisesRegex(ValueError, "unexpected resource"):
-            validate("api", [change("DatabaseABC", "AWS::RDS::DBInstance")])
-
-    def test_web_release_cannot_change_bucket_or_distribution(self):
-        for logical_id, resource_type in (
-            ("WebBucket", "AWS::S3::Bucket"),
-            ("Distribution", "AWS::CloudFront::Distribution"),
-        ):
-            with self.subTest(logical_id=logical_id), self.assertRaisesRegex(
-                ValueError, "unexpected resource"
-            ):
-                validate("web", [change(logical_id, resource_type)])
-
-    def test_rejects_resource_replacement(self):
+            run_api(template(api=B), changes=[change("DatabaseABC", "AWS::RDS::DBInstance")])
         with self.assertRaisesRegex(ValueError, "replace or remove"):
-            validate("api", [change("ApiLaunchTemplate89156735", "AWS::EC2::LaunchTemplate", replacement="True")])
+            run_api(template(api=B), changes=[change("ApiLaunchTemplate89", LT, replacement="True")])
+        dynamic = [change("ApiGroupASG12", ASG, details=[{"Target": {"Attribute": "Properties"}, "Evaluation": "Dynamic", "CausingEntity": "Database.Endpoint"}])]
+        with self.assertRaisesRegex(ValueError, "dynamic"):
+            run_api(template(api=B), changes=dynamic)
 
     def test_rejects_empty_change_set(self):
-        with self.assertRaisesRegex(ValueError, "no application resource changes"):
-            validate("web", [])
+        with self.assertRaisesRegex(ValueError, "no change set"):
+            run_api(template(api=B), desc={"Status": "FAILED", "StatusReason": NO_CHANGES[0]})
+        with self.assertRaisesRegex(ValueError, "no resource changes"):
+            run_api(template(api=B), changes=[])
+
+
+class WebReleaseTests(unittest.TestCase):
+    def test_allows_asset_and_release_pointer(self):
+        self.assertEqual(run_web(template(web=W2, key="new.zip"), None), "execute")
+
+    def test_identical_assets_advance_only_the_pointer(self):
+        self.assertEqual(run_web(template(web=W2), []), "execute")
+
+    def test_change_set_that_reports_no_changes_is_a_noop(self):
+        self.assertEqual(run_web(template(), None, desc={"Status": "FAILED", "StatusReason": NO_CHANGES[1]}), "noop")
+
+    def test_rejects_assets_changed_without_resource_changes(self):
+        with self.assertRaisesRegex(ValueError, "no resource changes"):
+            run_web(template(web=W2, key="new.zip"), [])
+
+    def test_rejects_destination_and_service_token(self):
+        for prop in ("DestinationBucketName", "ServiceToken"):
+            proposed = template(web=W2, key="new.zip")
+            proposed["Resources"]["WebDeploymentCustomResource08"]["Properties"][prop] = "elsewhere"
+            with self.subTest(prop=prop), self.assertRaisesRegex(ValueError, prop):
+                run_web(proposed, None)
+
+    def test_rejects_api_and_bucket_changes(self):
+        proposed = template(web=W2, key="new.zip")
+        proposed["Resources"]["ApiGroupASG12"]["Properties"]["MaxSize"] = "30"
+        with self.assertRaisesRegex(ValueError, "MaxSize"):
+            run_web(proposed, None)
+        with self.assertRaisesRegex(ValueError, "unexpected resource"):
+            run_web(template(web=W2, key="new.zip"), [change("WebBucket", "AWS::S3::Bucket")])
+
+    def test_rejects_unknown_stage_and_failed_change_set(self):
+        with self.assertRaisesRegex(ValueError, "unknown"):
+            validate("infra", description([]), STACK, template(), template(), API)
+        with self.assertRaisesRegex(ValueError, "FAILED"):
+            run_web(template(), None, desc={"Status": "FAILED", "StatusReason": "boom"})
 
 
 if __name__ == "__main__":

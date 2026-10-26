@@ -50,6 +50,14 @@ jobs:
           fi
           echo "current=true" >> "$GITHUB_OUTPUT"
 
+      - name: Report whether deployment is enabled
+        env:
+          ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+        run: |
+          if [[ -z "$ROLE_ARN" ]]; then
+            echo "Deployment is not enabled: AWS_DEPLOY_ROLE_ARN is unset. Only the API image is published. See infra/RUNBOOK.md (CI application releases)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   publish:
     name: Publish the API image
     needs: detect
@@ -128,6 +136,7 @@ jobs:
       always() &&
       needs.detect.result == 'success' &&
       needs.detect.outputs.current == 'true' &&
+      vars.AWS_DEPLOY_ROLE_ARN != '' &&
       (needs.publish.result == 'success' || needs.publish.result == 'skipped')
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -135,15 +144,6 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - name: Check the deployment role setting
-        env:
-          ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
-        run: |
-          if [[ -z "$ROLE_ARN" ]]; then
-            echo "::error::Repository variable AWS_DEPLOY_ROLE_ARN is not set. See infra/RUNBOOK.md."
-            exit 1
-          fi
-
       - name: Check out the commit CI verified
         uses: actions/checkout@v5
         with:

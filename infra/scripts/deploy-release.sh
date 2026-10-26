@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # Deploy changed application components to an existing presentation stack.
+#
+#   RELEASE   full commit SHA to release (default: GITHUB_SHA)
+#   DRY_RUN   true: prepare and validate each change set against the live stack,
+#             then discard it. No migrations, no execution.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -9,20 +13,12 @@ if [[ -z "${AWS_PROFILE:-}" && "${CI:-false}" != "true" ]]; then
 fi
 
 die() { echo "release: $*" >&2; exit 1; }
-changed() {
-  local base="$1" head="$2"
-  shift 2
-  git cat-file -e "${base}^{commit}" 2>/dev/null || die "missing deployed commit $base; fetch full history before releasing."
-  git cat-file -e "${head}^{commit}" 2>/dev/null || die "missing release commit $head."
-  if git diff --quiet "$base" "$head" -- "$@"; then
-    return 1
-  else
-    local status=$?
-    [[ "$status" == 1 ]] || die "could not compare $base with $head."
-    return 0
-  fi
+summary() {
+  echo "$*"
+  if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then echo "$*" >> "$GITHUB_STEP_SUMMARY"; fi
 }
 
+dry_run="${DRY_RUN:-false}"
 release="${RELEASE:-${GITHUB_SHA:-}}"
 [[ "$release" =~ ^[0-9a-f]{40}$ ]] || die "RELEASE must be a full commit SHA."
 command -v aws >/dev/null || die "AWS CLI is required."
@@ -31,10 +27,7 @@ command -v python3 >/dev/null || die "Python 3 is required."
 
 if ! stack_json="$(aws cloudformation describe-stacks --stack-name CartOptixPresentation --output json 2>&1)"; then
   if [[ "$stack_json" == *"does not exist"* ]]; then
-    echo "Presentation stack is absent; application deployment skipped."
-    if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-      echo "Presentation stack is absent; application deployment skipped." >> "$GITHUB_STEP_SUMMARY"
-    fi
+    summary "Presentation stack is absent; application deployment skipped."
     exit 0
   fi
   die "$stack_json"
@@ -55,27 +48,14 @@ url="$(output Url)"
 [[ -n "$group" && "$group" != "null" ]] || die "stack has no AutoScalingGroupName output."
 [[ "$url" == https://* ]] || die "stack has no valid Url output."
 
-if changed "$current_infra" "$release" infra \
-  ':(exclude)infra/RUNBOOK.md' \
-  ':(exclude)infra/scripts/deploy-release.sh' \
-  ':(exclude)infra/scripts/run-migrations.sh' \
-  ':(exclude)infra/scripts/check_release_change_set.py' \
-  ':(exclude)infra/scripts/deploy.sh' \
-  ':(exclude)infra/scripts/destroy.sh' \
-  ':(exclude)infra/scripts/deploy-budget.sh' \
-  pnpm-lock.yaml pnpm-workspace.yaml patches; then
+scope="$(python3 scripts/release_scope.py "$release" "$current_api" "$current_web" "$current_infra")"
+if [[ "$(jq -r .infra <<<"$scope")" == true ]]; then
   die "infrastructure sources changed since InfraRelease=$current_infra; deploy infrastructure from an engineer's machine first."
 fi
-
-api_changed=false
-web_changed=false
-if changed "$current_api" "$release" apps/api packages/contracts; then api_changed=true; fi
-if changed "$current_web" "$release" apps/web packages/contracts; then web_changed=true; fi
+api_changed="$(jq -r .api <<<"$scope")"
+web_changed="$(jq -r .web <<<"$scope")"
 if [[ "$api_changed" == false && "$web_changed" == false ]]; then
-  echo "No API, web, or shared-contract changes since the deployed release."
-  if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-    echo "No API, web, or shared-contract changes since the deployed release; no services deployed." >> "$GITHUB_STEP_SUMMARY"
-  fi
+  summary "No API, web, or shared-contract changes since the deployed release; no services deployed."
   exit 0
 fi
 
@@ -113,41 +93,78 @@ build_web_at() {
 }
 
 deploy_change_set() {
-  local method="$1" change_set="$2" api_sha="$3" web_sha="$4" web_dist="$5"
   pnpm exec cdk deploy CartOptixPresentation \
-    -c release="$api_sha" \
-    -c webRelease="$web_sha" \
+    -c release="$pending_api" \
+    -c webRelease="$pending_web" \
     -c infraRelease="$current_infra" \
-    -c webDist="$web_dist" \
+    -c webDist="$pending_dist" \
     -c minInstances="$min_instances" \
     -c maxInstances="$max_instances" \
     -c targetRequestsPerMinute="$target_rpm" \
     -c scalingWarmupSeconds="$scaling_warmup" \
     -c alertEmail=unused@example.invalid \
-    --method "$method" \
-    --change-set-name "$change_set" \
+    --method "$1" \
+    --change-set-name "$pending_change_set" \
     --require-approval never \
     --exclusively --ci
 }
 
+# What is deployed now; updated after each executed change set.
+live_api="$current_api"
+live_web="$current_web"
+verdict=""
+
+# Prepare a change set and validate it against the live stack. Sets $verdict
+# to "execute" or "noop"; any unexpected change aborts the release.
 prepare_change_set() {
-  local stage="$1" api_sha="$2" web_sha="$3" web_dist="$4"
+  local stage="$1" file="$tmp_dir/$1"
+  pending_api="$2" pending_web="$3" pending_dist="$4"
   pending_change_set="cartoptix-${GITHUB_RUN_ID:-local}-$(date +%s)-$stage"
-  deploy_change_set prepare-change-set "$pending_change_set" "$api_sha" "$web_sha" "$web_dist"
-  local changes
-  changes="$(aws cloudformation describe-change-set --stack-name CartOptixPresentation --change-set-name "$pending_change_set" --output json)"
-  python3 scripts/check_release_change_set.py "$stage" <<<"$changes"
+  deploy_change_set prepare-change-set
+
+  aws cloudformation describe-stacks --stack-name CartOptixPresentation --query 'Stacks[0]' --output json > "$file-stack.json"
+  aws cloudformation get-template --stack-name CartOptixPresentation --template-stage Original \
+    --query TemplateBody --output json > "$file-current.json"
+  local description
+  if description="$(aws cloudformation describe-change-set --stack-name CartOptixPresentation --change-set-name "$pending_change_set" --output json 2>&1)"; then
+    :
+  elif [[ "$description" == *ChangeSetNotFound* ]]; then
+    # CDK discards a change set that CloudFormation reports as having no changes.
+    description='{"Status":"FAILED","StatusReason":"The submitted information didn'"'"'t contain changes."}'
+  else
+    die "$description"
+  fi
+  printf '%s' "$description" > "$file-changes.json"
+  if [[ "$(jq -r .Status "$file-changes.json")" == CREATE_COMPLETE ]]; then
+    aws cloudformation get-template --stack-name CartOptixPresentation --change-set-name "$pending_change_set" \
+      --template-stage Original --query TemplateBody --output json > "$file-proposed.json"
+  else
+    echo null > "$file-proposed.json"
+  fi
+
+  verdict="$(python3 scripts/check_release_change_set.py "$stage" \
+    --change-set "$file-changes.json" --stack "$file-stack.json" \
+    --current-template "$file-current.json" --proposed-template "$file-proposed.json" \
+    --api-from "$live_api" --api-to "$pending_api" --web-from "$live_web" --web-to "$pending_web")" \
+    || die "$stage change set rejected."
+  if [[ "$dry_run" == true || "$verdict" == noop ]]; then discard_change_set; fi
+}
+
+discard_change_set() {
+  aws cloudformation delete-change-set --stack-name CartOptixPresentation --change-set-name "$pending_change_set" >/dev/null 2>&1 || true
+  pending_change_set=""
 }
 
 execute_change_set() {
-  local api_sha="$1" web_sha="$2" web_dist="$3"
-  deploy_change_set execute-change-set "$pending_change_set" "$api_sha" "$web_sha" "$web_dist"
+  deploy_change_set execute-change-set
+  live_api="$pending_api"
+  live_web="$pending_web"
   pending_change_set=""
 }
 
 wait_for_api() {
   local ready_url="$url/health/ready"
-  for attempt in {1..60}; do
+  for _ in {1..60}; do
     if curl --fail --silent --show-error --max-time 10 "$ready_url" >/dev/null; then
       echo "API readiness passed at $ready_url."
       return
@@ -157,7 +174,6 @@ wait_for_api() {
   return 1
 }
 
-api_release="$current_api"
 web_dist=""
 if [[ "$api_changed" == true ]]; then
   aws ecr describe-images --repository-name cartoptix-api --image-ids "imageTag=$release" >/dev/null \
@@ -166,16 +182,19 @@ if [[ "$api_changed" == true ]]; then
     || die "the deployed API image $current_api is unavailable; refusing an API update without a rollback image."
   web_dist="$(build_web_at "$current_web")"
   prepare_change_set api "$release" "$current_web" "$web_dist"
-  ./scripts/run-migrations.sh "$release" "$group"
-  execute_change_set "$release" "$current_web" "$web_dist"
-  if ! wait_for_api; then
-    echo "API readiness failed; restoring API release $current_api before stopping." >&2
-    prepare_change_set api "$current_api" "$current_web" "$web_dist"
-    execute_change_set "$current_api" "$current_web" "$web_dist"
-    wait_for_api || die "API readiness failed and restoring $current_api did not recover it."
-    die "API readiness failed; restored $current_api and skipped web publication."
+  if [[ "$dry_run" == true ]]; then
+    summary "Dry run: API change set for $release passed validation and was discarded."
+  else
+    ./scripts/run-migrations.sh "$release" "$group"
+    execute_change_set
+    if ! wait_for_api; then
+      echo "API readiness failed; restoring API release $current_api before stopping." >&2
+      prepare_change_set api "$current_api" "$current_web" "$web_dist"
+      execute_change_set
+      wait_for_api || die "API readiness failed and restoring $current_api did not recover it."
+      die "API readiness failed; restored $current_api and skipped web publication."
+    fi
   fi
-  api_release="$release"
 fi
 
 if [[ "$web_changed" == true ]]; then
@@ -183,8 +202,15 @@ if [[ "$web_changed" == true ]]; then
     pnpm --filter @cartoptix/web build
     web_dist="$PWD/../apps/web/dist"
   fi
-  prepare_change_set web "$api_release" "$release" "$web_dist"
-  execute_change_set "$api_release" "$release" "$web_dist"
+  prepare_change_set web "$live_api" "$release" "$web_dist"
+  if [[ "$dry_run" == true ]]; then
+    summary "Dry run: web change set for $release ($verdict) passed validation and was discarded."
+  elif [[ "$verdict" == execute ]]; then
+    execute_change_set
+  else
+    summary "Web assets for $release are unchanged; nothing to publish."
+  fi
 fi
 
-echo "Presentation release complete: API=$api_release web=$([[ "$web_changed" == true ]] && echo "$release" || echo "$current_web")."
+if [[ "$dry_run" == true ]]; then exit 0; fi
+summary "Presentation release complete: API=$live_api web=$live_web."

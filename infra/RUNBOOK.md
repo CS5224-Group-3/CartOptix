@@ -122,45 +122,114 @@ without replacing instances.
 ## CI application releases
 
 After the successful CI workflow for a push to `main`, `release.yml` publishes
-the immutable `cartoptix-api:<sha>` image and deploys only application changes to
-an existing `CartOptixPresentation` stack. A superseded main commit is skipped.
-If the stack is absent, the job reports that and exits without creating it. The
-workflow never creates or destroys stacks and does not publish `cartoptix-web`;
-the old ECR repository and its images are left untouched.
+the immutable `cartoptix-api:<sha>` image and, **only when the repository
+variable `AWS_DEPLOY_ROLE_ARN` is set**, deploys application changes to an
+existing `CartOptixPresentation` stack. With the variable unset the deploy job is
+skipped and the run summary says so; that is the default, so merging changes to
+the release tooling never activates deployment. A superseded main commit is
+skipped. If the stack is absent, the job reports that and exits without creating
+it. The workflow never creates or destroys stacks and does not publish
+`cartoptix-web`; the old ECR repository and its images are left untouched.
+
+### Prerequisites before setting `AWS_DEPLOY_ROLE_ARN`
+
+Issue #88 must be complete and its result verified. The release scripts validate
+every change set, but that is a guard against mistakes, not a security boundary:
+whatever CI can assume can do whatever those roles allow. So, before enabling:
+
+- The GitHub deployment role is trusted only by this repository's `main` branch
+  (below), and cannot assume the default CDK bootstrap roles.
+- The CloudFormation **execution** role, the CDK **deploy** role and the
+  **file-publishing** role that CI uses are restricted ones, scoped to what
+  application releases change (the API launch template and Auto Scaling group,
+  and the web deployment and its asset bucket) and to the `CartOptixPresentation`
+  stack. A permissions boundary on the GitHub role alone does not constrain a role
+  it assumes, so the restriction must be on the downstream roles themselves. If
+  #88 introduces a new bootstrap qualifier, the qualifier in the CDK app and the
+  role names in this runbook must be updated to match.
+- Effective permissions were verified (for example with the IAM policy
+  simulator against each role in the chain), not only the policy documents.
+- `DRY_RUN=true RELEASE=<sha> infra/scripts/deploy-release.sh` has been run
+  against the live stack, with the deploy role's credentials where possible. It
+  prepares and validates each change set, then discards it: no migrations, no
+  execution.
+
+### What a release deploys
 
 The stack's `Release`, `WebRelease` and `InfraRelease` outputs record the
-deployed API, web and infrastructure commits independently. The release script
-compares those commits to the verified release:
+deployed API, web and infrastructure commits independently.
+`infra/scripts/release_scope.py` compares them with the release, using
+repository-root paths whatever the working directory:
 
 | Changes since deployed release | Deployment |
 | --- | --- |
 | `apps/api` | Run that release's database migrations once through SSM, then roll out the API and wait for `/health/ready` |
 | `apps/web` | Build and publish the web assets to the existing private bucket |
 | `packages/contracts` | API rollout first, then web publication |
-| Documentation or other non-application files | No application deployment |
-| CDK definition changes not already deployed | Stop and require an engineer to deploy infrastructure first |
+| Documentation, `infra/RUNBOOK.md`, `infra/scripts` | No application deployment |
+| Any other `infra/` file, lockfile or patch | Stop and require an engineer to deploy infrastructure first |
 
-The workflow reads the live ASG minimum/maximum, target-tracking threshold and
-warm-up when preparing an API update, and the CDK change-set gate rejects resource changes
-outside the API launch template/ASG for API releases or the web deployment for
-web releases. It does not change the stack's baseline or scaling settings. The
-ASG may temporarily launch one replacement instance during a rolling API update.
+The release script reads the live ASG minimum/maximum, target-tracking threshold
+and warm-up and passes them back unchanged. The ASG may temporarily launch one
+replacement instance during a rolling API update.
+
+### Change-set guard
+
+`infra/scripts/check_release_change_set.py` diffs the deployed template against
+the change set's template and compares stack parameters. Only an explicit
+allowlist may differ:
+
+| Stage | Allowed differences |
+| --- | --- |
+| API | `Outputs.Release`, and the API launch template's `UserData` where the only difference is the release SHA |
+| Web | `Outputs.WebRelease`, and `WebDeployment.SourceObjectKeys` (the asset key) |
+
+Anything else aborts the release: instance type, security groups, scaling
+capacity, deployment destinations, custom-resource service tokens, other
+outputs, and any parameter change. Parameters include the Amazon Linux AMI, so
+when AWS publishes a new image the guard blocks API releases until an engineer
+redeploys infrastructure with `infra/scripts/deploy.sh`. The change set's own
+resource changes must also stay within the stage's resources, be in-place
+modifications, and any dynamic change must be caused by the API launch template.
+The rollback change set goes through the same guard.
+
+A web release whose built assets are identical produces no resource changes. The
+guard accepts that only when the template differs solely in `WebRelease`, so the
+pointer advances; if CloudFormation reports no changes at all, nothing is
+published and the pointer stays.
+
+### Migrations
+
+`infra/scripts/run-migrations.sh` runs the release image's migrations on one
+healthy instance through SSM Run Command, with a 900-second execution limit, and
+polls until SSM reports a terminal status. The API rollout starts only on
+`Success`. On timeout or interruption it cancels the command and waits for a
+terminal status; if that cannot be confirmed it fails with the command ID and the
+state is uncertain, so do not retry until the command is terminal. A new run
+refuses to start while an earlier `CartOptix migrations` command is pending or
+in progress, and the container name is fixed per release, so a leftover container
+blocks a retry rather than running alongside it. Drizzle applies each migration in
+a transaction, so an interrupted run rolls back rather than leaving a half-applied
+change. Migrations must stay backward compatible with the API that is still
+running during the rollout.
+
+### Failures
 
 For releases containing both API and web changes, migrations and the API rollout
-finish first. If either fails, web publication does not start. A web failure
-does not roll back the already healthy API; the failed web change set rolls back
-to its prior assets, and rerunning the Release workflow retries only the web
-stage. If the API readiness check fails after rollout, CI restores the previous
-API release and skips web publication. The previous API image must still exist
-in ECR for a safe rollout. No seed import runs automatically: follow **Load the
-database** below for the initial seed and perform future seed updates manually.
+finish first; if either fails, web publication does not start. If the API
+readiness check fails after rollout, CI restores the previous API release and
+skips web publication. A web failure does not roll back the healthy API; the
+failed change set rolls back to the prior assets, and rerunning the Release
+workflow retries only the web stage. The previous API image must still exist in
+ECR. No seed import runs automatically: follow **Load the database** below for
+the initial seed and perform future seed updates manually.
 
 ### GitHub OIDC roles
 
 Set repository variable `AWS_DEPLOY_ROLE_ARN` to a dedicated deployment role.
 Keep it separate from the existing `AWS_PUBLISH_ROLE_ARN` ECR publisher role;
 the publisher does not receive deployment permissions. The publishing workflow
-now checks for an existing immutable API tag, so the publisher also needs
+checks for an existing immutable API tag, so the publisher also needs
 `ecr:DescribeImages` on `cartoptix-api` in addition to its existing ECR push
 permissions. Leave its existing permissions on the legacy `cartoptix-web`
 repository unchanged; this workflow never uses them.
@@ -188,19 +257,14 @@ IDs):
 }
 ```
 
-Give this role read access to the presentation stack outputs, ASG and scaling
-policy, and the API ECR image; allow `ssm:SendCommand` only with
-`AWS-RunShellScript` against instances tagged `Project=cartoptix`, plus
-`ssm:GetCommandInvocation`. Allow `sts:AssumeRole` only for the regional
-`cdk-hnb659fds-deploy-role` and `cdk-hnb659fds-file-publishing-role` created by
-the existing bootstrap. Allow `ssm:GetParameter` only for
-`/cdk-bootstrap/hnb659fds/version`, which CDK reads to verify bootstrap status.
-Scope CloudFormation inspection and change-set cleanup to
-`CartOptixPresentation`; do not grant direct stack create/delete or broad
-CloudFormation mutation permissions to the OIDC role. The CDK bootstrap roles
-perform application change-set and asset operations. Review their existing
-execution-role policy before enabling CI; the release script fails closed if a
-change set includes resources outside the application allowlist.
+Capabilities the role needs, to be scoped by #88: read the presentation stack,
+its templates and change sets, the ASG and scaling policy, and the API ECR
+image; delete a change set it created; `ssm:SendCommand` with `AWS-RunShellScript`
+against instances tagged `Project=cartoptix`, plus `ssm:GetCommandInvocation`,
+`ssm:ListCommands` and `ssm:CancelCommand`; and assume only the restricted
+deploy and file-publishing roles described above, plus
+`ssm:GetParameter` on the bootstrap version parameter. It gets no direct stack
+create/delete or broad CloudFormation mutation permissions.
 
 Set `AWS_DEPLOY_ROLE_ARN` in **Settings → Secrets and variables → Actions →
 Variables** alongside the existing `AWS_PUBLISH_ROLE_ARN`. No long-lived AWS
