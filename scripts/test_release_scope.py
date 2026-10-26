@@ -1,12 +1,13 @@
 import os
-import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from infra.scripts.release_scope import scope
+from release_fixtures import git
 
 FILES = {
     "apps/api/src/a.ts": "a",
@@ -18,12 +19,6 @@ FILES = {
     "docs/spec.md": "d",
     "pnpm-lock.yaml": "l",
 }
-ENV = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
-
-
-def git(root, *args):
-    return subprocess.run(["git", "-C", root, *args], check=True, capture_output=True, text=True, env=ENV).stdout.strip()
-
 
 class ReleaseScopeTests(unittest.TestCase):
     def setUp(self):

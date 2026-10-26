@@ -41,9 +41,12 @@ def _under(path, prefix, suffix):
     return len(path) > 1 and path[0] == "Resources" and str(path[1]).startswith(prefix) and path[2 : 2 + len(suffix)] == suffix
 
 
-def _mask(value, releases):
-    text = json.dumps(value, default=repr)
-    return text.replace(releases["api_from"], "<API>").replace(releases["api_to"], "<API>")
+def _release_only(old, new, releases):
+    """True when the values differ only by api_from -> api_to, applied everywhere."""
+    before, after = json.dumps(old, default=repr), json.dumps(new, default=repr)
+    if releases["api_from"] not in before or releases["api_to"] in before or releases["api_from"] in after:
+        return False
+    return before.replace(releases["api_from"], releases["api_to"]) == after
 
 
 def _allowed(stage, path, old, new, releases):
@@ -51,11 +54,24 @@ def _allowed(stage, path, old, new, releases):
         if path == ("Outputs", "Release", "Value"):
             return (old, new) == (releases["api_from"], releases["api_to"])
         if _under(path, "ApiLaunchTemplate", ("Properties", "LaunchTemplateData", "UserData")):
-            return _mask(old, releases) == _mask(new, releases)
+            return _release_only(old, new, releases)
         return False
     if path == WEB_RELEASE_OUTPUT:
         return (old, new) == (releases["web_from"], releases["web_to"])
     return _under(path, "WebDeployment", ("Properties", "SourceObjectKeys"))
+
+
+def _check_user_data_moved(template, releases):
+    """The launch template must run the new release and keep no trace of the old one."""
+    found = False
+    for logical_id, resource in template.get("Resources", {}).items():
+        if logical_id.startswith("ApiLaunchTemplate") and resource.get("Type") == RESOURCES["api"]["ApiLaunchTemplate"]:
+            found = True
+            text = json.dumps(resource.get("Properties", {}).get("LaunchTemplateData", {}).get("UserData"), default=repr)
+            if releases["api_to"] not in text or releases["api_from"] in text:
+                raise ValueError(f"{logical_id} user data does not fully move to release {releases['api_to']}")
+    if not found:
+        raise ValueError("api release has no launch template")
 
 
 def _template(value):
@@ -102,8 +118,11 @@ def validate(stage, description, stack, current, proposed, releases):
     if _parameters(stack.get("Parameters")) != _parameters(description.get("Parameters")):
         raise ValueError("stack parameters would change (for example a new AMI); deploy infrastructure first")
 
+    current, proposed = _template(current), _template(proposed)
+    if stage == "api":
+        _check_user_data_moved(proposed, releases)
     paths = []
-    for path, old, new in leaf_diffs(_template(current), _template(proposed)):
+    for path, old, new in leaf_diffs(current, proposed):
         if not _allowed(stage, path, old, new, releases):
             raise ValueError(f"{stage} release would change {'.'.join(map(str, path))}")
         paths.append(path)

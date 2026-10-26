@@ -1,12 +1,22 @@
-"""Shared CloudFormation fixtures for the release guard tests."""
+"""Shared fixtures for the release guard tests."""
+
+import os
+import subprocess
+
+ENV = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
+
+
+def git(root, *args):
+    return subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True, text=True, env=ENV).stdout.strip()
+
 
 LT = "AWS::EC2::LaunchTemplate"
 ASG = "AWS::AutoScaling::AutoScalingGroup"
 WEB = "Custom::CDKBucketDeployment"
-A, B, W1, W2 = "a" * 40, "b" * 40, "1" * 40, "2" * 40
+API_OLD, API_NEW, WEB_OLD, WEB_NEW = "a" * 40, "b" * 40, "1" * 40, "2" * 40
 
 
-def template(api=A, web=W1, key="old.zip"):
+def template(api=API_OLD, web=WEB_OLD, key="old.zip"):
     return {
         "Resources": {
             "ApiLaunchTemplate89": {

@@ -8,10 +8,9 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from release_fixtures import ASG, LT, PARAMS, WEB, api_changes, change, description, template
+from release_fixtures import ENV, PARAMS, WEB, api_changes, change, description, git, template
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "infra" / "scripts"
-ENV = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
 
 FAKE_AWS = r"""#!/usr/bin/env python3
 import json, os, sys
@@ -39,10 +38,6 @@ elif cmd == "ecr describe-images":
 """
 FAKE_PNPM = '#!/usr/bin/env bash\necho "pnpm $*" >> "$FAKE_DIR/calls"\n'
 FAKE_MIGRATIONS = '#!/usr/bin/env bash\necho "migrations $*" >> "$FAKE_DIR/calls"\n'
-
-
-def git(root, *args):
-    return subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True, text=True, env=ENV).stdout.strip()
 
 
 def executable(path, text):
