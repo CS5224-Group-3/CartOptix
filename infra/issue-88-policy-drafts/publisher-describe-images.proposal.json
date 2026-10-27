@@ -1,0 +1,11 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ProposedDescribeImmutableApiRelease",
+      "Effect": "Allow",
+      "Action": "ecr:DescribeImages",
+      "Resource": "arn:aws:ecr:ap-southeast-1:<ACCOUNT_ID>:repository/cartoptix-api"
+    }
+  ]
+}
