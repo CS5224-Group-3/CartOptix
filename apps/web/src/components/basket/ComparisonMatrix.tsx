@@ -184,7 +184,7 @@ export default function ComparisonMatrix({
     <table className="matrix">
       <caption className="sr-only">Basket price by retailer</caption>
       <thead>
-        <tr>
+        <tr id="results-retailer-row">
           <th scope="col" className="matrix__corner">
             {rows.length} {rows.length === 1 ? "product" : "products"}
           </th>
@@ -223,8 +223,8 @@ export default function ComparisonMatrix({
         </tr>
       </thead>
       <tbody>
-        {rows.map((product) => (
-          <tr key={product.productId}>
+        {rows.map((product, index) => (
+          <tr key={product.productId} id={index === 0 ? "results-first-product" : undefined}>
             <th scope="row" className="matrix__product">
               <div className="matrix__identity">
                 <Thumb product={product} />
@@ -262,7 +262,7 @@ export default function ComparisonMatrix({
           </tr>
         ))}
       </tbody>
-      <tfoot>
+      <tfoot id="results-price-breakdown">
         {footRows.map(({ key, label, charge, total }) => (
           <tr key={key} className={total ? "matrix__total-row" : undefined}>
             <th scope="row">{label}</th>
@@ -310,7 +310,7 @@ function SignInRow({ columns }: { columns: RetailerOption[] }) {
   );
   if (sites.every((site) => site === undefined)) return null;
   return (
-    <tr className="matrix__signin-row">
+    <tr id="results-signin-row" className="matrix__signin-row">
       <th scope="row">Sign in to check out</th>
       {columns.map((option, index) => {
         const site = sites[index];

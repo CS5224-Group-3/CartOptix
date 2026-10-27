@@ -4,12 +4,33 @@ import { expect, type Page, test } from "@playwright/test";
 
 async function addMilkAndOpenBasket(page: Page) {
   await page.goto("/catalogue");
+  await dismissFirstVisitGuide(page);
   await page.getByRole("textbox", { name: /Search products/i }).fill("milk");
   await page.getByRole("button", { name: "Add", exact: true }).first().click();
   await expect(page.getByText("Added to basket")).toBeVisible();
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
   const mobileMenu = page.locator("button.mobile-menu-button");
-  if (await mobileMenu.isVisible()) await mobileMenu.click();
-  await page.locator('a[href="/basket"]').click({ force: true });
+  if ((await mobileMenu.isVisible()) && !(await navigation.isVisible())) {
+    await mobileMenu.click();
+    await expect(navigation).toBeVisible();
+  }
+  await navigation.locator('a[href="/basket"]').click();
+}
+
+async function dismissFirstVisitGuide(page: Page) {
+  const skip = page.getByRole("button", { name: "Skip guide" });
+  if (await skip.isVisible()) {
+    await skip.click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  }
+}
+
+async function openGuide(page: Page) {
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
+  const guideButton = navigation.getByRole("button", { name: "How it works" });
+  const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
+  if ((await mobileMenu.isVisible()) && !(await guideButton.isVisible())) await mobileMenu.click();
+  await guideButton.click();
 }
 
 async function compareBasket(page: Page) {
@@ -95,6 +116,7 @@ test.describe("CartOptix shopper journeys", () => {
 
   test("J1: find a product and add it to the basket", async ({ page }) => {
     await page.goto("/catalogue");
+    await dismissFirstVisitGuide(page);
     await expect(
       page.getByRole("heading", { name: "Find your everyday essentials." }),
     ).toBeVisible();
@@ -252,27 +274,253 @@ test.describe("CartOptix shopper journeys", () => {
   });
 
   test("basket accepts 50 distinct lines and rejects the 51st", async ({ page }) => {
-    test.setTimeout(60_000);
+    test.setTimeout(90_000);
     await page.goto("/catalogue");
+    await dismissFirstVisitGuide(page);
+    await page.addStyleTag({
+      content: "[data-sonner-toast] { display: none !important; pointer-events: none !important; }",
+    });
     const addButtons = page.getByRole("button", { name: "Add", exact: true });
-    for (let index = 0; index < 51; index += 1) await addButtons.nth(index).click();
+    const basketCount = page.locator(".nav-basket span");
+    for (let index = 0; index < 50; index += 1) {
+      await addButtons.nth(index).click();
+      await expect(basketCount).toHaveText(String(index + 1));
+    }
+    await addButtons.nth(50).click();
+    await expect(basketCount).toHaveText("50");
+    await expect(page.getByText("Basket limit reached")).toHaveCount(1);
 
     const mobileMenu = page.locator("button.mobile-menu-button");
     if (await mobileMenu.isVisible()) await mobileMenu.click();
     await expect(page.getByText(/Basket 50/i)).toBeVisible();
     await page.locator('a[href="/basket"]').click({ force: true });
     await expect(page.getByText(/Items in basket\s*50\s*\/\s*50/i)).toBeVisible();
-    await expect(page.getByText("Basket limit reached")).toBeVisible();
   });
 });
 
 test.describe("keyboard operation", () => {
   test("can reach the catalogue search and add control by keyboard", async ({ page }) => {
     await page.goto("/catalogue");
+    await dismissFirstVisitGuide(page);
     const search = page.getByRole("textbox", { name: /Search products/i });
     await search.focus();
     await search.fill("milk");
     await search.press("Tab");
     await expect(page.locator(":focus")).toBeVisible();
+  });
+
+  test("shows a first visit guide with skip and supports replay", async ({ page }) => {
+    await page.goto("/catalogue");
+    await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
+    await expect(page.getByRole("heading", { name: "Search the catalogue" })).toBeVisible();
+    await expect(page.locator(".tutorial-spotlight")).toBeVisible();
+    const dialog = await page.getByRole("dialog").boundingBox();
+    const target = await page.locator(".tutorial-spotlight").boundingBox();
+    const viewport = page.viewportSize();
+    expect(dialog).not.toBeNull();
+    expect(target).not.toBeNull();
+    expect(viewport).not.toBeNull();
+    if (dialog && target && viewport) {
+      expect(Math.abs(dialog.x + dialog.width / 2 - viewport.width / 2)).toBeLessThan(2);
+      expect(
+        dialog.x < target.x + target.width &&
+          target.x < dialog.x + dialog.width &&
+          dialog.y < target.y + target.height &&
+          target.y < dialog.y + dialog.height,
+      ).toBe(false);
+    }
+    await page.getByRole("button", { name: "Skip guide" }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await page.getByRole("button", { name: "Toggle navigation" }).click();
+    }
+    const navigation = page.getByRole("navigation", { name: "Main navigation" });
+    await expect(navigation).toBeVisible();
+    const browseIndex = await navigation
+      .getByRole("link", { name: "Browse products" })
+      .evaluate((el) => Array.from(el.parentElement?.children ?? []).indexOf(el));
+    const guideIndex = await navigation
+      .getByRole("button", { name: "How it works" })
+      .evaluate((el) => Array.from(el.parentElement?.children ?? []).indexOf(el));
+    const basketIndex = await navigation
+      .getByRole("link", { name: /Basket/ })
+      .evaluate((el) => Array.from(el.parentElement?.children ?? []).indexOf(el));
+    expect(guideIndex).toBe(browseIndex + 1);
+    expect(basketIndex).toBe(guideIndex + 1);
+    await navigation.getByRole("button", { name: "How it works" }).click();
+    await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Skip guide" })).toBeVisible();
+    for (let step = 0; step < 5; step += 1) {
+      const next = page.getByRole("dialog").getByRole("button", { name: "Next" });
+      if (!(await next.isVisible().catch(() => false))) break;
+      await next.click();
+    }
+    await page.getByRole("dialog").getByRole("button", { name: "Finish" }).click();
+    const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
+    await navigation.getByRole("link", { name: /Basket/ }).click();
+    await expect(page).toHaveURL(/\/basket$/);
+
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
+    await navigation.getByRole("link", { name: "Browse products" }).click();
+    await expect(page).toHaveURL(/\/catalogue$/);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
+    await navigation.getByRole("button", { name: "How it works" }).click();
+    await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await page.getByRole("button", { name: "Skip guide" }).click();
+
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
+    await navigation.getByRole("link", { name: /Basket/ }).click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
+    await navigation.getByRole("button", { name: "How it works" }).click();
+    await expect(page).toHaveURL(/\/basket$/);
+    await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
+  });
+});
+
+test.describe("guide interaction boundary", () => {
+  test("blocks catalogue navigation until the guide is dismissed", async ({ page }) => {
+    await page.goto("/catalogue");
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(dialog.getByRole("heading", { name: "Explore products" })).toBeVisible();
+
+    const productLink = page.locator("#catalogue-products .product-card__link").first();
+    await expect(productLink).toBeVisible();
+    await productLink.scrollIntoViewIfNeeded();
+    const bounds = await productLink.boundingBox();
+    if (!bounds) throw new Error("The first catalogue product link has no visible bounds");
+    await page.mouse.click(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    await expect(page).toHaveURL(/\/catalogue$/);
+    await expect(dialog.getByRole("heading", { name: "Explore products" })).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Skip guide" }).click();
+    await expect(dialog).toHaveCount(0);
+    await productLink.click();
+    await expect(page).toHaveURL(/\/product\//);
+  });
+});
+
+test.describe("basket guide", () => {
+  test("guides an empty basket to Browse products and explains comparison", async ({ page }) => {
+    await page.goto("/basket");
+    await expect(page.getByRole("heading", { name: "Your basket is empty" })).toBeVisible();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+
+    await openGuide(page);
+    await expect(page.locator(".tutorial-spotlight")).toBeVisible();
+    await expect(page.locator(".tutorial-spotlight")).toHaveAttribute("aria-hidden", "true");
+
+    await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
+    await expect(page.locator(".tutorial-spotlight")).toBeVisible();
+    await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
+    await expect(page.getByRole("heading", { name: "Compare your basket" })).toBeVisible();
+    await expect(page.locator("#compare-basket")).toBeVisible();
+
+    await page.getByRole("dialog").getByRole("button", { name: "Finish" }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await openGuide(page);
+    await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
+  });
+
+  test("explains populated basket items and the Compare basket button", async ({ page }) => {
+    const productId = seed.products[0]?.productId;
+    if (!productId) throw new Error("The committed seed contains no products");
+    await page.addInitScript(
+      ({ productId }) => {
+        localStorage.setItem("cartoptix:basket:v1", JSON.stringify([{ productId, quantity: 1 }]));
+      },
+      { productId },
+    );
+    await page.goto("/basket");
+    await expect(page.getByRole("heading", { name: "Review your basket" })).toBeVisible();
+    await openGuide(page);
+    await expect(page.getByRole("heading", { name: "Review your basket items" })).toBeVisible();
+    await expect(page.locator(".basket-card .basket-row")).toBeVisible();
+    await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
+    await expect(page.getByRole("heading", { name: "Compare your basket" })).toBeVisible();
+    await expect(page.locator("#compare-basket")).toBeVisible();
+  });
+});
+
+test.describe("results guide", () => {
+  test("explains comparison results and can be replayed", async ({ page }) => {
+    await addMilkAndOpenBasket(page);
+    await compareBasket(page);
+    await expect(page.locator(".matrix")).toBeVisible();
+
+    await openGuide(page);
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("heading", { name: "What to do next" })).toBeVisible();
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Compare the three retailers" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-retailer-row .matrix__retailer")).toHaveCount(3);
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    const unavailableRetailers = page.locator("#results-retailer-row .matrix__retailer--muted");
+    if ((await unavailableRetailers.count()) > 0) {
+      await expect(
+        dialog.getByRole("heading", { name: "Some retailer baskets are incomplete" }),
+      ).toBeVisible();
+      await expect(unavailableRetailers.first()).toContainText(/.+/);
+      await dialog.getByRole("button", { name: "Next" }).click();
+    }
+    await expect(
+      dialog.getByRole("heading", { name: "Your first selected product" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-first-product .matrix__cell")).toHaveCount(3);
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Confirm the product with a retailer" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-first-product .text-link").first()).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Understand the price breakdown" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-price-breakdown")).toContainText("Product subtotal");
+    await expect(page.locator("#results-price-breakdown")).toContainText("Delivery");
+    await expect(page.locator("#results-price-breakdown")).toContainText("Estimated total");
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Sign in on the retailer's website" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-signin-row")).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(dialog.getByRole("heading", { name: "Edit your basket" })).toBeVisible();
+    await expect(page.locator("#results-edit-basket")).toBeVisible();
+    await dialog.getByRole("button", { name: "Finish" }).click();
+    await expect(dialog).toHaveCount(0);
+
+    await openGuide(page);
+    await expect(
+      page.getByRole("dialog").getByRole("heading", { name: "What to do next" }),
+    ).toBeVisible();
   });
 });

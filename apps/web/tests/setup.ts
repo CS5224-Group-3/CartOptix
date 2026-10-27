@@ -28,4 +28,6 @@ afterEach(() => {
 beforeEach(() => {
   // Persistence tests keep their browser state within one test.
   window.localStorage.clear();
+  // Most UI tests exercise catalogue behavior after onboarding; tutorial tests opt in explicitly.
+  window.localStorage.setItem("cartoptix:tutorial:completed:v1", "true");
 });
