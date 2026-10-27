@@ -339,6 +339,7 @@ test.describe("keyboard operation", () => {
       await page.getByRole("button", { name: "Toggle navigation" }).click();
     }
     const navigation = page.getByRole("navigation", { name: "Main navigation" });
+    await expect(navigation).toBeVisible();
     const browseIndex = await navigation
       .getByRole("link", { name: "Browse products" })
       .evaluate((el) => Array.from(el.parentElement?.children ?? []).indexOf(el));
@@ -360,23 +361,38 @@ test.describe("keyboard operation", () => {
     }
     await page.getByRole("dialog").getByRole("button", { name: "Finish" }).click();
     const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
-    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
     await navigation.getByRole("link", { name: /Basket/ }).click();
     await expect(page).toHaveURL(/\/basket$/);
 
-    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
     await navigation.getByRole("link", { name: "Browse products" }).click();
     await expect(page).toHaveURL(/\/catalogue$/);
     await expect(page.getByRole("dialog")).toHaveCount(0);
 
-    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
     await navigation.getByRole("button", { name: "How it works" }).click();
     await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
     await page.getByRole("button", { name: "Skip guide" }).click();
 
-    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
     await navigation.getByRole("link", { name: /Basket/ }).click();
-    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) {
+      await mobileMenu.click();
+      await expect(navigation).toBeVisible();
+    }
     await navigation.getByRole("button", { name: "How it works" }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
@@ -466,6 +482,14 @@ test.describe("results guide", () => {
     await expect(page.locator("#results-retailer-row .matrix__retailer")).toHaveCount(3);
 
     await dialog.getByRole("button", { name: "Next" }).click();
+    const unavailableRetailers = page.locator("#results-retailer-row .matrix__retailer--muted");
+    if ((await unavailableRetailers.count()) > 0) {
+      await expect(
+        dialog.getByRole("heading", { name: "Some retailer baskets are incomplete" }),
+      ).toBeVisible();
+      await expect(unavailableRetailers.first()).toContainText(/.+/);
+      await dialog.getByRole("button", { name: "Next" }).click();
+    }
     await expect(
       dialog.getByRole("heading", { name: "Your first selected product" }),
     ).toBeVisible();
@@ -476,6 +500,20 @@ test.describe("results guide", () => {
       dialog.getByRole("heading", { name: "Confirm the product with a retailer" }),
     ).toBeVisible();
     await expect(page.locator("#results-first-product .text-link").first()).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Understand the price breakdown" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-price-breakdown")).toContainText("Product subtotal");
+    await expect(page.locator("#results-price-breakdown")).toContainText("Delivery");
+    await expect(page.locator("#results-price-breakdown")).toContainText("Estimated total");
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Sign in on the retailer's website" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-signin-row")).toBeVisible();
 
     await dialog.getByRole("button", { name: "Next" }).click();
     await expect(dialog.getByRole("heading", { name: "Edit your basket" })).toBeVisible();

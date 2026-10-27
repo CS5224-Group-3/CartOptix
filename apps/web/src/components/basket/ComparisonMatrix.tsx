@@ -262,7 +262,7 @@ export default function ComparisonMatrix({
           </tr>
         ))}
       </tbody>
-      <tfoot>
+      <tfoot id="results-price-breakdown">
         {footRows.map(({ key, label, charge, total }) => (
           <tr key={key} className={total ? "matrix__total-row" : undefined}>
             <th scope="row">{label}</th>
@@ -310,7 +310,7 @@ function SignInRow({ columns }: { columns: RetailerOption[] }) {
   );
   if (sites.every((site) => site === undefined)) return null;
   return (
-    <tr className="matrix__signin-row">
+    <tr id="results-signin-row" className="matrix__signin-row">
       <th scope="row">Sign in to check out</th>
       {columns.map((option, index) => {
         const site = sites[index];

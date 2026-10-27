@@ -627,6 +627,12 @@ const RESULTS_RETAILERS_STEP: TutorialStep = {
   description:
     "These columns show RedMart, FairPrice, and Cold Storage. Compare each retailer's estimated basket total and availability; unavailable items and partial estimates are labelled.",
 };
+const RESULTS_INCOMPLETE_STEP: TutorialStep = {
+  selector: "#results-retailer-row .matrix__retailer--muted",
+  title: "Some retailer baskets are incomplete",
+  description:
+    "This retailer cannot price your complete basket. The reason is shown in its top-row column; any partial estimate only covers the items it can supply and is not a complete basket total.",
+};
 const RESULTS_FIRST_PRODUCT_STEP: TutorialStep = {
   selector: "#results-first-product",
   title: "Your first selected product",
@@ -638,6 +644,18 @@ const RESULTS_VIEW_STEP: TutorialStep = {
   title: "Confirm the product with a retailer",
   description:
     "View opens the retailer's product page in a new tab. Check the product and current details there before rebuilding your basket and checking out on the retailer's website.",
+};
+const RESULTS_PRICE_BREAKDOWN_STEP: TutorialStep = {
+  selector: "#results-price-breakdown",
+  title: "Understand the price breakdown",
+  description:
+    "Product subtotal covers the items. Delivery and any service fee or other mandatory charge are listed separately. Estimated total adds these costs together for that retailer; partial estimates are labelled.",
+};
+const RESULTS_SIGN_IN_STEP: TutorialStep = {
+  selector: "#results-signin-row",
+  title: "Sign in on the retailer's website",
+  description:
+    "Use the sign-in links for each retailer to open its account page. Rebuild your basket and check out there; CartOptix cannot transfer basket contents or place an order.",
 };
 const RESULTS_EDIT_STEP: TutorialStep = {
   selector: "#results-edit-basket",
@@ -655,6 +673,7 @@ const RESULTS_EMPTY_BASKET_STEP: TutorialStep = {
 function resultsTutorialSteps(
   result: BasketComparisonPresentation | null,
   hasPurchaseLinks: boolean,
+  hasSignInRows: boolean,
 ): readonly TutorialStep[] {
   if (!result) return [RESULTS_INTRO_STEP, RESULTS_EMPTY_BASKET_STEP];
   if (validateRecommendation(result).kind === "invalid")
@@ -662,8 +681,13 @@ function resultsTutorialSteps(
   return [
     RESULTS_INTRO_STEP,
     RESULTS_RETAILERS_STEP,
+    ...(result.options.some((option) => option.kind === "unavailable")
+      ? [RESULTS_INCOMPLETE_STEP]
+      : []),
     RESULTS_FIRST_PRODUCT_STEP,
     ...(hasPurchaseLinks ? [RESULTS_VIEW_STEP] : []),
+    RESULTS_PRICE_BREAKDOWN_STEP,
+    ...(hasSignInRows ? [RESULTS_SIGN_IN_STEP] : []),
     RESULTS_EDIT_STEP,
   ];
 }
@@ -1769,6 +1793,10 @@ export function ResultsPage() {
           Boolean(line.purchaseUrl),
       );
     });
+  const hasSignInRows =
+    comparison?.options.some(
+      (option) => option.kind === "complete" || option.partial !== undefined,
+    ) ?? false;
   return (
     <>
       <BasketComparisonPage
@@ -1784,7 +1812,7 @@ export function ResultsPage() {
         onStepChange={setTutorialStep}
         onFinish={finishTutorial}
         menuOpen={navigation?.menuOpen ?? false}
-        steps={resultsTutorialSteps(comparison, hasPurchaseLinks)}
+        steps={resultsTutorialSteps(comparison, hasPurchaseLinks, hasSignInRows)}
       />
     </>
   );

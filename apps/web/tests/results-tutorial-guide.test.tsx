@@ -17,7 +17,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function openComparison() {
+function openComparison(scenario = "complete") {
   window.localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify(basketRequestExample.lines));
   vi.stubGlobal(
     "fetch",
@@ -34,7 +34,7 @@ function openComparison() {
   render(
     <App
       comparisonSource={async () => {
-        const result = comparisonFixtures.complete;
+        const result = comparisonFixtures[scenario];
         if (!result) throw new Error("Missing comparison fixture");
         return structuredClone(result);
       }}
@@ -44,7 +44,7 @@ function openComparison() {
 }
 
 describe("results tutorial guide", () => {
-  it("explains retailer columns, the first product, its View link, and editing the basket", async () => {
+  it("explains retailer columns, the first product, pricing, sign-in, and editing the basket", async () => {
     openComparison();
     fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
     expect(
@@ -61,6 +61,11 @@ describe("results tutorial guide", () => {
     expect(document.querySelectorAll("#results-retailer-row .matrix__retailer")).toHaveLength(3);
 
     next();
+    expect(
+      screen.getByRole("heading", { name: "Some retailer baskets are incomplete" }),
+    ).toBeDefined();
+
+    next();
     expect(screen.getByRole("heading", { name: "Your first selected product" })).toBeDefined();
     const firstProduct = document.querySelector("#results-first-product");
     expect(firstProduct?.textContent).toContain(
@@ -75,12 +80,44 @@ describe("results tutorial guide", () => {
     expect(firstProduct?.querySelector(".text-link")).not.toBeNull();
 
     next();
+    expect(screen.getByRole("heading", { name: "Understand the price breakdown" })).toBeDefined();
+    const pricing = document.querySelector("#results-price-breakdown");
+    expect(pricing?.textContent).toContain("Product subtotal");
+    expect(pricing?.textContent).toContain("Delivery");
+    expect(pricing?.textContent).toContain("Estimated total");
+
+    next();
+    expect(
+      screen.getByRole("heading", { name: "Sign in on the retailer's website" }),
+    ).toBeDefined();
+    expect(document.querySelector("#results-signin-row")).not.toBeNull();
+
+    next();
     expect(screen.getByRole("heading", { name: "Edit your basket" })).toBeDefined();
     expect(document.querySelector("#results-edit-basket")).not.toBeNull();
 
     fireEvent.click(dialog.getByRole("button", { name: "Finish" }));
     fireEvent.click(screen.getByRole("button", { name: "How it works" }));
     expect(screen.getByRole("heading", { name: "What to do next" })).toBeDefined();
+  });
+
+  it("adds the incomplete basket explanation after the retailer columns", async () => {
+    openComparison("unavailable");
+    fireEvent.click(screen.getByRole("button", { name: "Compare basket" }));
+    await screen.findByRole("heading", { name: "Retailer basket comparison" });
+    fireEvent.click(screen.getByRole("button", { name: "How it works" }));
+    const dialog = within(screen.getByRole("dialog"));
+    const next = () => fireEvent.click(dialog.getByRole("button", { name: "Next" }));
+
+    next();
+    expect(screen.getByRole("heading", { name: "Compare the three retailers" })).toBeDefined();
+    next();
+    expect(
+      screen.getByRole("heading", { name: "Some retailer baskets are incomplete" }),
+    ).toBeDefined();
+    expect(document.querySelector("#results-retailer-row .matrix__retailer--muted")).not.toBeNull();
+    next();
+    expect(screen.getByRole("heading", { name: "Your first selected product" })).toBeDefined();
   });
 
   it("guides shoppers to their basket when no comparison is available", () => {
