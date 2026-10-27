@@ -82,6 +82,22 @@ describe("catalogue tutorial guide", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
+  it("blocks the search shortcut while the guide is open", async () => {
+    window.localStorage.setItem("cartoptix:tutorial:completed:v1", "true");
+    openCatalogue();
+    const search = await screen.findByRole("textbox", { name: /Search products/i });
+    fireEvent.click(screen.getByRole("button", { name: "How it works" }));
+    expect(await screen.findByRole("dialog")).toBeDefined();
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    fireEvent.keyDown(window, { key: "k", metaKey: true });
+    expect(document.activeElement).not.toBe(search);
+
+    fireEvent.click(screen.getByRole("button", { name: "Skip guide" }));
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(document.activeElement).toBe(search);
+  });
+
   it("does not reopen a completed replay when returning from the basket", async () => {
     window.localStorage.removeItem("cartoptix:tutorial:completed:v1");
     openCatalogue();

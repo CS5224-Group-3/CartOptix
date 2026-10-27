@@ -5,12 +5,12 @@ import { fileURLToPath } from "node:url";
 const infraRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = resolve(infraRoot, "..");
 const isWindows = process.platform === "win32";
-const shell = isWindows;
+const useShell = isWindows;
 const pnpm = isWindows ? "pnpm.cmd" : "pnpm";
 const cdk = isWindows ? "cdk.cmd" : "cdk";
 
 function run(command, args, cwd) {
-  const result = spawnSync(command, args, { cwd, stdio: "inherit", shell });
+  const result = spawnSync(command, args, { cwd, stdio: "inherit", shell: useShell });
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
@@ -18,7 +18,7 @@ function run(command, args, cwd) {
 const releaseResult = spawnSync("git", ["rev-parse", "HEAD"], {
   cwd: repoRoot,
   encoding: "utf8",
-  shell,
+  shell: useShell,
 });
 if (releaseResult.error) throw releaseResult.error;
 if (releaseResult.status !== 0) process.exit(releaseResult.status ?? 1);

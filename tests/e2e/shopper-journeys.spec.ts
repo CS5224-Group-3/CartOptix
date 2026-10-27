@@ -25,15 +25,7 @@ async function dismissFirstVisitGuide(page: Page) {
   }
 }
 
-async function openBasketGuide(page: Page) {
-  const navigation = page.getByRole("navigation", { name: "Main navigation" });
-  const guideButton = navigation.getByRole("button", { name: "How it works" });
-  const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
-  if ((await mobileMenu.isVisible()) && !(await guideButton.isVisible())) await mobileMenu.click();
-  await guideButton.click();
-}
-
-async function openResultsGuide(page: Page) {
+async function openGuide(page: Page) {
   const navigation = page.getByRole("navigation", { name: "Main navigation" });
   const guideButton = navigation.getByRole("button", { name: "How it works" });
   const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
@@ -430,7 +422,7 @@ test.describe("basket guide", () => {
     await expect(page.getByRole("heading", { name: "Your basket is empty" })).toBeVisible();
     await expect(page.getByRole("dialog")).toHaveCount(0);
 
-    await openBasketGuide(page);
+    await openGuide(page);
     await expect(page.locator(".tutorial-spotlight")).toBeVisible();
     await expect(page.locator(".tutorial-spotlight")).toHaveAttribute("aria-hidden", "true");
 
@@ -442,7 +434,7 @@ test.describe("basket guide", () => {
 
     await page.getByRole("dialog").getByRole("button", { name: "Finish" }).click();
     await expect(page.getByRole("dialog")).toHaveCount(0);
-    await openBasketGuide(page);
+    await openGuide(page);
     await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
   });
 
@@ -457,7 +449,7 @@ test.describe("basket guide", () => {
     );
     await page.goto("/basket");
     await expect(page.getByRole("heading", { name: "Review your basket" })).toBeVisible();
-    await openBasketGuide(page);
+    await openGuide(page);
     await expect(page.getByRole("heading", { name: "Review your basket items" })).toBeVisible();
     await expect(page.locator(".basket-card .basket-row")).toBeVisible();
     await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
@@ -472,7 +464,7 @@ test.describe("results guide", () => {
     await compareBasket(page);
     await expect(page.locator(".matrix")).toBeVisible();
 
-    await openResultsGuide(page);
+    await openGuide(page);
     const dialog = page.getByRole("dialog");
     await expect(dialog.getByRole("heading", { name: "What to do next" })).toBeVisible();
     await dialog.getByRole("button", { name: "Next" }).click();
@@ -521,7 +513,7 @@ test.describe("results guide", () => {
     await dialog.getByRole("button", { name: "Finish" }).click();
     await expect(dialog).toHaveCount(0);
 
-    await openResultsGuide(page);
+    await openGuide(page);
     await expect(
       page.getByRole("dialog").getByRole("heading", { name: "What to do next" }),
     ).toBeVisible();

@@ -134,6 +134,42 @@ const NavigationContext = createContext<{
   setMenuOpen: (open: boolean) => void;
 } | null>(null);
 
+function useTutorialLifecycle(path: string) {
+  const tutorialRequest = useContext(TutorialRequestContext);
+  const navigation = useContext(NavigationContext);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const openTutorial = useCallback(() => {
+    setTutorialStep(0);
+    setTutorialOpen(true);
+    navigation?.setMenuOpen(true);
+  }, [navigation?.setMenuOpen]);
+  const finishTutorial = useCallback(() => {
+    setTutorialOpen(false);
+    navigation?.setMenuOpen(false);
+  }, [navigation?.setMenuOpen]);
+
+  useEffect(() => {
+    const requestId = tutorialRequest?.requestId ?? 0;
+    if (
+      tutorialRequest?.requestPath !== path ||
+      requestId === 0 ||
+      !tutorialRequest?.consumeTutorialRequest(requestId)
+    )
+      return;
+    openTutorial();
+  }, [openTutorial, path, tutorialRequest]);
+
+  return {
+    tutorialOpen,
+    tutorialStep,
+    setTutorialStep,
+    openTutorial,
+    finishTutorial,
+    menuOpen: navigation?.menuOpen ?? false,
+  };
+}
+
 function BasketProvider({ children, source }: { children: ReactNode; source: ComparisonSource }) {
   const [basket, setBasket] = useState<BasketLine[]>(restoreBasket);
   const [productMetadataRevision, setProductMetadataRevision] = useState(0);
@@ -879,47 +915,24 @@ function TutorialGuide({
 }
 
 export function CataloguePage() {
-  const [tutorialOpen, setTutorialOpen] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
-  const tutorialRequest = useContext(TutorialRequestContext);
-  const navigation = useContext(NavigationContext);
+  const tutorial = useTutorialLifecycle("/catalogue");
   const finishTutorial = useCallback(() => {
     try {
       window.localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
     } catch {
       // Keep the guide usable when browser storage is unavailable.
     }
-    setTutorialOpen(false);
-    navigation?.setMenuOpen(false);
-  }, [navigation?.setMenuOpen]);
+    tutorial.finishTutorial();
+  }, [tutorial.finishTutorial]);
   useEffect(() => {
     try {
       if (window.localStorage.getItem(TUTORIAL_STORAGE_KEY) !== "true") {
-        setTutorialOpen(true);
-        navigation?.setMenuOpen(true);
+        tutorial.openTutorial();
       }
     } catch {
-      setTutorialOpen(true);
-      navigation?.setMenuOpen(true);
+      tutorial.openTutorial();
     }
-  }, [navigation?.setMenuOpen]);
-  useEffect(() => {
-    const requestId = tutorialRequest?.requestId ?? 0;
-    if (
-      tutorialRequest?.requestPath !== "/catalogue" ||
-      requestId === 0 ||
-      !tutorialRequest?.consumeTutorialRequest(requestId)
-    )
-      return;
-    setTutorialStep(0);
-    setTutorialOpen(true);
-    navigation?.setMenuOpen(true);
-  }, [
-    navigation?.setMenuOpen,
-    tutorialRequest?.consumeTutorialRequest,
-    tutorialRequest?.requestId,
-    tutorialRequest?.requestPath,
-  ]);
+  }, [tutorial.openTutorial]);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
@@ -931,12 +944,13 @@ export function CataloguePage() {
     const focusSearch = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
+        if (tutorial.tutorialOpen) return;
         searchInputRef.current?.focus();
       }
     };
     window.addEventListener("keydown", focusSearch);
     return () => window.removeEventListener("keydown", focusSearch);
-  }, []);
+  }, [tutorial.tutorialOpen]);
   const catalogue = useCatalogue();
   const categoryNames = useCategoryNames();
   const { data: heroData } = useProducts({ page: 1, pageSize: 50 });
@@ -1170,11 +1184,11 @@ export function CataloguePage() {
         </div>
       </section>
       <TutorialGuide
-        open={tutorialOpen}
-        stepIndex={tutorialStep}
-        onStepChange={setTutorialStep}
+        open={tutorial.tutorialOpen}
+        stepIndex={tutorial.tutorialStep}
+        onStepChange={tutorial.setTutorialStep}
         onFinish={finishTutorial}
-        menuOpen={navigation?.menuOpen ?? false}
+        menuOpen={tutorial.menuOpen}
       />
     </main>
   );
@@ -1188,32 +1202,7 @@ export function ProductDetail() {
   const { data, isLoading, error } = useOffers(productId, quantity);
   const categoryNames = useCategoryNames();
   const { addToBasket } = useBasket();
-  const [tutorialOpen, setTutorialOpen] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
-  const tutorialRequest = useContext(TutorialRequestContext);
-  const navigation = useContext(NavigationContext);
-  const finishTutorial = useCallback(() => {
-    setTutorialOpen(false);
-    navigation?.setMenuOpen(false);
-  }, [navigation?.setMenuOpen]);
-  useEffect(() => {
-    const requestId = tutorialRequest?.requestId ?? 0;
-    if (
-      tutorialRequest?.requestPath !== location ||
-      requestId === 0 ||
-      !tutorialRequest?.consumeTutorialRequest(requestId)
-    )
-      return;
-    setTutorialStep(0);
-    setTutorialOpen(true);
-    navigation?.setMenuOpen(true);
-  }, [
-    location,
-    navigation?.setMenuOpen,
-    tutorialRequest?.consumeTutorialRequest,
-    tutorialRequest?.requestId,
-    tutorialRequest?.requestPath,
-  ]);
+  const tutorial = useTutorialLifecycle(location);
   if (isLoading)
     return (
       <main>
@@ -1345,11 +1334,11 @@ export function ProductDetail() {
         </p>
       </section>
       <TutorialGuide
-        open={tutorialOpen}
-        stepIndex={tutorialStep}
-        onStepChange={setTutorialStep}
-        onFinish={finishTutorial}
-        menuOpen={navigation?.menuOpen ?? false}
+        open={tutorial.tutorialOpen}
+        stepIndex={tutorial.tutorialStep}
+        onStepChange={tutorial.setTutorialStep}
+        onFinish={tutorial.finishTutorial}
+        menuOpen={tutorial.menuOpen}
         steps={productTutorialSteps(offers.length > 0)}
       />
     </main>
@@ -1421,10 +1410,7 @@ function UnavailableOfferRow({ retailerId }: { retailerId: RetailerId }) {
 }
 
 export function BasketPage() {
-  const [tutorialOpen, setTutorialOpen] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
-  const tutorialRequest = useContext(TutorialRequestContext);
-  const navigation = useContext(NavigationContext);
+  const tutorial = useTutorialLifecycle("/basket");
   const {
     basket,
     basketRevision,
@@ -1439,28 +1425,6 @@ export function BasketPage() {
     runComparison,
     retryComparison,
   } = useBasket();
-
-  const finishTutorial = useCallback(() => {
-    setTutorialOpen(false);
-    navigation?.setMenuOpen(false);
-  }, [navigation?.setMenuOpen]);
-  useEffect(() => {
-    const requestId = tutorialRequest?.requestId ?? 0;
-    if (
-      tutorialRequest?.requestPath !== "/basket" ||
-      requestId === 0 ||
-      !tutorialRequest?.consumeTutorialRequest(requestId)
-    )
-      return;
-    setTutorialStep(0);
-    setTutorialOpen(true);
-    navigation?.setMenuOpen(true);
-  }, [
-    navigation?.setMenuOpen,
-    tutorialRequest?.consumeTutorialRequest,
-    tutorialRequest?.requestId,
-    tutorialRequest?.requestPath,
-  ]);
 
   const categoryNames = useCategoryNames();
   const basketBackdropProducts = basket.map((line) => {
@@ -1677,11 +1641,11 @@ export function BasketPage() {
         </aside>
       </section>
       <TutorialGuide
-        open={tutorialOpen}
-        stepIndex={tutorialStep}
-        onStepChange={setTutorialStep}
-        onFinish={finishTutorial}
-        menuOpen={navigation?.menuOpen ?? false}
+        open={tutorial.tutorialOpen}
+        stepIndex={tutorial.tutorialStep}
+        onStepChange={tutorial.setTutorialStep}
+        onFinish={tutorial.finishTutorial}
+        menuOpen={tutorial.menuOpen}
         steps={basket.length > 0 ? BASKET_TUTORIAL_STEPS : EMPTY_BASKET_TUTORIAL_STEPS}
       />
     </main>
@@ -1753,31 +1717,7 @@ function BasketRow({
 
 export function ResultsPage() {
   const { comparison, isStale, requestState, basketRevision, retryComparison } = useBasket();
-  const tutorialRequest = useContext(TutorialRequestContext);
-  const navigation = useContext(NavigationContext);
-  const [tutorialOpen, setTutorialOpen] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
-  const finishTutorial = useCallback(() => {
-    setTutorialOpen(false);
-    navigation?.setMenuOpen(false);
-  }, [navigation?.setMenuOpen]);
-  useEffect(() => {
-    const requestId = tutorialRequest?.requestId ?? 0;
-    if (
-      tutorialRequest?.requestPath !== "/results" ||
-      requestId === 0 ||
-      !tutorialRequest?.consumeTutorialRequest(requestId)
-    )
-      return;
-    setTutorialStep(0);
-    setTutorialOpen(true);
-    navigation?.setMenuOpen(true);
-  }, [
-    navigation?.setMenuOpen,
-    tutorialRequest?.consumeTutorialRequest,
-    tutorialRequest?.requestId,
-    tutorialRequest?.requestPath,
-  ]);
+  const tutorial = useTutorialLifecycle("/results");
   const hasPurchaseLinks =
     !isStale &&
     requestState.phase !== "pending" &&
@@ -1807,11 +1747,11 @@ export function ResultsPage() {
         onRetry={retryComparison}
       />
       <TutorialGuide
-        open={tutorialOpen}
-        stepIndex={tutorialStep}
-        onStepChange={setTutorialStep}
-        onFinish={finishTutorial}
-        menuOpen={navigation?.menuOpen ?? false}
+        open={tutorial.tutorialOpen}
+        stepIndex={tutorial.tutorialStep}
+        onStepChange={tutorial.setTutorialStep}
+        onFinish={tutorial.finishTutorial}
+        menuOpen={tutorial.menuOpen}
         steps={resultsTutorialSteps(comparison, hasPurchaseLinks, hasSignInRows)}
       />
     </>
