@@ -5,13 +5,14 @@ import {
   productsExample,
 } from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import { BASKET_STORAGE_KEY } from "../src/features/basket/storage";
 import { comparisonFixtures } from "./support/fixtures";
 
 afterEach(() => {
+  cleanup();
   window.localStorage.removeItem(BASKET_STORAGE_KEY);
   window.history.replaceState({}, "", "/");
   vi.unstubAllGlobals();
