@@ -6,6 +6,7 @@ import type {
   RetailerOption,
   SubmittedProduct,
 } from "../../features/basket-comparison/model";
+import { retailerSite } from "../../features/basket-comparison/retailer-sites";
 import { excludedPromotionNote, formatSgd, multibuyNotes } from "../../lib/format";
 import WasPrice from "../WasPrice";
 
@@ -283,7 +284,56 @@ export default function ComparisonMatrix({
             })}
           </tr>
         ))}
+        <SignInRow columns={columns} />
       </tfoot>
     </table>
+  );
+}
+
+/**
+ * Where to sign in to finish the order, one cell per retailer.
+ *
+ * Last row because it follows the totals, which is where the shopper decides.
+ * CartOptix cannot transfer a basket, so finishing an order always means
+ * rebuilding it on the retailer's own site; this saves finding the sign-in
+ * page.
+ *
+ * A cell is filled whenever that column prices something, which is not the
+ * same as the basket being complete: an incomplete column still lists what it
+ * can sell and links to those products, so withholding its sign-in would be
+ * the odd half. Columns with nothing priced, and retailers with no verified
+ * sign-in page, show an em dash rather than a guessed URL.
+ */
+function SignInRow({ columns }: { columns: RetailerOption[] }) {
+  const sites = columns.map((option) =>
+    orderOf(option) ? retailerSite(option.retailer.id) : undefined,
+  );
+  if (sites.every((site) => site === undefined)) return null;
+  return (
+    <tr className="matrix__signin-row">
+      <th scope="row">Sign in to check out</th>
+      {columns.map((option, index) => {
+        const site = sites[index];
+        return (
+          <td key={option.retailer.id} data-retailer={option.retailer.name}>
+            {site === undefined ? (
+              "—"
+            ) : (
+              <a
+                className="text-link"
+                href={site.loginUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Sign in to {option.retailer.name}{" "}
+                {/* Inside the anchor so the host is part of the same target,
+                    not a dead label beside it. */}
+                <span className="matrix__signin-host">({site.host})</span>
+              </a>
+            )}
+          </td>
+        );
+      })}
+    </tr>
   );
 }
