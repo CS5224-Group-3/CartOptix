@@ -3,6 +3,7 @@
 import os
 import subprocess
 
+FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
 ENV = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
 
 
@@ -54,14 +55,17 @@ def change(logical_id, resource_type, replacement="False", details=None):
     }
 
 
+def dynamic(cause, recreation="Never"):
+    return [{"Target": {"Attribute": "Properties", "RequiresRecreation": recreation}, "Evaluation": "Dynamic", "CausingEntity": cause}]
+
+
 def api_changes():
+    """The shape CloudFormation reports for an API release."""
     return [
         change("ApiLaunchTemplate89", LT),
-        change(
-            "ApiGroupASG12",
-            ASG,
-            details=[{"Target": {"Attribute": "Properties"}, "Evaluation": "Dynamic", "CausingEntity": "ApiLaunchTemplate89.LatestVersionNumber"}],
-        ),
+        change("ApiGroupASG12", ASG, replacement="Conditional", details=dynamic("ApiLaunchTemplate89.LatestVersionNumber", "Conditionally")),
+        change("ApiGroupScalingPolicy2C", "AWS::AutoScaling::ScalingPolicy", replacement="Conditional", details=dynamic("ApiGroupASG12", "Always")),
+        change("ObservabilityDashboard9A", "AWS::CloudWatch::Dashboard", details=dynamic("ApiGroupASG12")),
     ]
 
 

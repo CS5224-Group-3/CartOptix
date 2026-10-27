@@ -24,7 +24,7 @@ group="${2:-}"
 
 # A command from an earlier run may still be migrating; never start a second one.
 busy="$(aws ssm list-commands \
-  --query "Commands[?starts_with(Comment, 'CartOptix migrations') && (Status=='Pending' || Status=='InProgress')].CommandId" \
+  --query "Commands[?starts_with(Comment, 'CartOptix migrations') && (Status=='Pending' || Status=='InProgress' || Status=='Cancelling')].CommandId" \
   --output text)"
 [[ -z "$busy" || "$busy" == "None" ]] || die "migration command $busy is still active; do not retry until it reaches a terminal status."
 

@@ -76,9 +76,9 @@ class DeployReleaseTests(unittest.TestCase):
         git(self.repo, "commit", "-q", "-m", message)
         return git(self.repo, "rev-parse", "HEAD")
 
-    def stage(self, current, proposed, changes, **extra):
+    def stage(self, current, proposed, changes, web_release=None, **extra):
         outputs = [{"OutputKey": k, "OutputValue": v} for k, v in (
-            ("Release", self.base), ("WebRelease", self.base), ("InfraRelease", self.base),
+            ("Release", self.base), ("WebRelease", web_release or self.base), ("InfraRelease", self.base),
             ("AutoScalingGroupName", "group"), ("Url", "https://example.test"))]
         stack = {"Stacks": [{"Outputs": outputs, "Parameters": PARAMS}]}
         files = {"stack.json": stack, "current.json": current, "proposed.json": proposed, "changes.json": changes}
@@ -135,14 +135,14 @@ class DeployReleaseTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.methods(calls), ["prepare-change-set", "execute-change-set"])
 
-    def test_web_release_with_no_change_set_is_a_noop(self):
+    def test_missing_change_set_with_a_stale_release_output_fails(self):
         self.write({"apps/web/w.ts": "2"})
         head = self.commit("web")
         self.stage(template(), template(), {}, no_change_set=True)
         result, calls = self.release(head)
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(self.methods(calls), ["prepare-change-set"])
-        self.assertIn("nothing to publish", result.stdout)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("does not show", result.stderr)
+        self.assertNotIn("nothing to publish", result.stdout)
 
     def test_prohibited_infrastructure_change_stops_before_migrations(self):
         self.write({"apps/api/a.ts": "2"})

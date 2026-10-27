@@ -21,7 +21,9 @@ statuses = f"{d}/statuses"
 if cmd == "autoscaling describe-auto-scaling-groups":
     print("i-abc")
 elif cmd == "ssm list-commands":
-    print(os.environ.get("FAKE_BUSY", ""))
+    # Like the real API: only report the busy command if the query asks for its status.
+    busy_status = os.environ.get("FAKE_BUSY_STATUS", "InProgress")
+    print(os.environ["FAKE_BUSY"] if os.environ.get("FAKE_BUSY") and f"Status=='{busy_status}'" in " ".join(args) else "None")
 elif cmd == "ssm send-command":
     print("cmd-1")
 elif cmd == "ssm cancel-command":
@@ -104,6 +106,12 @@ class RunMigrationsTests(unittest.TestCase):
 
     def test_active_migration_blocks_a_second_one(self):
         code, _, err = self.run_script(["Success"], FAKE_BUSY="cmd-0")
+        self.assertEqual(code, 1)
+        self.assertIn("still active", err)
+        self.assertNotIn("send-command", self.calls)
+
+    def test_command_still_cancelling_blocks_a_second_one(self):
+        code, _, err = self.run_script(["Success"], FAKE_BUSY="cmd-0", FAKE_BUSY_STATUS="Cancelling")
         self.assertEqual(code, 1)
         self.assertIn("still active", err)
         self.assertNotIn("send-command", self.calls)

@@ -1,0 +1,92 @@
+{
+  "Status": "CREATE_COMPLETE",
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ApiGroupASGB0274AD9",
+        "ResourceType": "AWS::AutoScaling::AutoScalingGroup",
+        "Replacement": "Conditional",
+        "Scope": ["Properties"],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "LaunchTemplate",
+              "RequiresRecreation": "Conditionally"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "ResourceAttribute",
+            "CausingEntity": "ApiLaunchTemplate89156735.LatestVersionNumber"
+          }
+        ]
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ApiGroupScalingPolicyRequestsPerTarget2CBF7CC7",
+        "ResourceType": "AWS::AutoScaling::ScalingPolicy",
+        "Replacement": "Conditional",
+        "Scope": ["Properties"],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "AutoScalingGroupName",
+              "RequiresRecreation": "Always"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "ApiGroupASGB0274AD9"
+          }
+        ]
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ApiLaunchTemplate89156735",
+        "ResourceType": "AWS::EC2::LaunchTemplate",
+        "Replacement": "False",
+        "Scope": ["Properties"],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "LaunchTemplateData",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ]
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ObservabilityDashboard9A1D08B3",
+        "ResourceType": "AWS::CloudWatch::Dashboard",
+        "Replacement": "False",
+        "Scope": ["Properties"],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "DashboardBody",
+              "RequiresRecreation": "Never"
+            },
+            "Evaluation": "Dynamic",
+            "ChangeSource": "ResourceReference",
+            "CausingEntity": "ApiGroupASGB0274AD9"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import json
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -5,9 +7,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from infra.scripts.check_release_change_set import NO_CHANGES, validate
-from release_fixtures import API_NEW, API_OLD, ASG, LT, PARAMS, WEB, WEB_NEW, WEB_OLD, api_changes, change, description, template
+from release_fixtures import FIXTURES, dynamic, API_NEW, API_OLD, ASG, LT, PARAMS, WEB, WEB_NEW, WEB_OLD, api_changes, change, description, template
 
-STACK = {"Parameters": PARAMS}
+STACK = {"Parameters": PARAMS, "Outputs": [{"OutputKey": "WebRelease", "OutputValue": WEB_OLD}]}
 API = {"api_from": API_OLD, "api_to": API_NEW, "web_from": WEB_OLD, "web_to": WEB_OLD}
 WEB_RELEASE = {"api_from": API_OLD, "api_to": API_OLD, "web_from": WEB_OLD, "web_to": WEB_NEW}
 
@@ -77,6 +79,22 @@ class ApiReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "InfraRelease"):
             run_api(proposed)
 
+    def test_accepts_the_real_change_set_cloudformation_returned(self):
+        with open(os.path.join(FIXTURES, "real_api_change_set.json")) as handle:
+            real = json.load(handle)
+        real["Parameters"] = PARAMS
+        self.assertEqual(run_api(template(api=API_NEW), desc=real), "execute")
+
+    def test_conditional_replacement_needs_a_dynamic_cause(self):
+        static = [change("ApiGroupASG12", ASG, replacement="Conditional")]
+        with self.assertRaisesRegex(ValueError, "conditionally replace"):
+            run_api(template(api=API_NEW), changes=static)
+
+    def test_rejects_a_dependent_that_is_caused_by_something_else(self):
+        other = [change("ApiGroupScalingPolicy2C", "AWS::AutoScaling::ScalingPolicy", replacement="Conditional", details=dynamic("Database.Endpoint", "Always"))]
+        with self.assertRaisesRegex(ValueError, "dynamic"):
+            run_api(template(api=API_NEW), changes=other)
+
     def test_rejects_unexpected_resource_replacement_and_dynamic_change(self):
         with self.assertRaisesRegex(ValueError, "unexpected resource"):
             run_api(template(api=API_NEW), changes=[change("DatabaseABC", "AWS::RDS::DBInstance")])
@@ -100,8 +118,18 @@ class WebReleaseTests(unittest.TestCase):
     def test_identical_assets_advance_only_the_pointer(self):
         self.assertEqual(run_web(template(web=WEB_NEW), []), "execute")
 
-    def test_change_set_that_reports_no_changes_is_a_noop(self):
-        self.assertEqual(run_web(template(), None, desc={"Status": "FAILED", "StatusReason": NO_CHANGES[1]}), "noop")
+    def test_no_change_set_is_a_noop_only_when_the_stack_already_runs_the_release(self):
+        missing = {"Status": "FAILED", "StatusReason": NO_CHANGES[1]}
+        deployed = {"Parameters": PARAMS, "Outputs": [{"OutputKey": "WebRelease", "OutputValue": WEB_NEW}]}
+        self.assertEqual(validate("web", missing, deployed, template(), template(), WEB_RELEASE), "noop")
+
+    def test_missing_change_set_with_a_stale_release_output_fails_closed(self):
+        missing = {"Status": "FAILED", "StatusReason": NO_CHANGES[0]}
+        with self.assertRaisesRegex(ValueError, "does not show"):
+            validate("web", missing, STACK, template(), template(), WEB_RELEASE)
+        no_output = {"Parameters": PARAMS, "Outputs": []}
+        with self.assertRaisesRegex(ValueError, "does not show"):
+            validate("web", missing, no_output, template(), template(), WEB_RELEASE)
 
     def test_rejects_assets_changed_without_resource_changes(self):
         with self.assertRaisesRegex(ValueError, "no resource changes"):

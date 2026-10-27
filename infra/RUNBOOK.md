@@ -189,14 +189,20 @@ capacity, deployment destinations, custom-resource service tokens, other
 outputs, and any parameter change. Parameters include the Amazon Linux AMI, so
 when AWS publishes a new image the guard blocks API releases until an engineer
 redeploys infrastructure with `infra/scripts/deploy.sh`. The change set's own
-resource changes must also stay within the stage's resources, be in-place
-modifications, and any dynamic change must be caused by the API launch template.
-The rollback change set goes through the same guard.
+resource changes must also stay within the stage's resources (for the API: the
+launch template, the Auto Scaling group, its scaling policy and the dashboard).
+CloudFormation reports the ASG and scaling policy as `Conditional` replacements
+because they follow a dynamic reference; that is accepted only when the cause is
+the upstream resource (launch template version, then ASG) and the template diff
+shows their own properties unchanged. A definite replacement, removal, or a
+dynamic change from anything else is rejected. The rollback change set goes through the same guard.
 
 A web release whose built assets are identical produces no resource changes. The
 guard accepts that only when the template differs solely in `WebRelease`, so the
-pointer advances; if CloudFormation reports no changes at all, nothing is
-published and the pointer stays.
+pointer advances. If CloudFormation reports no change set at all, the release
+succeeds with nothing published only when the live stack's `WebRelease` output
+already equals the release; otherwise it fails, so a missing change set can never
+report a release that was not deployed.
 
 ### Migrations
 
@@ -206,8 +212,8 @@ polls until SSM reports a terminal status. The API rollout starts only on
 `Success`. On timeout or interruption it cancels the command and waits for a
 terminal status; if that cannot be confirmed it fails with the command ID and the
 state is uncertain, so do not retry until the command is terminal. A new run
-refuses to start while an earlier `CartOptix migrations` command is pending or
-in progress, and the container name is fixed per release, so a leftover container
+refuses to start while an earlier `CartOptix migrations` command is pending, in
+progress or cancelling (on any instance, for any release), and the container name is fixed per release, so a leftover container
 blocks a retry rather than running alongside it. Drizzle applies each migration in
 a transaction, so an interrupted run rolls back rather than leaving a half-applied
 change. Migrations must stay backward compatible with the API that is still

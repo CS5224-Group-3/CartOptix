@@ -13,16 +13,20 @@ import sys
 MISSING = object()
 NO_CHANGES = ("The submitted information didn't contain changes.", "No updates are to be performed.")
 
+# Logical-id prefix -> (resource type, upstream resource that may cause a
+# dynamic change). The template diff proves these resources' own properties are
+# untouched, so the only way they change is through the upstream resource: the
+# ASG follows the launch template's new version; the scaling policy and
+# dashboard reference the ASG.
 RESOURCES = {
     "api": {
-        "ApiLaunchTemplate": "AWS::EC2::LaunchTemplate",
-        "ApiGroupASG": "AWS::AutoScaling::AutoScalingGroup",
+        "ApiLaunchTemplate": ("AWS::EC2::LaunchTemplate", None),
+        "ApiGroupASG": ("AWS::AutoScaling::AutoScalingGroup", "ApiLaunchTemplate"),
+        "ApiGroupScalingPolicy": ("AWS::AutoScaling::ScalingPolicy", "ApiGroupASG"),
+        "ObservabilityDashboard": ("AWS::CloudWatch::Dashboard", "ApiGroupASG"),
     },
-    "web": {"WebDeployment": "Custom::CDKBucketDeployment"},
+    "web": {"WebDeployment": ("Custom::CDKBucketDeployment", None)},
 }
-# A dynamic change is accepted only when this resource caused it (the ASG
-# follows the launch template's new version).
-DYNAMIC_DRIVER = {"api": "ApiLaunchTemplate", "web": None}
 WEB_RELEASE_OUTPUT = ("Outputs", "WebRelease", "Value")
 
 
@@ -65,7 +69,7 @@ def _check_user_data_moved(template, releases):
     """The launch template must run the new release and keep no trace of the old one."""
     found = False
     for logical_id, resource in template.get("Resources", {}).items():
-        if logical_id.startswith("ApiLaunchTemplate") and resource.get("Type") == RESOURCES["api"]["ApiLaunchTemplate"]:
+        if logical_id.startswith("ApiLaunchTemplate") and resource.get("Type") == RESOURCES["api"]["ApiLaunchTemplate"][0]:
             found = True
             text = json.dumps(resource.get("Properties", {}).get("LaunchTemplateData", {}).get("UserData"), default=repr)
             if releases["api_to"] not in text or releases["api_from"] in text:
@@ -90,18 +94,28 @@ def _check_changes(stage, changes):
     for change in changes:
         resource = change.get("ResourceChange", {})
         logical_id = resource.get("LogicalResourceId", "")
-        expected = next((t for prefix, t in RESOURCES[stage].items() if logical_id.startswith(prefix)), None)
-        if change.get("Type") != "Resource" or expected is None or resource.get("ResourceType") != expected:
+        rule = next((r for prefix, r in RESOURCES[stage].items() if logical_id.startswith(prefix)), None)
+        if change.get("Type") != "Resource" or rule is None or resource.get("ResourceType") != rule[0]:
             raise ValueError(f"{stage} release would change unexpected resource {logical_id!r}")
-        if resource.get("Action") != "Modify" or resource.get("Replacement") not in (None, "False"):
+        driver = rule[1]
+        if resource.get("Action") != "Modify" or resource.get("Replacement") not in (None, "False", "Conditional"):
             raise ValueError(f"{stage} release would replace or remove resource {logical_id!r}")
-        driver = DYNAMIC_DRIVER[stage]
         for detail in resource.get("Details") or []:
             if detail.get("Target", {}).get("Attribute") != "Properties":
                 raise ValueError(f"{stage} release changes a non-property attribute of {logical_id!r}")
-            caused_by = str(detail.get("CausingEntity", ""))
-            if detail.get("Evaluation") == "Dynamic" and not (driver and caused_by.startswith(driver)):
+            dynamic_from_driver = detail.get("Evaluation") == "Dynamic" and driver and str(detail.get("CausingEntity", "")).startswith(driver)
+            if detail.get("Evaluation") == "Dynamic" and not dynamic_from_driver:
                 raise ValueError(f"{stage} release has an unresolved dynamic change on {logical_id!r}")
+            if detail.get("Target", {}).get("RequiresRecreation") not in (None, "Never") and not dynamic_from_driver:
+                raise ValueError(f"{stage} release would replace or remove resource {logical_id!r}")
+        if resource.get("Replacement") == "Conditional" and not any(
+            d.get("Evaluation") == "Dynamic" for d in resource.get("Details") or []
+        ):
+            raise ValueError(f"{stage} release would conditionally replace resource {logical_id!r}")
+
+
+def _live_web_release(stack):
+    return next((o.get("OutputValue") for o in stack.get("Outputs") or [] if o.get("OutputKey") == "WebRelease"), None)
 
 
 def validate(stage, description, stack, current, proposed, releases):
@@ -110,9 +124,11 @@ def validate(stage, description, stack, current, proposed, releases):
     status = description.get("Status")
     reason = str(description.get("StatusReason", ""))
     if status == "FAILED" and reason.startswith(NO_CHANGES):
-        if stage == "web":
+        # Nothing to execute is only a success if the live stack already runs
+        # the requested release; a change set that went missing must not pass.
+        if stage == "web" and _live_web_release(stack) == releases["web_to"]:
             return "noop"
-        raise ValueError(f"{stage} release produced no change set")
+        raise ValueError(f"{stage} release has no change set, and the stack does not show {releases['web_to']} as deployed")
     if status != "CREATE_COMPLETE":
         raise ValueError(f"change set is {status!r}: {reason}")
     if _parameters(stack.get("Parameters")) != _parameters(description.get("Parameters")):
