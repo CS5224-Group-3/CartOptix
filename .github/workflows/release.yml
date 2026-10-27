@@ -35,7 +35,8 @@ jobs:
         with:
           ref: ${{ env.RELEASE }}
           fetch-depth: 0
-          persist-credentials: false
+          # The following fetch needs the job's read-only repository token.
+          persist-credentials: true
 
       - name: Skip a superseded main commit
         id: main
