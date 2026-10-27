@@ -121,7 +121,9 @@ describe("results tutorial guide", () => {
     expect(screen.getByRole("heading", { name: "Your first selected product" })).toBeDefined();
   });
 
-  it("guides shoppers to their basket when no comparison is available", () => {
+  it("guides shoppers to their basket when no comparison is available", async () => {
+    cleanup();
+    window.localStorage.removeItem(BASKET_STORAGE_KEY);
     window.history.replaceState({}, "", "/results");
     render(
       <App queryClient={new QueryClient({ defaultOptions: { queries: { retry: false } } })} />,
@@ -130,7 +132,7 @@ describe("results tutorial guide", () => {
     fireEvent.click(screen.getByRole("button", { name: "How it works" }));
     expect(screen.getByRole("heading", { name: "What to do next" })).toBeDefined();
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Next" }));
-    expect(screen.getByRole("heading", { name: "Go to your basket" })).toBeDefined();
+    expect(await screen.findByRole("heading", { name: "Go to your basket" })).toBeDefined();
     expect(document.querySelector("#results-empty-basket")).not.toBeNull();
   });
 });
