@@ -1,6 +1,6 @@
 import { catalogueExample } from "@cartoptix/contracts/fixtures";
 import { QueryClient } from "@tanstack/react-query";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 
@@ -79,6 +79,30 @@ describe("catalogue tutorial guide", () => {
     fireEvent.click(screen.getByRole("button", { name: "Next" }));
     expect(screen.getByRole("heading", { name: "Replay this guide any time" })).toBeDefined();
     fireEvent.click(screen.getByRole("button", { name: "Finish" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("does not reopen a completed replay when returning from the basket", async () => {
+    window.localStorage.removeItem("cartoptix:tutorial:completed:v1");
+    openCatalogue();
+    expect(await screen.findByRole("dialog")).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Skip guide" }));
+
+    fireEvent.click(screen.getByRole("button", { name: "How it works" }));
+    for (let step = 0; step < 4; step += 1) {
+      fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Next" }));
+    }
+    fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Finish" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+
+    const navigation = screen.getByRole("navigation", { name: "Main navigation" });
+    fireEvent.click(within(navigation).getByRole("link", { name: /Basket/ }));
+    expect(await screen.findByRole("heading", { name: "Your basket is empty" })).toBeDefined();
+    fireEvent.click(within(navigation).getByRole("link", { name: "Browse products" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "Find your everyday essentials." }),
+    ).toBeDefined();
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 });

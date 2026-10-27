@@ -126,6 +126,7 @@ const TutorialRequestContext = createContext<{
   requestId: number;
   requestPath: string;
   requestTutorial: (path: string) => void;
+  consumeTutorialRequest: (requestId: number) => boolean;
 } | null>(null);
 const NavigationContext = createContext<{
   menuOpen: boolean;
@@ -804,7 +805,6 @@ export function CataloguePage() {
   const [tutorialStep, setTutorialStep] = useState(0);
   const tutorialRequest = useContext(TutorialRequestContext);
   const navigation = useContext(NavigationContext);
-  const handledTutorialRequest = useRef(0);
   const finishTutorial = useCallback(() => {
     try {
       window.localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
@@ -830,14 +830,18 @@ export function CataloguePage() {
     if (
       tutorialRequest?.requestPath !== "/catalogue" ||
       requestId === 0 ||
-      requestId === handledTutorialRequest.current
+      !tutorialRequest?.consumeTutorialRequest(requestId)
     )
       return;
-    handledTutorialRequest.current = requestId;
     setTutorialStep(0);
     setTutorialOpen(true);
     navigation?.setMenuOpen(true);
-  }, [navigation?.setMenuOpen, tutorialRequest?.requestId, tutorialRequest?.requestPath]);
+  }, [
+    navigation?.setMenuOpen,
+    tutorialRequest?.consumeTutorialRequest,
+    tutorialRequest?.requestId,
+    tutorialRequest?.requestPath,
+  ]);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [page, setPage] = useState(1);
@@ -1110,7 +1114,6 @@ export function ProductDetail() {
   const [tutorialStep, setTutorialStep] = useState(0);
   const tutorialRequest = useContext(TutorialRequestContext);
   const navigation = useContext(NavigationContext);
-  const handledTutorialRequest = useRef(0);
   const finishTutorial = useCallback(() => {
     setTutorialOpen(false);
     navigation?.setMenuOpen(false);
@@ -1120,14 +1123,19 @@ export function ProductDetail() {
     if (
       tutorialRequest?.requestPath !== location ||
       requestId === 0 ||
-      requestId === handledTutorialRequest.current
+      !tutorialRequest?.consumeTutorialRequest(requestId)
     )
       return;
-    handledTutorialRequest.current = requestId;
     setTutorialStep(0);
     setTutorialOpen(true);
     navigation?.setMenuOpen(true);
-  }, [location, navigation?.setMenuOpen, tutorialRequest?.requestId, tutorialRequest?.requestPath]);
+  }, [
+    location,
+    navigation?.setMenuOpen,
+    tutorialRequest?.consumeTutorialRequest,
+    tutorialRequest?.requestId,
+    tutorialRequest?.requestPath,
+  ]);
   if (isLoading)
     return (
       <main>
@@ -1339,7 +1347,6 @@ export function BasketPage() {
   const [tutorialStep, setTutorialStep] = useState(0);
   const tutorialRequest = useContext(TutorialRequestContext);
   const navigation = useContext(NavigationContext);
-  const handledTutorialRequest = useRef(0);
   const {
     basket,
     basketRevision,
@@ -1364,14 +1371,18 @@ export function BasketPage() {
     if (
       tutorialRequest?.requestPath !== "/basket" ||
       requestId === 0 ||
-      requestId === handledTutorialRequest.current
+      !tutorialRequest?.consumeTutorialRequest(requestId)
     )
       return;
-    handledTutorialRequest.current = requestId;
     setTutorialStep(0);
     setTutorialOpen(true);
     navigation?.setMenuOpen(true);
-  }, [navigation?.setMenuOpen, tutorialRequest?.requestId, tutorialRequest?.requestPath]);
+  }, [
+    navigation?.setMenuOpen,
+    tutorialRequest?.consumeTutorialRequest,
+    tutorialRequest?.requestId,
+    tutorialRequest?.requestPath,
+  ]);
 
   const categoryNames = useCategoryNames();
   const basketBackdropProducts = basket.map((line) => {
@@ -1779,15 +1790,21 @@ export default function App({
     requestId: 0,
     requestPath: "/catalogue",
   });
+  const handledTutorialRequestId = useRef(0);
   const requestTutorial = useCallback((requestPath: string) => {
     setTutorialRequest((current) => ({
       requestId: current.requestId + 1,
       requestPath,
     }));
   }, []);
+  const consumeTutorialRequest = useCallback((requestId: number) => {
+    if (requestId <= handledTutorialRequestId.current) return false;
+    handledTutorialRequestId.current = requestId;
+    return true;
+  }, []);
   const tutorialRequestValue = useMemo(
-    () => ({ ...tutorialRequest, requestTutorial }),
-    [tutorialRequest, requestTutorial],
+    () => ({ ...tutorialRequest, requestTutorial, consumeTutorialRequest }),
+    [tutorialRequest, requestTutorial, consumeTutorialRequest],
   );
   return (
     <ErrorBoundary>

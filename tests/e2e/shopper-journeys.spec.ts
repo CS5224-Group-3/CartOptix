@@ -348,14 +348,25 @@ test.describe("keyboard operation", () => {
       await next.click();
     }
     await page.getByRole("dialog").getByRole("button", { name: "Finish" }).click();
-    await page.goto("/basket");
-    if ((page.viewportSize()?.width ?? 1280) <= 720) {
-      await page.getByRole("button", { name: "Toggle navigation" }).click();
-    }
-    await page
-      .getByRole("navigation", { name: "Main navigation" })
-      .getByRole("button", { name: "How it works" })
-      .click();
+    const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
+    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    await navigation.getByRole("link", { name: /Basket/ }).click();
+    await expect(page).toHaveURL(/\/basket$/);
+
+    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    await navigation.getByRole("link", { name: "Browse products" }).click();
+    await expect(page).toHaveURL(/\/catalogue$/);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+
+    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    await navigation.getByRole("button", { name: "How it works" }).click();
+    await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
+    await page.getByRole("button", { name: "Skip guide" }).click();
+
+    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    await navigation.getByRole("link", { name: /Basket/ }).click();
+    if ((page.viewportSize()?.width ?? 1280) <= 720) await mobileMenu.click();
+    await navigation.getByRole("button", { name: "How it works" }).click();
     await expect(page).toHaveURL(/\/basket$/);
     await expect(page.getByRole("heading", { name: "Add products to your basket" })).toBeVisible();
   });
