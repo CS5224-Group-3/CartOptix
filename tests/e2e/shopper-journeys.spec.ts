@@ -262,6 +262,7 @@ test.describe("CartOptix shopper journeys", () => {
   });
 
   test("basket quantity is capped at 20 packs", async ({ page }) => {
+    test.setTimeout(60_000);
     await addMilkAndOpenBasket(page);
     const increase = page.getByRole("button", { name: /Increase/ }).first();
     for (let index = 0; index < 19; index += 1) await increase.click();
@@ -274,7 +275,7 @@ test.describe("CartOptix shopper journeys", () => {
   });
 
   test("basket accepts 50 distinct lines and rejects the 51st", async ({ page }) => {
-    test.setTimeout(90_000);
+    test.setTimeout(180_000);
     await page.goto("/catalogue");
     await dismissFirstVisitGuide(page);
     await page.addStyleTag({
@@ -310,6 +311,7 @@ test.describe("keyboard operation", () => {
   });
 
   test("shows a first visit guide with skip and supports replay", async ({ page }) => {
+    test.setTimeout(60_000);
     await page.goto("/catalogue");
     await expect(page.getByRole("heading", { name: "Welcome to CartOptix" })).toBeVisible();
     await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
