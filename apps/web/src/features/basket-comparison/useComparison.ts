@@ -10,9 +10,17 @@ import {
 type Prepare = (captured: ComparisonSubmission) => Promise<ComparisonSubmission>;
 
 /** Keep the last success independent of request state and never mutate the shopper's basket. */
-export function useComparison(source: ComparisonSource) {
-  const [result, setResult] = useState<BasketComparisonPresentation | null>(null);
-  const [request, setRequest] = useState<ComparisonRequestState>({ phase: "idle" });
+export function useComparison(
+  source: ComparisonSource,
+  /** A comparison a previous load of this tab completed; it seeds the success state. */
+  initial?: { result: BasketComparisonPresentation; submitted: ComparisonSubmission },
+) {
+  const [result, setResult] = useState<BasketComparisonPresentation | null>(
+    initial?.result ?? null,
+  );
+  const [request, setRequest] = useState<ComparisonRequestState>(
+    initial ? { phase: "success", submitted: initial.submitted } : { phase: "idle" },
+  );
   const inFlight = useRef(false);
   const mounted = useRef(true);
   const pipeline = useRef<{ prepare?: Prepare; source: ComparisonSource } | null>(null);
