@@ -35,6 +35,8 @@ pnpm --filter @cartoptix/web build
 # CartOptixGuardrails, which holds the spending alert and is deployed once.
 pnpm exec cdk deploy CartOptixPresentation \
   -c release="$release" \
+  -c webRelease="$(git rev-parse HEAD)" \
+  -c infraRelease="$(git rev-parse HEAD)" \
   -c minInstances="${MIN_INSTANCES:-1}" \
   -c alertEmail=unused@example.invalid \
   ${TARGET_RPM:+-c targetRequestsPerMinute="$TARGET_RPM"} "$@"

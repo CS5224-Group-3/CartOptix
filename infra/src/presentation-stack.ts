@@ -14,10 +14,18 @@ import type { Construct } from "constructs";
 import { Observability } from "./observability.ts";
 
 export interface PresentationStackProps extends StackProps {
-  /** Full commit SHA of the release: the cartoptix-api image tag and the web build's commit. */
+  /** Full commit SHA of the API image tag. */
   readonly release: string;
+  /** Full commit SHA of the web build currently uploaded to S3. */
+  readonly webRelease: string;
+  /** Full commit SHA whose CDK definition last changed the deployed infrastructure. */
+  readonly infraRelease: string;
   /** Baseline application instances: 1 while building, 2 for evaluation and the presentation. */
   readonly minInstances: number;
+  /** Existing Auto Scaling Group maximum; app releases must preserve it. */
+  readonly maxInstances: number;
+  /** Existing target-tracking warm-up, in seconds. */
+  readonly scalingWarmupSeconds: number;
   /** Directory holding the built web app (apps/web/dist). */
   readonly webDist: string;
   /**
@@ -31,14 +39,13 @@ export interface PresentationStackProps extends StackProps {
 }
 
 const API_PORT = 3001;
-const MAX_INSTANCES = 3;
 // AWS-managed prefix list com.amazonaws.global.cloudfront.origin-facing in
 // ap-southeast-1. Hard-coded because looking it up would make synth need AWS.
 const CLOUDFRONT_ORIGIN_FACING_PREFIX_LIST = "pl-31a34658";
 /**
  * Connections one instance can hold: the comparison pool (4) plus the click
  * recorder's own pool (2), from `apps/api/src/database.ts` and
- * `apps/api/src/events/outbound-click.ts`. Scaling to MAX_INSTANCES therefore
+ * `apps/api/src/events/outbound-click.ts`. Scaling to the configured maximum therefore
  * demands 18, which is what the database has to absorb.
  */
 const CONNECTIONS_PER_INSTANCE = 6;
@@ -47,7 +54,7 @@ const CONNECTIONS_PER_INSTANCE = 6;
  * `max_connections` pinned on the database (#21).
  *
  * Pinned rather than left to the instance-class default so the headroom over
- * the 18 connections MAX_INSTANCES demands is a known number rather than one
+ * the 18 connections the configured maximum demands is a known number rather than one
  * inferred from a memory formula, and so it cannot move under us if the
  * instance class ever changes. The remainder covers the engineer's SSM tunnel
  * for migrations and RDS's own reserved superuser slots.
@@ -99,7 +106,7 @@ export class PresentationStack extends Stack {
       version: rds.PostgresEngineVersion.of("18.6", "18"),
     });
 
-    // Pins max_connections (#21) so the headroom over what MAX_INSTANCES can
+    // Pins max_connections (#21) so the headroom over the configured maximum can
     // demand is a stated number rather than an instance-class default.
     const databaseParameters = new rds.ParameterGroup(this, "DatabaseParameters", {
       engine,
@@ -181,7 +188,7 @@ export class PresentationStack extends Stack {
       vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
       launchTemplate,
       minCapacity: props.minInstances,
-      maxCapacity: MAX_INSTANCES,
+      maxCapacity: props.maxInstances,
       // Publishes desired/in-service capacity to CloudWatch (#21). Without
       // this the ASG reports no capacity metrics at all, and a scaling
       // experiment leaves nothing to read afterwards.
@@ -272,7 +279,7 @@ export class PresentationStack extends Stack {
       // anything. Counting its empty request rate before then would read as
       // spare capacity and cancel the scale-out that just happened. Unlike
       // cooldown, this one does apply to target tracking.
-      estimatedInstanceWarmup: Duration.minutes(8),
+      estimatedInstanceWarmup: Duration.seconds(props.scalingWarmupSeconds),
     });
 
     // --- Edge ---------------------------------------------------------------
@@ -337,7 +344,7 @@ export class PresentationStack extends Stack {
       targetGroup: targets,
       autoScalingGroup: group,
       database: this.database,
-      maxInstances: MAX_INSTANCES,
+      maxInstances: props.maxInstances,
       maxConnections: MAX_CONNECTIONS,
       connectionsPerInstance: CONNECTIONS_PER_INSTANCE,
     });
@@ -347,6 +354,8 @@ export class PresentationStack extends Stack {
       value: `https://${this.region}.console.aws.amazon.com/cloudwatch/home?region=${this.region}#dashboards/dashboard/${observability.dashboard.dashboardName}`,
     });
     new CfnOutput(this, "Release", { value: props.release });
+    new CfnOutput(this, "WebRelease", { value: props.webRelease });
+    new CfnOutput(this, "InfraRelease", { value: props.infraRelease });
     new CfnOutput(this, "AutoScalingGroupName", { value: group.autoScalingGroupName });
     new CfnOutput(this, "DatabaseEndpoint", { value: this.database.dbInstanceEndpointAddress });
     new CfnOutput(this, "DatabaseSecretArn", { value: databaseSecret.secretArn });

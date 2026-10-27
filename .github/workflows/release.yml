@@ -1,15 +1,5 @@
-# Publishes a release for Issue #7: a pair of arm64 images tagged with the Git
-# commit that produced them, so a running release can always be identified from
-# its image tag and an earlier release can be restored without rebuilding.
-#
-# Runs when CI succeeds for a push to main, and publishes the commit CI
-# verified. A failing check therefore blocks every release.
-#
-# Nothing is deployed from here. The development host is updated by hand
-# (deploy/development/RUNBOOK.md) and the presentation stack from an engineer's
-# machine (infra/RUNBOOK.md), because an automatic deploy is a cost risk (#20).
-# Authentication uses GitHub OIDC, so the repository holds no long-lived AWS
-# credentials.
+# Publishes the API image and deploys changed application services only after CI
+# succeeds on main. Stack lifecycle and unrelated infrastructure stay manual.
 name: Release
 
 on:
@@ -19,96 +9,167 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
-# One publish at a time, never cancelled half-way.
 concurrency:
-  group: release-publish
+  group: release-presentation
   cancel-in-progress: false
 
 env:
   AWS_REGION: ap-southeast-1
   ECR_REPOSITORY_API: cartoptix-api
-  ECR_REPOSITORY_WEB: cartoptix-web
-  # The commit CI verified.
   RELEASE: ${{ github.event.workflow_run.head_sha }}
 
 jobs:
-  publish:
-    name: Build and publish arm64 images
-    # Checks gate every release. Only a successful CI run for a push to main
-    # starts a publish; a pull request can never publish.
+  detect:
+    name: Verify current main release
     if: >-
-      github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'main'
-    # Native arm64, so the images are built for Graviton without emulation.
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 30
-
+    runs-on: ubuntu-latest
+    outputs:
+      current: ${{ steps.main.outputs.current }}
     steps:
-      - name: Check the required repository variables
-        env:
-          PUBLISH_ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
-        run: |
-          if [[ -z "$PUBLISH_ROLE_ARN" ]]; then
-            echo "::error::Repository variable AWS_PUBLISH_ROLE_ARN is not set. See deploy/development/RUNBOOK.md."
-            exit 1
-          fi
-
       - name: Check out the commit CI verified
         uses: actions/checkout@v5
         with:
           ref: ${{ env.RELEASE }}
-          # The images are published from the checkout, not pushed back to it.
+          fetch-depth: 0
           persist-credentials: false
 
-      - name: Assume the publishing role
+      - name: Skip a superseded main commit
+        id: main
+        env:
+          RELEASE: ${{ env.RELEASE }}
+        run: |
+          git fetch --quiet origin +refs/heads/main:refs/remotes/origin/main
+          if [[ "$(git rev-parse refs/remotes/origin/main)" != "$RELEASE" ]]; then
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "Skipped $RELEASE because main has advanced to $(git rev-parse refs/remotes/origin/main)." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "current=true" >> "$GITHUB_OUTPUT"
+
+      - name: Report whether deployment is enabled
+        env:
+          ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+        run: |
+          if [[ -z "$ROLE_ARN" ]]; then
+            echo "Deployment is not enabled: AWS_DEPLOY_ROLE_ARN is unset. Only the API image is published. See infra/RUNBOOK.md (CI application releases)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  publish:
+    name: Publish the API image
+    needs: detect
+    if: needs.detect.outputs.current == 'true'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check the publishing role setting
+        env:
+          ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+        run: |
+          if [[ -z "$ROLE_ARN" ]]; then
+            echo "::error::Repository variable AWS_PUBLISH_ROLE_ARN is not set. See infra/RUNBOOK.md."
+            exit 1
+          fi
+
+      - name: Assume the ECR publishing role
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Check whether the immutable image already exists
+        id: image
+        env:
+          RELEASE: ${{ env.RELEASE }}
+        run: |
+          if error=$(aws ecr describe-images --repository-name "$ECR_REPOSITORY_API" --image-ids "imageTag=$RELEASE" 2>&1); then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "API image $RELEASE already exists; leaving the immutable image unchanged."
+          elif [[ "$error" == *ImageNotFoundException* ]]; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "$error" >&2
+            exit 1
+          fi
+
+      - name: Check out the commit to build
+        if: steps.image.outputs.exists == 'false'
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.RELEASE }}
+          persist-credentials: false
+
       - name: Log in to Amazon ECR
+        if: steps.image.outputs.exists == 'false'
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - uses: docker/setup-buildx-action@v3
+        if: steps.image.outputs.exists == 'false'
 
       - name: Publish the API image
+        if: steps.image.outputs.exists == 'false'
         uses: docker/build-push-action@v6
         with:
           context: .
           file: apps/api/Dockerfile
           platforms: linux/arm64
           push: true
-          # Only the commit tag is published. Never a moving tag such as
-          # "latest": the tag must identify exactly one immutable build.
           tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_API }}:${{ env.RELEASE }}
           cache-from: type=gha,scope=api
           cache-to: type=gha,scope=api,mode=max
 
-      - name: Publish the web image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: deploy/development/web.Dockerfile
-          platforms: linux/arm64
-          push: true
-          tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_WEB }}:${{ env.RELEASE }}
-          cache-from: type=gha,scope=web
-          cache-to: type=gha,scope=web,mode=max
-
-      - name: Record the release
-        env:
-          REGISTRY: ${{ steps.ecr.outputs.registry }}
+      - name: Record the API release
         run: |
-          {
-            echo "Published release \`$RELEASE\`"
-            echo
-            echo '```'
-            echo "$REGISTRY/$ECR_REPOSITORY_API:$RELEASE"
-            echo "$REGISTRY/$ECR_REPOSITORY_WEB:$RELEASE"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          echo "API image: $ECR_REPOSITORY_API:$RELEASE" >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Deploy changed presentation services
+    needs: [detect, publish]
+    if: >-
+      always() &&
+      needs.detect.result == 'success' &&
+      needs.detect.outputs.current == 'true' &&
+      vars.AWS_DEPLOY_ROLE_ARN != '' &&
+      (needs.publish.result == 'success' || needs.publish.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the commit CI verified
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.RELEASE }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Assume the presentation deployment role
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy changed application services
+        env:
+          CI: "true"
+          RELEASE: ${{ env.RELEASE }}
+        run: ./infra/scripts/deploy-release.sh

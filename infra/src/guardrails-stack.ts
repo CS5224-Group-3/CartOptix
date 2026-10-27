@@ -10,7 +10,7 @@ import type { Construct } from "constructs";
  * of every working session; a spending alert inside it would be destroyed
  * too, and would be missing during exactly the periods it is most needed —
  * when a stack was left up by mistake, or when something outside the stack
- * (the development host, ECR storage, an orphaned volume) is quietly billing.
+ * (ECR storage or an orphaned volume) is quietly billing.
  * This stack is deployed once and left alone.
  *
  * The budget is filtered to `Project=cartoptix` because the AWS account also
