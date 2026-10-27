@@ -63,6 +63,7 @@ import type {
   ComparisonSubmission,
 } from "./features/basket-comparison/model";
 import { useComparison } from "./features/basket-comparison/useComparison";
+import { validateRecommendation } from "./features/basket-comparison/validation";
 import {
   ApiError,
   recordOutboundClick,
@@ -406,8 +407,8 @@ function AppShell({ children }: { children: ReactNode }) {
                 onClick={() => {
                   setMenuOpen(true);
                   const tutorialPath =
-                    location === "/basket"
-                      ? "/basket"
+                    location === "/basket" || location === "/results"
+                      ? location
                       : location.startsWith("/product/")
                         ? location
                         : "/catalogue";
@@ -611,6 +612,59 @@ function productTutorialSteps(hasOffers: boolean): readonly TutorialStep[] {
     ...(hasOffers ? [PRODUCT_RETAILER_LINKS_STEP] : []),
     PRODUCT_ADD_TO_BASKET_STEP,
     PRODUCT_VIEW_BASKET_STEP,
+  ];
+}
+
+const RESULTS_INTRO_STEP: TutorialStep = {
+  selector: null,
+  title: "What to do next",
+  description:
+    "Review the estimated prices, then visit a retailer to confirm the exact product and current availability. CartOptix does not transfer your basket or place an order. Use Edit basket to make changes and compare again.",
+};
+const RESULTS_RETAILERS_STEP: TutorialStep = {
+  selector: "#results-retailer-row",
+  title: "Compare the three retailers",
+  description:
+    "These columns show RedMart, FairPrice, and Cold Storage. Compare each retailer's estimated basket total and availability; unavailable items and partial estimates are labelled.",
+};
+const RESULTS_FIRST_PRODUCT_STEP: TutorialStep = {
+  selector: "#results-first-product",
+  title: "Your first selected product",
+  description:
+    "This row is the first exact product in your basket, including its pack size and quantity. Each retailer column shows its amount for this item or says when it is unavailable.",
+};
+const RESULTS_VIEW_STEP: TutorialStep = {
+  selector: "#results-first-product .text-link",
+  title: "Confirm the product with a retailer",
+  description:
+    "View opens the retailer's product page in a new tab. Check the product and current details there before rebuilding your basket and checking out on the retailer's website.",
+};
+const RESULTS_EDIT_STEP: TutorialStep = {
+  selector: "#results-edit-basket",
+  title: "Edit your basket",
+  description:
+    "Return to your basket to add or remove products, change pack quantities, and run a fresh comparison.",
+};
+const RESULTS_EMPTY_BASKET_STEP: TutorialStep = {
+  selector: "#results-empty-basket",
+  title: "Go to your basket",
+  description:
+    "There is no comparison to review yet. Open your basket, add products, then compare it to see retailer prices.",
+};
+
+function resultsTutorialSteps(
+  result: BasketComparisonPresentation | null,
+  hasPurchaseLinks: boolean,
+): readonly TutorialStep[] {
+  if (!result) return [RESULTS_INTRO_STEP, RESULTS_EMPTY_BASKET_STEP];
+  if (validateRecommendation(result).kind === "invalid")
+    return [RESULTS_INTRO_STEP, RESULTS_EDIT_STEP];
+  return [
+    RESULTS_INTRO_STEP,
+    RESULTS_RETAILERS_STEP,
+    RESULTS_FIRST_PRODUCT_STEP,
+    ...(hasPurchaseLinks ? [RESULTS_VIEW_STEP] : []),
+    RESULTS_EDIT_STEP,
   ];
 }
 
@@ -1675,14 +1729,64 @@ function BasketRow({
 
 export function ResultsPage() {
   const { comparison, isStale, requestState, basketRevision, retryComparison } = useBasket();
+  const tutorialRequest = useContext(TutorialRequestContext);
+  const navigation = useContext(NavigationContext);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const finishTutorial = useCallback(() => {
+    setTutorialOpen(false);
+    navigation?.setMenuOpen(false);
+  }, [navigation?.setMenuOpen]);
+  useEffect(() => {
+    const requestId = tutorialRequest?.requestId ?? 0;
+    if (
+      tutorialRequest?.requestPath !== "/results" ||
+      requestId === 0 ||
+      !tutorialRequest?.consumeTutorialRequest(requestId)
+    )
+      return;
+    setTutorialStep(0);
+    setTutorialOpen(true);
+    navigation?.setMenuOpen(true);
+  }, [
+    navigation?.setMenuOpen,
+    tutorialRequest?.consumeTutorialRequest,
+    tutorialRequest?.requestId,
+    tutorialRequest?.requestPath,
+  ]);
+  const hasPurchaseLinks =
+    !isStale &&
+    requestState.phase !== "pending" &&
+    requestState.phase !== "failure" &&
+    comparison !== null &&
+    validateRecommendation(comparison).kind !== "invalid" &&
+    comparison.submittedBasket.products[0] !== undefined &&
+    comparison.options.some((option) => {
+      const order = option.kind === "unavailable" ? option.partial : option;
+      return order?.lines.some(
+        (line) =>
+          line.productId === comparison.submittedBasket.products[0]?.productId &&
+          Boolean(line.purchaseUrl),
+      );
+    });
   return (
-    <BasketComparisonPage
-      result={comparison}
-      isStale={isStale}
-      request={requestState}
-      currentRevision={basketRevision}
-      onRetry={retryComparison}
-    />
+    <>
+      <BasketComparisonPage
+        result={comparison}
+        isStale={isStale}
+        request={requestState}
+        currentRevision={basketRevision}
+        onRetry={retryComparison}
+      />
+      <TutorialGuide
+        open={tutorialOpen}
+        stepIndex={tutorialStep}
+        onStepChange={setTutorialStep}
+        onFinish={finishTutorial}
+        menuOpen={navigation?.menuOpen ?? false}
+        steps={resultsTutorialSteps(comparison, hasPurchaseLinks)}
+      />
+    </>
   );
 }
 function HowItWorks() {

@@ -19,10 +19,21 @@ async function addMilkAndOpenBasket(page: Page) {
 
 async function dismissFirstVisitGuide(page: Page) {
   const skip = page.getByRole("button", { name: "Skip guide" });
-  if (await skip.isVisible()) await skip.click();
+  if (await skip.isVisible()) {
+    await skip.click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  }
 }
 
 async function openBasketGuide(page: Page) {
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
+  const guideButton = navigation.getByRole("button", { name: "How it works" });
+  const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
+  if ((await mobileMenu.isVisible()) && !(await guideButton.isVisible())) await mobileMenu.click();
+  await guideButton.click();
+}
+
+async function openResultsGuide(page: Page) {
   const navigation = page.getByRole("navigation", { name: "Main navigation" });
   const guideButton = navigation.getByRole("button", { name: "How it works" });
   const mobileMenu = page.getByRole("button", { name: "Toggle navigation" });
@@ -436,5 +447,45 @@ test.describe("basket guide", () => {
     await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
     await expect(page.getByRole("heading", { name: "Compare your basket" })).toBeVisible();
     await expect(page.locator("#compare-basket")).toBeVisible();
+  });
+});
+
+test.describe("results guide", () => {
+  test("explains comparison results and can be replayed", async ({ page }) => {
+    await addMilkAndOpenBasket(page);
+    await compareBasket(page);
+    await expect(page.locator(".matrix")).toBeVisible();
+
+    await openResultsGuide(page);
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByRole("heading", { name: "What to do next" })).toBeVisible();
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Compare the three retailers" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-retailer-row .matrix__retailer")).toHaveCount(3);
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Your first selected product" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-first-product .matrix__cell")).toHaveCount(3);
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(
+      dialog.getByRole("heading", { name: "Confirm the product with a retailer" }),
+    ).toBeVisible();
+    await expect(page.locator("#results-first-product .text-link").first()).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Next" }).click();
+    await expect(dialog.getByRole("heading", { name: "Edit your basket" })).toBeVisible();
+    await expect(page.locator("#results-edit-basket")).toBeVisible();
+    await dialog.getByRole("button", { name: "Finish" }).click();
+    await expect(dialog).toHaveCount(0);
+
+    await openResultsGuide(page);
+    await expect(
+      page.getByRole("dialog").getByRole("heading", { name: "What to do next" }),
+    ).toBeVisible();
   });
 });

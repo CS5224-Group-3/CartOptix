@@ -37,7 +37,7 @@ export default function BasketComparisonPage({
           onRetry={onRetry}
         />
         {request.phase === "idle" && <p>Build a basket and run a new estimate first.</p>}
-        <Link className="button button--primary" href="/basket">
+        <Link className="button button--primary" href="/basket" id="results-empty-basket">
           Go to basket
         </Link>
       </main>
@@ -115,7 +115,7 @@ export default function BasketComparisonPage({
         </p>
       </div>
       <div className="results-actions">
-        <Link className="button button--primary" href="/basket">
+        <Link className="button button--primary" href="/basket" id="results-edit-basket">
           Edit basket
         </Link>
       </div>

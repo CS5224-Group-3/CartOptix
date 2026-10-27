@@ -184,7 +184,7 @@ export default function ComparisonMatrix({
     <table className="matrix">
       <caption className="sr-only">Basket price by retailer</caption>
       <thead>
-        <tr>
+        <tr id="results-retailer-row">
           <th scope="col" className="matrix__corner">
             {rows.length} {rows.length === 1 ? "product" : "products"}
           </th>
@@ -223,8 +223,8 @@ export default function ComparisonMatrix({
         </tr>
       </thead>
       <tbody>
-        {rows.map((product) => (
-          <tr key={product.productId}>
+        {rows.map((product, index) => (
+          <tr key={product.productId} id={index === 0 ? "results-first-product" : undefined}>
             <th scope="row" className="matrix__product">
               <div className="matrix__identity">
                 <Thumb product={product} />
