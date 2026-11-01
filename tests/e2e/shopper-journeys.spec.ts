@@ -18,11 +18,15 @@ async function addMilkAndOpenBasket(page: Page) {
 }
 
 async function dismissFirstVisitGuide(page: Page) {
-  const skip = page.getByRole("button", { name: "Skip guide" });
-  if (await skip.isVisible()) {
-    await skip.click();
-    await expect(page.getByRole("dialog")).toHaveCount(0);
+  const completed = await page.evaluate(
+    () => localStorage.getItem("cartoptix:tutorial:completed:v1") === "true",
+  );
+  if (!completed) {
+    // The guide opens in a React effect: an immediate visibility check can
+    // miss it and let the next shopper action race the modal.
+    await page.getByRole("button", { name: "Skip guide" }).click();
   }
+  await expect(page.getByRole("dialog")).toHaveCount(0);
 }
 
 async function openGuide(page: Page) {

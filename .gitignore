@@ -4,6 +4,7 @@ dist/
 build/
 *.tsbuildinfo
 cdk.out/
+cdk.out-certificates/
 
 # Local environment: keep .env.example tracked, never commit real values
 .env

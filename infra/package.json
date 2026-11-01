@@ -9,7 +9,7 @@
     "deploy": "scripts/deploy.sh",
     "destroy": "scripts/destroy.sh",
     "deploy:budget": "scripts/deploy-budget.sh",
-    "clean": "rm -rf dist cdk.out *.tsbuildinfo"
+    "clean": "rm -rf dist cdk.out cdk.out-certificates *.tsbuildinfo"
   },
   "dependencies": {
     "aws-cdk-lib": "2.273.0",

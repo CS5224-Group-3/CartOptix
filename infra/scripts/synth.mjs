@@ -30,3 +30,10 @@ run(
   ["synth", "--quiet", "-c", `release=${release}`, "-c", "alertEmail=synth@example.invalid"],
   infraRoot,
 );
+// Certificate issuance has a separate lifecycle, but its definitions are also
+// checked offline in CI. No DNS or AWS credentials are used by synthesis.
+run(
+  cdk,
+  ["synth", "--quiet", "--app", "node bin/certificates.ts", "--output", "cdk.out-certificates"],
+  infraRoot,
+);

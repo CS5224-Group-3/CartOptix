@@ -1,5 +1,13 @@
-import { CfnOutput, Duration, RemovalPolicy, Stack, type StackProps } from "aws-cdk-lib";
+import {
+  CfnOutput,
+  CfnParameter,
+  Duration,
+  RemovalPolicy,
+  Stack,
+  type StackProps,
+} from "aws-cdk-lib";
 import * as autoscaling from "aws-cdk-lib/aws-autoscaling";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
@@ -11,6 +19,7 @@ import * as rds from "aws-cdk-lib/aws-rds";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import type { Construct } from "constructs";
+import { ORIGIN_DOMAIN, SITE_DOMAIN } from "./certificates.ts";
 import { Observability } from "./observability.ts";
 
 export interface PresentationStackProps extends StackProps {
@@ -39,6 +48,7 @@ export interface PresentationStackProps extends StackProps {
 }
 
 const API_PORT = 3001;
+const TLS_PORT = 443;
 // AWS-managed prefix list com.amazonaws.global.cloudfront.origin-facing in
 // ap-southeast-1. Hard-coded because looking it up would make synth need AWS.
 const CLOUDFRONT_ORIGIN_FACING_PREFIX_LIST = "pl-31a34658";
@@ -79,6 +89,21 @@ export class PresentationStack extends Stack {
 
   constructor(scope: Construct, id: string, props: PresentationStackProps) {
     super(scope, id, props);
+
+    // Parameters persist across CI application releases. Certificate issuance
+    // and DNS changes remain engineer-owned, outside this daily-lived stack.
+    const certificate = (name: string, region: string) =>
+      acm.Certificate.fromCertificateArn(
+        this,
+        name,
+        new CfnParameter(this, `${name}Arn`, {
+          type: "String",
+          allowedPattern: `arn:aws:acm:${region}:[0-9]{12}:certificate/[0-9a-f-]{36}`,
+          description: `Issued ACM public certificate in ${region}; see TLS setup in infra/RUNBOOK.md.`,
+        }).valueAsString,
+      );
+    const viewerCertificate = certificate("ViewerCertificate", "us-east-1");
+    const originCertificate = certificate("OriginCertificate", "ap-southeast-1");
 
     // No NAT gateway or interface endpoints: app instances reach ECR and SSM
     // through their own public IPv4 addresses, which is cheaper. The ALB and
@@ -233,7 +258,7 @@ export class PresentationStack extends Stack {
     });
     albSecurityGroup.addIngressRule(
       ec2.Peer.prefixList(CLOUDFRONT_ORIGIN_FACING_PREFIX_LIST),
-      ec2.Port.tcp(80),
+      ec2.Port.tcp(TLS_PORT),
       "CloudFront VPC origin",
     );
 
@@ -244,12 +269,18 @@ export class PresentationStack extends Stack {
       securityGroup: albSecurityGroup,
     });
 
-    const listener = alb.addListener("Http", { port: 80, open: false });
+    const listener = alb.addListener("Https", {
+      port: TLS_PORT,
+      open: false,
+      certificates: [originCertificate],
+      sslPolicy: elbv2.SslPolicy.RECOMMENDED_TLS,
+    });
     const targets = listener.addTargets("Api", {
-      port: API_PORT,
-      protocol: elbv2.ApplicationProtocol.HTTP,
+      port: TLS_PORT,
+      protocol: elbv2.ApplicationProtocol.HTTPS,
       targets: [group],
       healthCheck: {
+        protocol: elbv2.Protocol.HTTPS,
         path: "/health/live",
         interval: Duration.seconds(15),
         healthyThresholdCount: 2,
@@ -291,9 +322,15 @@ export class PresentationStack extends Stack {
       autoDeleteObjects: true,
     });
 
-    const apiOrigin = origins.VpcOrigin.withApplicationLoadBalancer(alb, {
-      protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
+    const vpcOrigin = new cloudfront.VpcOrigin(this, "ApiVpcOrigin", {
+      endpoint: cloudfront.VpcOriginEndpoint.applicationLoadBalancer(alb),
+      httpsPort: TLS_PORT,
+      protocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
+      originSslProtocols: [cloudfront.OriginSslPolicy.TLS_V1_2],
     });
+    // Ensure the HTTPS listener exists before CloudFront provisions the VPC origin.
+    vpcOrigin.node.addDependency(listener);
+    const apiOrigin = origins.VpcOrigin.withVpcOrigin(vpcOrigin, { domainName: ORIGIN_DOMAIN });
     const apiBehavior: cloudfront.BehaviorOptions = {
       origin: apiOrigin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -315,6 +352,9 @@ export class PresentationStack extends Stack {
 
     const distribution = new cloudfront.Distribution(this, "Distribution", {
       comment: "CartOptix presentation",
+      domainNames: [SITE_DOMAIN],
+      certificate: viewerCertificate,
+      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       defaultRootObject: "index.html",
       defaultBehavior: {
         origin: origins.S3BucketOrigin.withOriginAccessControl(siteBucket),
@@ -349,7 +389,9 @@ export class PresentationStack extends Stack {
       connectionsPerInstance: CONNECTIONS_PER_INSTANCE,
     });
 
-    new CfnOutput(this, "Url", { value: `https://${distribution.distributionDomainName}` });
+    new CfnOutput(this, "Url", { value: `https://${SITE_DOMAIN}` });
+    new CfnOutput(this, "ViewerDnsTarget", { value: distribution.distributionDomainName });
+    new CfnOutput(this, "OriginDnsTarget", { value: alb.loadBalancerDnsName });
     new CfnOutput(this, "Dashboard", {
       value: `https://${this.region}.console.aws.amazon.com/cloudwatch/home?region=${this.region}#dashboards/dashboard/${observability.dashboard.dashboardName}`,
     });
@@ -373,14 +415,14 @@ interface BootOptions {
 
 /**
  * Boot script for an API instance: install Docker, build DATABASE_URL from the
- * RDS secret, run the release's image and wait until /health/live answers. A
+ * RDS secret, run the release's image and wait until nginx serves HTTPS liveness. A
  * non-zero exit is reported to CloudFormation by the signal command.
  */
 function apiBootCommands(o: BootOptions): string[] {
   const caBundle = `https://truststore.pki.rds.amazonaws.com/${o.region}/${o.region}-bundle.pem`;
   return [
     "set -euo pipefail",
-    "dnf install -y docker jq aws-cfn-bootstrap",
+    "dnf install -y docker jq aws-cfn-bootstrap nginx openssl",
     "systemctl enable --now docker",
     "install -d -m 755 /etc/cartoptix",
     // The API verifies the database's certificate against the RDS CA bundle.
@@ -395,7 +437,7 @@ function apiBootCommands(o: BootOptions): string[] {
     'instance_id=$(TOKEN=$(curl -fsS -X PUT -H "X-aws-ec2-metadata-token-ttl-seconds: 60" http://169.254.169.254/latest/api/token) && curl -fsS -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)',
     [
       "docker run -d --name cartoptix-api --restart unless-stopped",
-      `-p ${API_PORT}:${API_PORT}`,
+      `-p 127.0.0.1:${API_PORT}:${API_PORT}`,
       "--env-file /etc/cartoptix/api.env",
       "-v /etc/cartoptix/rds-ca.pem:/certs/rds-ca.pem:ro",
       `--label com.cartoptix.release=${o.release}`,
@@ -405,8 +447,41 @@ function apiBootCommands(o: BootOptions): string[] {
       '--log-opt awslogs-stream="$instance_id"',
       o.image,
     ].join(" "),
-    `for attempt in $(seq 1 60); do curl -fsS -o /dev/null http://127.0.0.1:${API_PORT}/health/live && exit 0; sleep 2; done`,
-    "echo 'The API did not answer /health/live within two minutes.' >&2",
+    // Each instance generates its own key; no shared key, CA service or Git secret.
+    "install -d -m 700 /etc/cartoptix/tls",
+    'openssl req -x509 -newkey rsa:2048 -sha256 -nodes -days 90 -subj "/CN=$instance_id" -addext "subjectAltName=DNS:$instance_id" -keyout /etc/cartoptix/tls/key.pem -out /etc/cartoptix/tls/cert.pem',
+    "chmod 600 /etc/cartoptix/tls/key.pem",
+    // Replace the default config so nginx never opens an HTTP listener.
+    "cat > /etc/nginx/nginx.conf <<'NGINX'",
+    "user nginx;",
+    "worker_processes auto;",
+    "error_log /var/log/nginx/error.log warn;",
+    "pid /run/nginx.pid;",
+    "events { worker_connections 1024; }",
+    "http {",
+    "  access_log off;",
+    "  server {",
+    `    listen ${TLS_PORT} ssl;`,
+    "    ssl_certificate /etc/cartoptix/tls/cert.pem;",
+    "    ssl_certificate_key /etc/cartoptix/tls/key.pem;",
+    "    ssl_protocols TLSv1.2 TLSv1.3;",
+    "    ssl_ciphers ECDHE+AESGCM:ECDHE+CHACHA20;",
+    "    location / {",
+    `      proxy_pass http://127.0.0.1:${API_PORT};`,
+    "      proxy_http_version 1.1;",
+    "      proxy_set_header Connection '';",
+    "      proxy_set_header Host $host;",
+    "      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;",
+    "      proxy_set_header X-Forwarded-Proto https;",
+    "    }",
+    "  }",
+    "}",
+    "NGINX",
+    "nginx -t",
+    "systemctl enable --now nginx",
+    // Trust precisely this instance's certificate; do not use curl --insecure.
+    `for attempt in $(seq 1 30); do curl -fsS --connect-timeout 1 --max-time 2 --noproxy '*' --cacert /etc/cartoptix/tls/cert.pem --resolve "$instance_id:${TLS_PORT}:127.0.0.1" -o /dev/null "https://$instance_id:${TLS_PORT}/health/live" && exit 0; sleep 2; done`,
+    "echo 'The HTTPS proxy did not serve API liveness within two minutes.' >&2",
     "exit 1",
   ];
 }

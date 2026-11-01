@@ -203,6 +203,7 @@ The study validates the idea and informs small MVP adjustments and longer-term r
 - The presentation window can shrink from 2–3 weeks to **five days** to fit the budget. If that is still unaffordable, explicitly revisit cost or scope rather than silently drop a demonstration requirement.
 - Allow one day for the main load-testing exercise. Prepare scripts, data and local checks beforehand.
 - Shut down project services by **13 November 2026**, coordinating the final presentation before teardown.
+- Presentation ingress uses `https://cartoptix.hellodon.dev`. Encrypt CloudFront-to-private-ALB and ALB-to-EC2 connections with TLS; HTTP is permitted only on EC2 loopback between nginx and the API. Accept the ALB's documented lack of backend certificate validation, with ingress restricted by security groups (#92).
 - Estimate continuously operating BAU costs separately; temporary development shutdowns are not evidence of affordable continuous service.
 
 The first-year planning scenario is 1,000 daily active shoppers, two sessions per day, 20% of sessions starting in the busiest hour, and a fivefold surge. These are assumptions, not market evidence. The agreed endpoint-RPS workload is specified in the technical document; the project will not simulate complete shopper sessions for load generation.

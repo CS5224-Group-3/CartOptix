@@ -12,6 +12,8 @@
 #   TARGET_RPM     requests per minute per instance the scaling policy holds;
 #                  calibrated by the shakedown run (#21), default 3300
 #   AWS_PROFILE    defaults to cartoptix
+#   VIEWER_CERTIFICATE_ARN  issued ACM certificate in us-east-1
+#   ORIGIN_CERTIFICATE_ARN  issued ACM certificate in ap-southeast-1
 #
 # Extra arguments go to `cdk deploy`.
 set -euo pipefail
@@ -21,6 +23,8 @@ export AWS_PROFILE=${AWS_PROFILE:-cartoptix}
 die() { echo "deploy: $*" >&2; exit 1; }
 
 [[ -z "$(git status --porcelain)" ]] || die "the working tree has uncommitted changes; commit or stash them first."
+[[ -n "${VIEWER_CERTIFICATE_ARN:-}" && -n "${ORIGIN_CERTIFICATE_ARN:-}" ]] \
+  || die "set VIEWER_CERTIFICATE_ARN and ORIGIN_CERTIFICATE_ARN; see the TLS setup in infra/RUNBOOK.md."
 
 release=$(git rev-parse "${RELEASE:-HEAD}")
 if [[ "$release" != "$(git rev-parse HEAD)" ]] && ! git diff --quiet "$release" HEAD -- ../apps/api ../packages; then
@@ -34,6 +38,8 @@ pnpm --filter @cartoptix/web build
 # CartOptixPresentation by name: a bare `cdk deploy` would also touch
 # CartOptixGuardrails, which holds the spending alert and is deployed once.
 pnpm exec cdk deploy CartOptixPresentation \
+  --parameters "CartOptixPresentation:ViewerCertificateArn=$VIEWER_CERTIFICATE_ARN" \
+  --parameters "CartOptixPresentation:OriginCertificateArn=$ORIGIN_CERTIFICATE_ARN" \
   -c release="$release" \
   -c webRelease="$(git rev-parse HEAD)" \
   -c infraRelease="$(git rev-parse HEAD)" \
