@@ -17,7 +17,8 @@ change unrelated infrastructure.
 | API | `cartoptix-api:<release>` from ECR, one Docker container per EC2 `t4g.micro` instance in an Auto Scaling Group (max 3) |
 | Release identity | Full commit SHAs tracked separately by the `Release`, `WebRelease` and `InfraRelease` outputs |
 | Database | RDS PostgreSQL 18.6, `db.t4g.micro`, Single-AZ, no backups. Empty until you load it, below |
-| Entry point | `https://<id>.cloudfront.net`, printed as the `Url` output. `/api/*` and `/health/*` go to the API, uncached; everything else is the frontend |
+| Entry point | `https://cartoptix.hellodon.dev`, printed as the `Url` output. `/api/*` and `/health/*` go to the API, uncached; everything else is the frontend |
+| TLS | ACM certificates in separate stacks, private ALB HTTPS listener, nginx HTTPS on each instance, HTTP only over EC2 loopback (#92) |
 | Observability | A CloudWatch dashboard and five alarms, printed as the `Dashboard` output. Logs are kept three days |
 | Spending alert | A separate `CartOptixGuardrails` stack, deployed once and **not** destroyed between sessions |
 
@@ -27,8 +28,8 @@ The layout is chosen for cost, with security groups doing the isolation.
 
 | Tier | Subnets | Reachable from |
 | --- | --- | --- |
-| ALB | isolated, no public address | CloudFront only: an internal ALB behind a CloudFront VPC origin, with ingress limited to CloudFront's origin-facing prefix list |
-| API instances | public, each with a public IPv4 address | the ALB's security group only, on the API port. No SSH; administration goes through Session Manager |
+| ALB | isolated, no public address | CloudFront only on 443: an internal ALB behind an HTTPS-only CloudFront VPC origin, with ingress limited to CloudFront's origin-facing prefix list |
+| API instances | public, each with a public IPv4 address | the ALB's security group only, on nginx's HTTPS port 443. Docker publishes API port 3001 only on host loopback. No SSH; administration goes through Session Manager |
 | RDS | isolated, no public address | the API instances' security group only, on 5432. No outbound access |
 
 The API instances need outbound access to ECR, Systems Manager, Secrets Manager,
@@ -41,10 +42,15 @@ USD 3 a day for five services across two AZs). Approximate on-demand prices for
 `ap-southeast-1`; check current pricing before relying on them.
 
 The trade-off: the instances have public addresses, so their protection rests on
-the security group. The API port is open on the instance itself, but the group
-drops any inbound traffic that doesn't come from the ALB, and no other port is
-allowed. For a long-lived production deployment, move the instances to private
+the security group. Only nginx's HTTPS port accepts ALB traffic; the API port is
+bound to loopback, and no other ingress is allowed. For a long-lived production deployment, move the instances to private
 subnets behind a NAT gateway or VPC endpoints.
+
+The ALB encrypts target connections but **does not validate target certificates**.
+Each instance generates its own self-signed certificate and root-only key at boot;
+the security boundary is the VPC plus ALB-only ingress, not certificate-authenticated
+backend identity. Certificates last 90 days, beyond the 13 November teardown;
+do not extend this deployment past that validity without a rotation design.
 
 ## Prerequisites (once)
 
@@ -94,6 +100,60 @@ out() { aws cloudformation describe-stacks --stack-name CartOptixPresentation \
 
 ## Deploy
 
+### TLS setup and DNS (engineer only, #92)
+
+Implementation does not authorise deployment or DNS changes. Schedule the accepted
+maintenance window first. Keep the existing domain and unrelated DNS records intact.
+The `hellodon.dev` nameservers were Namecheap's `registrar-servers.com` when checked;
+verify they still are before editing **Advanced DNS**. `.dev` browsers require HTTPS.
+
+1. Ask the AWS account administrator to bootstrap **us-east-1** as well as Singapore,
+   and grant the engineer certificate/CloudFormation deployment permissions there.
+   The US region hosts only CloudFront's required viewer certificate, not application compute.
+2. From `infra/`, deploy certificates separately, one stack at a time:
+
+   ```bash
+   pnpm exec cdk deploy CartOptixViewerCertificate --app 'node bin/certificates.ts' --output cdk.out-certificates
+   pnpm exec cdk deploy CartOptixOriginCertificate --app 'node bin/certificates.ts' --output cdk.out-certificates
+   ```
+
+   Each deploy waits for DNS validation. While it waits, open ACM in the corresponding
+   region, find the pending certificate, and copy its validation CNAME name/value into
+   Namecheap. Enter the host relative to `hellodon.dev` (do not append the domain twice).
+   Do not use a URL redirect record. Check any existing CAA restrictions allow Amazon
+   certificate issuance; do not delete unrelated CAA records. Wait for **Issued** and
+   stack completion; the `CertificateArn` output is the input below. Use standard
+   non-exportable ACM public certificates, not paid exportable certificates or Private CA.
+3. Export both stack outputs in the deployment shell:
+
+   ```bash
+   export VIEWER_CERTIFICATE_ARN=$(aws cloudformation describe-stacks --region us-east-1 --stack-name CartOptixViewerCertificate --query 'Stacks[0].Outputs[?OutputKey==`CertificateArn`].OutputValue' --output text)
+   export ORIGIN_CERTIFICATE_ARN=$(aws cloudformation describe-stacks --region ap-southeast-1 --stack-name CartOptixOriginCertificate --query 'Stacks[0].Outputs[?OutputKey==`CertificateArn`].OutputValue' --output text)
+   ```
+
+4. Deploy the presentation stack below. Add/update these **routing CNAMEs** using its
+   `OriginDnsTarget` and `ViewerDnsTarget` outputs (values are hostnames, not URLs):
+
+   | Namecheap host | Target |
+   | --- | --- |
+   | `cartoptix-origin` | internal ALB DNS name (`OriginDnsTarget`) |
+   | `cartoptix` | distribution DNS name (`ViewerDnsTarget`) |
+
+   On a first creation, the ALB exists before the distribution finishes. If origin DNS
+   is needed while CloudFront is provisioning, obtain the ALB DNS name from the EC2
+   load balancer console and add `cartoptix-origin` then. Publishing the private ALB's
+   DNS name does not make it internet-reachable. On daily recreation both AWS target
+   names can change: replace stale routing records, and wait for DNS propagation.
+5. Complete the TLS and application smoke checks below before ending maintenance.
+
+These are standard ACM certificates attached to AWS services, with no additional
+certificate charge. Existing domain registration is reused; no Route 53 hosted zone,
+Private CA or new domain is provisioned. nginx uses the existing instances; its CPU,
+memory and boot-time impact still need measurement. Do not claim the SGD 84 budget
+or previous load-test performance has been revalidated by this change.
+
+### Create or update the presentation stack
+
 From a clean checkout:
 
 ```bash
@@ -112,7 +172,30 @@ frontend.
 
 CDK asks for confirmation before adding IAM or security-group permissions. A
 first deploy takes about 15 minutes, mostly RDS and CloudFront. Creation waits
-until every instance's API answers `/health/live`.
+until every instance serves `/health/live` through nginx over HTTPS. The boot probe
+trusts that instance's exact self-signed certificate and checks its SAN, not `--insecure`.
+
+`VIEWER_CERTIFICATE_ARN` and `ORIGIN_CERTIFICATE_ARN` are required by the engineer's
+deploy script. CloudFormation validates their regions and stores them as stack
+parameters. CI application releases use the previous parameter values and the existing
+change-set guard rejects parameter changes; CI never issues certificates or edits DNS.
+
+### Cutover and rollback
+
+Before the first TLS update, record the deployed `Release`, `WebRelease`, `InfraRelease`,
+capacity/scaling settings, both routing records (if present), and the prior CloudFront URL.
+Back up required click events. Announce a maintenance window: replacing the target group
+and updating CloudFront can temporarily interrupt API traffic even with rolling instances.
+
+If the update fails, allow CloudFormation to roll back and check its events, nginx
+`/var/log/nginx/error.log`, instance boot logs and ALB target health. Diagnose a 502 by
+checking certificate issuance, origin hostname/SAN matching, DNS and the 443 rules.
+For a completed but faulty update, an engineer can redeploy the recorded prior infra
+commit and release, with its recorded settings, then restore the old routing record
+or direct viewers to the old CloudFront URL. Use a separate checkout so current work
+is not discarded. Restoring the pre-TLS version restores HTTP internally: treat it as
+temporary incident rollback, never as a successful TLS cutover. Keep certificate stacks
+available for the retry. After success, verify there is no HTTP listener or API-port ingress.
 
 A redeploy with a different release replaces instances one at a time and waits
 for each new one to report healthy; if one fails, CloudFormation rolls the stack
@@ -312,6 +395,29 @@ then the API leaves out multibuys stored in the older shape.
 
 ## Smoke checks
 
+### TLS evidence
+
+- Confirm `https://cartoptix.hellodon.dev/` serves a valid matching public certificate
+  without bypassing validation; `http://cartoptix.hellodon.dev/` redirects to HTTPS
+  when tested with curl (browsers may upgrade it using HSTS).
+- In CloudFront, confirm the VPC origin uses `https-only`, TLS 1.2, and distribution
+  origin domain `cartoptix-origin.hellodon.dev`. Confirm its ALB certificate is issued
+  in Singapore for that name. A viewer HTTPS response alone does not prove origin TLS.
+- In ELB, confirm the private ALB has only an HTTPS 443 listener, TLS 1.2/1.3 policy,
+  an HTTPS 443 target group and HTTPS `/health/live` checks; all targets must be healthy.
+- Through SSM on each instance, run `sudo nginx -t`, inspect `sudo ss -lntp`, and verify
+  3001 is published only on `127.0.0.1`, nginx listens on 443 and nothing listens on 80.
+  Inspect the instance certificate's dates/SAN with
+  `sudo openssl x509 -in /etc/cartoptix/tls/cert.pem -noout -dates -ext subjectAltName`.
+  Repeat the boot script's HTTPS curl probe with that instance ID and `--cacert`.
+- Confirm the instance security group permits 443 only from the ALB group, not
+  80/3001 or public CIDRs. The ALB group permits 443 only from CloudFront's origin list.
+- Save redacted configuration/health evidence in #92, without keys, credentials or
+  database secrets. Check two-instance replacement/scale-out during the evaluation
+  window and repeat the load calibration before reusing its previous figures.
+
+### Application checks
+
 ```bash
 url=$(out Url)
 curl -i "$url/health/live"                   # 200, {"status":"ok"}
@@ -427,9 +533,23 @@ pnpm --filter @cartoptix/infra run destroy
 
 This deletes everything in the presentation stack, including the database, the
 frontend bucket, the dashboard and the alarms. The ECR images, the `CDKToolkit`
-stack and `CartOptixGuardrails` stay: the script names the presentation stack
+stack, the two certificate stacks and `CartOptixGuardrails` stay: the script names the presentation stack
 explicitly, because a bare `cdk destroy` would take the spending alert with it
 and leave the account unwatched. Check what is left:
+
+Remove the two deployment routing CNAMEs after daily teardown so they do not point
+at deleted AWS resources. Keep ACM validation CNAMEs and certificate stacks for
+redeployment/managed renewal. After the **final teardown, by 13 November**, destroy
+the certificate stacks (after CloudFront and ALB have released their certificates):
+
+```bash
+pnpm exec cdk destroy CartOptixViewerCertificate CartOptixOriginCertificate --app 'node bin/certificates.ts' --output cdk.out-certificates
+```
+
+Run that command from `infra/`. Remove only the validation CNAMEs belonging to these
+certificates after checking no other certificate uses them; preserve all unrelated
+`hellodon.dev` records and the domain registration. Inspect bootstrap resources in
+both regions for retained billable assets and include them in final teardown evidence.
 
 ```bash
 aws cloudformation describe-stacks --stack-name CartOptixPresentation   # "does not exist"

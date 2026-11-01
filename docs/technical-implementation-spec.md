@@ -71,10 +71,11 @@ Local development
 Browser -> Vite web/API -> local PostgreSQL
 
 Presentation
-Browser -HTTPS-> CloudFront (*.cloudfront.net)
-                  ├─ default -> private S3 bucket (frontend build)
-                  └─ /api/*  -> VPC origin -> internal ALB -> EC2 Auto Scaling Group -> private RDS PostgreSQL
-                                                             min 2 (1 while building), max 3   db.t4g.micro, Single-AZ
+Browser -HTTPS-> CloudFront (cartoptix.hellodon.dev)
+                  ├─ default -HTTPS-> private S3 bucket (frontend build)
+                  └─ /api/*, /health/* -HTTPS via VPC origin-> internal ALB
+                       -HTTPS-> nginx on EC2 ASG -HTTP loopback-> API -verified TLS-> private RDS
+                                 min 2 (1 while building), max 3                  Single-AZ
 
 Offline data preparation -> validated committed seed -> explicit database import
 ```
@@ -85,7 +86,11 @@ The presentation frontend is served from S3 through CloudFront, and the API from
 
 **Technical debt: one baseline instance while building.** For cost, the stack runs one instance (minimum and desired 1, maximum 3) while it is being built and tested. Until it scales out, the application is then also a single point of failure: if that instance fails, the API is unavailable until the ASG launches and health-checks a replacement, which takes minutes. The static frontend stays up because CloudFront serves it from S3. A production deployment would keep the minimum at 2.
 
-Serve browser traffic over HTTPS. The CloudFront-to-ALB connection uses HTTP inside AWS's network, because there is no custom domain to certify the ALB; this is a recorded limitation. Keep any S3 bucket private, restrict application ingress to its intended proxy/load balancer, and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles.
+The presentation TLS design (#92) uses `cartoptix.hellodon.dev` for viewers and `cartoptix-origin.hellodon.dev` for the private ALB. CloudFront validates the ALB's public certificate against the explicitly configured origin hostname and uses HTTPS only (TLS 1.2); the ALB accepts TLS 1.2/1.3 and forwards HTTPS to nginx on port 443. The API's Docker port 3001 binds only to host loopback; nginx forwards HTTP there. HTTPS liveness health checks and the instance's boot signal cover nginx-to-API connectivity, not database readiness. Keep S3 private and restrict database ingress to application instances. Avoid publicly exposed PostgreSQL in both profiles.
+
+**Accepted TLS boundary:** ALB HTTPS targets encrypt traffic but do not validate backend certificates. Generate a unique self-signed RSA key/certificate on each EC2 instance (90-day validity, private key readable only by root); rely on VPC protections and ingress from only the ALB security group, not authenticated backend TLS identity. This certificate lifetime covers the temporary deployment only; a longer-lived service needs a rotation design. No private key enters Git or instance user data.
+
+Issue standard non-exportable ACM public certificates through DNS validation in separate certificate stacks: `us-east-1` for CloudFront (the required exception to the Singapore deployment region), `ap-southeast-1` for ALB. An engineer manages validation CNAMEs and routing CNAMEs in the existing external DNS; do not create a paid hosted zone or purchase a domain. Keep certificate stacks and validation records across daily presentation teardown, then delete them after the final teardown by 13 November. Pass issued certificate ARNs as CloudFormation parameters; CI application releases preserve them and cannot change them through the change-set guard. Certificate and presentation synthesis must remain credential-free. See `infra/RUNBOOK.md` for issuance, cutover, rollback and evidence checks. This design is not proof of live deployment or measured TLS performance.
 
 Presentation networking is chosen for cost: the ALB is internal and reached through a CloudFront VPC origin, which has no extra charge and needs no public IPv4 for the ALB. There is no NAT gateway and no interface endpoint; application instances reach ECR and Systems Manager through their own public IPv4 addresses, and accept traffic only from the ALB.
 
