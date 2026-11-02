@@ -18,7 +18,7 @@ change unrelated infrastructure.
 | Release identity | Full commit SHAs tracked separately by the `Release`, `WebRelease` and `InfraRelease` outputs |
 | Database | RDS PostgreSQL 18.6, `db.t4g.micro`, Single-AZ, no backups. Empty until you load it, below |
 | Entry point | `https://cartoptix.hellodon.dev`, printed as the `Url` output. `/api/*` and `/health/*` go to the API, uncached; everything else is the frontend |
-| TLS | ACM certificates in separate stacks, private ALB HTTPS listener, nginx HTTPS on each instance, HTTP only over EC2 loopback (#92) |
+| TLS | Reused ACM certificates or separately managed certificate stacks, private ALB HTTPS listener, nginx HTTPS on each instance, HTTP only over EC2 loopback (#92) |
 | Observability | A CloudWatch dashboard and five alarms, printed as the `Dashboard` output. Logs are kept three days |
 | Spending alert | A separate `CartOptixGuardrails` stack, deployed once and **not** destroyed between sessions |
 
@@ -110,7 +110,17 @@ verify they still are before editing **Advanced DNS**. `.dev` browsers require H
 1. Ask the AWS account administrator to bootstrap **us-east-1** as well as Singapore,
    and grant the engineer certificate/CloudFormation deployment permissions there.
    The US region hosts only CloudFront's required viewer certificate, not application compute.
-2. From `infra/`, deploy certificates separately, one stack at a time:
+2. **Check for existing certificates before requesting any.** Reuse the teammate-created
+   certificates used for the 2 November cutover: viewer in `us-east-1`, private origin in
+   `ap-southeast-1`. In ACM, verify each certificate is **Issued**, covers its intended
+   hostname, and is a standard non-exportable public certificate. Record its ARN, region,
+   owner, validation records and whether a CloudFormation stack manages it in the private
+   deployment inventory. Do not publish that inventory or validation values in issues.
+   Passing an ARN to the presentation stack does not transfer certificate ownership.
+
+   For a reused certificate, skip issuance below. Only if a suitable certificate is
+   missing, obtain approval to issue it. From `infra/`, deploy only the missing certificate
+   stack (one at a time):
 
    ```bash
    pnpm exec cdk deploy CartOptixViewerCertificate --app 'node bin/certificates.ts' --output cdk.out-certificates
@@ -124,14 +134,20 @@ verify they still are before editing **Advanced DNS**. `.dev` browsers require H
    certificate issuance; do not delete unrelated CAA records. Wait for **Issued** and
    stack completion; the `CertificateArn` output is the input below. Use standard
    non-exportable ACM public certificates, not paid exportable certificates or Private CA.
-3. Export both stack outputs in the deployment shell:
+3. For reused certificates, set `VIEWER_CERTIFICATE_ARN` and `ORIGIN_CERTIFICATE_ARN`
+   in the deployment shell from the verified private inventory or ACM console. Do not
+   create certificate stacks just to obtain outputs. Only for certificates actually
+   owned by the repository's certificate stacks, export the corresponding stack outputs:
 
    ```bash
    export VIEWER_CERTIFICATE_ARN=$(aws cloudformation describe-stacks --region us-east-1 --stack-name CartOptixViewerCertificate --query 'Stacks[0].Outputs[?OutputKey==`CertificateArn`].OutputValue' --output text)
    export ORIGIN_CERTIFICATE_ARN=$(aws cloudformation describe-stacks --region ap-southeast-1 --stack-name CartOptixOriginCertificate --query 'Stacks[0].Outputs[?OutputKey==`CertificateArn`].OutputValue' --output text)
    ```
 
-4. Deploy the presentation stack below. Add/update these **routing CNAMEs** using its
+4. Deploy the presentation stack using the commands below. For an existing HTTP stack,
+   use the [staged migration](#initial-http-to-https-migration) instead of a direct update.
+   Skip that migration for fresh creation or an already-HTTPS stack. Add/update these
+   **routing CNAMEs** using the presentation stack's
    `OriginDnsTarget` and `ViewerDnsTarget` outputs (values are hostnames, not URLs):
 
    | Namecheap host | Target |
@@ -154,7 +170,8 @@ or previous load-test performance has been revalidated by this change.
 
 ### Create or update the presentation stack
 
-From a clean checkout:
+For fresh creation or an already-HTTPS stack, from a clean checkout (an existing HTTP
+stack requires the staged migration below first):
 
 ```bash
 pnpm --filter @cartoptix/infra run deploy                   # one instance, while building
@@ -187,6 +204,68 @@ capacity/scaling settings, both routing records (if present), and the prior Clou
 Back up required click events. Announce a maintenance window: replacing the target group
 and updating CloudFront can temporarily interrupt API traffic even with rolling instances.
 
+#### Initial HTTP-to-HTTPS migration
+
+This is a one-time engineer operation, not a CI application release. The 2 November
+cutover is complete; **do not repeat these steps on the healthy HTTPS stack**. Fresh
+TLS stack creation does not need them either.
+
+The CloudFront origin-facing managed prefix list consumes **55 security-group rule
+slots per rule**. CloudFormation can add the new 443 ingress before deleting the old
+80 ingress, exceeding the default 60-rule quota. The initial direct update failed with
+`The maximum number of rules per security group has been reached.` Use two reviewed
+CloudFormation change sets, not a quota increase or an out-of-band security-group edit:
+
+1. **Capture the rollback baseline.** Save the deployed original template, stack
+   parameters (including SSM parameter keys and resolved values), outputs, current
+   launch-template version/AMI, releases, capacity/scaling settings and routing records.
+   Preserve required click events. Use encrypted private storage, not Git or public
+   comments. Pause concurrent engineer/CI deployments for both phases.
+2. **Prepare phase 1 from the deployed template, not the new TLS template.** Remove
+   only the standalone `AWS::EC2::SecurityGroupIngress` resource allowing port 80 from
+   the CloudFront prefix list into the ALB security group. Leave the HTTP listener,
+   target group, distribution, instance configuration and other rules unchanged.
+   Temporarily change the launch-template AMI parameter from
+   `AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>` to `String` and explicitly pass
+   the AMI ID used by the current launch-template version. Preserve its parameter
+   name and references. `UsePreviousValue` on an SSM parameter preserves its **key**,
+   but refreshes its resolved value; it can otherwise trigger an unwanted rollout.
+3. **Review and execute phase 1.** Create an UPDATE change set using that temporary
+   template, the pinned AMI value and all other existing parameter values. Compare the
+   templates and inspect resource changes: the sole resource change must be removal
+   of the old 80 prefix-list ingress. If a launch-template/ASG modification, replacement
+   or any unrelated change appears, discard the change set and investigate. Execute
+   only after review, then wait for `UPDATE_COMPLETE`. API traffic is interrupted
+   until phase 2 completes; this is part of the accepted maintenance window.
+4. **Prepare phase 2 from the unmodified TLS release template.** Build/package its
+   assets using frontend sources matching the recorded web release, and synthesise
+   with the recorded API/web releases and capacity/scaling settings; do not silently
+   replace them with `HEAD` or defaults. Restore the normal
+   SSM AMI parameter type and explicitly pass its recorded **SSM key**, not the pinned
+   AMI ID. Supply the verified certificate ARNs. Review the UPDATE change set for the
+   intended HTTPS listener/targets, VPC origin, 443 rules, nginx bootstrap and alias.
+   An SSM AMI refresh and the planned TLS instance replacement belong in this phase,
+   not phase 1. Do not execute if it changes unrelated resources or releases.
+5. **Finish and verify.** Execute phase 2, wait for `UPDATE_COMPLETE` (including old
+   resource cleanup) and CloudFront `Deployed`, and complete the smoke checks below.
+   Confirm only the ALB HTTPS listener and intended 443 ingress remain, HTTPS targets
+   are healthy, API port 3001 is loopback-only, and capacity/application releases match
+   the baseline. Keep only the normal SSM-based TLS template in source; the temporary
+   template and literal AMI pin are private migration artefacts, not deployment defaults.
+
+**Rollback is phase-specific.** Phase 1 rollback should restore the original HTTP
+ingress. If phase 2 rolls back, its baseline is the phase-1 stack, which intentionally
+has no CloudFront ingress on port 80: `UPDATE_ROLLBACK_COMPLETE` alone does not restore
+API service. Inspect the actual listener/rules before choosing a retry or rollback.
+For an authorised return to HTTP, remove conflicting HTTPS prefix-list ingress first
+if necessary, then restore the saved pre-phase-1 template, parameter values and routing
+records through reviewed change sets. Check quota/order and AMI resolution again;
+do not blindly re-add a 55-slot rule alongside another one. Verify readiness and
+application behaviour after recovery. Never roll back a healthy site merely because
+cleanup is still running.
+
+#### Other update failures
+
 If the update fails, allow CloudFormation to roll back and check its events, nginx
 `/var/log/nginx/error.log`, instance boot logs and ALB target health. Diagnose a 502 by
 checking certificate issuance, origin hostname/SAN matching, DNS and the 443 rules.
@@ -194,13 +273,25 @@ For a completed but faulty update, an engineer can redeploy the recorded prior i
 commit and release, with its recorded settings, then restore the old routing record
 or direct viewers to the old CloudFront URL. Use a separate checkout so current work
 is not discarded. Restoring the pre-TLS version restores HTTP internally: treat it as
-temporary incident rollback, never as a successful TLS cutover. Keep certificate stacks
-available for the retry. After success, verify there is no HTTP listener or API-port ingress.
+temporary incident rollback, never as a successful TLS cutover. Keep certificates and
+validation records available for the retry. After success, verify there is no HTTP
+listener or API-port ingress.
 
 A redeploy with a different release replaces instances one at a time and waits
 for each new one to report healthy; if one fails, CloudFormation rolls the stack
 back to the previous release. Changing only `MIN_INSTANCES` resizes the group
 without replacing instances.
+
+#### Private backup lifecycle
+
+Keep rollback templates/state and required event backups encrypted and access-restricted
+through cutover verification and the agreed recovery window. Record their owner,
+location and retention/deletion decision privately; never post storage paths, event
+contents or access URLs publicly. The completed cutover retained encrypted rollback
+and event backups; this documentation change does not delete them. Before final
+teardown, preserve only required reporting artefacts, obtain owner approval for any
+retention, record retained storage costs, and delete unneeded objects and versions
+by 13 November. Do not remove shared bootstrap buckets or unrelated assets.
 
 ## CI application releases
 
@@ -533,23 +624,37 @@ pnpm --filter @cartoptix/infra run destroy
 
 This deletes everything in the presentation stack, including the database, the
 frontend bucket, the dashboard and the alarms. The ECR images, the `CDKToolkit`
-stack, the two certificate stacks and `CartOptixGuardrails` stay: the script names the presentation stack
-explicitly, because a bare `cdk destroy` would take the spending alert with it
+stack, any certificate stacks, externally created certificates and `CartOptixGuardrails`
+stay: the script names the presentation stack explicitly, because a bare `cdk destroy` would take the spending alert with it
 and leave the account unwatched. Check what is left:
 
 Remove the two deployment routing CNAMEs after daily teardown so they do not point
-at deleted AWS resources. Keep ACM validation CNAMEs and certificate stacks for
-redeployment/managed renewal. After the **final teardown, by 13 November**, destroy
-the certificate stacks (after CloudFront and ALB have released their certificates):
+at deleted AWS resources. Keep the privately inventoried ACM certificates and validation
+CNAMEs across daily teardown; retain any owning certificate stacks too. On recreation,
+verify issuance and reuse the same ARNs, then update only stale routing targets.
 
-```bash
-pnpm exec cdk destroy CartOptixViewerCertificate CartOptixOriginCertificate --app 'node bin/certificates.ts' --output cdk.out-certificates
-```
+After the **final teardown, by 13 November**, check certificate ownership and ACM
+`InUseBy` in each region, after CloudFront and ALB have released their certificates:
 
-Run that command from `infra/`. Remove only the validation CNAMEs belonging to these
-certificates after checking no other certificate uses them; preserve all unrelated
-`hellodon.dev` records and the domain registration. Inspect bootstrap resources in
-both regions for retained billable assets and include them in final teardown evidence.
+- **Stack-managed:** destroy only the certificate stacks verified to own the project
+  certificates. For the repository's two certificate stacks, from `infra/`:
+
+  ```bash
+  pnpm exec cdk destroy CartOptixViewerCertificate CartOptixOriginCertificate --app 'node bin/certificates.ts' --output cdk.out-certificates
+  ```
+
+- **Externally created (the certificates reused for this cutover):** the command above
+  does not delete them. With the owner's approval, delete each unused project
+  certificate directly in ACM in its own region. If another stack owns one, use that
+  stack's lifecycle instead. Do not delete a shared/in-use certificate; resolve ownership
+  and record any approved retention explicitly.
+
+Verify the inventoried certificates are gone or have an approved retention record;
+successful stack destruction alone is insufficient. Remove only their validation
+CNAMEs after checking no other certificate or region uses the same record. Preserve
+unrelated `hellodon.dev` records and the domain registration. Apply the private backup
+lifecycle above, inspect bootstrap resources in both regions for retained billable
+assets, and include them in final teardown evidence.
 
 ```bash
 aws cloudformation describe-stacks --stack-name CartOptixPresentation   # "does not exist"
